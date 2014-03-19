@@ -26,6 +26,6 @@ Chris，Daniel，和 Florian。
    [8]: https://twitter.com/brentsimmons
    [9]: https://twitter.com/olebegemann
    [10]: mailto:mail%40objc.io
-   [11]: http://objccn.io/issue1
+   [11]: http://objccn.io/issue-1
    
 原文链接 [介绍 objc.io - 言无不尽"](http://tang3w.com/translate/objective-c/objc.io/2013/10/21/介绍-objc.io.html)

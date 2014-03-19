@@ -22,9 +22,7 @@ Objective-C 中有个用来 mocking 的强大工具叫做 [OCMock][4]。它是�
 
 ## SenTestKit
 
-<span class="alert round label">编者注</span>
-
-	这一节有一些过时了。在 Xcode 5 中 SenTestingKit 已经被 XCTest 完全取代，不过两者使用上没有太多区别，我们可以通过 Xcode 的 `Edit` -> `Refactor` -> `Convert to XCTest` 选项来切换到新的测试框架
+> <span class="secondary radius label">编者注</span> 这一节有一些过时了。在 Xcode 5 中 SenTestingKit 已经被 XCTest 完全取代，不过两者使用上没有太多区别，我们可以通过 Xcode 的 `Edit` -> `Refactor` -> `Convert to XCTest` 选项来切换到新的测试框架
 
 我们将要使用的另一个工具是一个测试框架，开发者工具的一部分：[Sente][5] 的 SenTestingKit。这个上古神器从 1997 年起就伴随在 Objective-C 开发者左右，比第一款 iPhone 发布还早 10 年。现在，它已经集成到 Xcode 中了。SenTestingKit 会运行你的测试。通过 SenTestingKit，你将测试组织在类中。你需要给每一个你想测试的类创建一个测试类，类名以 `Tests` 结尾，它反应了这个类是干什么的。
 
@@ -32,9 +30,9 @@ Objective-C 中有个用来 mocking 的强大工具叫做 [OCMock][4]。它是�
 
 做测试时，为测试类创建基类是个不错的模式。把通用的逻辑放到基类里面，可以让测试更简单和集中。可以通过[示例程序][6]中的例子来看看这样带来的好处。我们没有使用 Xcode 的测试模板，为了让事情简单有效，我们只创建了单独的 `.m` 文件。通过把类名改成以 `Tests` 结尾，类名可以反映出我们在对什么做测试。
 
-<span class="alert round label">编者注</span>
 
-	Xcode 5 中 默认的测试模板也不再会自动创建 `.h` 文件了
+> <span class="secondary radius label">编者注</span> Xcode 5 中 默认的测试模板也不再会自动创建 `.h` 文件了 
+
 
 ## 与 Xcode 集成
 

@@ -1,0 +1,6 @@
+task :default => []
+
+task :sync do
+	ruby "./rake_task/sync_with_objcio.rb"
+	puts "=========== Original File Updated ==========="
+end

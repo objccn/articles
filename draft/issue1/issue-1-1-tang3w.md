@@ -168,17 +168,17 @@ View controllers 通常是 iOS 项目中最大的文件，并且它们包含了�
   * [Unburdened View Controllers][15]
   * [Stack Overflow: How to avoid big and clumsy `UITableViewControllers` on iOS][16]
 
-* * *
+---
 
 [话题 #1 下的更多文章][8]
 
    [2]: https://github.com/objcio/issue-1-lighter-view-controllers
-   [3]: http://www.objc.io/issue-1-3/
-   [4]: http://objccn.io/contents/images/issue-1/photocell.png
+   [3]: http://objccn.io/issue-1-3/
+   [4]: http://img.objccn.io/issue-1/photocell.png
    [5]: http://twitter.com/chriseidhof
    [6]: https://github.com/objcio/issue-1-lighter-view-controllers/blob/master/PhotoData/ArrayDataSource.h
    [7]: https://github.com/objcio/issue-1-lighter-view-controllers/blob/master/PhotoData/PhotoCell.xib
-   [8]: http://objccn.io/issue1
+   [8]: http://objccn.io/issue-1
    [11]: http://developer.apple.com/library/ios/#featuredarticles/ViewControllerPGforiPhoneOS/BasicViewControllers/BasicViewControllers.html
    [12]: http://developer.apple.com/library/mac/#documentation/General/Conceptual/DevPedia-CocoaCore/ControllerObject.html
    [13]: http://subjective-objective-c.blogspot.de/2011/08/writing-high-quality-view-controller.html
@@ -186,4 +186,6 @@ View controllers 通常是 iOS 项目中最大的文件，并且它们包含了�
    [15]: https://speakerdeck.com/trianglecocoa/unburdened-viewcontrollers-by-jay-thrash
    [16]: http://programmers.stackexchange.com/questions/177668/how-to-avoid-big-and-clumsy-uitableviewcontroller-on-ios
    
-原文链接 [更轻量的 View Controllers - 言无不尽"](http://tang3w.com/translate/objective-c/objc.io/2013/10/22/更轻量的-view-controllers.html)
+原文 [Lighter View Controllers](http://www.objc.io/issue-1/lighter-view-controllers.html)
+
+译文 [更轻量的 View Controllers - 言无不尽](http://tang3w.com/translate/objective-c/objc.io/2013/10/22/更轻量的-view-controllers.html)

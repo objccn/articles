@@ -16,7 +16,6 @@ Chris，Daniel，和 Florian。
 
 [话题 #1 下的更多文章][11]
 
-   [1]: http://www.objc.io/issue-1/introduction.html (Introduction)
    [2]: https://twitter.com/chriseidhof
    [3]: https://twitter.com/danielboedewadt
    [4]: https://twitter.com/floriankugler
@@ -26,6 +25,8 @@ Chris，Daniel，和 Florian。
    [8]: https://twitter.com/brentsimmons
    [9]: https://twitter.com/olebegemann
    [10]: mailto:mail%40objc.io
-   [11]: http://objccn.io/issue1
+   [11]: http://objccn.io/issue-1
+
+原文 [Introduction objc issue #1](http://www.objc.io/issue-1/introduction.html)
    
-原文链接 [介绍 objc.io - 言无不尽"](http://tang3w.com/translate/objective-c/objc.io/2013/10/21/介绍-objc.io.html)
+译文 [介绍 objc.io - 言无不尽"](http://tang3w.com/translate/objective-c/objc.io/2013/10/21/介绍-objc.io.html)

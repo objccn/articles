@@ -20,6 +20,10 @@ Chris, Daniel 和 Florian.
 
 2013年，7月
 
+---
+
+[话题 #2 下的更多文章][11]
+
    [3]: https://twitter.com/steipete
    [4]: https://twitter.com/anagrom_ataf
    [5]: http://pspdfkit.com
@@ -27,12 +31,6 @@ Chris, Daniel 和 Florian.
    [7]: mailto:mail%40objc.io
    [8]: http://www.objc.io/feed.xml
    [9]: https://github.com/objccn/articles
-
----
-
-[话题 #2 下的更多文章][11]
-
-
    [11]: http://objccn.io/issue-2
 
 原文 [Editorial Issue #2](http://www.objc.io/issue-2/editorial.html)

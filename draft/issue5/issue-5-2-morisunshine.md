@@ -6,7 +6,7 @@ UIKit Dynamics 是 iOS 7 中基于物理动画引擎的一个新功能--它被�
 
 > <span class="secondary radius label">编者注</span> 如果您阅读本篇文章感觉有点吃力的话，可以先来看看 [@onevcat](http://im.onevcat.com) 的[《UICollectionView 入门》](http://onevcat.com/2012/06/introducing-collection-views/) 和[《UIKit Dynamics 入门》](http://onevcat.com/2013/06/uikit-dynamics-started/)这两篇入门文章，帮助您快速补充相关知识。
 
-文章中的两个例子项目都已经在GitHub中:
+文章中的两个例子项目都已经在 GitHub 中:
 
 - [ASHSpringyCollectionView](https://github.com/objcio/issue-5-springy-collection-view)（基于 [UICollectionView Spring Demo](https://github.com/TeehanLax/UICollectionView-Spring-Demo)）
 - [Newtownian UICollectionView](https://github.com/objcio/issue-5-newtonian-collection-view)
@@ -16,9 +16,9 @@ UIKit Dynamics 是 iOS 7 中基于物理动画引擎的一个新功能--它被�
 
 支持 `UICollectionView` 实现 UIkit Dynamics 的最关键部分就是 `UIDynamicAnimator`。要实现这样的UIKit Dynamics的效果，我们需要自己自定义一个继承于 `UICollectionViewFlowLayout` 的子类，并且在这个子类里面持有一个UIDynamicAnimator的对象。
 
-当我们创建自定义的dynamic animator时，我们不会使用常用的初始化方法`-(instancetype)initWithReferenceView:(UIView*)view;`因为，我们不需要把这个dynamic animator关联一个view，而是给它关联一个collection view layout。所以我们使用`-(instancetype)initWithCollectionViewLayout:(UICollectionViewLayout*)layout;`这个初始化方法，并把collection view layout作为参数传入。这很关键，当他的behavior物体的属性应该被更新的时候，dynamic animator必须能够使collection view layout无效。换句话说，dynamic animator将会使旧的layout失效，并根据最新的behavior的items中的attribute重新建立新的layout。
+当我们创建自定义的 dynamic animator 时，我们不会使用常用的初始化方法`-initWithReferenceView:`因为，我们不需要把这个dynamic animator关联一个view，而是给它关联一个collection view layout。所以我们使用`-initWithCollectionViewLayout:`这个初始化方法，并把 collection view layout作为参数传入。这很关键，当他的 behavior 物体的属性应该被更新的时候，dynamic animator 必须能够使 collection view layout 无效。换句话说，dynamic animator将会使旧的 layout 失效，并根据最新的 behavior 的 items 中的 attribute 重新建立新的 layout。
 
-我们很快就能看到这些事情是怎么连接起来的，但是在概念上理解 collection view 如何与 dynamic animator相互作用是很重要的。我们将要在自定义的 collection view layout 的子类中，根据每一个 collection view 中的 `UICollectionViewLayoutAttributes` 对象的属性，创建一个对应的 `UIAttachmentBehavior` 对象，并把这个 `UIAttachmentBehavior` 对象添加到我们持有的 `UIDynamicAnimator` 对象上(过会儿我们将讨论 tiling 这些)。当我们需要 `UICollectionViewLayoutAttribute` 时，我们不再是从头开始计算 collection view 每一个 item 的 layout attribute，而是使用 `UIDynamicAnimator` 中的 layout attribute，因为我们在创建 `UIDynamicAnimator` 时就已经计算过每一个 item 的 layout attribute 了，所以这里不需要再重复计算一次。一旦模拟状态发生改变，dynamic animator 就会使这个 layout 无效。这会导致 UIKit 重新查询 layout，直到这个模拟静止。
+我们很快就能看到这些事情是怎么连接起来的，但是在概念上理解 collection view 如何与 dynamic animator相互作用是很重要的。我们将要在自定义的 collection view layout 的子类中，根据每一个 collection view 中的 `UICollectionViewLayoutAttributes` 对象的属性，创建一个对应的 `UIAttachmentBehavior` 对象，并把这个 `UIAttachmentBehavior` 对象添加到我们持有的 `UIDynamicAnimator` 对象上（过会儿我们将讨论 tiling 这些）。当我们需要 `UICollectionViewLayoutAttribute` 时，我们不再是从头开始计算 collection view 每一个 item 的 layout attribute，而是使用 `UIDynamicAnimator` 中的 layout attribute，因为我们在创建 `UIDynamicAnimator` 时就已经计算过每一个 item 的 layout attribute 了，所以这里不需要再重复计算一次。一旦模拟状态发生改变，dynamic animator 就会使这个 layout 无效。这会导致 UIKit 重新查询 layout，直到这个模拟静止。
 
 所以重申一下，layout 创建了 dynamic animator，并且在 dynamic animator 上添加每个 item 的 layout attribute 对应的 `UIAttachmentBehavior`。当 collection view 需要 layout 信息时，dynamic animator 提供想要的信息。
 
@@ -80,7 +80,7 @@ UIKit Dynamics 是 iOS 7 中基于物理动画引擎的一个新功能--它被�
     
     @end
 
-我们将在layout的初始化方法中初始化我们的 dynamic animator。还要设置一些属于父类 `UICollectionViewFlowLayout` 中的属性:
+我们将在 layout 的初始化方法中初始化我们的 dynamic animator。还要设置一些属于父类 `UICollectionViewFlowLayout` 中的属性:
 
 
 	- (id)init 
@@ -158,7 +158,7 @@ UIKit Dynamics 是 iOS 7 中基于物理动画引擎的一个新功能--它被�
 
 我们目前实现的代码给我们展示的只是一个在正常滑动下只有静态感觉的 `UICollectionView`，运行起来没什么特别的。看上去很好，但不是真的*动态*，不是么？
 
-为了使它表现地动态点，我们需要 layout 和 dynamic animator 能够对 collection view 中滑动位置的变化做出反应。幸好这里有个非常适合这个要求的方法 `shouldInvalidateLayoutForBoundsChange:`。这个方法会在collection view 的 bound 发生改变的时候被调用，根据最新的 [content offset](http://www.objccn.io/issue-3-2/) 调整我们的 dynamic animator 中的 behaviors 的参数。在重新调整这些 behavior 的 item 之后，我们在这个方法中返回 NO；因为 dynamic animator 会关心 layout 的无效问题，所以在这种情况下，它不需要去主动使其无效：
+为了使它表现地动态点，我们需要 layout 和 dynamic animator 能够对 collection view 中滑动位置的变化做出反应。幸好这里有个非常适合这个要求的方法 `shouldInvalidateLayoutForBoundsChange:`。这个方法会在 collection view 的 bound 发生改变的时候被调用，根据最新的 [content offset](http://www.objccn.io/issue-3-2/) 调整我们的 dynamic animator 中的 behaviors 的参数。在重新调整这些 behavior 的 item 之后，我们在这个方法中返回 NO；因为 dynamic animator 会关心 layout 的无效问题，所以在这种情况下，它不需要去主动使其无效：
 
 	-(BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds 
 	{
@@ -202,15 +202,15 @@ UIKit Dynamics 是 iOS 7 中基于物理动画引擎的一个新功能--它被�
 
 除了在 `prepareLayout` 中加载*所有*的物体，如果我们能*更聪明地*知道哪些物体会加载那该多好啊。是的，就是仅加载显示的和即将显示的物体。这正是我们要采取的办法。
 
-我们需要做的第一件事就是是跟踪dynamic animator中的所有behavior物体的index path。我在collection view 中添加一个property来做这件事:
+我们需要做的第一件事就是是跟踪 dynamic animator 中的所有 behavior 物体的 index path。我在 collection view 中添加一个属性来做这件事:
 
 	@property (nonatomic, strong) NSMutableSet *visibleIndexPathsSet;
 
-我们用 set 是因为它具有常数复杂度的查找效率，并且我们*经常*地查找 `visibleIndexPathsSet` 中是否已经包含了某个index path。
+我们用 set 是因为它具有常数复杂度的查找效率，并且我们*经常*地查找 `visibleIndexPathsSet` 中是否已经包含了某个 index path。
 
 在我们实现全新的 `prepareLayout` 方法之前——有一个问题就是什么是 tiles behavior ——理解 tiling 的意思是非常重要的。当我们 tile behavior 的时候，我们会在这些 item 离开 collection view 的可视范围的时候删除对应的 behavior，在这些 item 进入可视范围的时候又添加对应的 behavior。这是一个大麻烦：我们需要在*滚动中*创建新的 behavior。这就意味着让人觉得创建它们就好像它们本来就已经在 dynamic animator 里了一样，并且它们是在 `shouldInvalidateLayoutForBoundsChange:` 方法被修改的。
 
-因为我们是在滚动中创建这些新的behavior，所以我们需要维持现在collection view 的一些状态。尤其我们需要跟踪最近一次我们`bound`变化的增量。我们会在滚动时用这个状态去创建我们的behavior:
+因为我们是在滚动中创建这些新的 behavior，所以我们需要维持现在 collection view 的一些状态。尤其我们需要跟踪最近一次我们 `bound` 变化的增量。我们会在滚动时用这个状态去创建我们的 behavior：
 
 	@property (nonatomic, assign) CGFloat latestDelta;
 
@@ -243,7 +243,7 @@ UIKit Dynamics 是 iOS 7 中基于物理动画引擎的一个新功能--它被�
 
 注意我们是在用一个 NSSet。这是因为它具有常数复杂度的查找效率，并且我们经常的查找 `visibleIndexPathsSet` 是否已经包含了某个 index path:
 
-接下来我们要做的就是遍历 dynamic animator 的 behaviors，过滤掉那些已经在 `itemsIndexPathsInVisibleRectSet` 中的 item。因为我们已经过滤掉我们的 behavior，所以我们将要遍历的这些 item 都是不在显示范围里的，我们就可以将这些 item 从 animator 中删除掉(连同 `visibleIndexPathsSet` 属性中的 index path）:
+接下来我们要做的就是遍历 dynamic animator 的 behaviors，过滤掉那些已经在 `itemsIndexPathsInVisibleRectSet` 中的 item。因为我们已经过滤掉我们的 behavior，所以我们将要遍历的这些 item 都是不在显示范围里的，我们就可以将这些 item 从 animator 中删除掉（连同 `visibleIndexPathsSet` 属性中的 index path）:
 
 	NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(UIAttachmentBehavior *behaviour, NSDictionary *bindings) {
         BOOL currentlyVisible = [itemsIndexPathsInVisibleRectSet member:[[[behaviour items] firstObject] indexPath]] != nil;
@@ -298,7 +298,7 @@ UIKit Dynamics 是 iOS 7 中基于物理动画引擎的一个新功能--它被�
         [self.visibleIndexPathsSet addObject:item.indexPath];
     }];
 
-大部分代码看起来还是挺熟悉的。大概有一半是来自没有实现 tiling 的 `prepareLayout`。另一半是来自 `shouldInvalidateLayoutForBoundsChange:` 这个方法。我们用 latestDelta 这个属性来表示`bound`变化的增量，适当地调整 `UICollectionViewLayoutAttributes` 使这些 cell 表现地就像被 attachment behavior “拉”着一样。
+大部分代码看起来还是挺熟悉的。大概有一半是来自没有实现 tiling 的 `prepareLayout`。另一半是来自 `shouldInvalidateLayoutForBoundsChange:` 这个方法。我们用 latestDelta 这个属性来表示 `bound` 变化的增量，适当地调整 `UICollectionViewLayoutAttributes` 使这些 cell 表现地就像被 attachment behavior “拉”着一样。
 
 就这样就完成了，真的！我已经在真机上测试过显示上千个 cell 的情况了，它运行地非常完美。[去试试吧](https://github.com/objcio/issue-5-springy-collection-view)。
 
@@ -350,6 +350,14 @@ UIKit Dynamics 是 iOS 7 中基于物理动画引擎的一个新功能--它被�
 
 基本上我们要做的是在 layout 中提供一个方法，在它删除 attachment behavior 两秒之后，将这个 cell 从 collection view 中删除。我们希望在这段时间里，这个 cell 能掉出屏幕，但是这不一定会发生。如果没有发生，也没关系。只要淡出就行了。然而，我们必须保证在这两秒内既没有新的 cell 被添加，也没有旧的 cell 被删除。（我说了有点取巧。）
 
-欢迎在提交 pull request。
+欢迎提交 pull request。
 
-这个方法是有局限性的。我将 cell 数量的上限设为10，但是即使这样，在像 iPad2 这样比较旧的设备中，动画就会运行地很慢。当然，这个例子只是为了展示如何模拟有趣的动力学的一个方法——它并不是一个可以解决任何问题的万金油。你个人在实践中如何来进行模拟，包括性能等各个方面，都取决于你自己了。
+这个方法是有局限性的。我将 cell 数量的上限设为 10，但是即使这样，在像 iPad2 这样比较旧的设备中，动画就会运行地很慢。当然，这个例子只是为了展示如何模拟有趣的动力学的一个方法——它并不是一个可以解决任何问题的万金油。你个人在实践中如何来进行模拟，包括性能等各个方面，都取决于你自己了。
+
+---
+
+[话题 #5 下的更多文章](http://objccn.io/issue-5)
+
+原文 [UICollectionView + UIKit Dynamics](http://www.objc.io/issue-5/collection-views-and-uidynamics.html)
+
+译文 [objc.io 第5期 iOS 7 之 UICollectionView 与 UIKit Dynamics - iOS init](http://iosinit.com/?p=1022)

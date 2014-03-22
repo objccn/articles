@@ -2,11 +2,13 @@ UIKit Dynamics 是 iOS 7 中基于物理动画引擎的一个新功能--它被�
 
 这篇文章将讨论两个结合使用 UIkit Dynamics 和 collection view 的例子。第一个例子展示了如何去实现像 iOS 7 里信息 app 中的消息泡泡的弹簧动效，然后再进一步结合平铺机制来实现布局的可伸缩性。第二个例子展现了如何用 UIKit Dynamics 来模拟牛顿摆，这个例子中物体可以一个个地加入到 collection view 中，并和其他物体发生相互作用。
 
-在我们开始之前，我假定你们对 `UICollectionView` 是如何工作是有基本的了解--查看[这篇objc.io博客](http://www.objc.io/issue-3/collection-view-layouts.html)博客会有你想要的所有细节。我也假定你已经理解了`UIKit Dynamics`的工作原理--阅读这篇[博客](http://www.teehanlax.com/blog/introduction-to-uikit-dynamics/)，可以了解更多UIKit Dynamics的知识。
+在我们开始之前，我假定你们对 `UICollectionView` 是如何工作是有基本的了解——查看[这篇 objc.io 文章](http://www.objccn.io/issue-3-3/)会有你想要的所有细节。我也假定你已经理解了 `UIKit Dynamics` 的工作原理--阅读这篇[博客](http://www.teehanlax.com/blog/introduction-to-uikit-dynamics/)，可以了解更多 UIKit Dynamics 的知识。
+
+> <span class="secondary radius label">编者注</span> 如果您阅读本篇文章感觉有点吃力的话，可以先来看看 [@onevcat](http://im.onevcat.com) 的[《UICollectionView 入门》](http://onevcat.com/2012/06/introducing-collection-views/) 和[《UIKit Dynamics 入门》](http://onevcat.com/2013/06/uikit-dynamics-started/)这两篇入门文章，帮助您快速补充相关知识。
 
 文章中的两个例子项目都已经在GitHub中:
 
-- [ASHSpringyCollectionView](https://github.com/objcio/issue-5-springy-collection-view)（基于[UICollectionView Spring Demo](https://github.com/TeehanLax/UICollectionView-Spring-Demo)）
+- [ASHSpringyCollectionView](https://github.com/objcio/issue-5-springy-collection-view)（基于 [UICollectionView Spring Demo](https://github.com/TeehanLax/UICollectionView-Spring-Demo)）
 - [Newtownian UICollectionView](https://github.com/objcio/issue-5-newtonian-collection-view)
 
 
@@ -93,8 +95,7 @@ UIKit Dynamics 是 iOS 7 中基于物理动画引擎的一个新功能--它被�
     	self.dynamicAnimator = [[UIDynamicAnimator alloc] initWithCollectionViewLayout:self];
     
     	return self;
-
-}
+    }
 
 
 我们将实现的下一个方法是 prepareLayout。我们首先需要调用父类的方法。因为我们是继承 `UICollectionViewFlowLayout` 类，所以在调用父类的 prepareLayout 方法时，可以使 collection view layout 的各个 attribute 都放置在合适的位置。我们可以依靠父类的这个方法来提供一个默认的排布，并且能够使用 `[super layoutAttributesForElementsInRect:visibleRect];` 方法得到指定 rect 内的*所有* item 的 layout attributes。

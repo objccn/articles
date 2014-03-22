@@ -379,4 +379,4 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
 
 原文 [Common Background Practices](http://www.objc.io/issue-2/common-background-practices.html)
    
-译文 [常见的后台实践](http://blog.jobbole.com/52557/)
+译文 [常见的后台实践](http://onevcat.com/2014/03/common-background-practices/)

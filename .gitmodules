@@ -1,3 +1,3 @@
 [submodule "origin"]
 	path = origin
-	url = git@github.com:objcio/articles.git
+	url = https://github.com/objcio/articles.git

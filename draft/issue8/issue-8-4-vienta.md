@@ -1,6 +1,7 @@
 #The Client App
 客户端程序是这个项目的一个组成部分，这个项目能将目的地的坐标发送给drone飞行器上绑定的电话。 整个过程是个很简单的任务，而其中又不乏有趣的部分，例如使用新的（ios7上的）Multipeer Connectivity API 和 NSSecureCoding.
 这个程序暴露出一个很简单但是并不很好用的接口：
+![map](http://img.objccn.io/issue-8/client-app.jpg)
 
 ##多点连接
 为了创建客户端和drone飞行器上的导航程序之间的连接， 我们打算使用新的Multipeer Connectivity 的API。 为了做到这一点，我们只需相互连接两个设备， 所以multipeer API在这里并不能完全发挥它的潜力。 但是如果更多的客户端要加入的话，代码实际上是一样的。

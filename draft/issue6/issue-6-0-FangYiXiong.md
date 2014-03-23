@@ -1,38 +1,31 @@
-欢迎来到 objc.io 的第二期！
+欢迎来到 objc.io 的第六期！
 
-首先，我们想对各位读者说声谢谢！第一期推出后，大家的反馈如同潮水一般淹没了我们，这样的一个开局大大地超出了我们的预期。
+本月我们迎来了第一个小里程碑 —— objc.io 半岁啦！
 
-在第二期中，我们将深入探讨并发编程这个主题。如今的时代，计算机甚至连移动设备都拥有了多核CPU可供使用。如果我们能正确地使用并发机制，我们应用程序的性能将会得到大幅的提升。
+在这个特别的时刻，我们对 objc.io 做了一些改变，同时增加了一些东西。你可能已经注意到了，我们美化了网站的外观。现在每一期主题都有一个漂亮的封面，同时我们让网站的排版更清晰以便准备迎接以后的内容。
 
-不幸的是，虽然并发编程的API看起来很简单，但是其天生存在很多错综复在的问题和陷阱。我们希望本期的这些文章可以让你更深刻地理解并发编程，并帮助你跳过那些潜在的坑。
+另外，objc.io 可以在 iPhone 和 iPad 上通过[报刊 App](https://itunes.apple.com/de/app/objc.io/id683718429) 的形式，按月来订阅。我们也会继续在站点上免费的为每一个订阅者发布所有的内容，当然如果 objc.io 对你来说是有价值的，并且你乐于支持这个项目，那么你也可以通过报刊 App 来订阅并支持我们。对您的支持，我们致以崇高的感谢！
 
-本期，我们很高兴地邀请到了 [Peter Steinberger][3] 和 [Tobias Kräntzer][4] 来撰文。Peter 有一个非常著名的库 [PSPDFKit][5] ，他将分享开发这个库中得到的并发编程相关的经验，而 Tobias 撰写了异步测试相关的代码。
+我们增加了一个[订阅页面](http://www.objc.io/subscribe.html)，通过该页面，你可以了解到可以通过哪些方式持续关注到网站的最近更新内容。在报刊 App下面，还介绍了：增加对Maverick系统中站点推送通知的支持。
 
-如果你有什么好的主题，希望给 [objc.io][6] 投稿的话，请与我们 [联系][7]。
+如果没有来自于社区中这些神奇的开发者们的投稿，objc.io 就不会有今天。截止到目前的6期内容中，15位嘉宾一共发表了16篇文章。为了突显他们的贡献，我们增加了一个[投稿者](http://www.objc.io/contributors.html)的页面。万分感谢你们！
 
-> <span class="secondary radius label">编者注</span> 如果你对 objccn 的翻译项目感兴趣的话，也欢迎与我们[联系][9]
+最终也是最重要的，是你们这些读者，没有你们，就没有 objc.io 的今天。虽然我们每个月竭尽全力去撰写所能想像出来的最好的文章，但是你们热烈的反响还是远远超出了我们的想像。我们每天都收到无数的反馈，这让我们觉得一切的努力都是值得的。
 
-最后，对于希望订阅本站RSS种子的读者，我们有一个好消息告诉你们：现在你们可以到这里: [objc.io/feed.xml][8] 订阅 [objc.io][6]了。
+在头5个月中，我们站点有超过50万的访问量。10月份是最忙的一个月，一个月内的流量超过了50GB，请求次数超过100万。我们的 mail list 有将近7000个订阅者，4500人在 Twitter上关注我们。万分感谢！
 
-祝各位阅读愉快！
+好了，请继续阅读并享受本期关于编译过程的相关文章吧。这个月的文章包括了 CocoaPods 的内部机制以及使用 Travis CI 进行持续集成等内容，作者为 Michele Titolo 和 Mattes Groeger。
 
-Chris, Daniel 和 Florian.
+从柏林发来最诚挚的祝福!
 
-2013年，7月
+Chris, Daniel 和 Florian，2013年11月。
 
 ---
 
-[话题 #2 下的更多文章][11]
+[话题 #6 下的更多文章](http://objccn.io/issue-6/)
 
-   [3]: https://twitter.com/steipete
-   [4]: https://twitter.com/anagrom_ataf
-   [5]: http://pspdfkit.com
-   [6]: http://www.objc.io
-   [7]: mailto:mail%40objc.io
-   [8]: http://www.objc.io/feed.xml
-   [9]: https://github.com/objccn/articles
-   [11]: http://objccn.io/issue-2
+原文: [Editorial](http://www.objc.io/issue-6/editorial.html)
 
-原文 [Editorial Issue #2](http://www.objc.io/issue-2/editorial.html)
-   
-译文 [objc.io 第2期 并发编程 篇首语 - iOS init](http://iosinit.com/?p=811)
+译文 [objc.io 第6期 编译工具 卷首语 - iOS init](http://iosinit.com/?p=943)
+
+精细校对 [@BeyondVincent](http://beyondvincent.com/)

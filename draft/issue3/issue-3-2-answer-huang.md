@@ -1,5 +1,3 @@
-# 理解Scroll View
-
 可能你很难相信 [UIScrollView][1] )和一个标准的 [UIView][2]差异并不大，scroll view 确实会多出一些方法，但这些方法只是和 UIView 的属性很好的结合到一起了。因此，在要想弄懂 UIScrollView 是怎么工作之前，你需要先了解一下 UIView，特别是视图渲染的两步过程。
 
 ##光栅化和组合
@@ -16,11 +14,11 @@
 
 在 `drawRect:` 方法被调用前，会为视图创建一个空白的图片来绘制 content。这个图片的坐标系统是视图的 bounds。几乎每个视图 bounds 的 origin 都是 {0，0}。因此，当在光栅化图片左上角绘制一些东西的时候，你都会在 bounds 的 origin {x:0, y:0} 处绘制。在一个图片右下角的地方绘制东西的时候，你都会绘制在 {x:width, y:height} 处。如果你的绘制超出了视图的 bounds，那么超出的部分就不属于光栅化图片的部分了，并且会被丢弃。
 
-![4]
+![][4]
 
 在组合的步骤中，每个视图将自己光栅化图片组合到自己父视图的光栅化图片上面。视图的 frame 决定了自己在父视图中绘制的位置，frame 的 origin 表明了视图光栅化图片左上角相对父视图光栅化图片左上角的偏移量。所以，一个 origin 为 {x:20, y:15} 的 frame 所绘制的图片左边距其父视图 20 点，上边距父视图 15 点。因为视图的 frame 和 bounds 矩形的大小总是一样的，所以光栅化图片组合的时候是像素对齐的。这确保了光栅化图片不会被拉伸或缩小。
 
-![5]
+![][5]
 
 记住，我们才仅仅讨论了一个视图和它父视图之间的组合操作。一旦这两个视图被组合到一起，组合的结果图片将会和父视图的父视图进行组合，这是一个雪球效应。
 
@@ -38,7 +36,7 @@
     
 我们可以通过几个不同的 frames 看一下：
 
-![6]
+![][6]
 
 这样做是有道理的，我们改变 button 的 `frame.origin `后，它会改变自己相对紫色父视图的位置。注意，如果我们移动 button 直到它的一部分已经在紫色父视图 bounds 的外面，当光栅化图片被截去时这部分也将会通过同样的绘制方式被截去。然而，技术上讲，因为 iOS 处理组合方法的原因，你可以将一个子视图渲染在其父视图的 bounds 之外，但是光栅化期间的绘制不可能超出一个视图的 bounds。
 
@@ -54,7 +52,7 @@
 
 我们减少 `Superview.bounds.origin` 的值(因为他们总是0)。但是如果他们不为0呢？我们用和前一个图例相同的 frames，但是我们改变了紫色视图 bounds 的 origin 为 {-30, -30}。得到下图：
 
-![7]
+![][7]
 
 现在，巧妙的是通过改变这个紫色视图的 bounds，它每一个单独的子视图都被移动了。事实上，这正是 scroll view 工作的原理。当你设置它的 [contentOffset][11] 属性时它改变 `scroll view.bounds` 的 origin。事实上，contentOffset 甚至不是实际存在的。代码看起来像这样：
 
@@ -73,7 +71,7 @@
 scroll view 的 content size 并不会改变其 bounds 的任何东西，所以这并不会影响 scroll view 如何组合自己的子视图。反而，content size 定义了可滚动区域。scroll view 的默认 content size 为 {w:0, h:0}。既然没有可滚动区域，用户是不可以滚动的，但是 scroll view 任然会显示其 bounds 范围内所有的子视图。
 当 content size 设置为比 bounds 大的时候，用户就可以滚动视图了。你可以认为 scroll view 的 bounds 为可滚动区域上的一个窗口：
 
-![13]
+![][13]
 
 当 content offset 为 {x:0, y:0} 时，可见窗口的左上角在可滚动区域的左上角处。这也是 content offset 的最小值；用户不能再往可滚动区域的左边或上边移动了。那儿没啥，别滚了！
 
@@ -87,7 +85,7 @@ content offset 的最大值是 content size 和 scroll view size 的差(不同�
 
 [contentInset][14] 属性可以改变 content offset 的最大和最小值，这样便可以滚动出可滚动区域。它的类型为 [UIEdgeInsets][15]，包含四个值：{top，left，bottom，right}。当你引进一个 inset 时，你改变了 content offset 的范围。比如，设置 content inset 顶部值为 10，则允许 content offset 的 y 值达到 10。这介绍了可滚动区域周围的填充。
 
-![16]
+![][16]
 
 这咋一看好像没什么用。实际上，为什么不仅仅增加 content size 呢？除非没办法，否则你需要避免改变scroll view 的 content size。想要知道为什么？想想一个 table view（UItableView是UIScrollView 的子类，所以它有所有相同的属性），table view 为了适应每一个cell，它的可滚动区域是通过精心计算的。当你滚动经过 table view 的第一个或最后一个 cell 的边界时，table view将 content offset 弹回并复位，所以 cells 又一次恰到好处的紧贴 scroll view 的 bounds。
 
@@ -101,7 +99,7 @@ content offset 的最大值是 content size 和 scroll view size 的差(不同�
 
 现在开始出绝招，将界面放入一个 scroll view。scroll view 的 content size 仍然和 scroll view 的 bounds 一样大。当键盘出现在屏幕上时，你设置 content inset 的底部等于键盘的高度。
 
-![18]
+![][18]
 
 这允许在 content offset 的最大值下显示滚动区域外的区域。可视区域的顶部在 scroll view bounds 的外面，因此被截取了(虽然它在屏幕之外了，但这并没有什么)。
 
@@ -110,6 +108,11 @@ content offset 的最大值是 content size 和 scroll view size 的差(不同�
 相关链接(强烈推荐)：
 
 [计算机图形渲染的流程][21]
+
+---
+
+[话题 #3 下的更多文章][22]
+
 
    [1]: http://developer.apple.com/library/ios/#documentation/uikit/reference/UIScrollView_Class/Reference/UIScrollView.html
    [2]: https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIView_Class/UIView/UIView.html
@@ -132,3 +135,4 @@ content offset 的最大值是 content size 和 scroll view size 的差(不同�
    [19]: https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/transform
    [20]: http://developer.apple.com/library/ios/#documentation/uikit/reference/UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/doc/uid/TP40006923-CH3-SW7
    [21]: http://bbs.weiphone.com/read-htm-tid-6880069.html
+   [22]: http://objccn.io/issue-3/

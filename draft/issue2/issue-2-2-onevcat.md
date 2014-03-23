@@ -46,7 +46,7 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
       ^(NSString* line, NSUInteger idx, BOOL* shouldStop)
       {
           NSArray* components = [line csvComponents];
-          if(components.count &lt; 5) {
+          if(components.count < 5) {
               NSLog(@"couldn't parse: %@", components);
               return;
           }
@@ -301,7 +301,7 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
                 NSMutableData *buffer = [NSMutableData dataWithLength:4 * 1024];
                 NSUInteger length = [self.inputStream read:[buffer mutableBytes]
                                                  maxLength:[buffer length]];
-                if (0 &lt; length) {
+                if (0 < length) {
                     [buffer setLength:length];
                     __weak id weakSelf = self;
                     [self.queue addOperationWithBlock:^{
@@ -331,7 +331,7 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
                                                 usingBlock:^(NSData* component, BOOL last) {
             if (!last) {
                 [self emitLineWithData:component];
-            } else if (0 &lt; [component length]) {
+            } else if (0 < [component length]) {
                 self.remainder = [component mutableCopy];
             } else {
                 self.remainder = nil;

@@ -468,3 +468,7 @@ CALayer 有一个叫做 drawsAsynchronously 的属性，这似乎是一个解决
    [25]: https://developer.apple.com/videos/wwdc/2012/?id=506
    [26]: https://developer.apple.com/videos/wwdc/2012/?id=211
    [27]: http://objccn.io/issue-3/
+
+原文 [Getting Pixels onto the Screen](http://www.objc.io/issue-3/moving-pixels-onto-the-screen.html)
+   
+译文 [将像素绘制到屏幕上去 - answer-huang](http://answerhuang.duapp.com/index.php/2013/09/04/pixels-get-onto-the-screen/)

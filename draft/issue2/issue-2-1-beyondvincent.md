@@ -40,7 +40,7 @@ OS X 和 iOS 提供了几种不同的 API 来支持并发编程。每一个 API 
         struct threadInfo const * const info = (struct threadInfo *) arg;
         uint32_t min = UINT32_MAX;
         uint32_t max = 0;
-        for (size_t i = 0; i < info>count; %2B%2Bi) {
+        for (size_t i = 0; i < info>count; ++i) {
             uint32_t v = info>inputValues[i];
             min = MIN(min, v);
             max = MAX(max, v);
@@ -65,21 +65,21 @@ OS X 和 iOS 提供了几种不同的 API 来支持并发编程。每一个 API 
         // 开始4个寻找最小值和最大值的线程
         size_t const threadCount = 4;
         pthread_t tid[threadCount];
-        for (size_t i = 0; i < threadCount; %2B%2Bi) {         struct threadInfo * const info = (struct threadInfo *) malloc(sizeof(*info));         size_t offset = (count / threadCount) * i;         info>inputValues = inputValues %2B offset;
+        for (size_t i = 0; i < threadCount; ++i) {         struct threadInfo * const info = (struct threadInfo *) malloc(sizeof(*info));         size_t offset = (count / threadCount) * i;         info>inputValues = inputValues + offset;
             info>count = MIN(count - offset, count / threadCount);
-            int err = pthread_create(tid %2B i, NULL, &findMinAndMax, info);
+            int err = pthread_create(tid + i, NULL, &findMinAndMax, info);
             NSCAssert(err == 0, @"pthread_create() failed: %d", err);
         }
         // 等待线程退出
         struct threadResult * results[threadCount];
-        for (size_t i = 0; i < threadCount; %2B%2Bi) {
+        for (size_t i = 0; i < threadCount; ++i) {
             int err = pthread_join(tid[i], (void **) &(results[i]));
             NSCAssert(err == 0, @"pthread_join() failed: %d", err);
         }
         // 寻找 min 和 max
         uint32_t min = UINT32_MAX;
         uint32_t max = 0;
-        for (size_t i = 0; i < threadCount; %2B%2Bi) {         min = MIN(min, results[i]>min);
+        for (size_t i = 0; i < threadCount; ++i) {         min = MIN(min, results[i]>min);
             max = MAX(max, results[i]>max);
             free(results[i]);
             results[i] = NULL;

@@ -1,6 +1,6 @@
-UIKit Dynamics 是 iOS 7 中基于物理动画引擎的一个新功能--它被特别设计使其能很好地与 collection views 配合工作，collection view 是在 iOS 6 中才被引入的新特性。接下来，我们要好好看看如何将这两个特性结合在一起。 
+UIKit Dynamics 是 iOS 7 中基于物理动画引擎的一个新功能--它被特别设计使其能很好地与 collection views 配合工作，而后者是在 iOS 6 中才被引入的新特性。接下来，我们要好好看看如何将这两个特性结合在一起。 
 
-这篇文章将讨论两个结合使用 UIkit Dynamics 和 collection view 的例子。第一个例子展示了如何去实现像 iOS 7 里信息 app 中的消息泡泡的弹簧动效，然后再进一步结合平铺机制来实现布局的可伸缩性。第二个例子展现了如何用 UIKit Dynamics 来模拟牛顿摆，这个例子中物体可以一个个地加入到 collection view 中，并和其他物体发生相互作用。
+这篇文章将讨论两个结合使用 UIkit Dynamics 和 collection view 的例子。第一个例子展示了如何去实现像 iOS 7 里信息 app 中的消息泡泡的弹簧动效，然后再进一步结合平铺机制来实现布局的可伸缩性。第二个例子展现了如何用 UIKit Dynamics 来模拟[牛顿摆](http://zh.wikipedia.org/wiki/牛顿摆)，这个例子中物体可以一个个地加入到 collection view 中，并和其他物体发生相互作用。
 
 在我们开始之前，我假定你们对 `UICollectionView` 是如何工作是有基本的了解——查看[这篇 objc.io 文章](http://www.objccn.io/issue-3-3/)会有你想要的所有细节。我也假定你已经理解了 `UIKit Dynamics` 的工作原理--阅读这篇[博客](http://www.teehanlax.com/blog/introduction-to-uikit-dynamics/)，可以了解更多 UIKit Dynamics 的知识。
 
@@ -14,13 +14,15 @@ UIKit Dynamics 是 iOS 7 中基于物理动画引擎的一个新功能--它被�
 
 ## 关于 UIDynamicAnimator
 
-支持 `UICollectionView` 实现 UIkit Dynamics 的最关键部分就是 `UIDynamicAnimator`。要实现这样的UIKit Dynamics的效果，我们需要自己自定义一个继承于 `UICollectionViewFlowLayout` 的子类，并且在这个子类里面持有一个UIDynamicAnimator的对象。
+支持 `UICollectionView` 实现 UIKit Dynamics 的最关键部分就是 `UIDynamicAnimator`。要实现这样的 UIKit Dynamics 的效果，我们需要自己自定义一个继承于 `UICollectionViewFlowLayout` 的子类，并且在这个子类对象里面持有一个 UIDynamicAnimator 的对象。
 
-当我们创建自定义的 dynamic animator 时，我们不会使用常用的初始化方法`-initWithReferenceView:`因为，我们不需要把这个dynamic animator关联一个view，而是给它关联一个collection view layout。所以我们使用`-initWithCollectionViewLayout:`这个初始化方法，并把 collection view layout作为参数传入。这很关键，当他的 behavior 物体的属性应该被更新的时候，dynamic animator 必须能够使 collection view layout 无效。换句话说，dynamic animator将会使旧的 layout 失效，并根据最新的 behavior 的 items 中的 attribute 重新建立新的 layout。
+当我们创建自定义的 dynamic animator 时，我们不会使用常用的初始化方法 `-initWithReferenceView:` ，因为我们不需要把这个 dynamic animator 关联一个 view ，而是给它关联一个 collection view layout。所以我们使用 `-initWithCollectionViewLayout:` 这个初始化方法，并把 collection view layout 作为参数传入。这很关键，当的 animator 的 behavior item 的属性应该被更新的时候，它必须能够确保 collection view 的 layout 失效。换句话说，dynamic animator 将会经常使旧的 layout 失效。
 
-我们很快就能看到这些事情是怎么连接起来的，但是在概念上理解 collection view 如何与 dynamic animator相互作用是很重要的。我们将要在自定义的 collection view layout 的子类中，根据每一个 collection view 中的 `UICollectionViewLayoutAttributes` 对象的属性，创建一个对应的 `UIAttachmentBehavior` 对象，并把这个 `UIAttachmentBehavior` 对象添加到我们持有的 `UIDynamicAnimator` 对象上（过会儿我们将讨论 tiling 这些）。当我们需要 `UICollectionViewLayoutAttribute` 时，我们不再是从头开始计算 collection view 每一个 item 的 layout attribute，而是使用 `UIDynamicAnimator` 中的 layout attribute，因为我们在创建 `UIDynamicAnimator` 时就已经计算过每一个 item 的 layout attribute 了，所以这里不需要再重复计算一次。一旦模拟状态发生改变，dynamic animator 就会使这个 layout 无效。这会导致 UIKit 重新查询 layout，直到这个模拟静止。
+我们很快就能看到这些事情是怎么连接起来的，但是在概念上理解 collection view 如何与 dynamic animator 相互作用是很重要的。
 
-所以重申一下，layout 创建了 dynamic animator，并且在 dynamic animator 上添加每个 item 的 layout attribute 对应的 `UIAttachmentBehavior`。当 collection view 需要 layout 信息时，dynamic animator 提供想要的信息。
+Collection view layout 将会为 collection view 中的每个 `UICollectionViewLayoutAttributes` 添加 behavior（稍后我们会讨论平铺它们）。在将这些 behaviors 添加到 dynamic animator 之后，UIKit 将会向 collection view layout 询问 atrribute 的状态。我们此时可以直接将由 dynamic animator 所提供的 items 返回，而不需要自己做任何计算。Animator 将在模拟时禁用 layout。这会导致 UIKit 再次查询 layout，这个过程会一直持续到模拟满足设定条件而结束。
+
+所以重申一下，layout 创建了 dynamic animator，并且为其中每个 item 的 layout attribute 添加对应的 behaviors。当 collection view 需要 layout 信息时，由 dynamic animator 来提供需要的信息。
 
 ## 继承 UICollectionViewFlowLayout
 
@@ -70,9 +72,9 @@ UIKit Dynamics 是 iOS 7 中基于物理动画引擎的一个新功能--它被�
     @end
 
 
-我们注意到当视图第一次出现的时候，这个 layout 是被无效的。这是因为没有用 Storyboard 的结果（使用或不使用 Storyboard，调用 prepareLayout 方法的时机是不同的，苹果在 WWDC 的视频中并没有告诉我们这一点）。所以，当这些视图一出现我们就需要手动使这个 collection view layout 无效。当我们用 tiling 的时候，就不需要这样。
+我们注意到当 view 第一次出现的时候，这个 layout 是被无效的。这是因为没有用 Storyboard 的结果（使用或不使用 Storyboard，调用 prepareLayout 方法的时机是不同的，苹果在 WWDC 的视频中并没有告诉我们这一点）。所以，当这些视图一出现我们就需要手动使这个 collection view layout 无效。当我们用平铺（后面会详细介绍）的时候，就不需要这样。
 
-让我们创建自定义的 collection view layout 时，我们需要强引用一个 dynamic animator，并且使用它来驱动我们的 collcetion view layout 的 attribute。我们在实现文件里定义了一个私有属性：
+现在来创建自定义的 collection view layout 吧，我们需要强引用一个 dynamic animator，并且使用它来驱动我们的 collcetion view layout 的 attribute。我们在实现文件里定义了一个私有属性：
 
     @interface ASHSpringyCollectionViewFlowLayout ()
     
@@ -196,7 +198,7 @@ UIKit Dynamics 是 iOS 7 中基于物理动画引擎的一个新功能--它被�
 
 ![Springy Collection View](http://img.objccn.io/issue-5/springyCollectionView.gif)
 
-## Tiling 你的 Dynamic Behaviors 来优化性能
+## 平铺（Tiling）你的 Dynamic Behaviors 来优化性能
 
 当你的 collection view 中只有几百个 cell 的时候，他运行的很好，但当数据源超过这个范围的时候会发生什么呢？或者在运行的时你不能预测你的数据源有多大呢？我们的简单粗暴的方法就不管用了。
 
@@ -208,7 +210,7 @@ UIKit Dynamics 是 iOS 7 中基于物理动画引擎的一个新功能--它被�
 
 我们用 set 是因为它具有常数复杂度的查找效率，并且我们*经常*地查找 `visibleIndexPathsSet` 中是否已经包含了某个 index path。
 
-在我们实现全新的 `prepareLayout` 方法之前——有一个问题就是什么是 tiles behavior ——理解 tiling 的意思是非常重要的。当我们 tile behavior 的时候，我们会在这些 item 离开 collection view 的可视范围的时候删除对应的 behavior，在这些 item 进入可视范围的时候又添加对应的 behavior。这是一个大麻烦：我们需要在*滚动中*创建新的 behavior。这就意味着让人觉得创建它们就好像它们本来就已经在 dynamic animator 里了一样，并且它们是在 `shouldInvalidateLayoutForBoundsChange:` 方法被修改的。
+在我们实现全新的 `prepareLayout` 方法之前——有一个问题就是什么是**平铺 behavior** —— 理解平铺的意思是非常重要的。当我们平铺behavior 的时候，我们会在这些 item 离开 collection view 的可视范围的时候删除对应的 behavior，在这些 item 进入可视范围的时候又添加对应的 behavior。这是一个大麻烦：我们需要在*滚动中*创建新的 behavior。这就意味着让人觉得创建它们就好像它们本来就已经在 dynamic animator 里了一样，并且它们是在 `shouldInvalidateLayoutForBoundsChange:` 方法被修改的。
 
 因为我们是在滚动中创建这些新的 behavior，所以我们需要维持现在 collection view 的一些状态。尤其我们需要跟踪最近一次我们 `bound` 变化的增量。我们会在滚动时用这个状态去创建我们的 behavior：
 
@@ -220,7 +222,7 @@ UIKit Dynamics 是 iOS 7 中基于物理动画引擎的一个新功能--它被�
 
 这就是我们需要修改我们的方法来响应滚动事件。我们的这两个方法是为了将 collection view 中 items 的 layout 信息传给 dynamic animator，这种方式没有变化。事实上，当你的 collection view 实现了 dynamic animator 的大部分情况下，都需要实现我们上面提到的两个方法 `layoutAttributesForElementsInRect:` 和 `layoutAttributesForItemAtIndexPath:`。
 
-这里最难懂的部分就是 tiling mechanism。我们将要完全重写我们的 prepareLayout。
+这里最难懂的部分就是平铺机制。我们将要完全重写我们的 prepareLayout。
 
 这个方法的第一步是将那些物体的 index path 已经不在屏幕上显示的 behavior 从 dynamic animator 上删除。第二步是添加那些即将显示的物体的 behavior。
 
@@ -298,7 +300,7 @@ UIKit Dynamics 是 iOS 7 中基于物理动画引擎的一个新功能--它被�
         [self.visibleIndexPathsSet addObject:item.indexPath];
     }];
 
-大部分代码看起来还是挺熟悉的。大概有一半是来自没有实现 tiling 的 `prepareLayout`。另一半是来自 `shouldInvalidateLayoutForBoundsChange:` 这个方法。我们用 latestDelta 这个属性来表示 `bound` 变化的增量，适当地调整 `UICollectionViewLayoutAttributes` 使这些 cell 表现地就像被 attachment behavior “拉”着一样。
+大部分代码看起来还是挺熟悉的。大概有一半是来自没有实现平铺的 `prepareLayout`。另一半是来自 `shouldInvalidateLayoutForBoundsChange:` 这个方法。我们用 latestDelta 这个属性来表示 `bound` 变化的增量，适当地调整 `UICollectionViewLayoutAttributes` 使这些 cell 表现地就像被 attachment behavior “拉”着一样。
 
 就这样就完成了，真的！我已经在真机上测试过显示上千个 cell 的情况了，它运行地非常完美。[去试试吧](https://github.com/objcio/issue-5-springy-collection-view)。
 

@@ -1,4 +1,4 @@
-可能你很难相信 [UIScrollView][1] )和一个标准的 [UIView][2]差异并不大，scroll view 确实会多出一些方法，但这些方法只是和 UIView 的属性很好的结合到一起了。因此，在要想弄懂 UIScrollView 是怎么工作之前，你需要先了解一下 UIView，特别是视图渲染的两步过程。
+可能你很难相信 [UIScrollView][1] 和一个标准的 [UIView][2] 差异并不大，scroll view 确实会多出一些方法，但这些方法只是和 UIView 的属性很好的结合到一起了。因此，在要想弄懂 UIScrollView 是怎么工作之前，你需要先了解一下 UIView，特别是视图渲染的两步过程。
 
 ##光栅化和组合
 

@@ -1,116 +1,106 @@
 近些日子我们被宠坏了 -- 我们只需要单击 Xcode 中的一个按钮，这个按钮看起来有点像是在播放一些音乐的动作，过几秒钟之后，我们的程序就会运行起来了，直到遇到一些错误，这非常的神奇。
 
-在本文中，我们将从更高级别的角度来解读Build过程，并探索一下在Xcode 界面中暴露出的project setting信息与Build过程有什么关系。为了更加深入的探索Build过程中，每一步实际执行的工作，我会在本文中引入一些别的文章。
+在本文中，我们将从更高级别的角度来解读 Build 过程，并探索一下在 Xcode 界面中暴露出的 project setting 信息与 Build 过程有什么关系。为了更加深入的探索 Build 过程中，每一步实际执行的工作，我会在本文中引入一些别的文章。
 
 
 ## 解密Build日志
 
-here
+为了了解 Xcode build 过程的内部工作原理，我们首先把突破口瞄准完整的 log 文件上。打开 Log Navigator ，从列表中选择一个 Build ，Xcode 会将 log 文件很完美的展现出来。
 
-为了了解Xcode build过程的内部工作原理，我们首先把突破点放在完整的log文件上。打开`Log Navigator`，从列表中选择一个Build，Xcode就会通过很漂亮的一种格式将log文件显示出来。如下图所示：
+![Xcode build log navigator](http://img.objccn.io/issue-6/build-log.png)
 
-![](/images/2013/11/41.png)
+默认情况下，上面的 Xcode 界面中隐藏了大量的信息，我们通过选择任务，然后点击右边的展开按钮，就能看到每个任务的详细信息。另外一种可选的方案就是选中列表中的一个或者多个任务，然后选择组合键 Cmd-C，这将会把所有的纯文本信息拷贝至粘贴板。最后，我们还可以选择 Editor 菜单中的"Copy transcript for shown results"，以此将所有的 log 信息拷贝到粘贴板中。
 
-默认情况下，XCode会把大量的log信息隐藏起来，你只需要点击选中某条log，然后点击右边的展开按钮，就能看到该条log的详细信息了。当然，你也可以选中一条或者多条日志，然后通过Cmd+C，就能将相关的所有文本信息拷贝到粘贴板上。另外，还可以通过菜单Editor中的`Copy transcript for shown results`将所有的log信息复制到粘贴板上。
+本文给出的示例中，log 信息将近有10,000行(其实大多数的 log 信息是编译 OpenSSL 时生成的，并不是我们自己所写的代码生成的)。下面我们就开始吧！
 
-在我这儿的示例中，将近有10000行log信息(当然，大多数信息是由OpenSSL带来的，并非来自我们的代码)。下面我们就开始吧！
+注意观察输出的 log 信息，首先会发现 log 信息被分为不同的几大块，它们与我们工程中的targets相互对应着：
 
-首先，你可能会发现输出的log信息，被工程中对应的target分割开了：
+    Build target Pods-SSZipArchive
+    ...
+    Build target Makefile-openssl
+    ...
+    Build target Pods-AFNetworking
+    ...
+    Build target crypto
+    ...
+    Build target Pods
+    ...
+    Build target ssl
+    ...
+    Build target objcio
 
-```objc
-Build target Pods-SSZipArchive
-...
-Build target Makefile-openssl
-...
-Build target Pods-AFNetworking
-...
-Build target crypto
-...
-Build target Pods
-...
-Build target ssl
-...
-Build target objcio
-```
+本文涉及到的工程有几个依赖项：其中 AFNetworking 和 SSZipArchive 包含在 Pods 中， 而 OpenSSL则以子工程的形式包含在工程中。
 
-在我这的工程中有好几个依赖项：如包含在Pods中的AFNetworking 和 SSZipArchive, 已经以子工程形式存在的OpenSSL等。
+针对工程中的每个 target，Xcode 都会执行一系列的操作，将相关的源码，根据所选定的平台，转换为机器可读的二进制文件。下面我们详细的了解一下第一个 target：SSZipArchive。
 
-针对这里的每个target，Xcode都会执行一些列的操作，以将相关的源代码转换为机器可读的二进制(于所选平台相关)。我们来亲密接触一下第一个targetSSZipArchive吧。
+在针对这个 target 输出的 log 信息中，我们可以看到每个任务被执行的详细情况。例如第一个任务是处理一个预编译头文件(为了增强 log 信息的可读性，我省略了许多细节)：
 
-在这个target的log输出中，我们可以看到每个任务执行的详细情况。例如，第一个是处理一个预编译头文件(为了增加其可读性，我省略了许多细节)：
+    (1) ProcessPCH /.../Pods-SSZipArchive-prefix.pch.pch Pods-SSZipArchive-prefix.pch normal armv7 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+        (2) cd /.../Dev/objcio/Pods
+            setenv LANG en_US.US-ASCII
+            setenv PATH "..."
+        (3) /.../Xcode.app/.../clang 
+                (4) -x objective-c-header 
+                (5) -arch armv7 
+                ... configuration and warning flags ...
+                (6) -DDEBUG=1 -DCOCOAPODS=1 
+                ... include paths and more ...
+                (7) -c 
+                (8) /.../Pods-SSZipArchive-prefix.pch 
+                (9) -o /.../Pods-SSZipArchive-prefix.pch.pch
 
-```objc
-(1) ProcessPCH /.../Pods-SSZipArchive-prefix.pch.pch Pods-SSZipArchive-prefix.pch normal armv7 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-    (2) cd /.../Dev/objcio/Pods
-        setenv LANG en_US.US-ASCII
-        setenv PATH "..."
-    (3) /.../Xcode.app/.../clang 
-            (4) -x objective-c-header 
-            (5) -arch armv7 
-            ... configuration and warning flags ...
-            (6) -DDEBUG=1 -DCOCOAPODS=1 
-            ... include paths and more ...
-            (7) -c 
-            (8) /.../Pods-SSZipArchive-prefix.pch 
-            (9) -o /.../Pods-SSZipArchive-prefix.pch.pch
-```
+在 build 处理过程中，每个任务都会出现类似上面的这些 log 信息，我们就通过上面的 log 信息进一步了解详情。
 
-在build过程中，每个任务都会出现类似上面的这些log信息，我们就通过上面的log信息了解详情吧。
-
-1. 每个log都会以这样的一行来对任务进行描述。
-2. 接着下面带缩进的这3行会被输出。此处，修改了工作路径，并对PANG和PATH环境变量进行设置。
-3. 这里才是真正焕发出魔力的地方。为了处理一个`.pch`文件，调用了clang，并且附带了大量的选项。这行log信息显示出了所有的调用参数，我们稍微看几个参数吧：
-4. -x标示符用来指定语言，此时是`objective-c-header`。
+1. 类似上面的每个 log 信息块都会利用一行 log 信息来描述相关的任务作为起点。
+2. 接着输出带缩进的3行 log 信息，列出了该任务执行的语句。此处，工作目录发生了改变，并对PANG和PATH环境变量进行设置。
+3. 这里是发生奇迹的地方。为了处理一个`.pch`文件，调用了 clang，并附带了许多可选项。下面跟着输出的 log 信息显示了显示了完整的调用过程，以及所有的参数。我们看看其中的几个参数...
+4. `-x`标示符用来指定所使用的语言，此处是`objective-c-header`。
 5. 目标架构指定为`armv7`。
-6. 标示#defines的内容已经被添加了。
-7. -c标示符用来告诉clang具体如何运行。-c意味着：运行预处理器、词法分析、类型检查LLVM的生成和优化，以及特定target相关汇编代码的生成阶段，最后，运行这个汇编代码以生成.o目标文件。
+6. 暗示`#define`s的内容已经被添加了。
+7. `-c`标示符用来告诉 clang 具体该如何做。`-c`表示：运行预处理器、词法分析器、类型检查、LLVM 的生成和优化，以及target指定汇编代码的生成阶段，最后，运行汇编器以产出一个`.o`的目标文件。
 8. 输入文件。
 9. 输出文件。
 
-虽然有大量的log信息，不过我不会把每个log信息都做详解。我们的目的是让你了解在build过程中，完整的了解什么工具被调用，以及都使用了什么参数。
+虽然有大量的 log 信息，不过我不会对每个任务做详细的介绍。我们的重点是让你全面的了解在整个 build 过程中，哪些工具会被调用，以及背后会使用到了哪些参数。
 
-针对这个target，虽然只有一个.pch文件，但实际上这里对objective-c-header文件处理了两次。下面来看看log信息告诉我们的详细情况：
+针对这个 target ，虽然只有一个.pch文件，但实际上这里对`objective-c-header`文件的处理有两个任务。通过观察具体输出的 log 信息，我们可以知道详情：
 
-```objc
-ProcessPCH /.../Pods-SSZipArchive-prefix.pch.pch Pods-SSZipArchive-prefix.pch normal armv7 objective-c ...
-ProcessPCH /.../Pods-SSZipArchive-prefix.pch.pch Pods-SSZipArchive-prefix.pch normal armv7s objective-c ...
-```
-可以看到，build了两种target：armv7和armv7s，所以clang为每种架构处理了一次这个文件。
+    ProcessPCH /.../Pods-SSZipArchive-prefix.pch.pch Pods-SSZipArchive-prefix.pch normal armv7 objective-c ...
+    ProcessPCH /.../Pods-SSZipArchive-prefix.pch.pch Pods-SSZipArchive-prefix.pch normal armv7s objective-c ...
 
-紧接着预编译头文件的处理之后，我们可以找到SSZipArchive target相关的其它一些任务：
+从上面的 log 信息中，可以明显的看出 target 针对两种架构做了 build -- armv7 和armv7s -- 因此clang 对文件做了两次处理，每次针对一种架构。
 
-```objc
-CompileC ...
-Libtool ...
-CreateUniversalBinary ...
-```
-通过名称，我们基本能够知道个大概：`CompileC`用来编译.m和.c文件，`Libtool`根据目标文件创建出一个库，而`CreateUniversalBinary`则将上一阶段产生的两个.a文件(对应着两个不同的架构)合并为一个通用的二进制文件(可以运行在armv7和armv7s上)。
+在处理预编译头文件之后，可以看到针对 SSZipArchive target 有另外的几个任务类型。
 
-上面这些类似的步骤会出现在工程中所有其它的依赖项中。
+    CompileC ...
+    Libtool ...
+    CreateUniversalBinary ...
 
-当所有的依赖项都准备好了，就可以开始构建我们程序的target了。针对该target输出的log信息包含了之前没有出现过的内容，这些内容非常有价值：
+顾名思义：`CompileC`用来编译 `.m` 和 `.c`文件，`Libtool`用来从目标文件中构建 library，而`CreateUniversalBinary`则将上一阶段产生的两个`.a`文件(每个文件对应一种架构)合并为一个通用的二进制文件，这样就能同时在 armv7 和 armv7s上面运行。
 
-```objc
-PhaseScriptExecution ...
-DataModelVersionCompile ...
-Ld ...
-GenerateDSYMFile ...
-CopyStringsFile ...
-CpResource ...
-CopyPNGFile ...
-CompileAssetCatalog ...
-ProcessInfoPlistFile ...
-ProcessProductPackaging /.../some-hash.mobileprovision ...
-ProcessProductPackaging objcio/objcio.entitlements ...
-CodeSign ...
-```
+接着，在工程中其它一些依赖项也会发生于此类似的步骤。AFNetworking 被编译之后，会与 SSZipArchive进行链接，以当做 pod library。 OpenSSL 编译之后，会接着处理 crypto 和 ssl target。
 
-在上面的任务中，可能Ld不能一眼看出是什么意思，此处它是一个linker工具，跟libtool类似。实际上libtool会简单的调用ld和lipo。而ld用来构建可执行文件。更多编译和链接相关的文章可以看看 [Daniel](http://www.objc.io/issue-6/mach-o-executables.html) 和 [Chris](http://www.objc.io/issue-6/compiler.html)写的。
+当所有的依赖项都 build 完成之后，就轮到我们程序的 target 了。Build 该target时，输出的 log 信息会包含一些非常有价值，并且之前没有出现过的内容：
 
-上面这些步骤，实际上都会调用相关的命令行工具来做实际的工作，这跟之前我们看的步骤ProcessPCH类似。至此，我将不会继续介绍这些log信息了，我将带来大家从另外一个不同的角度来继续探索这些任务：Xcode是如何知道哪些任务需要被执行？
+    PhaseScriptExecution ...
+    DataModelVersionCompile ...
+    Ld ...
+    GenerateDSYMFile ...
+    CopyStringsFile ...
+    CpResource ...
+    CopyPNGFile ...
+    CompileAssetCatalog ...
+    ProcessInfoPlistFile ...
+    ProcessProductPackaging /.../some-hash.mobileprovision ...
+    ProcessProductPackaging objcio/objcio.entitlements ...
+    CodeSign ...
+
+在上面的任务列表中，根据名称不能区分的唯一任务可能就是 `Ld`，`Ld`是一个 linker 工具的名称，与 `libtool`非常相似。实际上，`libtool`也是简单的调用 `ld` 和 `lipo`。'ld'被用来构建可执行文件，而`libtool`则用来构建 library 文件。阅读[Daniel](http://www.objc.io/issue-6/mach-o-executables.html) 和 [Chris](http://www.objc.io/issue-6/compiler.html)两篇文章，可以了解到更多关于编译和链接的工作原理。
+
+上面每一个步骤，实际上都会调用相关的命令行工具来做实际的工作，这跟之前我们看到的的 `ProcessPCH` 类似。至此，我将不会继续介绍这些 log 信息了，我将带领大家从另外一个不同的角度来继续探索这些任务：Xcode是如何知道哪些任务需要被执行？
 
 
-###<a id="2"></a>Build过程的控制
+##Build过程的控制
 
 当你选中在Xcode 5中的一个工程时，project editor会在顶部显示出6个tabs：General, Capabilities, Info, Build Settings, Build Phases 以及 Build Rules。如下图所示：
 

@@ -1,6 +1,6 @@
 [并发][8]的所描述的概念就是同时运行多个任务。这些任务可能是以在单核CPU上[分时(时间共享)][9]的形式同时运行，也可能是在多核CPU上以真正的并行方式来运行。
 
-OS X 和 iOS 提供了几种不同的 API 来支持并发编程。每一个 API 都具有不同的功能和使用限制，这使它们适合不同的任务。同时，这些 API 处在不同的抽象层级上。我们有可能用其进行非常深入底层的操作，但是这也意味着将任务进行良好处理的巨大责任。
+OS X 和 iOS 提供了几种不同的 API 来支持并发编程。每一个 API 都具有不同的功能和使用限制，这使它们适合不同的任务。同时，这些 API 处在不同的抽象层级上。我们有可能用其进行非常深入底层的操作，但是这也意味着背负起将任务进行良好处理的巨大责任。
 
 实际上，并发编程是一个很有挑战的主题，它有许多错综复杂的问题和陷阱。当开发者在使用类似 `Grand Central Dispatch` (GCD) 或 `NSOperationQueue` 的 API 时，很容易遗忘这些问题和陷阱。本文首先对 OS X 和 iOS 中不同的并发编程 API 进行一些介绍，然后再深入了解并发编程中独立于与你所使用的特定 API 的一些内在挑战。
 
@@ -40,15 +40,15 @@ OS X 和 iOS 提供了几种不同的 API 来支持并发编程。每一个 API 
         struct threadInfo const * const info = (struct threadInfo *) arg;
         uint32_t min = UINT32_MAX;
         uint32_t max = 0;
-        for (size_t i = 0; i < info>count; ++i) {
-            uint32_t v = info>inputValues[i];
+        for (size_t i = 0; i < info->count; ++i) {
+            uint32_t v = info->inputValues[i];
             min = MIN(min, v);
             max = MAX(max, v);
         }
         free(arg);
         struct threadResult * const result = (struct threadResult *) malloc(sizeof(*result));
-        result>min = min;
-        result>max = max;
+        result->min = min;
+        result->max = max;
         return result;
     }
 
@@ -56,17 +56,20 @@ OS X 和 iOS 提供了几种不同的 API 来支持并发编程。每一个 API 
     {
         size_t const count = 1000000;
         uint32_t inputValues[count];
-
+        
         // 使用随机数字填充inputValues
         for (size_t i = 0; i < count; ++i) {
             inputValues[i] = arc4random();
         }
-
+        
         // 开始4个寻找最小值和最大值的线程
         size_t const threadCount = 4;
         pthread_t tid[threadCount];
-        for (size_t i = 0; i < threadCount; ++i) {         struct threadInfo * const info = (struct threadInfo *) malloc(sizeof(*info));         size_t offset = (count / threadCount) * i;         info>inputValues = inputValues + offset;
-            info>count = MIN(count - offset, count / threadCount);
+        for (size_t i = 0; i < threadCount; ++i) {
+            struct threadInfo * const info = (struct threadInfo *) malloc(sizeof(*info));
+            size_t offset = (count / threadCount) * i;
+            info->inputValues = inputValues + offset;
+            info->count = MIN(count - offset, count / threadCount);
             int err = pthread_create(tid + i, NULL, &findMinAndMax, info);
             NSCAssert(err == 0, @"pthread_create() failed: %d", err);
         }
@@ -79,12 +82,13 @@ OS X 和 iOS 提供了几种不同的 API 来支持并发编程。每一个 API 
         // 寻找 min 和 max
         uint32_t min = UINT32_MAX;
         uint32_t max = 0;
-        for (size_t i = 0; i < threadCount; ++i) {         min = MIN(min, results[i]>min);
-            max = MAX(max, results[i]>max);
+        for (size_t i = 0; i < threadCount; ++i) {
+            min = MIN(min, results[i]->min);
+            max = MAX(max, results[i]->max);
             free(results[i]);
             results[i] = NULL;
         }
-
+        
         NSLog(@"min = %u", min);
         NSLog(@"max = %u", max);
         return 0;
@@ -148,7 +152,7 @@ OS X 和 iOS 提供了几种不同的 API 来支持并发编程。每一个 API 
 
 为了让开发者更加容易的使用设备上的多核CPU，苹果在 OS X 10.6 和 iOS 4 中引入了 Grand Central Dispatch (GCD) 。在下一篇关于[底层并发 API][13] 的文章中，我们将更深入地介绍 GCD。
 
-通过GCD，开发者不用再直接跟线程打交道了，只需要向队列中添加代码块即可， GCD 在后端管理着一个[线程池][6]。 GCD 不仅决定着你的代码块将在哪个线程被执行，它还根据可用的系统资源这些线程进行管理。这样可以将开发者从线程管理的工作中解放出来，通过集中的管理线程，来缓解大量线程被创建的问题。
+通过GCD，开发者不用再直接跟线程打交道了，只需要向队列中添加代码块即可， GCD 在后端管理着一个[线程池][6]。 GCD 不仅决定着你的代码块将在哪个线程被执行，它还根据可用的系统资源对这些线程进行管理。这样可以将开发者从线程管理的工作中解放出来，通过集中的管理线程，来缓解大量线程被创建的问题。
 
 GCD 带来的另一个重要改变是，作为开发者可以将工作考虑为一个队列，而不是一堆线程，这种并行的抽象模型更容易掌握和使用。
 
@@ -157,9 +161,9 @@ GCD 公开有 5 个不同的队列：运行在主线程中的 main queue，3 个
 
 ![GCD queues][14]
 
-使用不同优先级的若干个队列乍听起来非常直接，不过，我们强烈建议，在绝大多数情况下使用默认的优先级队列就可以了。如果执行的任务需要访问一些共享的资源，那么在不同优先级的队列中调度这些任务很快就会造成不可预期的行为。这样可能会引起程序的完全挂起，因为低优先级的任务阻塞了高优先级任务，使它不能被执行。更多相关内容，在本文的**优先级反转**部分中会有介绍。
+使用不同优先级的若干个队列乍听起来非常直接，不过，我们强烈建议，在绝大多数情况下使用默认的优先级队列就可以了。如果执行的任务需要访问一些共享的资源，那么在不同优先级的队列中调度这些任务很快就会造成不可预期的行为。这样可能会引起程序的完全挂起，因为低优先级的任务阻塞了高优先级任务，使它不能被执行。更多相关内容，在本文的[优先级反转](#Priority-Inversion)部分中会有介绍。
 
-虽然 GCD 是一个低层级的 C API ，但是它使用起来非常的直接。不过这也容易使开发者忘记并发编程中的许多注意事项和陷阱。读者可以阅读本文后面的**并发编程中面临的挑战**，这样可以注意到一些潜在的问题。本期的另外一篇优秀文章：[底层并发 API][13] 中，包含了很多深入的解释和一些有价值的提示。
+虽然 GCD 是一个低层级的 C API ，但是它使用起来非常的直接。不过这也容易使开发者忘记并发编程中的许多注意事项和陷阱。读者可以阅读本文后面的[并发编程中面临的挑战](#challenges)，这样可以注意到一些潜在的问题。本期的另外一篇优秀文章：[底层并发 API][13] 中，包含了很多深入的解释和一些有价值的提示。
 
 ### Operation Queues
 
@@ -255,11 +259,11 @@ Run loop 比起操作队列或者 GCD 来说容易使用得多，因为通过 ru
 如果你真需要在别的线程中添加一个 run loop ，那么不要忘记在 run loop 中至少添加一个 input source 。如果 run loop 中没有设置好的 input source，那么每次运行这个 run loop ，它都会立即退出。
 
 
-## 并发编程中面临的挑战
+<h2 id="challenges">并发编程中面临的挑战</h2>
 
 使用并发编程会带来许多陷阱。只要一旦你做的事情超过了最基本的情况，对于并发执行的多任务之间的相互影响的不同状态的监视就会变得异常困难。 问题往往发生在一些不确定性（不可预见性）的地方，这使得在调试相关并发代码时更加困难。
 
-关于并发编程的不可预见性有一个非常有名的例子：在1995年， NASA (美国宇航局)发送了开拓者号火星探测器，但是当探测器成功着陆在我们红色的邻居星球后不久，任务[嘎然而止][38]，火星探测器莫名其妙的不停重启，在计算机领域内，遇到的这种现象被定为为*优先级反转*，也就是说低优先级的线程一直阻塞着高优先级的线程。稍后我们会看到关于这个问题的更多细节。在这里我们想说明的是，即使拥有丰富的资源和大量优秀工程师的智慧，并发也还是会在不少情况下反咬你你一口。
+关于并发编程的不可预见性有一个非常有名的例子：在1995年， NASA (美国宇航局)发送了开拓者号火星探测器，但是当探测器成功着陆在我们红色的邻居星球后不久，任务[嘎然而止][38]，火星探测器莫名其妙的不停重启，在计算机领域内，遇到的这种现象被定为为[优先级反转](#Priority-Inversion)，也就是说低优先级的线程一直阻塞着高优先级的线程。稍后我们会看到关于这个问题的更多细节。在这里我们想说明的是，即使拥有丰富的资源和大量优秀工程师的智慧，并发也还是会在不少情况下反咬你你一口。
 
 ### 资源共享
 
@@ -330,7 +334,7 @@ Run loop 比起操作队列或者 GCD 来说容易使用得多，因为通过 ru
 
 为了解决这个问题，我们需要使用一个比简单的读/写锁更聪明的方法，例如给定一个 [writer preference][33]，或者使用 [read-copy-update][34] 算法。Daniel在[底层并发编程 API ][13]中有介绍了如何用 GCD 实现一个多读取单写入的模式，这样就不会被写入资源饥饿的问题困扰了。
 
-### 优先级反转
+<h3 id="Priority-Inversion">优先级反转</h3>
 
 本节开头介绍了美国宇航局发射的开拓者号火星探测器在火星上遇到的并发问题。现在我们就来看看为什么开拓者号几近失败，以及为什么有时候我们的程序也会遇到相同的问题，该死的[优先级反转][36]。
 

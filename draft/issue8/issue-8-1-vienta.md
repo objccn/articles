@@ -1,3 +1,6 @@
+#项目
+
+
 ## 初始计划
 我们第一个想法是利用蓝牙信号在室内去操控飞行器。在这个飞机器上搭载iPhone,这样可以通过获取从室内发送来的一些信号转化为三维坐标来获取它的当前位置。
 
@@ -17,7 +20,11 @@
 ## 飞行器
 在我们的项目中我们使用了标准的AR Drone 2.0，为了把iPhone安装到飞行器上，我们用了一些泡沫塑料裹着iPhone然后用胶带绑到飞行器上，最初我们是想把它绑在飞行器的顶部，但是这个不是很稳定。这个飞行器几乎不能搭载任何东西，以至于很轻的iPhone的都会很显著的影响飞行的稳定。
 
+![iphone-above][1]
+
 但是飞行器起飞后摇晃的很，所以我们决定把iPhone绑在飞行器的底部来降低重心，事实证明，这表现的很好，由于现在飞行器的最下面是iPhone，我们使用大量的拉链领带来保护iPhone，让这个飞行器不容易突然坠落。（这也是一种来方法来缓解Chris的顾虑）
+
+![iphone-below][2]
 
 ##导航应用
 就像上面提到的那样，搭载在飞行器上的iPhone的通过WiFi连接另外一个iPhone，通过这个连接我们可以通过UDP API来发送导航命令，虽然这一切看上去比较的晦涩，但是一旦我们搞清楚这个原理基础，就会工作的很好。Daniel在<a href="http://www.objc.io/issue-8/communicating-with-the-quadcopter.html" target="_blank">[这边文章]</a>中详细的介绍了Core Foundation networking这个类如何使用才能让它工作。
@@ -27,8 +34,14 @@
 ##客户端应用
 这个客户端应用唯一的工作就是发送目的地坐标给搭载飞行器的iPhone和一些基础的命令例如起飞和降落。它会通过multipeer connection来通知它自己和简单的广播它的位置给所有连接的peers。
 
+![connect_map][3]
+
 因为我们想有一种方法不用飞行很多次就可以测试整个配置，而且我们也想待在室内，所以我们给这个应用添加了两种模式。第一种模式就是简单的发送地图上的中心位置作为它当前的位置。这种方法我们可以平移地图，模拟改变目的地坐标，另一种模式是通过Core Location发送真实的iPhone的位置。
 
 在我们短暂的测试中由于时间的原因我们只使用第一种模式，并且由于恶劣的天气，我们某人追逐飞行器的不能够实现了。
 
 其实这是一个非常有趣的项目，我们实验了很多有趣的APIs。您可以查看后续的关于<a href="http://www.objc.io/issue-8/communicating-with-the-quadcopter.html" target="_blank">[Core Foundation networking]</a>, <a href="http://www.objc.io/issue-8/the-quadcopter-navigator-app.html" target="_blank">[the navigator app]</a>, and<a href="http://www.objc.io/issue-8/the-quadcopter-client-app.html" target="_blank">[the client app]</a>的文章的具体细节。
+
+   [1]: http://img.objccn.io/issue-8/iphone-above.jpg
+   [2]: http://img.objccn.io/issue-8/iphone-below.jpg
+   [3]: http://img.objccn.io/issue-8/client-app.jpg

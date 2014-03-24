@@ -3,7 +3,7 @@
 2014，新年快乐！
 这期和以往的有点不同。这是个假期 issue，我们决定花上几天时间搞个小而有趣的项目，然后再写出来。
 
-<embed src="http://player.youku.com/player.php/sid/XNjg3ODU0MzAw/v.swf" allowFullScreen="true" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
+<iframe height=498 width=510 src="http://player.youku.com/embed/XNjg3ODU0MzAw" frameborder=0 allowfullscreen></iframe>
 
 我们想针对飞行器做点什么，但是还没有具体的方案。当我们开始这个项目时，才知道硬件是多么的复杂。最后，为了能在这几天里搞出一个相对完整的项目，我们不得不砍掉一些点子。
 

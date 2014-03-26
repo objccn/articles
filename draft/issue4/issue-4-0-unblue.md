@@ -18,13 +18,13 @@ Chris, Daniel 和 Florian。
 
 [话题 #4 下的更多文章][10]
 
-  [1]: http://www.objc.io/issue-4/core-data-overview.html
-  [2]: http://www.objc.io/issue-4/full-core-data-application.html
-  [3]: http://www.objc.io/issue-4/core-data-models-and-model-objects.html
-  [4]: http://www.objc.io/issue-4/core-data-fetch-requests.html
-  [5]: http://www.objc.io/issue-4/importing-large-data-sets-into-core-data.html
-  [6]: http://www.objc.io/issue-4/core-data-migration.html
+  [1]: http://objccn.io/issue-4-1/
+  [2]: http://objccn.io/issue-4-2/
+  [3]: http://objccn.io/issue-4-4/
+  [4]: http://objccn.io/issue-4-6/
+  [5]: http://objccn.io/issue-4-5/
+  [6]: http://objccn.io/issue-4-7/
   [7]: http://inessential.com/
-  [8]: http://www.objc.io/issue-4/SQLite-instead-of-core-data.html
+  [8]: http://objccn.io/issue-4-3/
   [9]: http://vesperapp.co/ 
-  [10]: http://www.objc.io/issue-4
+  [10]: http://objccn.io/issue-4/

@@ -28,7 +28,7 @@
     ...
     Build target objcio
 
-本文涉及到的工程有几个依赖项：其中 AFNetworking 和 SSZipArchive 包含在 Pods 中，而 OpenSSL则以子工程的形式包含在工程中。
+本文涉及到的工程有几个依赖项：其中 AFNetworking 和 SSZipArchive 包含在 Pods 中，而 OpenSSL 则以子工程的形式包含在工程中。
 
 针对工程中的每个 target，Xcode 都会执行一系列的操作，将相关的源码，根据所选定的平台，转换为机器可读的二进制文件。下面我们详细的了解一下第一个 target：SSZipArchive。
 
@@ -55,7 +55,7 @@
 3. 这里是发生奇迹的地方。为了处理一个`.pch`文件，调用了 clang，并附带了许多可选项。下面跟着输出的 log 信息显示了显示了完整的调用过程，以及所有的参数。我们看看其中的几个参数...
 4. `-x` 标示符用来指定所使用的语言，此处是 `objective-c-header`。
 5. 目标架构指定为 `armv7`。
-6. 暗示`#defines` 的内容已经被添加了。
+6. 暗示 `#defines` 的内容已经被添加了。
 7. `-c` 标示符用来告诉 clang 具体该如何做。`-c` 表示：运行预处理器、词法分析器、类型检查、LLVM 的生成和优化，以及 target 指定汇编代码的生成阶段，最后，运行汇编器以产出一个`.o`的目标文件。
 8. 输入文件。
 9. 输出文件。
@@ -67,7 +67,7 @@
     ProcessPCH /.../Pods-SSZipArchive-prefix.pch.pch Pods-SSZipArchive-prefix.pch normal armv7 objective-c ...
     ProcessPCH /.../Pods-SSZipArchive-prefix.pch.pch Pods-SSZipArchive-prefix.pch normal armv7s objective-c ...
 
-从上面的 log 信息中，可以明显的看出 target 针对两种架构做了 build -- armv7 和 armv7s -- 因此clang 对文件做了两次处理，每次针对一种架构。
+从上面的 log 信息中，可以明显的看出 target 针对两种架构做了 build -- armv7 和 armv7s -- 因此 clang 对文件做了两次处理，每次针对一种架构。
 
 在处理预编译头文件之后，可以看到针对 SSZipArchive target 有另外的几个任务类型。
 
@@ -75,7 +75,7 @@
     Libtool ...
     CreateUniversalBinary ...
 
-顾名思义：`CompileC` 用来编译 `.m` 和 `.c`文件，`Libtool` 用来从目标文件中构建 library，而 `CreateUniversalBinary` 则将上一阶段产生的两个 `.a` 文件（每个文件对应一种架构）合并为一个通用的二进制文件，这样就能同时在 armv7 和 armv7s 上面运行。
+顾名思义：`CompileC` 用来编译 `.m` 和 `.c` 文件，`Libtool` 用来从目标文件中构建 library，而 `CreateUniversalBinary` 则将上一阶段产生的两个 `.a` 文件（每个文件对应一种架构）合并为一个通用的二进制文件，这样就能同时在 armv7 和 armv7s 上面运行。
 
 接着，在工程中其它一些依赖项也会发生于此类似的步骤。AFNetworking 被编译之后，会与 SSZipArchive 进行链接，以当做 pod library。OpenSSL 编译之后，会接着处理 crypto 和 ssl target。
 
@@ -161,7 +161,7 @@ Build rules 指定了不同的文件类型该如何编译。一般来说，开�
 
 ## 工程文件
 
-上面我们介绍的所有内容都被保存在工程文件 （`.pbxproj`）中，除了其它一些工程相关信息（例如 file groups），我们很少会深入该文件内部，除非在代码 merge 时发生冲突，或许会进去看看。
+上面我们介绍的所有内容都被保存在工程文件（`.pbxproj`）中，除了其它一些工程相关信息（例如 file groups），我们很少会深入该文件内部，除非在代码 merge 时发生冲突，或许会进去看看。
 
 建议你用文本编辑器打开一个工程文件，从头到尾看一遍里面的内容。它的可读性非常高，里面的许多内容一看就知道什么意思了，不会存在太大的问题。通过阅读并完全理解工程文件，这对于合并工程文件的冲突非常有帮助。
 

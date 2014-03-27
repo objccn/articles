@@ -289,7 +289,7 @@ UTF-8 使用一到四个[^5]字节来编码一个码点。从 0 到 127 的这�
 ## 扩展阅读
 
 *   Joel Spolsky: [关于 Unicode 和字符集，每个程序员绝对、必须要了解的一点内容](http://www.joelonsoftware.com/articles/Unicode.html)。这篇文章已经有 10 年了，而且不仅限于 Cocoa 编程，但是值得一读。
-*   [Ross Carter](https://twitter.com/RossT) 在 2012 年 NSCoference 上做了一次名叫「你也可以讲 [Unicode]」(https://vimeo.com/86030221) 的精彩演讲。演讲很有意思，强烈推荐观看。这篇文章的一部分就是基于 Ross 的演讲稿的。[NSConference](http://nsconference.com/) 的 Scotty 人很好，让 objc.io 的读者可以观看这次视频。谢了！
+*   [Ross Carter](https://twitter.com/RossT) 在 2012 年 NSCoference 上做了一次名叫「[你也可以讲 Unicode](https://vimeo.com/86030221)」 的精彩演讲。演讲很有意思，强烈推荐观看。这篇文章的一部分就是基于 Ross 的演讲稿的。[NSConference](http://nsconference.com/) 的 Scotty 人很好，让 objc.io 的读者可以观看这次视频。谢了！
 *   [维基百科上关于 Unicode 的文章](http://en.wikipedia.org/wiki/Unicode)很棒。
 *   [unicode.org](http://unicode.org) 是 Unicode 联盟的官网，上面不仅有完整的标准和码表索引，还有其它很有意思的信息。扩展部分 [FAQ](http://www.unicode.org/faq/) 也很棒。
 

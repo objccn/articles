@@ -4,15 +4,15 @@
 
 简单的说，编译器有两个职责：把 Objective-C 代码转化成低级代码，以及对代码做分析，确保代码中没有任何明显的错误。
 
-zhouzhixun double check here 
+现在，Xcode 的默认编译器是 clang。本文中我们提到的编译器都表示 clang。clang 的功能是首先对 Objective-C 代码做分析检查，然后将其转换为低级的类汇编代码：LLVM Intermediate Representation(LLVM 中间表达码)。接着 LLVM 会执行相关指令将 LLVM IR 编译成目标平台上的本地字节码，这个过程可以实时进行，也可以在编译的时候进行。
 
-现在，Xcode的默认编译器是clang。以下我们提到的编译器都会以clang代替。clang会先对Objective-C代码做分析检查，然后再转化成类似汇编语言但与操作系统无关的低阶中间表达形式码：LLVM Intermediate Representation（LLVM中间表达码）。接着LLVM会执行自己的指令将LLVM IR编译成目标运行平台上可执行的机器码，这个过程可能是实时的也可以是随着汇编过程一起进行的。
+LLVM 指令的一个好处就是可以在支持 LLVM 的任意平台上生成和运行 LLVM 指令。例如，你写的一个 iOS app, 他可以自动的运行在两个完全不同的架构(Inter 和 ARM)上，LLVM 会根据不同的平台将 IR 码转换为对应的本地字节码。
 
-LLVM的指令非常棒，只要一个平台支持LLVM，那么LLVM就可以在这个平台上执行它的指令。比如说一个iOS的app，它就可以同时在完全不同架构的Intel和ARM平台上运行，所有针对不同平台的兼容性问题都是靠LLVM利用自己的中间表达码生成不同的原生机器码来解决的。
+LLVM 的优点主要得益于它的三层式架构 -- 第一层支持多种语言作为输入(例如 C, ObjectiveC, C++ 和 Haskell)，第二层是一个共享式的优化器(对 LLVM IR 做优化处理)，第三层是许多不同的目标平台(例如 Intel, ARM 和 PowerPC)。在这三层式的架构中，如果你想要添加一门语言到 LLVM 中，那么可以把重要精力集中到第一层上，如果想要增加另外一个目标平台，那么你没必要过多的考虑输入语言。在书 *The Architecture of Open Source Applications* 中 LLVM 的创建者 (Chris Lattner) 写了一章很棒的内容：关于 [LLVM 架构](http://www.aosabook.org/en/llvm.html)。
 
 LLVM的优秀跨平台特性得益于其特定的“三层式”架构，即在第一层支持多种输入语言（比如：C,ObjectiveC,C++以及Haskell），第二层利用共享优化器来对LLVM中间表达码进行优化，第三层挂接了不同的平台（比如:Intel,ARM和PowerPC）。这样的话第一层和第三层之间做到了比较好的弱相关，如果想要增加对不同的输入语言的支持，只需要解决第一层的支持即可，要是想要增加目标编译平台，也不太需要操心输入语言的问题。如果对LLVM的架构感兴趣，可以参阅书籍*The Architecture of Open Source Application*，里面收录了由LLVM创造者Chris Lattner编写的介绍[LLVM架构][3]的章节。
 
-编译器在编译文件的过程中通常会分几个阶段。如果要详细研究每个阶段的情况，拿编译hello.m文件来说，可以让clang输出每一阶段的信息：
+在编译一个源文件时，编译器的处理过程分为几个阶段。要想查看编译 *hello.m* 源文件需要几个不同的阶段，我们可以让通过 clang 命令观察：
 
     % clang -ccc-print-phases hello.m
     
@@ -23,13 +23,10 @@ LLVM的优秀跨平台特性得益于其特定的“三层式”架构，即在�
     4: linker, {3}, image
     5: bind-arch, "x86_64", {4}, image
 
-本文重点关注阶段1和阶段2。在文章[Mach-O Executables][4]中，Daniel会对阶段3和阶段4进行阐述。
+本文我们将重点关注第一阶段和第二阶段。在文章 [Mach-O Executables](http://objccn.io/issue-6-3/) 中，Daniel 会对第三阶段和第四阶段进行阐述。
 
-
-
-Preprocessing 预处理
-----------------
-
+### 预处理
+zhouzhixun double check here 
 每当编译文件的时候，编译器最先做的是一些预处理工作。比如预处理器会处理宏定义，将文本中的宏用其对应定义的具体内容进行替换。
 
 例如，如果在代码文件中的出现的下述格式的引入：

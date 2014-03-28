@@ -18,11 +18,11 @@ collection view 中的 **Supplementary views** 相当于 table view 的 section 
 
 **Decoration views** 纯粹为一个装饰品。他们完全属于布局对象，并被布局对象管理，他们并不从 data source 获取的 contents。当布局对象指定需要一个 decoration view 的时候，collection view 会自动创建，并将布局对象提供的布局参数应用到上面去。并不需要为自定义视图准备任何内容。
 
-Supplementary views 和 decoration views 必须是 [UICollectionResuableView][8] 的子类。布局使用的每个视图类都需要在 collection view 中注册，这样当 data source 让他们从 reuse pool 中出列时，他们才能够创建新的实例。如果你是使用的 Interface Builder，则可以通过在可视编辑器中拖拽一个 cell 到 collection view 上完成 cell 在 collection view 中的注册。同样的方法也可以用在 supplementary view 上，前提是你使用了 `UICollectionViewFlowLayout`。如果没有，你只能通过调用 [`registerClass:`][9] 或者 [`registerNib:`][10] 方法手动注册视图类了。你需要在 `viewDidLoad` 中做这些操作。
+Supplementary views 和 decoration views 必须是 [UICollectionResuableView][8] 的子类。布局使用的每个视图类都需要在 collection view 中注册，这样当 data source 让它们从 reuse pool 中出列时，它们才能够创建新的实例。如果你是使用的 Interface Builder，则可以通过在可视编辑器中拖拽一个 cell 到 collection view 上完成 cell 在 collection view 中的注册。同样的方法也可以用在 supplementary view 上，前提是你使用了 `UICollectionViewFlowLayout`。如果没有，你只能通过调用 [`registerClass:`][9] 或者 [`registerNib:`][10] 方法手动注册视图类了。你需要在 `viewDidLoad` 中做这些操作。
 
 ## 自定义布局
 
-作为一个非常有意义的自定义 collection view 布局的例子，我们不妨设想一个典型的日历应用程序中的周(week)视图。日历一次显示一周，星期中的每一天显示在列中。每一个日历事件将会在我们的 collection view 中以一个 cell 显示，位置和大小代表事件起始日期时间和持续时间。
+作为一个非常有意义的自定义 collection view 布局的例子，我们不妨设想一个典型的日历应用程序中的周 (week) 视图。日历一次显示一周，星期中的每一天显示在列中。每一个日历事件将会在我们的 collection view 中以一个 cell 显示，位置和大小代表事件起始日期时间和持续时间。
 
 ![11]
 一般有两种类型的 collection view 布局：
@@ -41,33 +41,35 @@ Supplementary views 和 decoration views 必须是 [UICollectionResuableView][8]
 
 由于 collection view 对它的 content 并不知情，所以布局首先要提供的信息就是滚动区域大小，这样 collection view 才能正确的管理滚动。布局对象必须在此时计算它内容的总大小，包括 supplementary views 和 decoration views。注意，尽管大多数经典的 collection view 限制在一个轴方向上滚动（正如 `UICollectionViewFlowLayout` 一样），但这不是必须的。
 
-在我们的日历示例中，我们想要视图垂直的滚动。比如，如果我们想要在垂直空间上一个小时占去 100 点，这样显示一整天的内容高度就是 2400 点。注意，我们不能够水平滚动，这就意味这我们 collection view 只能显示一周。为了能够在日历中的多个星期间分页，我们可以在一个独立（分页）的 scroll view （可以使用[UIPageViewController][13]）中使用多个collection view（一周一个），或者坚持使用一个 collection view 并且返回足够大的内容宽度，这会使得用户感觉在两个方向上滑动自由。
+在我们的日历示例中，我们想要视图垂直的滚动。比如，如果我们想要在垂直空间上一个小时占去 100 点，这样显示一整天的内容高度就是 2400 点。注意，我们不能够水平滚动，这就意味这我们 collection view 只能显示一周。为了能够在日历中的多个星期间分页，我们可以在一个独立（分页）的 scroll view （可以使用 [UIPageViewController][13]）中使用多个collection view（一周一个），或者坚持使用一个 collection view 并且返回足够大的内容宽度，这会使得用户感觉在两个方向上滑动自由。
 
     - (CGSize)collectionViewContentSize
     {
         // Don't scroll horizontally
         CGFloat contentWidth = self.collectionView.bounds.size.width;
+        
         // Scroll vertically to display a full day
         CGFloat contentHeight = DayHeaderHeight + (HeightPerHour * HoursPerDay);
+        
         CGSize contentSize = CGSizeMake(contentWidth, contentHeight);
         return contentSize;
     }
     
-为了清楚起见，我选择布局在一个非常简单的模型上：假定每周天数相同，每天时长相同，也就是说天数用 0-6 表示。在一个真实的日历程序中，布局将会为自己的计算大量使用基于  NSCalendar 的日期。
+为了清楚起见，我选择布局在一个非常简单的模型上：假定每周天数相同，每天时长相同，也就是说天数用 0-6 表示。在一个真实的日历程序中，布局将会为自己的计算大量使用基于 `NSCalendaar` 的日期。
 
 ### layoutAttributesForElementsInRect:
 
 这是任何布局类中最重要的方法了，同时可能也是最容易让人迷惑的方法。collection view 调用这个方法并传递一个自身坐标系统中的矩形过去。这个矩形代表了这个视图的可见矩形区域（也就是它的 bounds ），你需要准备好处理传给你的任何矩形。
 
-你的实现必须返回一个包含 [`UICollectionViewLayoutAttributes`][14] 对象的数组，为每一个 cell 包含一个这样的对象，supplementary view 或 decoration view 在矩形区域内是可见的。`UICollectionViewLayoutAttributes` 类包含了 collection view 内 item 的所有相关布局属性。默认情况下，这个类包含 frame，center，size，transform3D，alpha，zIndex 属性(properties)，和 hidden 特性(attributes)。如果你的布局想要控制其他视图的属性（比如背景颜色），你可以建一个`UICollectionViewLayoutAttributes` 的子类，然后加上你自己的属性。
+你的实现必须返回一个包含 [`UICollectionViewLayoutAttributes`][14] 对象的数组，为每一个 cell 包含一个这样的对象，supplementary view 或 decoration view 在矩形区域内是可见的。`UICollectionViewLayoutAttributes` 类包含了 collection view 内 item 的所有相关布局属性。默认情况下，这个类包含 `frame`，`center`，`size`，`transform3D`，`alpha`，`zIndex` 和 `hidden`属性。如果你的布局想要控制其他视图的属性（比如背景颜色），你可以建一个 `UICollectionViewLayoutAttributes` 的子类，然后加上你自己的属性。
 
-布局属性对象(layout attributes objects)通过 indexPath 属性和他们对应的 cell，supplementary view 或者 decoration view 关联在一起。collection view 为所有 items 从布局对象中请求到布局属性后，它将会实例化所有视图，并将对应的属性应用到每个视图上去。
+布局属性对象 (layout attributes objects) 通过 `indexPath` 属性和他们对应的 cell，supplementary view 或者 decoration view 关联在一起。collection view 为所有 items 从布局对象中请求到布局属性后，它将会实例化所有视图，并将对应的属性应用到每个视图上去。
 
 注意！这个方法涉及到所有类型的视图，也就是 cell，supplementary views 和 decoration views。一个幼稚的实现可能会选择忽略传入的矩形，并且为 collection view 中的所有视图返回布局属性。在原型设计和开发布局阶段，这是一个有效的方法。但是，这将对性能产生非常坏的影响，特别是可见 cell 远少于所有 cell 数量的时候，collection view 和布局对象将会为那些不可见的视图做额外不必要的工作。
 
 你的实现需要做这几步：
 
-1. 创建一个空的 mutable 数组来存放所有的布局属性。
+1. 创建一个空的可变数组来存放所有的布局属性。
 
 2. 确定 index paths 中哪些 cells 的 frame 完全或部分位于矩形中。这个计算需要你从 collection view 的数据源中取出你需要显示的数据。然后在循环中调用你实现的 `layoutAttributesForItemAtIndexPath: ` 方法为每个 index path 创建并配置一个合适的布局属性对象，并将每个对象添加到数组中。
 
@@ -114,7 +116,7 @@ Supplementary views 和 decoration views 必须是 [UICollectionResuableView][8]
 
 ### layoutAttributesFor…IndexPath
 
-有时，collection view 会为某个特殊的 cell，supplementary 或者 decoration view 向布局对象请求布局属性，而非所有可见的对象。这就是当其他三个方法开始起作用时，你实现的  [`layoutAttributesForItemAtIndexPath：`][15] 需要创建并返回一个单独的布局属性对象，这样才能正确的格式化传给你的 index path 所对应的 cell。
+有时，collection view 会为某个特殊的 cell，supplementary 或者 decoration view 向布局对象请求布局属性，而非所有可见的对象。这就是当其他三个方法开始起作用时，你实现的  [`layoutAttributesForItemAtIndexPath:`][15] 需要创建并返回一个单独的布局属性对象，这样才能正确的格式化传给你的 index path 所对应的 cell。
 
 你可以通过调用 [`+[UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:]`][16]这个方法，然后根据 index path 修改属性。为了得到需要显示在这个 index path 内的数据，你可能需要访问 collection view 的数据源。到目前为止，至少确保设置了 frame 属性，除非你所有的 cell 都位于彼此上方。
 
@@ -127,7 +129,8 @@ Supplementary views 和 decoration views 必须是 [UICollectionResuableView][8]
         attributes.frame = [self frameForEvent:event];
         return attributes;
     }
-如果你正在使用自动布局，你可能会感到惊讶，我们正在直接修改布局参数的frame属性，而不是和约束共事，但这正是 UICollectionViewLayout 的工作。尽管你可能使用自动布局来定义collection view 的 frame 和它内部每个 cell 的布局，但 cells 的 frames 还是需要通过老式的方法计算出来。
+    
+如果你正在使用自动布局，你可能会感到惊讶，我们正在直接修改布局参数的 frame 属性，而不是和约束共事，但这正是 UICollectionViewLayout 的工作。尽管你可能使用自动布局来定义collection view 的 frame 和它内部每个 cell 的布局，但 cells 的 frames 还是需要通过老式的方法计算出来。
 
 类似的，`layoutAttributesForSupplementaryViewOfKind:atIndexPath:` 和 `layoutAttributesForDecorationViewOfKind:atIndexPath:` 方法分别需要为 supplementary 和 decoration views 做相同的事。只有你的布局包含这样的视图你才需要实现这两个方法。`UICollectionViewLayoutAttributes` 包含另外两个工厂方法，[`+layoutAttributesForSupplementaryViewOfKind:withIndexPath:`][17] 和 
 [`+layoutAttributesForDecorationViewOfKind:withIndexPath:`][18]，用他们来创建正确的布局属性对象。
@@ -174,11 +177,11 @@ UITableView 中的 cell 自带了一套非常漂亮的插入和删除动画。�
 
 ## 结论
 
-根据自定义 collection view 布局的复杂性，写一个通常很不容易。确切的说，本质上这和从头写一个完整的实现相同布局自定义视图类一样困难了。因为所涉及的计算需要确定哪些子视图当前是可见的，以及他们的位置。尽管如此，使用 `UICollectionView` 还是给你带来了一些很好的效果，比如cell重用，自动支持动画，更不要提整洁的独立布局，子视图管理，以及数据提供架构规定（data preparation its architecture prescribes.）。
+根据自定义 collection view 布局的复杂性，写一个通常很不容易。确切的说，本质上这和从头写一个完整的实现相同布局自定义视图类一样困难了。因为所涉及的计算需要确定哪些子视图当前是可见的，以及它们的位置。尽管如此，使用 `UICollectionView` 还是给你带来了一些很好的效果，比如 cell 重用，自动支持动画，更不要提整洁的独立布局，子视图管理，以及数据提供架构规定（data preparation its architecture prescribes.）。
 
 自定义 collection view 布局也是向[轻量级 view controller][19] 迈出很好的一步，正如你的 view controller 不要包含任何布局代码。正如 Chris 的文章中解释的一样，将这一切和一个独立的 datasource 类结合在一起，collection view 的视图控制器将很难再包含任何代码。
 
-每当我使用 `UICollectionView` 的时候，我被其简洁的设计所折服。对于一个有经验的 Apple 工程师，为了想出如此灵活的类，很可能需要首先考虑 NSTableView 和 UITableView。
+每当我使用 `UICollectionView` 的时候，我被其简洁的设计所折服。对于一个有经验的 Apple 工程师，为了想出如此灵活的类，很可能需要首先考虑 `NSTableView` 和 `UITableView`。
 
 ### 扩展阅读
 
@@ -187,8 +190,9 @@ UITableView 中的 cell 自带了一套非常漂亮的插入和删除动画。�
 * [`UICollectionView`: The Complete Guide](http://ashfurrow.com/uicollectionview-the-complete-guide/), e-book by Ash Furrow.
 * [`MSCollectionViewCalendarLayout`](https://github.com/monospacecollective/MSCollectionViewCalendarLayout) by Eric Horacek is an excellent and more complete implementation of a custom layout for a week calendar view.
 
+---
 
-
+[话题 #3 下的更多文章][20]
 
    [1]: http://oleb.net/blog/2012/09/uicollectionview/
    [2]: https://github.com/objcio/issue-3-collection-view-layouts
@@ -209,4 +213,8 @@ UITableView 中的 cell 自带了一套非常漂亮的插入和删除动画。�
    [17]: https://developer.apple.com/library/ios/documentation/uikit/reference/UICollectionViewLayoutAttributes_class/Reference/Reference.html#//apple_ref/occ/clm/UICollectionViewLayoutAttributes/layoutAttributesForSupplementaryViewOfKind:withIndexPath:
    [18]: https://developer.apple.com/library/ios/documentation/uikit/reference/UICollectionViewLayoutAttributes_class/Reference/Reference.html#//apple_ref/occ/clm/UICollectionViewLayoutAttributes/layoutAttributesForDecorationViewOfKind:withIndexPath:
    [19]: http://objccn.io/issue-1-1/
+   [20]: http://objccn.io/issue-3/
   
+原文 [Custom Collection View Layouts](http://www.objc.io/issue-3/collection-view-layouts.html)
+
+译文 [自定义Collection View布局 - answser_huang](http://answerhuang.duapp.com/index.php/2013/11/20/custom_collection_view_layouts/)

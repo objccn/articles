@@ -380,4 +380,4 @@ TextKit 包括了超过 100 个方法，一篇文章根本没办法尽数涉及�
    
 原文 [Getting to Know TextKit](http://www.objc.io/issue-5/getting-to-know-textkit.html)
 
-译文 [iOS 7系列译文：认识 TextKit - 博客 - 伯乐在线](http://blog.jobbole.com/51965/)
+译文 [自定义Collection View布局 - answer_huang](http://answerhuang.duapp.com/index.php/2013/11/20/custom_collection_view_layouts/)

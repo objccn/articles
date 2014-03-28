@@ -183,27 +183,37 @@ It's important to understand how data is fetched in these cases, since it affect
 由于它会影响性能，所以了解数据在这些情况下怎么取出来是非常重要的。在我们特定的情况下，由于我们并没接触到太多的数据，所以这并不算什么，但是一旦你接触了，你将需要了解在背后发生了什么。
 
 When you traverse a relationship (such as `parent` or `children` in our case) one of three things can happen: (1) the object is already in the context and traversing is basically for free. (2) The object is not in the context, but the persistent store coordinator has its values cached, because you've recently retrieved the object from the store. This is reasonably cheap (some locking has to occur, though). The expensive case is (3) when the object is accessed for the first time by both the context and the persistent store coordinator, such that is has to be retrieved by store from the SQLite database. This last case is much more expensive than (1) and (2).
+当你遍历一个关系时（比如在我们例子中的 `parent` 或 `children`关系）下面三种情况将有一种会发生：（1）对象已经在 context 中，这种操作基本上是没有任何代价的。（2）对象不在 context 中，但是因为你最近从 store 中取出过对象，所以持久化存储协调器缓存了对象的值。这个操作还算廉价（但是，一些操作会被锁住）。操作耗费最昂贵的情况是（3），当 context 和持久化存储协调器都是第一次访问这个对象，这种情况必须通过 store 从 SQLite 数据库取回。最后一种情况比（1）和（2）需要付出更多代价。
 
 If you know you have to fetch objects from the store (because you don't have them), it makes a huge difference when you can limit the number of fetches by getting multiple objects at once. In our example, we might want to fetch all child items in one go instead of one-by-one. This can be done by crafting a special `NSFetchRequest`. But we must take care to only to run a fetch request when we need to, because a fetch request will also cause option (3) to happen; it will always access the SQLite database. Hence, when performance matters, it makes sense to check if objects are already around. You can use [`-[NSManagedObjectContext objectRegisteredForID:]`](https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSManagedObjectContext_Class/NSManagedObjectContext.html#//apple_ref/occ/instm/NSManagedObjectContext/objectRegisteredForID:) for that.
+如果你知道你必须从 store 取回对象（比如你已经知道没有这些对象），当你限制一次取回多少个对象时，将会产生很大的不同。在我们的例子中，我们希望一次性取出所有子 items，而不是一个接一个。我们可以通过一个特别的技巧 `NSFetchRequest`。但是我们要注意，当我们需要做这个操作时，我们只需要执行一次取出请求，因为一次取出请求将会造成选项（3）发生；这将总是访问SQLite数据库。因此，当需要显著提升性能时，检查对象是否已经存在将变得非常有意义。你可以使用[`-[NSManagedObjectContext objectRegisteredForID:]`](https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSManagedObjectContext_Class/NSManagedObjectContext.html#//apple_ref/occ/instm/NSManagedObjectContext/objectRegisteredForID:)来检测一个对象是否已经存在。
 
 
 ### Changing Object Values
+### 改变对象的值
 
 Now, let's say we are changing the `title` of one of our `Item` objects:
+现在，我们可以说，我们已经改变我们一个 `Item` 对象的 `title`：
 
     item.title = @"New title";
 
 When we do this, the items title changes. But additionally, the managed object context marks the specific managed object (`item`) as changed, such that it will be saved through the persistent store coordinator and attached store when we call `-save:` on the context. One of the key responsibilities of the context is *change tracking*.
+当我们这样做时，item 的 title 改变了。此外，managed object context 会标注这个对象（`item`）已经被改变，这样当我们在 context 中调用 `-save：` 时，这个对象将会通过持久化存储协调器和附属的 store 保存起来。context最关键的职责之一就是*跟踪改变*。
 
 The context knows which objects have been inserted, changed, and deleted since the last save. You can get to those with the `-insertedObjects`, `-updatedObjects`, and `-deletedObjects` methods. Likewise, you can ask a managed object which of its values have changed by using the `-changedValues` method. You will probably never have to. But this is what Core Data uses to be able to push changes you make to the backing database.
+从最后一次保存开始，context 知道哪些对象被插入，改变以及删除。你可以通过 `-insertedObjects`, `-updatedObjects`, 以及 `–deletedObjects` 方法来达到这样的效果。同样的，你可以通过 `-changedValues` 方法来询问一个被管理的对象哪些值被改变了。这个方法正是 Core Data 能够将你做出的改变推入到数据库的原因。
 
 When we inserted new `Item` objects above, this is how Core Data knew it had to push those to the store. And now, when we changed the `title`, the same thing happened.
+当我们插入一个新的 `Item` 对象时，Core Data 知道需要将这些改变存入 store。那么，将你改变对象的 `title` 时，也会发生同样的事情。
 
 Saving values needs to coordinate with both the persistent store coordinator and the persistent store, which, in turn, accesses the SQLite database. As when retrieving objects and values, accessing the store and database is relatively expensive when compared to simply operating on objects in memory. There's a fixed cost for a save, regardless of how many changes you're saving. And there's a per-change cost. This is simply how SQLite works. When you're changing a lot of things, you should therefore try to batch changes into reasonably sized batches. If you save for each change, you'd pay a high price, because you have to save very often. If you save to rarely, you'd have a huge batch of changes that SQLite would have to process.
+保存 values 需要协调持久化存储协调器和持久化 store 依次访问 SQLite 数据库。和在内存中操作对象比起来，取出对象和值，访问 store 和数据库是非常耗费资源的。不管你保存了多少更改，一次保存的代价是固定的。并且每个变化都有成本。这是SQLite的工作方式。当你做很多更改的时候，需要将更改打包，并批量更改。如果你保存每一次更改，将要付出很高的代价，因为你需要经常做保存操作。如果你很少做保存，那么你将会有一大批更改交给SQLite处理。
 
 It is also important to note that saves are atomic. They're transactional. Either all changes will be committed to the store / SQLite database or none of the changes will be saved. This is important to keep in mind when implementing custom [`NSIncrementalStore`](https://developer.apple.com/library/ios/DOCUMENTATION/CoreData/Reference/NSIncrementalStore_Class/Reference/NSIncrementalStore.html) subclasses. You have to either guarantee that a save will never fail (e.g. due to conflicts), or your store subclass has to revert all changes when the save fails. Otherwise, the object graph in memory will end up being inconsistent with the one in the store.
+同样需要注意的是保存操作是原子性的。他们都是事务。要么所有的更改会被提交给 store/SQLite 数据库，要么任何更改都不被保存。当实现自定义[`NSIncrementalStore`](https://developer.apple.com/library/ios/DOCUMENTATION/CoreData/Reference/NSIncrementalStore_Class/Reference/NSIncrementalStore.html)基类时，这一点一定要牢记在心。要么确保保存永远不会失败（比如说不会发生冲突），要么当保存失败时，你 store 的基类需要恢复所有的改变。否则，在内存中的对象图形最终和保存在 store 中的对象不一致。
 
 Saves will normally never fail if you use a simple setup. But Core Data allows multiple contexts per persistent store coordinator, so you can run into conflicts at the persistent store coordinator level. Changes are per-context, and another context may have introduced conflicting changes. And Core Data even allows for completely separate stacks both accessing the same SQLite database file on disk. That can obviously also lead to conflicts (i.e. one context trying to update a value on an object that was deleted by another context). Another reason why a save can fail is validation. Core Data supports complex validation policies for objects. It's an advanced topic. A simple validation rule could be that the `title` of an `Item` must not be longer than 300 characters. But Core Data also supports complex validation policies across properties.
+如果你使用一个简单的设置，保存操作通常不会失败。但是 Core Data 允许每个持久化存储协调器有多个 context，所以你可能陷入持久化存储协调器层级的冲突之中。改变是对于每个 context 的，另一个 context 的更改可能导致冲突。Core Data 甚至允许完全不同的堆栈访问磁盘上相同的 SQLite 数据库。这明显也会导致冲突（比如，一个 context 想要更新一个对象的值，而另一个 context 想要删除这个对象）。另一个导致保存失败的原因可能是验证。Core Data 支持复杂的对象验证策略。这是一个高级话题。一个简单的验证规则可能是： `Item` 的 `title` 不能超过300个字符。但是 Core Data 也支持通过属性进行复杂的验证策略。
 
 ## Final Words
 ## 结束语

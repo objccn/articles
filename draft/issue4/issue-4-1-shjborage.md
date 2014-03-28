@@ -1,15 +1,3 @@
----
-layout: post
-title: Core Data Overview
-category: "4"
-date: "2013-09-09 11:00:00"
-author: "<a href=\"http://twitter.com/danielboedewadt\">Daniel Eggert</a>"
-tags: article
----
-
-{% include links-4.md %}
-
-
 Core Data is probably one of the most misunderstood Frameworks on OS X and iOS. To help with that, we'll quickly go through Core Data to give you an overview of what it is all about, as understanding Core Data concepts is essential to using Core Data the right way. Just about all frustrations with Core Data originate in misunderstanding what it does and how it works. Let's dive in...
 
 Core Data可能是OS X和iOS里面最容易被误解的框架之一，为了帮助大家理解，我们将快速的研究Core Data，让大家对它有一个初步的了解，对于想要正确使用Core Data的同学来说，理解它的概念是非常必要的。几乎所有对Core Data感到失望的原因都是因为对它工作机制的错误理解。让我们开始吧：
@@ -271,3 +259,10 @@ When you're using a simple Core Data stack, and you use managed objects the way 
 
 当你开始使用一个简单的 Core Data 堆栈，并且使用我们在这篇文章中讲到的知识吧，你将很快会真正体会到 Core Data 能为你做什么，并且学到它是怎么缩短你开发周期的。
 
+
+
+原文 [Core Data Overview](http://www.objc.io/issue-4/core-data-overview.html)
+   
+译文 [Core Data概述](http://answerhuang.duapp.com/index.php/2013/09/11/core_data_overview/)
+
+精细校对 [@shjborage](http://www.saick.net/about.html)

@@ -1,13 +1,13 @@
-在这篇文章中，我们将把前面提到过的内容组织起来构成我们的导航器应用，这个 iPhone 应用将装载在我们的的无人机上，你可以在 [Github](https://github.com/objcio/issue-8-quadcopter-navigator) 下载应用的源码，尽管这个应用是计划在没有直接的互动操作下来使用的，但在测试过程中我们做了一个简单的 UI 界面来显示其无人机状态并方便我们手动操作。
+在这篇文章中，我们将把前面提到过的内容组织起来构成我们的导航器应用，这个 iPhone 应用将装载在我们的的无人机上，你可以在 [Github](https://github.com/objcio/issue-8-quadcopter-navigator) 下载应用的源码，尽管这个应用是计划在没有直接的交互操作下来使用的，但在测试过程中我们做了一个简单的 UI 界面来显示其无人机状态并方便我们手动操作。
 
 ## 概要
 
 在我们的应用中，我们有几个类它们分别是:
 
-* `DroneCommunicator` 这个类关注于利用 UDP 和无人机通讯。关于这个话题全部在 [Daniel 的文章](http://objccn.io/issue-8-2)中详细介绍过
+* `DroneCommunicator` 这个类关注于利用 UDP 和无人机通讯。这个话题全部在 [Daniel 的文章](http://objccn.io/issue-8-2)中详细介绍过
 
-* `RemoteClient` 使用 [Multipeer Connectivity](https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MultipeerConnectivityFramework/_index.html) 技术和我们的远程客户端进行交互，具体客户端发生什么事情，请看 [Florian 的文章](http://objccn.io/issue-8-4)。
-* `Navigator` 用来指定目标位置以及计算飞行航线，以及飞行距离。
+* `RemoteClient` 使用 [Multipeer Connectivity](https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MultipeerConnectivityFramework/_index.html) 技术和我们的远程客户端进行交互，具体客户端的操作，请看 [Florian 的文章](http://objccn.io/issue-8-4)。
+* `Navigator` 用来设定目标位置，计算飞行航线，以及飞行距离。
 * `DroneController` 用来把从 `Navigator` 获取的导航的距离和方向发送命令到`DroneCommunicator`。
 * `ViewController` 有一个简单的界面，用来初始化其他的类并把它们连接起来，这部分应该用不同的类来完成，但是在我们的设想中，我们的app足够简单所以放到一个类就可以了。
 
@@ -36,7 +36,7 @@ View Controller 同时是 `RemoteClient` 的委托。 这就说明无论我们�
 	        self.navigator.targetLocation = location;
 	    }
 	 
-这里确保无人机开始飞行（而不是徘徊）并且更新目标位置。
+这段代码是用来确保无人机开始飞行（而不是徘徊）并且更新目标位置。
 
 ## Navigator
 
@@ -53,7 +53,7 @@ View Controller 同时是 `RemoteClient` 的委托。 这就说明无论我们�
         [self.locationManager startUpdatingHeading];
     }
     
-在我们的导航类中，我们有两种方向，绝对和相对方向，绝对方向是两个地点之间的方向。比如说，阿姆斯特丹和柏林间的绝对方向几乎处于同一纬度，相对位置则是我们在参考指南针后可以得出的路线方向，要从阿姆斯特丹一直向东到柏林，两地之间的相对方向为零。因此在操作无人机的时候我们就需要使用相对方向。方向值为零，飞机直行；方向角度小于零，飞机向右倾斜转弯；方向角度大于零，飞机则向左倾斜转弯。
+在我们的导航类中，我们有两种方向，绝对和相对方向，绝对方向是两个地点之间的方向。比如说，阿姆斯特丹和柏林间的绝对方向几乎处于同一纬度，相对位置则是我们在参考指南针后可以得出的路线方向，要从阿姆斯特丹一直向东到柏林，两地之间的相对方向为零。在操作无人机的时候我们就需要使用相对方向。方向值为零，飞机直行；方向角度小于零，飞机向右倾斜转弯；方向角度大于零，飞机则向左倾斜转弯。
 
 计算到目的地的绝对方向，我们需要创建一个基于 `CLLocation` 的Helper方法用来计算两个点的方向:
 

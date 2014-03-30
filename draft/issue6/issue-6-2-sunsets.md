@@ -26,18 +26,16 @@ LLVM的优秀跨平台特性得益于其特定的“三层式”架构，即在�
 本文我们将重点关注第一阶段和第二阶段。在文章 [Mach-O Executables](http://objccn.io/issue-6-3/) 中，Daniel 会对第三阶段和第四阶段进行阐述。
 
 ### 预处理
-zhouzhixun double check here 
-每当编译文件的时候，编译器最先做的是一些预处理工作。比如预处理器会处理宏定义，将文本中的宏用其对应定义的具体内容进行替换。
 
-例如，如果在代码文件中的出现的下述格式的引入：
+每当编源译文件的时候，编译器首先做的是一些预处理工作。比如预处理器会处理源文件中的宏定义，将代码中的宏用其对应定义的具体内容进行替换。
+
+例如，如果在源文件中出现下述代码：
 
     #import <Foundation/Foundation.h>
 
-预处理器对这行代码的处理是用真实Foundation.h头文件中的内容去替换这行宏引入，如果Foundation.h中也使用了类似的宏引入，则会按照同样的处理方式用各个宏对应的真正代码进行逐级替代。
+预处理器对这行代码的处理是用 Foundation.h 文件中的内容去替换这行代码，如果 Foundation.h 中也使用了类似的宏引入，则会按照同样的处理方式用各个宏对应的真正代码进行逐级替代。
 
-这也就是为什么人们主张头文件最好尽量少的去引入其他的类或库，因为引入的东西越多，编译器需要做的处理就越多。
-
-例如，在头文件中用：
+这也就是为什么人们主张头文件最好尽量少的去引入其他的类或库，因为引入的东西越多，编译器需要做的处理就越多。例如，在头文件中用：
 
     @class MyClass;
 
@@ -45,9 +43,9 @@ zhouzhixun double check here
 
     #import "MyClass.h"
 
-这么写是告诉编译器MyClass.h文件本身是存在的，并且在.m文件中会对MyClass.h文件做引入使用。
+这么写是告诉编译器 MyClass 是一个类，并且在 .m 实现文件中可以通过 import `MyClass.h` 的方式来使用它。
 
-例如，写一个简单的C程序hello.c：
+假设我们写了一个简单的 C 程序 `hello.c`:
 
     #include <stdio.h>
 
@@ -56,26 +54,26 @@ zhouzhixun double check here
       return 0;
     }
 
-然后执行一下命令，看看预处理器是怎么处理这段代码的：
+然后给上面的代码执行以下预处理命令，看看是什么效果：
 
     clang -E hello.c | less
 
-接下来看看处理后的代码，一共是401行。如果在代码中再增加一行引入：
+接下来看看处理后的代码，一共是 401 行。如果将如下一行代码添加到上面代码的顶部：：
 
     #import <Foundation/Foundation.h>
 
-再执行一下上面的命令，处理后的文件代码行数暴增到89,839行。这个数字比某些操作系统的总代码行数还要多。
+再执行一下上面的预处理命令，处理后的文件代码行数暴增至 89,839 行。这个数字比某些操作系统的总代码行数还要多。
 
-幸好现在有了[模块][5]引入特性，使得引用关系处理变得更加智能。
+幸好，目前的情况已经改善许多了：引入了[模块 - modules](http://clang.llvm.org/docs/Modules.html)功能，这使预处理变得更加的高级。
 
-Custom Macros 自定义宏
------------------
 
-另一种情形是自定义宏，比如定义：
+####  自定义宏
+
+我们来看看另外一种情形定义或者使用自定义宏，比如定义了如下宏：
 
     #define MY_CONSTANT 4
 
-凡是在此行宏定义作用域允许的代码内键入MY_CONSTANT，在预处理过程中MY_CONSTANT都会被替换成4。宏定义也是可以携带参数的， 比如：
+那么，凡是在此行宏定义作用域内，输入了 `MY_CONSTANT`，在预处理过程中 `MY_CONSTANT` 都会被替换成 `4`。我们定义的宏也是可以携带参数的， 比如：
 
     #define MY_MACRO(x) x
 
@@ -106,7 +104,7 @@ int main() {
     largest: 201
     i: 202
 
-用`clang -E max.c`进行宏展开的预处理结果是：
+用 `clang -E max.c` 进行宏展开的预处理结果是如下所示：
 
     int main() {
       int i = 200;
@@ -115,7 +113,7 @@ int main() {
       return 0;
     }
 
-本例是典型的宏使用不当，而且通常这类问题会更加的隐蔽且难以debug。针对本例这类情况，最好使用静态函数而不是宏。
+本例是典型的宏使用不当，而且通常这类问题非常隐蔽且难以 debug 。针对本例这类情况，最好使用 `static inline`:
 
     #include <stdio.h>
     static const int MyConstant = 200;
@@ -131,23 +129,22 @@ int main() {
       return 0;
     }
 
-这样改过之后，就可以输出正常的结果(i:201)。因为之前定义的静态函数是直接插入在主体代码中的，所以它的效率和宏变量差不多，但是可靠性比宏定义要好许多。再者，还可以通过设断点debug、类型检查等手段来避免一些异常的产生。
+这样改过之后，就可以输出正常的结果 (`i:201`)。因为这里定义的代码是内联的 (inlined)，所以它的效率和宏变量差不多，但是可靠性比宏定义要好许多。再者，还可以设置断点、类型检查以及避免异常行为。
 
-基本上，宏的最佳使用场景是日志输出，可以使用`__FILE__` 和 `__LINE__` 这种宏来做断言。
+基本上，宏的最佳使用场景是日志输出，可以使用 `__FILE__` 和 `__LINE__` 和 assert 宏。
 
-Tokenization (Lexing) 词语法解析标记
-----------------------------
+### 词法解析标记
 
-预处理完成以后，每一个.m源文件里都有一堆的声明和定义。这些代码文本都会从string转化成特殊的标记流。
+预处理完成以后，每一个 `.m` 源文件里都有一堆的声明和定义。这些代码文本都会从 string 转化成特殊的标记流。
 
-例如，一段简单的Objective-C的hello word：
+例如，下面是一段简单的 Objective-C hello word 程序：
 
     int main() {
       NSLog(@"hello, %@", @"world");
       return 0;
     }
 
-利用clang 命令 -Xclang -dump-tokens 来将hello world.m的标记流导出：
+利用 clang 命令 `clang -Xclang -dump-tokens hello.m` 来将上面代码的标记流导出：
 
     int 'int'        [StartOfLine]  Loc=<hello.m:4:1>
     identifier 'main'        [LeadingSpace] Loc=<hello.m:4:5>
@@ -169,14 +166,12 @@ Tokenization (Lexing) 词语法解析标记
     r_brace '}'      [StartOfLine]  Loc=<hello.m:7:1>
     eof ''          Loc=<hello.m:7:2>
 
-仔细观察可以发现，每一个标记都包含了对应的源码内容和其在源码中的位置。注意这个位置是宏展开之前的位置，这样clang可以保证在出现什么问题的时候，能够在源码中精确定位到出错位置。
+仔细观察可以发现，每一个标记都包含了对应的源码内容和其在源码中的位置。注意这里的位置是宏展开之前的位置，这样一来，如果编译过程中遇到什么问题，clang 能够在源码中指出出错的具体位置。
 
-Parsing 解析
+### 解析
 ---------
 
-接下来要说的东西比较有意思：之前生成的标记流将会被解析成抽象语法树。由于Objective-C语言本身比较复杂，这导致解析过程也比较繁复。解析过后，源程序变成了抽象语法树。
-
-还是以前面的hello world为例：
+接下来要说的东西比较有意思：之前生成的标记流将会被解析成一颗抽象语法树。由于 Objective-C 是一门复杂的语言，因此解析的过程不简单。解析过后，源程序变成了一颗抽象语法树：一颗代表源程序的树。假设我们有一个程序 `hello.m`：
 
     #import <Foundation/Foundation.h>
 
@@ -195,7 +190,7 @@ Parsing 解析
        [world hello];
     }
 
-执行clang 命令-Xclang -ast-dump -fsyntax-only后，命令行输出了hello world的抽象语法树结果：
+当我们执行 clang 命令 `clang -Xclang -ast-dump -fsyntax-only hello.m` 之后，命令行中输出的结果如下所示：：
 
     @interface World- (void) hello;
     @end
@@ -218,45 +213,41 @@ Parsing 解析
         (ImplicitCastExpr 0x10372e0d0 <col:5> 'World *' <LValueToRValue>
           (DeclRefExpr 0x10372e0a8 <col:5> 'World *' lvalue Var 0x10372dfe0 'world' 'World *'))))
 
-生成的抽象语法树中的每个节点都标注了其对应源码中的位置，同样的，如果产生了什么问题，clang可以定位到问题所在处的源码位置。
+在抽象语法树中的每个节点都标注了其对应源码中的位置，同样的，如果产生了什么问题，clang 可以定位到问题所在处的源码位置。
 
-**延伸阅读：**
+##### 延伸阅读
 
- - [Introduction to the clang AST][6]
+* [clang AST 介绍](http://clang.llvm.org/docs/IntroductionToTheClangAST.html)
 
-Static Analysis静态分析
-===================
+### 静态分析
 
-一旦源码生成了抽象语法树，编译器就可以围绕其做检查分析，比如可以做类型检查，即检查程序中是否有类型错误。举例来说：如果对某个对象发送了一个消息，编译器会检查这个对象是否实现了这个消息（函数、方法）。此外，clang做了许多其他的检查，来确保目标程序中没有什么杂七杂八的错误。
+一旦编译器把源码生成了抽象语法树，编译器可以对这棵树做分析处理，以找出代码中的错误，比如类型检查：即检查程序中是否有类型错误。例如：如果代码中给某个对象发送了一个消息，编译器会检查这个对象是否实现了这个消息（函数、方法）。此外，clang 对整个程序还做了其它更高级的一些分析，以确保程序没有错误。
 
-Type Checking 类型检查
------------------
+#### 类型检查
 
-每当开发人员编写代码的时候，clang都会帮忙检查错误。其中最常见的就是检查是否对程序对象发送正确的消息，是否在数值上使用了正确的函数。比如若对一个单纯的NSObject*对象发送了一个hello消息，clang就会报错。
-
-下面对NSObject创建一个Test子类：
+每当开发人员编写代码的时候，clang 都会帮忙检查错误。其中最常见的就是检查程序是否发送正确的消息给正确的对象，是否在正确的值上调用了正确的函数。如果你给一个单纯的 `NSObject*` 对象发送了一个 `hello` 消息，那么 clang 就会报错。同样，如果你创建了 `NSObject` 的一个子类 `Test`, 如下所示：
 
     @interface Test : NSObject
     @end
 
-然后给这个子类中某个属性设置一个与其自身声明类型不相符的值，clang同样会给出一些类型不匹配的警告。
+然后试图给这个子类中某个属性设置一个与其自身类型不相符的对象，编译器会给出一个可能使用不正确的警告。
 
-一般会把类型们分类两类：动态的和静态的。动态的在运行时做检查，静态的在编译时做检查。以往，编写代码时可以向对象发送任何消息，因为在真正运行时，才会检查对象是否能够响应这些消息。鉴于只是在运行时做此类检查，所以叫做动态类检查型。至于静态类型检查，例如如果使用ARC，编译器会在编译过程中做许多检查，因为编译器需要确保对其编译的对象有明确的理解和认识。比如下面的代码中，如果myObject没有hello方法，这行代码就编不过。
+一般会把类型分为两类：动态的和静态的。动态的在运行时做检查，静态的在编译时做检查。以往，编写代码时可以向任意对象发送任何消息，在运行时，才会检查对象是否能够响应这些消息。由于只是在运行时做此类检查，所以叫做动态类型。至于静态类型，是在编译时做检查。当在代码中使用 ARC 时，编译器在编译期间，会做许多的类型检查：因为编译器需要知道哪个对象该如何使用。例如，如果 myObject 没有 hello 方法，那么就不能写如下这行代码了：
 
     [myObject hello]
 
-Other Analyses其他分析
+#### 其他分析
 
-其实clang还有许多其他的分析能力。看一下clang源码的lib/StaticAnalyzer/Checkers目录，可以查看所有的静态检查。比如ObjCUnusedIVarsChecker.cpp用来检查代码中是否有多余的实例变量ivars的定义。ObjCSelfInitChecker.cpp检查代码中自定义初始化方法中是否调用了 [self initWith…]或[super init]。编译器还进行了一些其他的检查，例如在lib/Sema/SemaExprObjC.cpp的2,534行，有这样一句：
+clang 在静态分析阶段，除了类型检查外，还会做许多其它一些分析。如果你把 clang 的代码仓库 clone 到本地，然后进入目录 `lib/StaticAnalyzer/Checkers`,你会看到所有的检查检查内容。例如，
+其实clang还有许多其他的分析能力。看一下clang源码的lib/StaticAnalyzer/Checkers目录，可以查看所有的静态检查。比如 `ObjCUnusedIVarsChecker.cpp` 是用来检查是否有定义了，但是从未使用过的变量。而 `ObjCSelfInitChecker.cpp` 则是检查在 你的初始化方法中中调用 `self` 之前，是否已经调用 `[self initWith...]` 或 `[super init]` 了。编译器还进行了一些其它的检查，例如在 `lib/Sema/SemaExprObjC.cpp` 的2,534行，有这样一句：
 
     Diag(SelLoc, diag::warn_arc_perform_selector_leaks);
 
-这个会生成严重错误的提醒 “performSelector may cause a leak because its selector is unknown” 。
+这个会生成严重错误的警告 “performSelector may cause a leak because its selector is unknown” 。
 
-代码生成
-===================
+## 代码生成
 
-clang完成了代码的标记，解析和分析后，接着就会生成LLVM代码了。下面看看hello.c的变化：
+clang 完成代码的标记，解析和分析后，接着就会生成 LLVM 代码。下面继续看看`hello.c`：
 
     #include <stdio.h>
     
@@ -266,7 +257,7 @@ clang完成了代码的标记，解析和分析后，接着就会生成LLVM代�
     }
 
 
-要把这段代码编译成LLVM位码（绝大多数情况下是二进制码），执行下面的命令：
+要把这段代码编译成 LLVM 字节码（绝大多数情况下是二进制码格式），我们可以执行下面的命令：
 
     clang -O3 -emit-LLVM hello.c -c -o hello.bc
 
@@ -294,9 +285,9 @@ clang完成了代码的标记，解析和分析后，接着就会生成LLVM代�
     attributes #0 = { nounwind ssp uwtable }
     attributes #1 = { nounwind }
 
-观察发现main函数只有两行：一行输出string一行返回0。
+在上面的代码中，可以看到 `main` 函数只有两行代码：一行输出string，另一行返回 `0`。
 
-再换一个程序，拿five.m为例，执行`LLVM-dis < five.bc | less`:
+再换一个程序，拿 `five.m` 为例，对其做相同的编译，然后执行 `LLVM-dis < five.bc | less`:
 
     #include <stdio.h>
     #import <Foundation/Foundation.h>
@@ -306,7 +297,7 @@ clang完成了代码的标记，解析和分析后，接着就会生成LLVM代�
       return 0;
     }
 
-抛开其他的不说，单看main函数：
+抛开其他的不说，单看 `main` 函数：
 
     define i32 @main() #0 {
       %1 = load %struct._class_t** @"\01L_OBJC_CLASSLIST_REFERENCES_$_", align 8
@@ -320,12 +311,11 @@ clang完成了代码的标记，解析和分析后，接着就会生成LLVM代�
       ret i32 0
     }
 
-看看最重要的第4行，创建了一个NSNumber对象。第7行，对number对象发送了一个执行description的消息。第8行，对description的返回结果做log。
+上面代码中最重要的是第 4 行，它创建了一个 `NSNumber` 对象。第 7 行，给这个 number 对象发送了一个  `description` 消息。第 8 行，将 `description` 消息返回的内容打印出来。
 
-Optimizations 优化
----------------
+### 优化
 
-要想了解LLVM和clang能做哪些优化，先从一个略微复杂的C程序看起，这个函数主要是在递归计算阶乘：
+要想了解 LLVM 的优化内容，以及 clang 能做哪些优化，我们先看一个略微复杂的 C 程序：这个函数主要是递归计算 `阶乘`：
 
     #include <stdio.h>
     
@@ -338,11 +328,11 @@ Optimizations 优化
       printf("factorial 10: %d\n", factorial(10));
     }
 
-先看看直接编译不做优化，执行下面命令：
+先看看不做优化的编译情况，执行下面命令：
 
     clang -O0 -emit-llvm factorial.c  -c -o factorial.bc && llvm-dis < factorial.bc
 
-重点看一下阶乘部分的代码：
+重点看一下针对 `阶乘` 部分生成的代码：
 
     define i32 @factorial(i32 %x) #0 {
       %1 = alloca i32, align 4
@@ -370,11 +360,11 @@ Optimizations 优化
       ret i32 %13
     }
 
-看一下%9标注的那一行，这行代码正递归调用阶乘函数本身，这样是非常低效的，因为每次递归调用都要重新压栈。接下来可以看一下优化后的效果，在clang命令中增加-03标志：
+看一下 `%9` 标注的那一行，这行代码正是递归调用阶乘函数本身，实际上这样调用是非常低效的，因为每次递归调用都要重新压栈。接下来可以看一下优化后的效果，可以通过这样的方式开启优化 -- 将 `-03` 标志传给 clang：
 
     clang -O3 -emit-llvm factorial.c  -c -o factorial.bc && llvm-dis < factorial.bc
 
-优化后编译的阶乘计算代码如下：
+现在 `阶乘` 计算相关代码编译后生成的代码如下：
 
     define i32 @factorial(i32 %x) #0 {
       %1 = icmp sgt i32 %x, 1
@@ -394,40 +384,39 @@ Optimizations 优化
     }
 
 
-即便我们的源码书写并不是[尾递归][7]的方式，clang仍然能很好的优化编译，编译的结果中只包含一个循环。当然clang能对代码进行的优化还有很多方面。可以看以下这个比较不错的gcc的优化例子[ridiculousfish.com][8]。
+即便我们的函数并没有按照[尾递归](http://en.wikipedia.org/wiki/Tail_call)的方式编写，clang 仍然能对其做优化处理，让该函数编译的结果中只包含一个循环。当然 clang 能对代码进行的优化还有很多方面。可以看以下这个比较不错的 gcc 的优化例子[ridiculousfish.com](http://ridiculousfish.com/blog/posts/will-it-optimize.html)。
 
-**延伸阅读：**
+**延伸阅读**
 
- - [LLVM blog: posts tagged ‘optimization’][9]
- - [LLVM blog: vectorization improvements][10]
- - [LLVM blog: greedy register allocation][11]
- - [The Polly project][12]
+* [LLVM blog: posts tagged 'optimization'](http://blog.llvm.org/search/label/optimization)
+* [LLVM blog: vectorization improvements](http://blog.llvm.org/2013/05/llvm-33-vectorization-improvements.html)
+* [LLVM blog: greedy register allocation](http://blog.llvm.org/2011/09/greedy-register-allocation-in-llvm-30.html)
+* [The Polly project](http://polly.llvm.org/index.html)
 
-如何在实际中应用这些特性
-=============================================
+## 如何在实际中应用这些特性
 
-刚刚我们探讨了编译的全过程，从标记到解析，从抽象语法树到分析检查再到汇编。读者不禁要问，为什么要关注这些？
+刚刚我们探讨了编译的全过程，从标记到解析，从抽象语法树到分析检查，再到汇编。读者不禁要问，为什么要关注这些？
 
-使用libclang或clang插件
--------------------
+### 使用 libclan g或 clang 插件
 
-clang最优秀的特点：它是本身构建得非常好且又开源的项目，几乎可以说到处是宝。使用者可以创建自己的clang分支，针对自己的需求进行改造。比如说，可以改变clang生成代码的方式，增加更强的类型检查，或者按照自己的定义进行代码的检查分析等等。要想达成以上的目标，有很多种方法，其中最简单的就是使用C类库[libclang][13]。libclang提供了API，可以对C和clang做桥接，可以用它对源码做分析。但是，按照我的经验，如果使用者的要求更加复杂高端，libclang就不太够用了。接下来，推荐一下[Clangkit][14]，它是Objective-C基于clang的一些功能做的封装。最后，clang还提供了一个直接使用LibTooling的C++类库。这里要做的事儿比较多，而且涉及到C++，但是它能够发挥clang的全部武功。如果有以下诉求：对代码做各种分析，重写程序，对clang增加分析方法，创建自己的重构器，或者对现有代码做大量的重写，甚至是想基于工程生成图例者说明文档，LibTooling都是很好的选择。
+之所以 clang 很酷：是因为它是一个开源的项目、并且它是一个非常好的工程：几乎可以说全身是宝。使用者可以创建自己的 clang 版本，针对自己的需求对其进行改造。比如说，可以改变 clang 生成代码的方式，增加更强的类型检查，或者按照自己的定义进行代码的检查分析等等。要想达成以上的目标，有很多种方法，其中最简单的就是使用一个名为 [libclang](http://clang.llvm.org/doxygen/group__CINDEX.html) 的C类库。libclang 提供的 API 非常简单，可以对 C 和 clang 做桥接，并可以用它对所有的源码做分析处理。不过，根据我的经验，如果使用者的需求更高，那么libclang就不怎么行了。针对这种情况，推荐使用 [Clangkit](https://github.com/macmade/ClangKit)，它是基于 clang 提供的功能，用 Objective-C 进行封装的一个库。
+
+最后，clang 还提供了一个直接使用 LibTooling 的 C++ 类库。这里要做的事儿比较多，而且涉及到 C++，但是它能够发挥 clang 的强大功能。用它你可以对源码做任意类型的分析，甚至重写程序。如果你想要给 clang 添加一些自定义的分析、创建自己的重构器 (refactorer)、或者需要基于现有代码做出大量修改，甚至想要基于工程生成相关图形或者文档，那么 LibTooling 是很好的选择。
 
 
-自定义分析
------
+### 自定义分析器
 
-使用者可以按照[Tutorial for building tools using LibTooling][15]的说明去构造LLVM，clang以及其他clang附加工具。需要注意的是，一定要为编译预留时间，就算你的机器已经挺快了，你还是有机会在LLVM编译的过程中吃顿饭什么的。
+开发者可以按照[Tutorial for building tools using LibTooling](http://clang.LLVM.org/docs/LibASTMatchersTutorial.html)中的说明去构造 LLVM ，clang 以及 clan g的附加工具。需要注意的是，编译代码是需要花费一些时间的，即时机器已经很快了，但是在编译期间，我还是可以吃顿饭的。
 
-接下来去使用者机器的LLVM目录下执行命令cd ~/llvm/tools/clang/tools/，可以在这个目录下创建独立的clang工具。比如说，我们要创建一个小工具来帮助检查类库是否使用正确。把[样例工程][16]拷贝到这个目录下，然后执行make。接下来会生成一个叫example的二进制文件。
+接下来，进入到 LLVM 目录，然后执行命令`cd ~/llvm/tools/clang/tools/`。在这个目录中，可以创建自己独立的 clang 工具。例如，我们创建一个小工具，用来检查某个库是否正确使用。首先将 [样例工程](https://github.com/objcio/issue6-compiler-tool) 克隆到本地，然后输入 `make`。这样就会生成一个名为 `example` 的二进制文件。
 
-使用场景：假如有一个Observer观察者类：
+我们的使用场景是：假如有一个 `Observer` 类, 代码如下所示：
 
     @interface Observer
     + (instancetype)observerWithTarget:(id)target action:(SEL)selector;
     @end
 
-接下来，我们想要检查一下每当这个类被调用的时候，在目标对象中是否都有对应的响应action方法存在。可以写个C++函数来做这件事（注意，这是我第一次写C++程序，可能不那么严谨）：
+接下来，我们想要检查一下每当这个类被调用的时候，在 `target` 对象中是否都有对应的 `action` 方法存在。可以写个 C++ 函数来做这件事（注意，这是我第一次写C++程序，可能不那么严谨）：
 
     virtual bool VisitObjCMessageExpr(ObjCMessageExpr *E) {
       if (E->getReceiverKind() == ObjCMessageExpr::Class) {
@@ -453,56 +442,23 @@ clang最优秀的特点：它是本身构建得非常好且又开源的项目，
       return true;
     }
 
-这段程序先是扫描消息方法的特定存在形式：以观察者作为消息方法的接收者，以observerWithTarget:action:作为selector，接着检查target中是否存在相应的selector。虽然这个例子有点儿刻意，但如果你想要利用AST对自己的代码库做某些机械检查，按照上面的例子来就可以了。
+上面的这个方法首先查找消息表达式， 以 `Observer` 作为接收者， `observerWithTarget:action:` 作为 selector，然后检查 target 中是否存在相应的方法。虽然这个例子有点儿刻意，但如果你想要利用 AST 对自己的代码库做某些检查，按照上面的例子来就可以了。
 
+### clang的其他特性
 
-clang的其他特性
-==========
+clang还有许多其他的用途。比如，可以写编译器插件（例如，类似上面的检查器例子）并且动态的加载到编译器中。虽然我没有亲自实验过，但是我觉得在 Xcode 中应该是可行的。再比如，也可以通过编写 clang 插件来自定义代码样式（具体可以参见 [编译过程](http://objccn.io/issue-6-1/)）。
 
-clang还有许多其他的用途。比如，可以写编译器插件（类似上面的检查器例子）并且动态的加载到编译器中。虽然我没有亲自实验过，但是我觉得在Xcode中应该是可行的。再比如，也可以通过编写clang插件来自定义代码样式（具体可以参见[Build process][17]）。
+另外，如果想对现有的代码做大规模的重构， 而 Xcode 或 AppCode 本身集成的重构工具无法达你的要求，你完全可以用 clang 自己写个重构工具。听起来有点儿可怕，读读下面的文档和教程，你会发现其实没那么难。
 
-另外，如果想对现有的代码做大规模的重构，如果Xcode本身集成的重构工具或者AppCode（一款第三方IDE）无法达你的要求，你完全可以用clang自己写个重构工具。听起来有点儿可怕，读读下面的文档和教程，你会发现其实没那么难。
+最后，如果是真的有这种需求，你完全可以引导 Xcdoe 使用你自己编译的 clang 。再一次，如果你去尝试，其实这些事儿真的没想象中那么复杂，反而会发现许多个中乐趣。
 
-最后，如果是真的有这种需求，你完全可以引导Xcdoe使用你自己编译的clang。再一次，如果你去尝试，其实这些事儿真的没想象中那么复杂，反而会发现许多个中乐趣。
+##### 延伸阅读
 
-**延伸阅读：**
+* [Clang Tutorial](https://github.com/loarabia/Clang-tutorial)
+* [X86_64 Assembly Language Tutorial](http://cocoafactory.com/blog/2012/11/23/x86-64-assembly-language-tutorial-part-1/)
+* [Custom clang Build with Xcode (I)](http://clang-analyzer.llvm.org/xcode.html) and [(II)](http://stackoverflow.com/questions/3297986/using-an-external-xcode-clang-static-analyzer-binary-with-additional-checks)
+* [Clang Tutorial (I)](http://kevinaboos.wordpress.com/2013/07/23/clang-tutorial-part-i-introduction/), [(II)](http://kevinaboos.wordpress.com/2013/07/23/clang-tutorial-part-ii-libtooling-example/) and [(III)](http://kevinaboos.wordpress.com/2013/07/29/clang-tutorial-part-iii-plugin-example/)
+* [Clang Plugin Tutorial](http://getoffmylawnentertainment.com/blog/2011/10/01/clang-plugin-development-tutorial/)
+* [LLVM blog: What every C programmer should know (I)](http://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html) , [(II)](http://blog.llvm.org/2011/05/what-every-c-programmer-should-know_14.html) and [(III)](http://blog.llvm.org/2011/05/what-every-c-programmer-should-know_21.html)
 
- - [Clang Tutorial][18]
- - [X86_64 Assembly Language Tutorial][19]
- - [Custom clang Build with Xcode (I)][20] and [(II)][21]
- - [Clang Tutorial (I)][22], [(II)][23] and [(III)][24]
- - [Clang Plugin Tutorial][25]
- - [LLVM blog: What every C programmer should know (I)][26] , [(II)][27] and [(III)][28]
-
-[更多issue #6文章][29]
-
-
-  [1]: http://www.objc.io/issue-6/index.html
-  [2]: http://twitter.com/chriseidhof
-  [3]: http://www.aosabook.org/en/llvm.html
-  [4]: http://www.objc.io/issue-6/mach-o-executables.html
-  [5]: http://clang.llvm.org/docs/Modules.html
-  [6]: http://clang.llvm.org/docs/IntroductionToTheClangAST.html
-  [7]: http://en.wikipedia.org/wiki/Tail_call
-  [8]: http://ridiculousfish.com/blog/posts/will-it-optimize.html
-  [9]: http://blog.llvm.org/search/label/optimization
-  [10]: http://blog.llvm.org/2013/05/llvm-33-vectorization-improvements.html
-  [11]: http://blog.llvm.org/2011/09/greedy-register-allocation-in-llvm-30.html
-  [12]: http://polly.llvm.org/index.html
-  [13]: http://clang.llvm.org/doxygen/group__CINDEX.html
-  [14]: https://github.com/macmade/ClangKit
-  [15]: http://clang.llvm.org/docs/LibASTMatchersTutorial.html
-  [16]: https://github.com/objcio/issue6-compiler-tool
-  [17]: http://www.objc.io/issue-6/build-process.html
-  [18]: https://github.com/loarabia/Clang-tutorial
-  [19]: http://cocoafactory.com/blog/2012/11/23/x86-64-assembly-language-tutorial-part-1/
-  [20]: http://clang-analyzer.llvm.org/xcode.html
-  [21]: http://stackoverflow.com/questions/3297986/using-an-external-xcode-clang-static-analyzer-binary-with-additional-checks
-  [22]: http://kevinaboos.wordpress.com/2013/07/23/clang-tutorial-part-i-introduction/
-  [23]: http://kevinaboos.wordpress.com/2013/07/23/clang-tutorial-part-ii-libtooling-example/
-  [24]: http://kevinaboos.wordpress.com/2013/07/29/clang-tutorial-part-iii-plugin-example/
-  [25]: http://getoffmylawnentertainment.com/blog/2011/10/01/clang-plugin-development-tutorial/
-  [26]: http://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html
-  [27]: http://blog.llvm.org/2011/05/what-every-c-programmer-should-know_14.html
-  [28]: http://blog.llvm.org/2011/05/what-every-c-programmer-should-know_21.html
-  [29]: http://www.objc.io/issue-6
+[话题 #6 下的更多文章](http://objccn.io/issue-6/)

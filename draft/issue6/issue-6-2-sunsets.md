@@ -456,9 +456,9 @@ clang还有许多其他的用途。比如，可以写编译器插件（例如，
 
 * [Clang Tutorial](https://github.com/loarabia/Clang-tutorial)
 * [X86_64 Assembly Language Tutorial](http://cocoafactory.com/blog/2012/11/23/x86-64-assembly-language-tutorial-part-1/)
-* [Custom clang Build with Xcode (I)](http://clang-analyzer.llvm.org/xcode.html) and [(II)](http://stackoverflow.com/questions/3297986/using-an-external-xcode-clang-static-analyzer-binary-with-additional-checks)
-* [Clang Tutorial (I)](http://kevinaboos.wordpress.com/2013/07/23/clang-tutorial-part-i-introduction/), [(II)](http://kevinaboos.wordpress.com/2013/07/23/clang-tutorial-part-ii-libtooling-example/) and [(III)](http://kevinaboos.wordpress.com/2013/07/29/clang-tutorial-part-iii-plugin-example/)
+* [Custom clang Build with Xcode (I)](http://clang-analyzer.llvm.org/xcode.html) 和 [(II)](http://stackoverflow.com/questions/3297986/using-an-external-xcode-clang-static-analyzer-binary-with-additional-checks)
+* [Clang Tutorial (I)](http://kevinaboos.wordpress.com/2013/07/23/clang-tutorial-part-i-introduction/), [(II)](http://kevinaboos.wordpress.com/2013/07/23/clang-tutorial-part-ii-libtooling-example/) 和 [(III)](http://kevinaboos.wordpress.com/2013/07/29/clang-tutorial-part-iii-plugin-example/)
 * [Clang Plugin Tutorial](http://getoffmylawnentertainment.com/blog/2011/10/01/clang-plugin-development-tutorial/)
-* [LLVM blog: What every C programmer should know (I)](http://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html) , [(II)](http://blog.llvm.org/2011/05/what-every-c-programmer-should-know_14.html) and [(III)](http://blog.llvm.org/2011/05/what-every-c-programmer-should-know_21.html)
+* [LLVM blog: What every C programmer should know (I)](http://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html) , [(II)](http://blog.llvm.org/2011/05/what-every-c-programmer-should-know_14.html) 和 [(III)](http://blog.llvm.org/2011/05/what-every-c-programmer-should-know_21.html)
 
 [话题 #6 下的更多文章](http://objccn.io/issue-6/)

@@ -1,10 +1,10 @@
-## 编译器是做什么的？
+## 编译器做些什么？
 
-本文主要探讨一下编译器是做什么的，以及如何有效的利用编译器。
+本文主要探讨一下编译器主要做些什么，以及如何有效的利用编译器。
 
 简单的说，编译器有两个职责：把 Objective-C 代码转化成低级代码，以及对代码做分析，确保代码中没有任何明显的错误。
 
-现在，Xcode 的默认编译器是 clang。本文中我们提到的编译器都表示 clang。clang 的功能是首先对 Objective-C 代码做分析检查，然后将其转换为低级的类汇编代码：LLVM Intermediate Representation(LLVM 中间表达码)。接着 LLVM 会执行相关指令将 LLVM IR 编译成目标平台上的本地字节码，这个过程的完成方式可以是 Just-in-time，或在编译的时候完成。
+现在，Xcode 的默认编译器是 clang。本文中我们提到的编译器都表示 clang。clang 的功能是首先对 Objective-C 代码做分析检查，然后将其转换为低级的类汇编代码：LLVM Intermediate Representation(LLVM 中间表达码)。接着 LLVM 会执行相关指令将 LLVM IR 编译成目标平台上的本地字节码，这个过程的完成方式可以是即时编译 ( Just-in-time)，或在编译的时候完成。
 
 LLVM 指令的一个好处就是可以在支持 LLVM 的任意平台上生成和运行 LLVM 指令。例如，你写的一个 iOS app, 它可以自动的运行在两个完全不同的架构(Inter 和 ARM)上，LLVM 会根据不同的平台将 IR 码转换为对应的本地字节码。
 
@@ -81,10 +81,10 @@ LLVM 的优点主要得益于它的三层式架构 -- 第一层支持多种语�
 
     #define MAX(a,b) a > b ? a : b
 
-int main() {
-  printf("largest: %d\n", MAX(10,100));
-  return 0;
-}
+    int main() {
+      printf("largest: %d\n", MAX(10,100));
+      return 0;
+    }
 
 但是如果换成这么写：
 
@@ -237,8 +237,7 @@ int main() {
 
 #### 其他分析
 
-clang 在静态分析阶段，除了类型检查外，还会做许多其它一些分析。如果你把 clang 的代码仓库 clone 到本地，然后进入目录 `lib/StaticAnalyzer/Checkers`,你会看到所有的检查检查内容。例如，
-其实clang还有许多其他的分析能力。看一下clang源码的lib/StaticAnalyzer/Checkers目录，可以查看所有的静态检查。比如 `ObjCUnusedIVarsChecker.cpp` 是用来检查是否有定义了，但是从未使用过的变量。而 `ObjCSelfInitChecker.cpp` 则是检查在 你的初始化方法中中调用 `self` 之前，是否已经调用 `[self initWith...]` 或 `[super init]` 了。编译器还进行了一些其它的检查，例如在 `lib/Sema/SemaExprObjC.cpp` 的2,534行，有这样一句：
+clang 在静态分析阶段，除了类型检查外，还会做许多其它一些分析。如果你把 clang 的代码仓库 clone 到本地，然后进入目录 `lib/StaticAnalyzer/Checkers`,你会看到所有静态检查内容。比如 `ObjCUnusedIVarsChecker.cpp` 是用来检查是否有定义了，但是从未使用过的变量。而 `ObjCSelfInitChecker.cpp` 则是检查在 你的初始化方法中中调用 `self` 之前，是否已经调用 `[self initWith...]` 或 `[super init]` 了。编译器还进行了一些其它的检查，例如在 `lib/Sema/SemaExprObjC.cpp` 的2,534行，有这样一句：
 
     Diag(SelLoc, diag::warn_arc_perform_selector_leaks);
 

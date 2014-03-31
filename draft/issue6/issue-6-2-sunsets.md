@@ -1,16 +1,14 @@
-## 编译器是如何工作的？
+## 编译器是做什么的？
 
-本文主要探讨一下编译器是如何工作的，以及如何有效的利用编译器。
+本文主要探讨一下编译器是做什么的，以及如何有效的利用编译器。
 
 简单的说，编译器有两个职责：把 Objective-C 代码转化成低级代码，以及对代码做分析，确保代码中没有任何明显的错误。
 
-现在，Xcode 的默认编译器是 clang。本文中我们提到的编译器都表示 clang。clang 的功能是首先对 Objective-C 代码做分析检查，然后将其转换为低级的类汇编代码：LLVM Intermediate Representation(LLVM 中间表达码)。接着 LLVM 会执行相关指令将 LLVM IR 编译成目标平台上的本地字节码，这个过程可以实时进行，也可以在编译的时候进行。
+现在，Xcode 的默认编译器是 clang。本文中我们提到的编译器都表示 clang。clang 的功能是首先对 Objective-C 代码做分析检查，然后将其转换为低级的类汇编代码：LLVM Intermediate Representation(LLVM 中间表达码)。接着 LLVM 会执行相关指令将 LLVM IR 编译成目标平台上的本地字节码，这个过程的完成方式可以是 Just-in-time，或在编译的时候完成。
 
-LLVM 指令的一个好处就是可以在支持 LLVM 的任意平台上生成和运行 LLVM 指令。例如，你写的一个 iOS app, 他可以自动的运行在两个完全不同的架构(Inter 和 ARM)上，LLVM 会根据不同的平台将 IR 码转换为对应的本地字节码。
+LLVM 指令的一个好处就是可以在支持 LLVM 的任意平台上生成和运行 LLVM 指令。例如，你写的一个 iOS app, 它可以自动的运行在两个完全不同的架构(Inter 和 ARM)上，LLVM 会根据不同的平台将 IR 码转换为对应的本地字节码。
 
 LLVM 的优点主要得益于它的三层式架构 -- 第一层支持多种语言作为输入(例如 C, ObjectiveC, C++ 和 Haskell)，第二层是一个共享式的优化器(对 LLVM IR 做优化处理)，第三层是许多不同的目标平台(例如 Intel, ARM 和 PowerPC)。在这三层式的架构中，如果你想要添加一门语言到 LLVM 中，那么可以把重要精力集中到第一层上，如果想要增加另外一个目标平台，那么你没必要过多的考虑输入语言。在书 *The Architecture of Open Source Applications* 中 LLVM 的创建者 (Chris Lattner) 写了一章很棒的内容：关于 [LLVM 架构](http://www.aosabook.org/en/llvm.html)。
-
-LLVM的优秀跨平台特性得益于其特定的“三层式”架构，即在第一层支持多种输入语言（比如：C,ObjectiveC,C++以及Haskell），第二层利用共享优化器来对LLVM中间表达码进行优化，第三层挂接了不同的平台（比如:Intel,ARM和PowerPC）。这样的话第一层和第三层之间做到了比较好的弱相关，如果想要增加对不同的输入语言的支持，只需要解决第一层的支持即可，要是想要增加目标编译平台，也不太需要操心输入语言的问题。如果对LLVM的架构感兴趣，可以参阅书籍*The Architecture of Open Source Application*，里面收录了由LLVM创造者Chris Lattner编写的介绍[LLVM架构][3]的章节。
 
 在编译一个源文件时，编译器的处理过程分为几个阶段。要想查看编译 *hello.m* 源文件需要几个不同的阶段，我们可以让通过 clang 命令观察：
 
@@ -169,9 +167,8 @@ int main() {
 仔细观察可以发现，每一个标记都包含了对应的源码内容和其在源码中的位置。注意这里的位置是宏展开之前的位置，这样一来，如果编译过程中遇到什么问题，clang 能够在源码中指出出错的具体位置。
 
 ### 解析
----------
 
-接下来要说的东西比较有意思：之前生成的标记流将会被解析成一颗抽象语法树。由于 Objective-C 是一门复杂的语言，因此解析的过程不简单。解析过后，源程序变成了一颗抽象语法树：一颗代表源程序的树。假设我们有一个程序 `hello.m`：
+接下来要说的东西比较有意思：之前生成的标记流将会被解析成一棵抽象语法树 (abstract syntax tree -- AST)。由于 Objective-C 是一门复杂的语言，因此解析的过程不简单。解析过后，源程序变成了一棵抽象语法树：一棵代表源程序的树。假设我们有一个程序 `hello.m`：
 
     #import <Foundation/Foundation.h>
 
@@ -232,7 +229,9 @@ int main() {
 
 然后试图给这个子类中某个属性设置一个与其自身类型不相符的对象，编译器会给出一个可能使用不正确的警告。
 
-一般会把类型分为两类：动态的和静态的。动态的在运行时做检查，静态的在编译时做检查。以往，编写代码时可以向任意对象发送任何消息，在运行时，才会检查对象是否能够响应这些消息。由于只是在运行时做此类检查，所以叫做动态类型。至于静态类型，是在编译时做检查。当在代码中使用 ARC 时，编译器在编译期间，会做许多的类型检查：因为编译器需要知道哪个对象该如何使用。例如，如果 myObject 没有 hello 方法，那么就不能写如下这行代码了：
+一般会把类型分为两类：动态的和静态的。动态的在运行时做检查，静态的在编译时做检查。以往，编写代码时可以向任意对象发送任何消息，在运行时，才会检查对象是否能够响应这些消息。由于只是在运行时做此类检查，所以叫做动态类型。
+
+至于静态类型，是在编译时做检查。当在代码中使用 ARC 时，编译器在编译期间，会做许多的类型检查：因为编译器需要知道哪个对象该如何使用。例如，如果 myObject 没有 hello 方法，那么就不能写如下这行代码了：
 
     [myObject hello]
 
@@ -399,14 +398,14 @@ clang 完成代码的标记，解析和分析后，接着就会生成 LLVM 代�
 
 ### 使用 libclan g或 clang 插件
 
-之所以 clang 很酷：是因为它是一个开源的项目、并且它是一个非常好的工程：几乎可以说全身是宝。使用者可以创建自己的 clang 版本，针对自己的需求对其进行改造。比如说，可以改变 clang 生成代码的方式，增加更强的类型检查，或者按照自己的定义进行代码的检查分析等等。要想达成以上的目标，有很多种方法，其中最简单的就是使用一个名为 [libclang](http://clang.llvm.org/doxygen/group__CINDEX.html) 的C类库。libclang 提供的 API 非常简单，可以对 C 和 clang 做桥接，并可以用它对所有的源码做分析处理。不过，根据我的经验，如果使用者的需求更高，那么libclang就不怎么行了。针对这种情况，推荐使用 [Clangkit](https://github.com/macmade/ClangKit)，它是基于 clang 提供的功能，用 Objective-C 进行封装的一个库。
+之所以 clang 很酷：是因为它是一个开源的项目、并且它是一个非常好的工程：几乎可以说全身是宝。使用者可以创建自己的 clang 版本，针对自己的需求对其进行改造。比如说，可以改变 clang 生成代码的方式，增加更强的类型检查，或者按照自己的定义进行代码的检查分析等等。要想达成以上的目标，有很多种方法，其中最简单的就是使用一个名为 [libclang](http://clang.llvm.org/doxygen/group__CINDEX.html) 的C类库。libclang 提供的 API 非常简单，可以对 C 和 clang 做桥接，并可以用它对所有的源码做分析处理。不过，根据我的经验，如果使用者的需求更高，那么 libclang 就不怎么行了。针对这种情况，推荐使用 [Clangkit](https://github.com/macmade/ClangKit)，它是基于 clang 提供的功能，用 Objective-C 进行封装的一个库。
 
 最后，clang 还提供了一个直接使用 LibTooling 的 C++ 类库。这里要做的事儿比较多，而且涉及到 C++，但是它能够发挥 clang 的强大功能。用它你可以对源码做任意类型的分析，甚至重写程序。如果你想要给 clang 添加一些自定义的分析、创建自己的重构器 (refactorer)、或者需要基于现有代码做出大量修改，甚至想要基于工程生成相关图形或者文档，那么 LibTooling 是很好的选择。
 
 
 ### 自定义分析器
 
-开发者可以按照[Tutorial for building tools using LibTooling](http://clang.LLVM.org/docs/LibASTMatchersTutorial.html)中的说明去构造 LLVM ，clang 以及 clan g的附加工具。需要注意的是，编译代码是需要花费一些时间的，即时机器已经很快了，但是在编译期间，我还是可以吃顿饭的。
+开发者可以按照 [Tutorial for building tools using LibTooling](http://clang.LLVM.org/docs/LibASTMatchersTutorial.html) 中的说明去构造 LLVM ，clang 以及 clan g的附加工具。需要注意的是，编译代码是需要花费一些时间的，即时机器已经很快了，但是在编译期间，我还是可以吃顿饭的。
 
 接下来，进入到 LLVM 目录，然后执行命令`cd ~/llvm/tools/clang/tools/`。在这个目录中，可以创建自己独立的 clang 工具。例如，我们创建一个小工具，用来检查某个库是否正确使用。首先将 [样例工程](https://github.com/objcio/issue6-compiler-tool) 克隆到本地，然后输入 `make`。这样就会生成一个名为 `example` 的二进制文件。
 
@@ -416,7 +415,7 @@ clang 完成代码的标记，解析和分析后，接着就会生成 LLVM 代�
     + (instancetype)observerWithTarget:(id)target action:(SEL)selector;
     @end
 
-接下来，我们想要检查一下每当这个类被调用的时候，在 `target` 对象中是否都有对应的 `action` 方法存在。可以写个 C++ 函数来做这件事（注意，这是我第一次写C++程序，可能不那么严谨）：
+接下来，我们想要检查一下每当这个类被调用的时候，在 `target` 对象中是否都有对应的 `action` 方法存在。可以写个 C++ 函数来做这件事（注意，这是我第一次写 C++ 程序，可能不那么严谨）：
 
     virtual bool VisitObjCMessageExpr(ObjCMessageExpr *E) {
       if (E->getReceiverKind() == ObjCMessageExpr::Class) {

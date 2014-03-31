@@ -1,14 +1,14 @@
 当乔布斯第一次在苹果全球开发大会上介绍 [iCloud](http://en.wikipedia.org/wiki/ICloud) 的时候，他将无缝同步的功能描述的太过完美，以至于让人怀疑其是否真的能实现。并且当你在 [iOS 5](http://adcdownload.apple.com//videos/wwdc_2011__hd/session_303__whats_new_in_core_data_on_ios.m4v )和 [iOS 6](http://adcdownload.apple.com//videos/wwdc_2012__hd/session_227__using_icloud_with_core_data.mov) 系统中尝试使用 iCloud [Core Data](http://www.objc.io/issue-4/core-data-overview.html) 同步的时候你会对其真实情况了如指掌。
 
-同步库风格应用(译者注:"盒子类型"，比如 iPhoto )的问题导致[很多](http://www.macworld.com/article/1167742/developers_dish_on_iclouds_challenges.html)[开发者](http://blog.caffeine.lu/problems-with-core-data-icloud-storage.html)[放弃](http://www.jumsoft.com/2013/01/response-to-sync-issues/)支持 iCloud，而选择一些其他的方案比如 [Simperium](http://simperium.com)，[TICoreDataSync](https://github.com/nothirst/TICoreDataSync)，和 [WasabiSync](http://www.wasabisync.com)。
+同步库风格应用(译者注:"盒子类型"，比如 iPhoto )的问题导致[很多](http://www.macworld.com/article/1167742/developers_dish_on_iclouds_challenges.html)[开发者](http://blog.caffeine.lu/problems-with-core-data-icloud-storage.html)[放弃](http://www.jumsoft.com/2013/01/response-to-sync-issues/)支持 iCloud，而选择一些其他的方案比如 [Simperium](http://simperium.com)，[TICoreDataSync](https://github.com/nothirst/TICoreDataSync)，和 [WasabiSync](http://www.wasabisync.com) 来代替。
 
 2013年初，在经历了与苹果公司不透明及buggy实施 iCloud Core Data 同步的多年挣扎后，开发者终于公开批判了服务的重大缺陷并将这个话题推上了[风口浪尖](http://arstechnica.com/apple/2013/03/frustrated-with-icloud-apples-developer-community-speaks-up-en-masse/)。 最终被 Ellis Hamburger 在一篇[尖锐文章](http://www.theverge.com/2013/3/26/4148628/why-doesnt-icloud-just-work)提出。 
 
 ## WWDC
 
-很明显这些事情必须改变，同时引起苹果的注意。在 WWDC 2013，[Nick Gillett](http://about.me/nickgillett) 宣布 Core Data 团队花了一年时间专注于解决一些 iOS 7中 iCloud 最令人挫败的漏洞，承诺大幅改善问题并且让开发者更简单的使用。“我们明显减少开发者编写复杂的代码。” Nick Gillett在 [“What’s New in Core Data and iCloud”] 舞台上讲到。 在 iOS 7中, Apple 专注于 iCloud 的速度，可靠性，和性能，以及显示。
+很明显这些事情必须改变，同时引起苹果的注意。在 WWDC 2013，[Nick Gillett](http://about.me/nickgillett) 宣布 Core Data 团队花了一年时间专注于解决一些 iOS 7中 iCloud 最令人挫败的漏洞，承诺大幅改善问题并且让开发者更简单的使用。“我们明显减少开发者编写复杂的代码。” Nick Gillett在 [“What’s New in Core Data and iCloud”] 舞台上讲到。 在 iOS 7 中, Apple 专注于 iCloud 的速度，可靠性，和性能，以及显示。
 
-让我们看看是什么改变了,如何在 iOS 7应用程序实现 Core Data。
+让我们看看有哪些改变，如何在 iOS 7应用程序实现 Core Data。
 
 
 ## 设置
@@ -19,7 +19,7 @@
 
 每一个事务日志都是一个`plist`文件，负责实体的跟踪插入，删除以及更新。这些日志会自动被系统按照一定[基准](http://mentalfaculty.tumblr.com/post/23788055417/under-the-sheets-with-icloud-and-core-data-seeding)合并。
 
-在你设置iCloud的持久化存储的时候，调用[`addPersistentStoreWithType:configuration:URL:options:error:`](https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSPersistentStoreCoordinator_Class/NSPersistentStoreCoordinator.html#//apple_ref/occ/instm/NSPersistentStoreCoordinator/addPersistentStoreWithType:configuration:URL:options:error:)或者 [`migratePersistentStore:toURL:options:withType:error:`](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSPersistentStoreCoordinator_Class/NSPersistentStoreCoordinator.html#//apple_ref/doc/uid/TP30001180-BBCFDEGA)的时候注意设置一些[可选项](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSPersistentStoreCoordinator_Class/NSPersistentStoreCoordinator.html#//apple_ref/doc/constant_group/Store_Options):
+在你设置iCloud的持久化存储的时候，调用[`addPersistentStoreWithType:configuration:URL:options:error:`](https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSPersistentStoreCoordinator_Class/NSPersistentStoreCoordinator.html#//apple_ref/occ/instm/NSPersistentStoreCoordinator/addPersistentStoreWithType:configuration:URL:options:error:)或者 [`migratePersistentStore:toURL:options:withType:error:`](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSPersistentStoreCoordinator_Class/NSPersistentStoreCoordinator.html#//apple_ref/doc/uid/TP30001180-BBCFDEGA)的时候注意设置一些[选项](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSPersistentStoreCoordinator_Class/NSPersistentStoreCoordinator.html#//apple_ref/doc/constant_group/Store_Options):
 
 - `NSPersistentStoreUbiquitousContentNameKey` (`NSString`)  
 给 iCloud 存储空间设置一个名字（例如 @“MyAppStore”）
@@ -39,7 +39,7 @@
 指定一个容器，如果你的应用有多个容器定义在 entitlements 中(例如 `@"com.company.MyApp.anothercontainer"`)
 
 
-- `NSPersistentStoreRebuildFromUbiquitousContentOption` (`NSNumber` (Boolean), optional) 
+- `NSPersistentStoreRebuildFromUbiquitousContentOption` (`NSNumber` (Boolean), optional )
 告诉 Core Data 抹除本地存储数据并且用 iCoud 重建数据(例如 `@YES`)
 
 只支持 iOS 7 的应用的唯一必填选项是 ContentNameKey，为了让 Core Data 知道把日志和元数据放在哪里。在iOS 7中，你传入 NSPersistentStoreUbiquitousContentNameKey 的字符串值可以不包含'.'。 如果你的应用已经在使用 Core Data 去存储持久化数据，但是没有实现 iCloud 同步，你只需要简单加入 content name key 就可以为使用 iCloud, 无需关注有没有激活的 iCloud 账户。
@@ -111,7 +111,7 @@
 
 在 iOS 7 中，加入 iCloud 的参数并调用 `addPersistentStoreWithType:configuration:URL:options:error:` 它几乎瞬间返回数据。[^1] 其中内部设置了一个‘回滚’数据，利用本地存储作为一个占位符，而 iCloud 是由异步的事务日志和元数据构成。当它被添加到 coordinator 时更改后的回滚数据将被迁移到 iCloud 中。在回滚存储设置开始后控制台将会打印`Using local storage: 1` ，当 iCloud 完全设置完后你会看到‘Using local storage: 0’。 这句话的意思是 iCloud 存储已经启用。你可以通过监听`NSPersistentStoreDidImportUbiquitousContentChangesNotification`看到来自 iCloud 的内容。
 
-如果你的应用关注存储迁移，需要监听 `NSPersistentStoreCoordinatorStoresWillChangeNotification` 以及/或者`NSPersistentStoreCoordinatorStoresDidChangeNotification`(将这些通知关联到你的coordinator, 这样就可以过滤其他和你无关的通知) 并且在 `userInfo` 中检查 `NSPersistentStoreUbiquitousTransitionTypeKey` 的值， 这个数值应该会在`NSPersistentStoreUbiquitousTransitionTypeInitialImportCompleted`发生改变的时候对NSNumber 的枚举数值装箱，[`NSPersistentStoreUbiquitousTransitionType`](https://developer.apple.com/library/ios/documentation/cocoa/Reference/CoreDataFramework/Classes/NSPersistentStoreCoordinator_Class/NSPersistentStoreCoordinator.html#//apple_ref/c/tdef/NSPersistentStoreUbiquitousTransitionType)
+如果你的应用关注存储迁移变化，需要监听 `NSPersistentStoreCoordinatorStoresWillChangeNotification` 以及/或者`NSPersistentStoreCoordinatorStoresDidChangeNotification`(将这些通知关联到你的coordinator, 这样就可以过滤其他和你无关的通知) 并且在 `userInfo` 中检查 `NSPersistentStoreUbiquitousTransitionTypeKey` 的值， 这个数值应该会在`NSPersistentStoreUbiquitousTransitionTypeInitialImportCompleted`发生改变的时候对NSNumber 的枚举数值装箱，[`NSPersistentStoreUbiquitousTransitionType`](https://developer.apple.com/library/ios/documentation/cocoa/Reference/CoreDataFramework/Classes/NSPersistentStoreCoordinator_Class/NSPersistentStoreCoordinator.html#//apple_ref/c/tdef/NSPersistentStoreUbiquitousTransitionType)
 
 ## 边缘情况
 
@@ -219,7 +219,8 @@ iCloud 守护进程可以跨设备同步数据两种方式中的一种：在你�
  
 分发一个 iCloud Core Data 应用仍旧有很大的风险，你需要对所有的环节进行测试：账户转换，iCloud 存储空间耗尽，各种设备的测试和修复，model 的升级。尽管 iCloud debug 选项和 [developer.icloud.com](http://developer.icloud.com) 对这些有所帮助，但依靠一个你完全无法控制的服务来发布一个应用仍然需要那种纵身一跃入深渊的信念。
 
-正如 brent simmon [提到](http://inessential.com/2013/03/27/why_developers_shouldnt_use_icloud_sy)的，分发任意一种 iCloud Syncing 发布的应用都会被限制，所以需要事先了解一下成本。像 [day one](http://dayoneapp.com) 和 [1password](https://agilebits.com/onepassword) 这样的程序，会选择让使用者用 iCloud 或者 Dropbox 来同步他们的数据。对于很多使用者来说，没什么可以比一个独立的账户更加简易，但是一部分动手能力强的人喜欢更好的更全面的控制他们的数据。对于开发者而言，维持这种全异性[数据库同步系统](https://www.dropbox.com/developers/datastore)在开发和测试的过程当中是十分繁琐和超负荷的。
+正如 brent simmon [提到](http://inessential.com/2013/03/27/why_developers_shouldnt_use_icloud_sy)的，分发任意一种 iCloud Syncing 发布的应用都会被限制，
+所以需要事先了解一下成本。像 [day one](http://dayoneapp.com) 和 [1password](https://agilebits.com/onepassword) 这样的程序，会选择让使用者用 iCloud 或者 Dropbox 来同步他们的数据。对于很多使用者来说，没什么可以比一个独立的账户更加简易，但是一部分动手能力强的人喜欢更好的更全面的控制他们的数据。对于开发者而言，维持这种全异性[数据库同步系统](https://www.dropbox.com/developers/datastore)在开发和测试的过程当中是十分繁琐和超负荷的。
 
 
 ## Bugs 

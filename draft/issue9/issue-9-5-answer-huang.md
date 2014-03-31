@@ -58,7 +58,7 @@ Core Text 在任何绘图方面都为你提供了充分的灵活性。然而，C
 
 在我们的示例中，我们将会在 table view 中显示一列语录：
 
-![Table view with quotes](http://img.objccn.io/issue-9/uitableview-finished.png)
+<img alt="Table view with quotes" height="50%" src="http://img.objccn.io/issue-9/uitableview-finished.png" width="50%">
 
 首先，为了实现完全的自定义，我们创建一个 `UITableViewCell` 的子类。在这个子类中，我们需要亲自为我们的 label 布局：
 
@@ -107,7 +107,7 @@ Core Text 在任何绘图方面都为你提供了充分的灵活性。然而，C
 ## 经典的文本
 首先，让我们看一些经典的文本。我们将会使用 Jacomy-Régnier 的 [Histoire des nombres et de la numération mécanique](http://www.gutenberg.org/ebooks/27936)，并设为 [Bodoni](http://www.myfonts.com/fonts/itc/bodoni-seventy-two/) 字体。最终截屏效果如下所示:
 
-![Layout-Example-1](http://img.objccn.io/issue-9/Layout-Example-1.png)
+<img alt="Layout-Example-1" height="50%" src="http://img.objccn.io/issue-9/Layout-Example-1.png" width="50%">
 
 这些都是由 Text Kit 完成的。两段文字之间的装饰也是文本，使用的是 [Bodoni Ornaments](http://www.myfonts.com/fonts/itc/bodoni-ornaments/) 字体。
 
@@ -161,7 +161,7 @@ Core Text 在任何绘图方面都为你提供了充分的灵活性。然而，C
 
 接下来是显示数字的 table。我们想要将分数的小数点对齐显示，即英语中的 “.”：
 
-![Layout-Example-2](http://img.objccn.io/issue-9/Layout-Example-2.png)
+<img alt="Layout-Example-2" height="50%" src="http://img.objccn.io/issue-9/Layout-Example-2.png" width="50%">
 
 为了达到这个目的，我们需要指定  table 将中心停在分隔符上。
 
@@ -184,7 +184,7 @@ Core Text 在任何绘图方面都为你提供了充分的灵活性。然而，C
 
 另一个常见的使用情况就像 list 这样：
 
-![Layout-Example-3](http://img.objccn.io/issue-9/Layout-Example-3.png)
+<img alt="Layout-Example-3" height="50%" src="http://img.objccn.io/issue-9/Layout-Example-3.png" width="50%">
 
 （图片来自 [Robert's Rules of Order](http://www.gutenberg.org/ebooks/9097)，作者为 Henry M. Robert）
 

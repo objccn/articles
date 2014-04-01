@@ -185,7 +185,7 @@ Foundation 框架中的 `NSFormatter` 是一个抽象类，它有两个已经实
 
 ---
 
-[语题 #7 下的更多文章](http://www.objc.io/issue-7/)
+[语题 #7 下的更多文章](http://objccn.io/issue-7/)
 
 原文 [Custom Formatters](http://www.objc.io/issue-7/nsformatter.html)
 

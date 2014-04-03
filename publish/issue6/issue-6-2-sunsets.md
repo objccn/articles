@@ -459,4 +459,12 @@ clang还有许多其他的用途。比如，可以写编译器插件（例如，
 * [Clang Plugin Tutorial](http://getoffmylawnentertainment.com/blog/2011/10/01/clang-plugin-development-tutorial/)
 * [LLVM blog: What every C programmer should know (I)](http://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html) , [(II)](http://blog.llvm.org/2011/05/what-every-c-programmer-should-know_14.html) 和 [(III)](http://blog.llvm.org/2011/05/what-every-c-programmer-should-know_21.html)
 
+---
+
 [话题 #6 下的更多文章](http://objccn.io/issue-6/)
+
+原文: [The Compiler](http://www.objc.io/issue-6/compiler.html)
+
+译文 [objc.io 第6期 编译器](https://github.com/answer-huang/objcio_cn/blob/master/%E7%BF%BB%E8%AF%91%E5%AE%8C%E6%88%90/Issue%20%236%20The%20Compiler%20%E7%BC%96%E8%AF%91%E5%99%A8.md)
+
+精细校对 [@BeyondVincent](http://beyondvincent.com/)

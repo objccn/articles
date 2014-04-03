@@ -8,32 +8,31 @@
 
 ## xcrun
 
-Some infrastructure first: There's a command-line tool called `xcrun` which we'll use a lot. It may seem odd, but it's pretty awesome. This little tool is used to run other tools. Instead of running:
+先来看一些基础性的东西：这里会大量使用一个名为 `xcrun` 的命令行工具。看起来可能会有点奇怪，不过它非常的出色。这个小工具用来调用别的一些工具。原先，我们在终端执行如下命令：
 
     % clang -v
 
-On the Terminal, we'll use:
+现在我们用下面的命令代替：
 
     % xcrun clang -v
 
-What `xcrun` does is to locate `clang` and run it with the arguments that follow `clang`.
+上面的命令会定位到 `clang`，并执行它，附带输入 `clang` 后面的参数。
 
-Why would we do this? It may seem pointless. But `xcrun` allows us to (1) have multiple versions of Xcode and use the tools from a specific Xcode version, and (2) use the tools for a specific SDK (software development kit). If you happen to have both Xcode 4.5 and Xcode 5, with `xcode-select` and `xcrun` you can choose to use the tools (and header files, etc.) from the iOS SDK from Xcode 5, or the OS X tools from Xcode 4.5. On most other platforms, that'd be close to impossible. Check out the man pages for `xcrun` and `xcode-select` for more details. And you can use the developer tools from the command line without installing the *Command Line Tools*.
+我们为什么要这样做呢？看起来没有什么意义。不过 `xcode` 我们可以: (1) 使用多个版本的 Xcode，以及使用某个特定 Xcode 版本中的工具。(2) 针对某个特定的 SDK (software development kit) 使用不同的工具。如果你有 Xcode 4.5 和 Xcode 5，通过 `xcode-select` 和 `xcrun` 可以选择使用 Xcode 5 中 iOS SDK 的工具，或者 Xcode 4.5 中的 OS X 工具。在许多其它平台中，这是不可能做到的。查阅 `xcrun` 和 `xcode-select` 的主页内容可以了解到详细内容。不用安装 *Command Line Tools*，就能使用命令行中的开发者工具。
 
+## 不使用 IDE 的 Hello World
 
-## Hello World Without an IDE
-
-Back in Terminal, let's create a folder with a C file in it:
+回到终端 (Terminal)，创建一个包含一个 C 文件的文件夹：
 
     % mkdir ~/Desktop/objcio-command-line
     % cd !$
     % touch helloworld.c
 
-Now edit this file in your favorite text editor -- even TextEdit.app will do:
+接着使用你喜欢的文本编辑器来编辑这个文件 -- 例如 TextEdit.app：
 
     % open -e helloworld.c
 
-Fill in this piece of code:
+输入如下代码：
 
     #include <stdio.h>
     int main(int argc, char *argv[])
@@ -42,59 +41,59 @@ Fill in this piece of code:
         return 0;
     }
 
-Save and return to Terminal to run this:
+保存并返回到终端，然后运行如下命令：
 
     % xcrun clang helloworld.c
     % ./a.out
 
-You should now see a lovely `Hello World!` message on your terminal. You compiled a C program and ran it. All without an IDE. Take a deep breath. Rejoice.
+现在你能够在终端上看到熟悉的 `Hello World!`。这里我们编译并运行 C 程序，全程没有使用 IDE。深呼吸一下，高兴高兴。
 
-What did we just do here? We compiled `helloworld.c` into a Mach-O binary called `a.out`. That is the default name the compiler will use unless we specify something else.
+上面我们到底做了些什么呢？我们将 `helloworld.c` 编译为一个名为 `a.out` 的 Mach-o 二进制文件。注意，如果我们没有指定名字，那么编译器会默认的将其指定为 a.out。
 
-How did this binary get generated? There are multiple pieces to look at and understand. We'll look at the compiler first.
+这个二进制文件是如何生成的呢？实际上有许多内容需要观察和理解。我们先看看编译器吧。
 
-### Hello World and the Compiler
+### Hello World 和编译器
 
-The compiler of choice nowadays is `clang` (pronounced /klæŋ/). Chris writes in more detail [about the compiler](/issue-6/compiler.html).
+时下 Xcode 中编译器默认选择使用 `clang`(读作 /klæŋ/)。[关于编译器](http://objccn.io/issue-6-2/)，Chris 写了更详细的文章。
 
-Briefly put, the compiler will process the `helloworld.c` input file and produce the executable `a.out`. This processing consist of multiple steps/stages. What we just did is run all of them in succession:
+简单的说，编译器处理过程中，将 `helloworld.c` 当做输入文件，并生成一个可执行文件 `a.out`。这个过程有多个步骤/阶段。我们需要做的就是正确的执行它们。
 
-##### Preprocessing
+##### 预处理
 
-* Tokenization
-* Macro expansion
-* `#include` expansion
+* 符号化 (Tokenization)
+* 宏定义的展开
+* `#include` 的展开
 
-##### Parsing and Semantic Analysis
+##### 语法和语义分析
 
-* Translates preprocessor tokens into a parse tree
-* Applies semantic analysis to the parse tree
-* Outputs an *Abstract Syntax Tree* (AST)
+* 将符号化后的内容转化为一棵语法树
+* 语法树做语义分析
+* 输出一棵*抽象语法树*（Abstract Syntax Tree* (AST)）
 
-#####Code Generation and Optimization
+##### 生成代码和优化
 
-* Translates an AST into low-level intermediate code (LLVM IR)
-* Responsible for optimizing the generated code
-* target-specific code generation
-* Outputs assembly
+* 将 AST 转换为更低级的中间码 (LLVM IR)
+* 对生成的中间码做优化
+* 生成特定目标代码
+* 输出汇编代码
 
-##### Assembler
+##### 汇编器
 
-* Translates assembly code into a target object file
+* 将汇编代码转换为目标对象文件。
 
 ##### Linker
 
-* Merges multiple object files into an executable (or a dynamic library)
+* 将多个目标对象文件合并为一个可执行文件(或者一个动态库)
 
-Let's see how these steps look for our simple example.
+我们来看一个关于这些步骤的简单的例子。
 
-#### Preprocessing
+#### 预处理
 
-The first thing the compiler will do is preprocess the file. We can tell clang to show us what it looks like if we stop after that step:
+编译过程中，编译器首先要做的事情就是对文件做处理。预处理结束之后，如果我们停止编译过程，那么我们可以让编译器显示出预处理的一些内容：
 
     % xcrun clang -E helloworld.c
 
-Wow. That will output 413 lines. Let's open that in an editor to see what's going on:
+喔喔。 上面的命令输出的内容有 413 行。我们用编辑器打开这些内容，看看到底发生了什么：
 
     % xcrun clang -E helloworld.c | open -f
 

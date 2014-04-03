@@ -2,11 +2,11 @@
 
 同步库风格应用(译者注:"盒子类型"，比如 iPhoto )的问题导致[很多](http://www.macworld.com/article/1167742/developers_dish_on_iclouds_challenges.html)[开发者](http://blog.caffeine.lu/problems-with-core-data-icloud-storage.html)[放弃](http://www.jumsoft.com/2013/01/response-to-sync-issues/)支持 iCloud，而选择一些其他的方案比如 [Simperium](http://simperium.com)，[TICoreDataSync](https://github.com/nothirst/TICoreDataSync) 和 [WasabiSync](http://www.wasabisync.com)。
 
-2013年初，在经历了苹果公司不透明的折磨及 buggy 实施 iCloud Core Data 同步的多年挣扎后，开发者终于公开批判了服务的重大缺陷并将这个话题推上了[风口浪尖](http://arstechnica.com/apple/2013/03/frustrated-with-icloud-apples-developer-community-speaks-up-en-masse/)。 最终 Ellis Hamburger 在一篇[尖锐文章](http://www.theverge.com/2013/3/26/4148628/why-doesnt-icloud-just-work)提出。 
+2013年初，在苹果公司不透明及充满 bug 的 iCloud Core Data 同步实现中挣扎多年后，开发者终于公开批判了这项服务的重大缺陷并将这个话题推上了[风口浪尖](http://arstechnica.com/apple/2013/03/frustrated-with-icloud-apples-developer-community-speaks-up-en-masse/)。 最终被 Ellis Hamburger 在一篇[尖锐文章](http://www.theverge.com/2013/3/26/4148628/why-doesnt-icloud-just-work)提出。
 
 ## WWDC
 
-很明显这些事情必须改变，同时引起苹果的注意。在 WWDC 2013，[Nick Gillett](http://about.me/nickgillett) 宣布 Core Data 团队花了一年时间专注于解决 iOS 7中 iCloud 最令人挫败的漏洞，承诺大幅改善问题并且让开发者更简单的使用。“我们明显减少开发者编写复杂的代码。” Nick Gillett在 [“What’s New in Core Data and iCloud”] 舞台上讲到。 在 iOS 7中 Apple 专注于 iCloud 的速度，可靠性，和性能以及显示。
+苹果也注意到了，很明显这些事情必须改变。在 WWDC 2013，[Nick Gillett](http://about.me/nickgillett) 宣布 Core Data 团队花了一年时间专注于解决一些 iOS 7中 iCloud 最令人挫败的漏洞，承诺大幅改善问题并且让开发者更简单的使用。“我们明显减少开发者编写复杂的代码。” Nick Gillett在 [“What’s New in Core Data and iCloud”] 舞台上讲到。 在 iOS 7 中, Apple 专注于 iCloud 的速度，可靠性，和性能以及显示。
 
 让我们看看是什么改变了，如何在 iOS 7应用程序实现 Core Data。
 

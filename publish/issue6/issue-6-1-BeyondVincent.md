@@ -6,7 +6,7 @@
 
 为了了解 Xcode build 过程的内部工作原理，我们首先把突破口瞄准完整的 log 文件上。打开 Log Navigator ，从列表中选择一个 Build ，Xcode 会将 log 文件很完美的展现出来。
 
-{<1>}![Xcode build log navigator](http://img.objccn.io/issue-6/build-log.png)
+![Xcode build log navigator](http://img.objccn.io/issue-6/build-log.png)
 
 默认情况下，上面的 Xcode 界面中隐藏了大量的信息，我们通过选择任务，然后点击右边的展开按钮，就能看到每个任务的详细信息。另外一种可选的方案就是选中列表中的一个或者多个任务，然后选择组合键 Cmd-C，这将会把所有的纯文本信息拷贝至粘贴板。最后，我们还可以选择 Editor 菜单中的 "Copy transcript for shown results"，以此将所有的 log 信息拷贝到粘贴板中。
 
@@ -103,7 +103,7 @@
 
 当你选择 Xcode 5 中的一个工程时，会在 project editor 顶部显示出 6 个 tabs：General, Capabilities, Info, Build Settings, Build Phases 以及 Build Rules。
 
-{<2>}![Xcode project editor tabs](http://img.objccn.io/issue-6/project-editor-tabs.png)
+![Xcode project editor tabs](http://img.objccn.io/issue-6/project-editor-tabs.png)
 
 对于我们理解 build 过程来说，其中最后 3 项与 build 过程紧密相连。
 
@@ -111,7 +111,7 @@
 
 Build Phases 代表着将代码转变为可执行文件的最高级别规则。里面描述了 build 过程中必须执行的不同类型规则。
 
-{<3>}![Xcode build phases](http://img.objccn.io/issue-6/build-phases.png)
+![Xcode build phases](http://img.objccn.io/issue-6/build-phases.png)
 
 首先是 target 依赖项的构建。这里会告诉 build 系统，build 当前的 target 之前，必须先对这里的依赖性进行 build。实际上这并不属于真正的 build phase，在这里，Xcode 只不过将其与 build phase 显示到一块罢了。
 
@@ -145,7 +145,7 @@ Build rules 指定了不同的文件类型该如何编译。一般来说，开�
 
 一条 build rule 指定了其应用于哪种类型文件，该类型文件是如何被处理的，以及输出的内容该如何处置。比方说，我们创建了一条预处理规则，该规则将 Objective-C 的实现文件当做输入，解析文件中的注释内容，最后再输出一个 `.m` 文件，文件中包含了生成的代码。由于我们不能将 `.m` 文件既当做输入又当做输出，所以我使用了 `.mal` 后缀，定制的 build rule 如下所示：
 
-{<4>}![Custom build rule](http://img.objccn.io/issue-6/custom-build-rule.png)
+![Custom build rule](http://img.objccn.io/issue-6/custom-build-rule.png)
 
 上面的规则应用于所有后缀为 `*.mal` 的文件，这些文件会被自定义的脚本处理（调用我们的预处理器，并附带上输入和输出参数）。最后，该规则告诉 build system 在哪里可以找到此规则的输出文件。
 

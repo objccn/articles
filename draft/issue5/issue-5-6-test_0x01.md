@@ -135,7 +135,7 @@ iOS 7 中，我有很多代码路径（主要是 `UITableViewCells`）需要额�
 
 ## 匹配键盘背景
 
-苹果公司终于公开了 [`UIInputView`](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIInputView_class/Reference/Reference.html)，其中提供了一种方式——使用 `UIInputViewStyleKeyboard` 来匹配键盘样式。这使得你编写的自定义键盘或者适应默认样式的默认键盘的扩展（工具条）。这个类[一开始](https://github.com/nst/iOS-Runtime-Headers/commits/master/Frameworks/UIKit.framework/UIInputView.h)就存在了，不过现在我们终于可以绕过私有API的方式来使用它了。
+苹果公司终于公开了 [`UIInputView`](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIInputView_class/Reference/Reference.html)，其中提供了一种方式——使用 `UIInputViewStyleKeyboard` 来匹配键盘样式。这使得你能编写自定义的键盘或者适应默认样式的默认键盘的扩展（工具条）。这个类[一开始](https://github.com/nst/iOS-Runtime-Headers/commits/master/Frameworks/UIKit.framework/UIInputView.h)就存在了，不过现在我们终于可以绕过私有API的方式来使用它了。
 
 如果 `UIInputView` 是一个 `inputView` 或者 `inputAccessoryView` 的*根视图*，它将只显示一个背景，否则它将是透明的。遗憾的是，这并不能让你实现一个未填充的分离态的键盘，但它仍然比用一个简单的 UIToolbar 要好。我还没看到苹果在何处使用这个新 API，看上去 Safari 里仍然使用着 `UIToolbar`。
 

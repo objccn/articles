@@ -8,17 +8,17 @@
 
 苹果也注意到了，很明显这些事情必须改变。在 WWDC 2013，[Nick Gillett](http://about.me/nickgillett) 宣布 Core Data 团队花了一年时间专注于在 iOS 7 中解决一些 iCloud 最令人挫败的漏洞，承诺大幅改善问题并且让开发者更简单的使用。“我们明显减少了开发者所需要编写的复杂代码的数量。” Nick Gillett在 [“What’s New in Core Data and iCloud”] 舞台上讲到。 在 iOS 7 中，Apple 专注于 iCloud 的速度，可靠性，和性能，事实上这卓有成效。
 
-让我们看看是什么改变了，如何在 iOS 7 应用程序实现 Core Data。
+让我们看看具体有哪些改变，以及如何在 iOS 7 应用程序实现 Core Data。
 
 ## 设置
 
 要设置一个 iCloud Core Data 应用，你首先需要在你的应用中请求 iCloud 的[访问权限](https://developer.apple.com/library/mac/documentation/General/Conceptual/iCloudDesignGuide/Chapters/iCloudFundametals.html)，让你的应用程序可以读写一个或多个开放性容器 (ubiquity containers)，在 Xcode 5中你可以在你应用 target 的 [“Capabilities”](https://developer.apple.com/xcode/) 选项卡中轻易完成着这一切。
 
-在开放性容器内部，Core Data Framework 将会存储所有的事务日志 -- 记录你的所有持久化的存储 -- 为了跨设备同步数据做准备。 Core Data 使用了一个被称为[多源重复](http://en.wikipedia.org/wiki/Multi-master_replication)(multi-master replication)的技术来同步 iOS 和 Macs 之间的数据。可持久化存储的数据存在了每一个设备的 `CoreDataUbiquitySupport` 文件夹里，你可以在应用沙盒中找到他。当用户修改了 iCloud accounts，Core Data framework 会管理多个账户，而并不需要你自己去监听[`NSUbiquityIdentityDidChangeNotification`](https://developer.apple.com/library/mac/documentation/cocoa/reference/foundation/classes/nsfilemanager_class/Reference/Reference.html#//apple_ref/doc/uid/20000305-SW81)。
+在开放性容器内部，Core Data Framework 将会存储所有的事务日志 -- 记录你的所有持久化的存储 -- 为了跨设备同步数据做准备。 Core Data 使用了一个被称为[多源复制](http://en.wikipedia.org/wiki/Multi-master_replication)(multi-master replication)的技术来同步 iOS 和 Macs 之间的数据。可持久化存储的数据存在了每个设备的 `CoreDataUbiquitySupport` 文件夹里，你可以在应用沙盒中找到他。当用户修改了 iCloud accounts，Core Data framework 会管理多个账户，而并不需要你自己去监听[`NSUbiquityIdentityDidChangeNotification`](https://developer.apple.com/library/mac/documentation/cocoa/reference/foundation/classes/nsfilemanager_class/Reference/Reference.html#//apple_ref/doc/uid/20000305-SW81)。
 
 每一个事务日志都是一个`plist`文件，负责实体的跟踪插入，删除以及更新。这些日志会自动被系统按照一定[基准](http://mentalfaculty.tumblr.com/post/23788055417/under-the-sheets-with-icloud-and-core-data-seeding)合并。
 
-在你设置iCloud的持久化存储的时候，调用[`addPersistentStoreWithType:configuration:URL:options:error:`](https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSPersistentStoreCoordinator_Class/NSPersistentStoreCoordinator.html#//apple_ref/occ/instm/NSPersistentStoreCoordinator/addPersistentStoreWithType:configuration:URL:options:error:)或者 [`migratePersistentStore:toURL:options:withType:error:`](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSPersistentStoreCoordinator_Class/NSPersistentStoreCoordinator.html#//apple_ref/doc/uid/TP30001180-BBCFDEGA)的时候注意设置一些[选项](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSPersistentStoreCoordinator_Class/NSPersistentStoreCoordinator.html#//apple_ref/doc/constant_group/Store_Options):
+在你设置iCloud的持久化存储的时候，调用[`addPersistentStoreWithType:configuration:URL:options:error:`](https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSPersistentStoreCoordinator_Class/NSPersistentStoreCoordinator.html#//apple_ref/occ/instm/NSPersistentStoreCoordinator/addPersistentStoreWithType:configuration:URL:options:error:)或者 [`migratePersistentStore:toURL:options:withType:error:`](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSPersistentStoreCoordinator_Class/NSPersistentStoreCoordinator.html#//apple_ref/doc/uid/TP30001180-BBCFDEGA)的时候注意需要设置一些[选项](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSPersistentStoreCoordinator_Class/NSPersistentStoreCoordinator.html#//apple_ref/doc/constant_group/Store_Options):
 
 - `NSPersistentStoreUbiquitousContentNameKey` (`NSString`)  
     给 iCloud 存储空间指定一个名字（例如 @“MyAppStore”）
@@ -38,7 +38,7 @@
 - `NSPersistentStoreRebuildFromUbiquitousContentOption` (`NSNumber` (Boolean), 可选) 
     告诉 Core Data 抹除本地存储数据并且用 iCoud 重建数据(例如 `@YES`)
 
-只支持 iOS 7 的应用的唯一必填选项是 ContentNameKey，为了让 Core Data 知道把日志和元数据放在哪里。在 iOS 7中，你传入 NSPersistentStoreUbiquitousContentNameKey 的字符串值不应该包含'.'。 如果你的应用已经在使用 Core Data 去存储持久化数据，但是没有实现 iCloud 同步，你只需要简单加入 content name key 就能将存储转为可以使用 iCloud 的状态，而无需关注有没有活跃的 iCloud 账户。
+只支持 iOS 7 的应用的唯一必填选项是 ContentNameKey，它是为了让 Core Data 知道把日志和元数据放在哪里。在 iOS 7 中，你传入 NSPersistentStoreUbiquitousContentNameKey 的字符串值不应该包含'.'。 如果你的应用已经使用 Core Data 去存储持久化数据，但是没有实现 iCloud 同步，你只需要简单加入 content name key 就能将存储转为可以使用 iCloud 的状态，而无需关注有没有活跃的 iCloud 账户。
 
 为你的应用设置一个管理对象上下文简单到只需要实例化一个 `NSManagedObjectContext` 并连同一个合并策略一并告诉你的持久化存储。苹果建议使用 `NSMergeByPropertyObjectTrumpMergePolicy` 作为合并策略，它会合并冲突，并给予内存中的变化的数据相较于磁盘数据更高的优先级。
 
@@ -106,7 +106,7 @@
 
 ### 异步持久化设置
 
-在 iOS 7 中，使用 iCloud 选项来调用 `addPersistentStoreWithType:configuration:URL:options:error:` 几乎可以瞬间返回存储对象。[^1] 能做到这样是因为它首先设置了一个内部‘回滚’存储，利用本地存储作为一个占位符，同时由事务日志和元数据来异步地构建 iCloud 存储。当回滚存储有变化时，这些变化将在 iCloud 存储被添加到 coordinator 时合并至其中。在完成回滚存储的设置后，控制台将会打印`Using local storage: 1` ，当 iCloud 完全设置完后，你会看到‘Using local storage: 0’。 这句话的意思是 iCloud 存储已经启用，此后你可以通过监听`NSPersistentStoreDidImportUbiquitousContentChangesNotification`看到来自 iCloud 的内容。
+在 iOS 7 中，使用 iCloud 选项来调用 `addPersistentStoreWithType:configuration:URL:options:error:` 几乎可以瞬间返回存储对象。[^1] 能做到这样是因为它首先设置了一个内部‘回滚’存储，利用本地存储作为一个占位符，同时由事务日志和元数据来异步地构建 iCloud 存储。当回滚存储有变化时，这些变化将在 iCloud 存储被添加到 coordinator 时合并至其中。在完成回滚存储的设置后，控制台将会打印`Using local storage: 1` ，当 iCloud 完全设置完后，你会看到 `Using local storage: 0`。 这句话的意思是 iCloud 存储已经启用，此后你可以通过监听`NSPersistentStoreDidImportUbiquitousContentChangesNotification`看到来自 iCloud 的内容。
 
 如果你的应用关注在不同存储间的迁移，那么你需要监听 `NSPersistentStoreCoordinatorStoresWillChangeNotification` 和/或`NSPersistentStoreCoordinatorStoresDidChangeNotification`(将这些通知关联到你的 coordinator，这样就可以过滤其他和你无关的通知) 并且在 `userInfo` 中检查 `NSPersistentStoreUbiquitousTransitionTypeKey` 的值， 这个数值是一个对应 [`NSPersistentStoreUbiquitousTransitionType`](https://developer.apple.com/library/ios/documentation/cocoa/Reference/CoreDataFramework/Classes/NSPersistentStoreCoordinator_Class/NSPersistentStoreCoordinator.html#//apple_ref/c/tdef/NSPersistentStoreUbiquitousTransitionType) 枚举类型的 NSNumber，在迁移已经发生时，这个值是`NSPersistentStoreUbiquitousTransitionTypeInitialImportCompleted`。
 
@@ -122,7 +122,7 @@
 
 iOS 5 系统中，用户在切换 iCloud 账户或者禁用账户时，`NSPersistentStoreCoordinator` 中的数据会在应用无法知晓的情况下完全消失。事实上检查一个账号是否变更了的唯一的方法是调用 `NSFileManager` 中的 `URLForUbiquityContainerIdentifier`，这个方法可以创建一个开放性容器文件夹，并且迅速返回。在 iOS 6，这种情况随着引进 `ubiquityIdentityToken` 和相应的`NSUbiquityIdentityDidChangeNotification` 之后得到改善。因为在 ubiquity id 变化的时候会发送通知，这就可以对应用账户的变更进行有效的确认并及时的发出提示。
 
-然而，iOS7 中这种转换的情况就变得更加简单，账户的切换是由 Core Data 框架来处理的，因此只要你的程序能够正常响应 `NSPersistentStoreCoordinatorStoresWillChangeNotification` 和 `NSPersistentStoreCoordinatorStoresDidChangeNotification` 便可以在切换账户的时候流畅的更换信息。检查 `userInfo` 的字典中 `NSPersistentStoreUbiquitousTransitionType` 键将提供更多关于迁移的类型的细节。
+然而，iOS 7 中这种转换的情况就变得更加简单，账户的切换是由 Core Data 框架来处理的，因此只要你的程序能够正常响应 `NSPersistentStoreCoordinatorStoresWillChangeNotification` 和 `NSPersistentStoreCoordinatorStoresDidChangeNotification` 便可以在切换账户的时候流畅的更换信息。检查 `userInfo` 的字典中 `NSPersistentStoreUbiquitousTransitionType` 键将提供更多关于迁移的类型的细节。
 
 在应用沙箱中框架会为每个账户管理各自独立的持久化存储，所以这就意味着如果用户回到之前的账户，其数据会和之前离开时一样，仍然可用。Core Data 现在也会在磁盘空间不足时管理对这些文件进行的清理工作。
 
@@ -176,19 +176,20 @@ iOS 5 系统中，用户在切换 iCloud 账户或者禁用账户时，`NSPersis
 
 ### 界面更新
 
-很多库风格应用同时显示集合对象和一个对象的详细信息。 视图是由 `NSFetchedResultsController` 实例自动从网络更新 Core Data 的数据中改变。然而，您应该确保每一个详细视图正确监听变化对象并使自己保持最新。如果你不这样做, 将有显示陈旧的数据的风险，或者更糟，你将覆盖其他设备修改的数据。
+很多库风格应用同时显示集合对象和一个对象的详细信息。 视图是由 `NSFetchedResultsController` 实例自动从网络更新 Core Data 的数据然后刷新。然而，您应该确保每一个详细视图正确监听变化对象并使自己保持最新。如果你不这样做, 将有显示陈旧的数据的风险，或者更糟，你将覆盖其他设备修改的数据。
 
 ## 测试
 
 ### 本地网络和因特网同步
 
-iCloud 守护进程将使用本地网络或使用因特网这两种方式中的其中一种，来进行跨设备的数据同步。守护进程检测到两个设备时，也被称为对等网络，在同一个局域网，将在内网快速传输。然而，如果在不同的网络，该系统将传输回滚事务日志。这很重要，你必须测试这两种情况下大量开发，以确保您的应用程序正常运作。在这两种场景中，从备份存储同步更改或过渡到 iCloud 有时需要比预期更长的时间，所以如果有什么不工作，尝试给它点时间。
+iCloud 守护进程将使用本地网络或使用因特网这两种方式中的其中一种，来进行跨设备的数据同步。守护进程检测到两个设备时，也被称为对等网络，在同一个局域网，将在内网快速传输。然而，如果在不同的网络，该系统将传输回滚事务日志。这很重要，你必须在开发中对两种情况进行大量的测试，以确保您的应用程序正常运作。在这两种场景中，从备份存储同步更改或过渡到 iCloud 有时需要比预期更长的时间，所以如果有什么不工作，尝试给它点时间。
 
 ### 模拟器中使用 iCloud
 	
 在 iOS 7 中最有用的更新就是 iCloud 终于可以在[模拟器](https://developer.apple.com/library/mac/documentation/General/Conceptual/iCloudDesignGuide/Chapters/TestingandDebuggingforiCloud.html)中使用。在以往的版本中，你只能在设备中测试，这个限制使监听开发的同步进程有点困难。现在你甚至可以在你的 Mac 和模拟器中进行数据同步。
 
-在 Xcode 5 新增的 iCloud 调试仪表中，你可以看到在你的应用程序的开放性存储中的文件，以及检查它们的文件传输状态，比如 "Current"， "Excluded"， 和 "Stored in Cloud" 等。 对于更底层的调试，可以把 `-com.apple.coredata.ubiquity.logLevel 3` 加入到启动参数或者设置成用户默认，以启用详细日志。还可以考虑在 iOS 中安装 [iCloud 存储调试日志配置文件](http://developer.apple.com/downloads) 以及新的 [`ubcontrol`](https://developer.apple.com/library/mac/documentation/Darwin/Reference/Manpages/man1/ubcontrol.1.html) 命令行工具提供高质量错误报告到Apple 。你可以在你的设备连入 iTunes 并同步后在 `~/Library/Logs/CrashReporter/MobileDevice/device-name/DiagnosticLogs` 中获取这些工具生成的日志。
+在 Xcode 5 新增的 iCloud 调试仪表中，你可以看到在你的应用程序的开放性存储中的文件，以及检查它们的文件传输状态，比如 "Current"， "Excluded"， 和 "Stored in Cloud" 等。 对于更底层的调试，可以把 `-com.apple.coredata.ubiquity.logLevel 3` 加入到启动参数或者设置成用户默认，以启用详细日志。还可以考虑在 iOS 中安装 [iCloud 存储调试日志配置文件](http://developer.apple.com/downloads) 以及新的 [`ubcontrol`](https://developer.apple.com/library/mac/documentation/Darwin/Reference/Manpages/man1/ubcontrol.1.html) 命令行工具提供高质量错误报告到Apple 。你可以在你的设备连入 iTunes 并同步后在 `~/Library/Logs/CrashReporter/MobileDevice/device-name/DiagnosticLogs`
+ 中获取这些工具生成的日志。
 
 然而，iCloud Core Data 并不完全支持模拟器。在用实际设备和模拟器测试传输时，似乎模拟器的 iCloud Core Data 只上传更改，却从不把它们抓取下来。虽然比起分别使用多个不同测试设备来说，确实进步和方便了很多，但是 iOS 模拟器上的 iCloud Core Data 支持绝对还没有完全成熟。
 

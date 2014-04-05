@@ -1,4 +1,4 @@
-Key-value coding (KVC) 和 key-value observing (KVO) 是两种能让我们驾驭 Objective-C 动态特性并简化我们的代码的机制。在这篇文章里，我们将接触一些能让我们利用这些特性的例子。
+Key-value coding (KVC) 和 key-value observing (KVO) 是两种能让我们驾驭 Objective-C 动态特性并简化代码的机制。在这篇文章里，我们将接触一些如何利用这些特性的例子。
 
 ## 观察 model 对象的变化
 
@@ -14,7 +14,6 @@ Key-value coding (KVC) 和 key-value observing (KVO) 是两种能让我们驾驭
     @property (nonatomic) double aComponent;
     @property (nonatomic) double bComponent;
 
-
 ### 依赖的属性
 
 我们需要从这个类创建一个 `UIColor` 对象来显示出颜色。我们添加三个额外的属性，分别对应 R, G, B：
@@ -24,7 +23,6 @@ Key-value coding (KVC) 和 key-value observing (KVO) 是两种能让我们驾驭
     @property (nonatomic, readonly) double blueComponent;
 
     @property (nonatomic, strong, readonly) UIColor *color;
-
 
 有了这些以后，我们就可以创建这个类的接口了：
 
@@ -42,9 +40,7 @@ Key-value coding (KVC) 和 key-value observing (KVO) 是两种能让我们驾驭
 
     @end
 
-
 [维基百科](https://zh.wikipedia.org/wiki/Lab%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4#XYZ.E4.B8.8ECIE_L.2Aa.2Ab.2A.28CIELAB.29.E7.9A.84.E8.BD.AC.E6.8D.A2)提供了转换 RGB 到 Lab 色彩空间的算法。写成方法之后如下所示：
-
 
     - (double)greenComponent;
     {
@@ -57,8 +53,6 @@ Key-value coding (KVC) 和 key-value observing (KVO) 是两种能让我们驾驭
     {
         return [UIColor colorWithRed:self.redComponent * 0.01 green:self.greenComponent * 0.01 blue:self.blueComponent * 0.01 alpha:1.];
     }
-
-Nothing too exciting here. What's interesting to us is that this `greenComponent` property depends on the `lComponent` and `aComponent` properties. This is important to key-value observing; whenever we set the `lComponent` property we want anyone interested in either of the red-green-blue components or the `color` property to be notified.
 
 这些代码没什么令人激动的地方。有趣的是 `greenComponent` 属性依赖于 `lComponent` 和 `aComponent`。不论何时设置 `lComponent` 的值，我们需要让 RGB 三个 component 中与其相关的成员以及 `color` 属性都要得到通知以保持一致。这一点这在 KVO 中很重要。
 
@@ -92,7 +86,6 @@ Foundation 框架提供的表示属性依赖的机制如下：
         return [NSSet setWithObjects:@"redComponent", @"greenComponent", @"blueComponent", nil];
     }
 
-
 现在我们完整的表达了属性之间的依赖关系。请注意，我们可以把这些属性链接起来。打个比方，如果我们写一个子类去 override `redComponent` 方法，这些依赖关系仍然能正常工作。
 
 ### 观察变化
@@ -105,37 +98,30 @@ Foundation 框架提供的表示属性依赖的机制如下：
 
     @end
     
-
 我们把视图控制器注册为观察者来接收 KVO 的通知，这可以用以下 `NSObject` 的方法来实现：
-
 
     - (void)addObserver:(NSObject *)anObserver
              forKeyPath:(NSString *)keyPath
                 options:(NSKeyValueObservingOptions)options
                 context:(void *)context
 
-
-这会让以下方法
-
+这会让以下方法：
 
     - (void)observeValueForKeyPath:(NSString *)keyPath
                           ofObject:(id)object
                             change:(NSDictionary *)change
                            context:(void *)context
 
-
 在当 `keyPath` 的值改变的时候在观察者 `anObserver` 上面被调用。这个 API 看起来有一点吓人。更糟糕的是，我们还得记得调用以下的方法
 
     - (void)removeObserver:(NSObject *)anObserver
                 forKeyPath:(NSString *)keyPath
 
-
 来移除观察者，否则我们我们的 app 会因为某些奇怪的原因崩溃。
 
-对于大多数的应用来说，*KVO* 可以通过辅助类用一种更简单优雅的方式实现。我们在视图控制器添加以下的*观察记号 (Observation token) *属性：
+对于大多数的应用来说，*KVO* 可以通过辅助类用一种更简单优雅的方式实现。我们在视图控制器添加以下的*观察记号（Observation token）*属性：
 
     @property (nonatomic, strong) id colorObserveToken;
-
 
 当 `labColor` 在视图控制器中被设置时，我们只要 override `labColor` 的 setter 方法就行了：
 
@@ -153,7 +139,6 @@ Foundation 框架提供的表示属性依赖的机制如下：
     {
         self.colorView.backgroundColor = self.labColor.color;
     }
-
 
 [`KeyValueObserver` 辅助类](https://github.com/objcio/issue-7-lab-color-space-explorer/blob/master/Lab%20Color%20Space%20Explorer/KeyValueObserver.m) 封装了 `-addObserver:forKeyPath:options:context:`，`-observeValueForKeyPath:ofObject:change:context:`和`-removeObserverForKeyPath:` 的调用，让视图控制器远离杂乱的代码。
 
@@ -176,24 +161,19 @@ Foundation 框架提供的表示属性依赖的机制如下：
         self.labColor.bComponent = sender.value;
     }
 
-
-所有的代码都在我们的 GitHub [示例代码][sample project](https://github.com/objcio/issue-7-lab-color-space-explorer) 中找到。
+所有的代码都在我们的 GitHub [示例代码](https://github.com/objcio/issue-7-lab-color-space-explorer) 中找到。
 
 ## 手动通知 vs 自动通知
 
-What we did above may seem a bit like magic, but what happens is that calling `-setLComponent:` etc. on a `LabColor` instance will automatically cause:
-
-我们刚才所做的事情有点神奇，但是实际上发生的事情是，当 `LabColor` 实例的 `-setLComponent:` 等方法被调用的时候以下方法
+我们刚才所做的事情有点神奇，但是实际上发生的事情是，当 `LabColor` 实例的 `-setLComponent:` 等方法被调用的时候以下方法：
 
     - (void)willChangeValueForKey:(NSString *)key
 
-和
+和：
 
     - (void)didChangeValueForKey:(NSString *)key
 
-
 会在运行 `-setLComponent:` 中的代码之前以及之后被自动调用。如果我们写了 `-setLComponent:` 或者我们选择使用自动 synthesize 的 `lComponent` 的 accessor 到时候就会发生这样的事情。
-
 
 有些情况下当我们需要 override `-setLComponent:` 并且我们要控制是否发送键值改变的通知的时候，我们要做以下的事情：
 
@@ -211,7 +191,6 @@ What we did above may seem a bit like magic, but what happens is that calling `-
         _lComponent = lComponent;
         [self didChangeValueForKey:@"lComponent"];
     }
-
 
 我们关闭了 `-willChangeValueForKey:` 和 `-didChangeValueForKey:` 的自动调用，然后我们手动调用他们。我们只应该在关闭了自动调用的时候我们才需要在 setter 方法里手动调用 `-willChangeValueForKey:` 和 `-didChangeValueForKey:`。大多数情况下，这样优化不会给我们带来太多好处。
 
@@ -232,7 +211,6 @@ What we did above may seem a bit like magic, but what happens is that calling `-
 
     static int const PrivateKVOContext;
 
-
 写在这个类 `.m` 文件的顶端，然后我们像这样调用 API 并传入 `PrivateKVOContext` 的指针：
 
     [otherObject addObserver:self forKeyPath:@"someKey" options:someOptions context:&PrivateKVOContext];
@@ -245,12 +223,11 @@ What we did above may seem a bit like magic, but what happens is that calling `-
                            context:(void *)context
     {
         if (context == &PrivateKVOContext) {
-            // Observe values here
+            // 这里写相关的观察代码
         } else {
             [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         }
     }
-
 
 这将确保我们写的子类都是正确的。如此一来，子类和父类都能安全的观察同样的键值而不会冲突。否则我们将会碰到难以 debug 的奇怪行为。
 
@@ -265,11 +242,10 @@ What we did above may seem a bit like magic, but what happens is that calling `-
 如果我们注册通知的时候附加了 `NSKeyValueObservingOptionPrior` 选项，我们将会收到两个通知：一个在值变更前，另一个在变更之后。变更前的通知将会在 `change` 字典中有不同的键。我们可以像以下这样区分通知是在改变之前还是之后被触发的：
 
     if ([change[NSKeyValueChangeNotificationIsPriorKey] boolValue]) {
-        // Before the change
+        // 改变之前
     } else {
-        // After the change
+        // 改变之后
     }
-
 
 ### 值
 
@@ -279,7 +255,6 @@ What we did above may seem a bit like magic, but what happens is that calling `-
 
     id oldValue = change[NSKeyValueChangeOldKey];
     id newValue = change[NSKeyValueChangeNewKey];
-
 
 通常来说 KVO 会在 `-willChangeValueForKey:` 和 `-didChangeValueForKey:` 被调用的时候存储相应键的值。
 
@@ -291,19 +266,15 @@ KVO 对一些集合类也有很强的支持，以下方法会返回集合对象�
     -mutableSetValueForKey:
     -mutableOrderedSetValueForKey:
 
-
 我们将会详细解释这是怎么工作的。如果你使用这些方法，change 字典里会包含键值变化的类型（添加、删除和替换）。对于有序的集合，change 字典会包含受影响的 index。
 
 集合代理对象和变化的通知在用于更新UI的时候非常有效，尤其是处理大集合的时候。但是它们需要花费你一些心思。
 
 ## KVO 和线程
 
-
 一个需要注意的地方是，KVO 行为是同步的，并且发生与所观察的值发生变化的同样的线程上。没有队列或者 Run-loop 的处理。手动或者自动调用 `-didChange...` 会触发 KVO 通知。
 
 所以，当我们试图从其他线程改变属性值的时候我们应当十分小心，除非能确定所有的观察者都用线程安全的方法处理 KVO 通知。通常来说，我们不推荐把 KVO 和多线程混起来。如果我们要用多个队列和线程，我们不应该在它们互相之间用 KVO。
-
-The fact that KVO happens synchronously is very powerful. As long as we're running on a single thread (e.g. the main queue) KVO ensures two important things.
 
 KVO 是同步运行的这个特性非常强大，只要我们在单一线程上面运行（比如主队列 main queue），KVO 会保证下列两种情况的发生：
 
@@ -321,14 +292,13 @@ KVO 能保证所有 `exchangeRate` 的观察者在 setter 方法返回前被通�
 
     @property (nonatomic, copy) NSString *name;
 
-取值
+取值：
 
     NSString *n = [object valueForKey:@"name"]
 
-设定
+设定：
 
     [object setValue:@"Daniel" forKey:@"name"]
-
 
 值得注意的是这个不仅可以访问作为对象属性，而且也能访问一些标量（例如 `int` 和 `CGFloat`）和 struct（例如 `CGRect`）。Foundation 框架会为我们自动封装它们。举例来说，如果有以下属性：
 
@@ -338,11 +308,7 @@ KVO 能保证所有 `exchangeRate` 的观察者在 setter 方法返回前被通�
 
     [object setValue:@(20) forKey:@"height"]
 
-Key-value coding allows us to access properties using strings to identify properties. These strings are called *keys*. In certain situations, this will give us a lot of flexibility which we can use to simplify our code. We'll look at an example in the next section, *Simplifying Form-Like User Interfaces*.
-
 KVC 允许我们用属性的字符串名称来访问属性，字符串在这儿叫做*键*。有些情况下，这会使我们非常灵活地简化代码。我们下一节介绍例子*简化列表 UI*。
-
-But there's more to key-value coding. Collections (`NSArray`, `NSSet`, etc.) have powerful collection operators which can be used with key-value coding. And finally, an object can support key-value coding for keys that are not normal properties e.g. through proxy objects.
 
 KVC 还有更多可以谈的。集合（`NSArray`，`NSSet` 等）结合 KVC 可以拥有一些强大的集合操作。还有，对象可以支持用 KVC 通过代理对象访问非常规的属性。
 
@@ -360,7 +326,6 @@ KVC 还有更多可以谈的。集合（`NSArray`，`NSSet` 等）结合 KVC 可
 
     @end
 
-
 还有一个 detail 视图控制器，含有四个对应的 `UITextField` 属性：
 
     @interface DetailViewController ()
@@ -371,7 +336,6 @@ KVC 还有更多可以谈的。集合（`NSArray`，`NSSet` 等）结合 KVC 可
     @property (weak, nonatomic) IBOutlet UITextField *cityField;
 
     @end
-
 
 我们可以简化更新 UI 的逻辑。首先我们需要两个方法：一个返回 model 里我们用到的所有键的方法，一个把键映射到对应的文本框的方法：
 
@@ -385,7 +349,6 @@ KVC 还有更多可以谈的。集合（`NSArray`，`NSSet` 等）结合 KVC 可
         return [self valueForKey:[key stringByAppendingString:@"Field"]];
     }
 
-
 有了这个，我们可以从 model 里更新文本框，如下所示：
 
     - (void)updateTextFields;
@@ -394,7 +357,6 @@ KVC 还有更多可以谈的。集合（`NSArray`，`NSSet` 等）结合 KVC 可
             [self textFieldForModelKey:key].text = [self.contact valueForKey:key];
         }
     }
-
 
 我们也可以用一个 action 方法让四个文本框都能实时更新 model：
 
@@ -408,7 +370,6 @@ KVC 还有更多可以谈的。集合（`NSArray`，`NSSet` 等）结合 KVC 可
             }
         }
     }
-
 
 注意：我们之后会添加验证输入的部分，在[*键值验证*](#key-value-validation)里会提到。
 
@@ -426,14 +387,11 @@ KVC 还有更多可以谈的。集合（`NSArray`，`NSSet` 等）结合 KVC 可
         [self updateTextFields];
     }
 
-
 有了这个，我们的 [detail 视图控制器](https://github.com/objcio/issue-7-contact-editor/blob/master/Contact%20Editor/DetailViewController.m) 就能正常工作了。
 
 整个项目可以在 [GitHub](https://github.com/objcio/issue-7-contact-editor) 上找到。它也用了我们后面提到的[*键值验证*](#key-value-validation)。
 
 ### 键路径（Key Path）
-
-Key-value coding also allows you to go through relations, e.g. if `person` is an object that has a property called `address`, and `address` in turn has a property called `city`, we can retrieve that through:
 
 KVC 同样允许我们通过关系来访问对象。假设 `person` 对象有属性 `address`，`address` 有属性 `city`，我们可以这样通过 `person` 来访问 `city`：
 
@@ -451,8 +409,6 @@ KVC 同样允许我们通过关系来访问对象。假设 `person` 对象有属
     - (void)setName:(NSString *)name;
 
 这完全等于 `@property` 的实现方式。
-
-One thing to be aware of, though, is how `nil` is handled for scalar and struct values. Let's say we want to support key-value coding for `height` by implementing:
 
 但是当标量和 struct 的值被传入 `nil` 的时候尤其需要注意。假设我们要 `height` 属性支持 KVC 我们写了以下的方法：
 
@@ -486,25 +442,17 @@ One thing to be aware of, though, is how `nil` is handled for scalar and struct 
 
 ### 集合的操作
 
-An oft-overlooked feature of key-value coding is its support for collection operators. For example, we can get the maximum value from an array with:
-
 一个常常被忽视的 KVC 特性是它对集合操作的支持。举个例子，我们可以这样来获得一个数组中最大的值：
 
     NSArray *a = @[@4, @84, @2];
     NSLog(@"max = %@", [a valueForKeyPath:@"@max.self"]);
-
-or, if we have an array of `Transaction` objects that have an `amount` property, we can get the maximum `amount` with:
 
 或者说，我们有一个 `Transaction` 对象的数组，对象有属性 `amount` 的话，我们可以这样获得最大的 `amount`：
 
     NSArray *a = @[transaction1, transaction2, transaction3];
     NSLog(@"max = %@", [a valueForKeyPath:@"@max.amount"]);
 
-When we call `[a valueForKeyPath:@"@max.amount"]`, this will call `-valueForKey:@"amount"` on each element in the array `a` and then return the maximum of those.
-
 当我们调用 `[a valueForKeyPath:@"@max.amount"]` 的时候，它会在数组 `a` 的每个元素中调用 `-valueForKey:@"amount"` 然后返回最大的那个。
-
-Apple's documentation for key-value coding has a section called [Collection Operators](https://developer.apple.com/library/ios/documentation/cocoa/conceptual/KeyValueCoding/Articles/CollectionOperators.html) that describes this in detail.
 
 KVC 的苹果官方文档有一个章节 [Collection Operators](https://developer.apple.com/library/ios/documentation/cocoa/conceptual/KeyValueCoding/Articles/CollectionOperators.html) 详细的讲述了类似的用法。
 
@@ -513,17 +461,12 @@ KVC 的苹果官方文档有一个章节 [Collection Operators](https://develope
 
 虽然我们可以像对待一般的对象一样用 KVC 深入集合内部（`NSArray` 和 `NSSet` 等），但是通过集合代理对象， KVC 也让我们实现一个兼容 KVC 的集合。这是一个颇为高端的技巧。
 
-When we call `-valueForKey:` on an object, that object can return collection proxy objects for an `NSArray`, an `NSSet`, or an `NSOrderedSet`. The class doesn't implement the normal `-<Key>` method but instead implements a number of methods that the proxy uses.
-
 当我们在对象上调用 `-valueForKey:` 的时候，它可以返回 `NSArray`，`NSSet` 或是 `NSOrderedSet` 的集合代理对象。这个类没有实现通常的 `-<Key>` 方法，但是它实现了代理对象所需要使用的很多方法。
-
 
 如果我们希望一个类支持通过代理对象的 `contacts` 键返回一个 `NSArray`，我们可以这样写：
 
     - (NSUInteger)countOfContacts;
     - (id)objectInContactsAtIndex:(NSUInteger)idx;
-
-Doing so, when we call `[object valueForKey:@"contacts”]`, this will return an `NSArray` that proxies all calls to those two methods. But the array will support *all* methods on `NSArray`. The proxying is transparent to the caller. In other words, the caller doesn't know if we return a normal `NSArray` or a proxy.
 
 这样做的话，当我们调用 `[object valueForKey:@"contacts”]` 的时候，它会返回一个由这两个方法来代理*所有*调用方法的 `NSArray` 对象。这个数组支持所有正常的对 `NSArray` 的调用。换句话说，调用者并不知道返回的是一个真正的 `NSArray`， 还是一个代理的数组。
 
@@ -531,17 +474,17 @@ Doing so, when we call `[object valueForKey:@"contacts”]`, this will return an
 
 <table><thead><tr><th style="text-align:left;padding-right:1em;">NSArray</th><th style="text-align:left;padding-right:1em;">NSSet&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th><th style="text-align:left;padding-right:1em;">NSOrderedSet&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th></tr></thead><tbody><tr><td style="text-align:left;padding-right:1em;"><code>-countOf&lt;Key&gt;</code></td><td style="text-align:left;padding-right:1em;"><code>-countOf&lt;Key&gt;</code></td><td style="text-align:left;padding-right:1em;"><code>-countOf&lt;Key&gt;</code></td>
 </tr><tr><td style="text-align:left;padding-right:1em;"></td><td style="text-align:left;padding-right:1em;"><code>-enumeratorOf&lt;Key&gt;</code></td><td style="text-align:left;padding-right:1em;"><code>-indexIn&lt;Key&gt;OfObject:</code></td>
-</tr><tr><td style="text-align:left;padding-right:1em;">One of</td><td style="text-align:left;padding-right:1em;"><code>-memberOf&lt;Key&gt;:</code></td><td style="text-align:left;padding-right:1em;">
-</td></tr><tr><td style="text-align:left;padding-right:1em;"><code>-objectIn&lt;Key&gt;AtIndex:</code></td><td style="text-align:left;padding-right:1em;"></td><td style="text-align:left;padding-right:1em;">One of</td>
+</tr><tr><td style="text-align:left;padding-right:1em;">以下两者二选一</td><td style="text-align:left;padding-right:1em;"><code>-memberOf&lt;Key&gt;:</code></td><td style="text-align:left;padding-right:1em;">
+</td></tr><tr><td style="text-align:left;padding-right:1em;"><code>-objectIn&lt;Key&gt;AtIndex:</code></td><td style="text-align:left;padding-right:1em;"></td><td style="text-align:left;padding-right:1em;">以下两者二选一</td>
 </tr><tr><td style="text-align:left;padding-right:1em;"><code>-&lt;key&gt;AtIndexes:</code></td><td style="text-align:left;padding-right:1em;"></td><td style="text-align:left;padding-right:1em;"><code>-objectIn&lt;Key&gt;AtIndex:</code></td>
 </tr><tr><td style="text-align:left;padding-right:1em;"></td><td style="text-align:left;padding-right:1em;"></td><td style="text-align:left;padding-right:1em;"><code>-&lt;key&gt;AtIndexes:</code></td>
-</tr><tr><td style="text-align:left;padding-right:1em;">Optional (performance)</td><td style="text-align:left;padding-right:1em;"></td><td style="text-align:left;padding-right:1em;">
-</td></tr><tr><td style="text-align:left;padding-right:1em;"><code>-get&lt;Key&gt;:range:</code></td><td style="text-align:left;padding-right:1em;"></td><td style="text-align:left;padding-right:1em;">Optional (performance)</td>
+</tr><tr><td style="text-align:left;padding-right:1em;">可选（增强性能）</td><td style="text-align:left;padding-right:1em;"></td><td style="text-align:left;padding-right:1em;">
+</td></tr><tr><td style="text-align:left;padding-right:1em;"><code>-get&lt;Key&gt;:range:</code></td><td style="text-align:left;padding-right:1em;"></td><td style="text-align:left;padding-right:1em;">可选（增强性能）</td>
 </tr><tr><td style="text-align:left;padding-right:1em;"></td><td style="text-align:left;padding-right:1em;"></td><td style="text-align: left;"><code>-get&lt;Key&gt;:range:</code></td>
 </tr></tbody></table>
 
 
-*Optional* 的一些方法可以增强代理对象的性能。
+*可选* 的一些方法可以增强代理对象的性能。
 
 虽然只有特殊情况下我们用这些代理对象才会有意义，但是在这些情况下代理对象非常的有用。想象一下我们有一个很大的数据结构，调用者不需要（一次性）访问所有的对象。
 
@@ -590,7 +533,6 @@ Doing so, when we call `[object valueForKey:@"contacts”]`, this will return an
 
     @end
 
-
 我们将会运行以下代码：
 
     Primes *primes = [[Primes alloc] init];
@@ -602,7 +544,6 @@ Doing so, when we call `[object valueForKey:@"contacts”]`, this will return an
 
 
 #### 可变的集合
-
 
 我们也可以在可变集合（例如 `NSMutableArray`，`NSMutableSet`，和 `NSMutableOrderedSet`）中用集合代理。
 
@@ -623,13 +564,13 @@ Doing so, when we call `[object valueForKey:@"contacts”]`, this will return an
 
 我们需要实现上面的不变集合的两个方法，还有以下的几个：
 
-<table><thead><tr><th style="text-align:left;padding-right:1em;">NSMutableArray&nbsp;/&nbsp;NSMutableOrderedSet&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th><th style="text-align:left;padding-right:1em;">NSMutableSet&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th></tr></thead><tbody><tr><td style="text-align: left;">At least 1 insertion and 1 removal method</td><td style="text-align: left;padding-right:1em;">At least 1 addition and 1 removal method</td>
+<table><thead><tr><th style="text-align:left;padding-right:1em;">NSMutableArray&nbsp;/&nbsp;NSMutableOrderedSet&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th><th style="text-align:left;padding-right:1em;">NSMutableSet&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th></tr></thead><tbody><tr><td style="text-align: left;">至少实现一个插入方法和一个删除方法</td><td style="text-align: left;padding-right:1em;">至少实现一个插入方法和一个删除方法</td>
 </tr><tr><td style="text-align: left;padding-right:1em;"><code>-insertObject:in&lt;Key&gt;AtIndex:</code></td><td style="text-align: left;padding-right:1em;"><code>-add&lt;Key&gt;Object:</code></td>
 </tr><tr><td style="text-align: left;padding-right:1em;"><code>-removeObjectFrom&lt;Key&gt;AtIndex:</code></td><td style="text-align: left;padding-right:1em;"><code>-remove&lt;Key&gt;Object:</code></td>
 </tr><tr><td style="text-align: left;padding-right:1em;"><code>-insert&lt;Key&gt;:atIndexes:</code></td><td style="text-align: left;padding-right:1em;"><code>-add&lt;Key&gt;:</code></td>
 </tr><tr><td style="text-align: left;padding-right:1em;"><code>-remove&lt;Key&gt;AtIndexes:</code></td><td style="text-align: left;padding-right:1em;"><code>-remove&lt;Key&gt;:</code></td>
 </tr><tr><td style="text-align: left;padding-right:1em;"></td><td style="text-align: left;padding-right:1em;">
-</td></tr><tr><td style="text-align: left;padding-right:1em;">Optional (performance) one of</td><td style="text-align: left;padding-right:1em;">Optional (performance)</td>
+</td></tr><tr><td style="text-align: left;padding-right:1em;">可选（增强性能）以下方法二选一</td><td style="text-align: left;padding-right:1em;">可选（增强性能）</td>
 </tr><tr><td style="text-align: left;padding-right:1em;"><code>-replaceObjectIn&lt;Key&gt;AtIndex:withObject:</code></td><td style="text-align: left;padding-right:1em;"><code>-intersect&lt;Key&gt;:</code></td>
 </tr><tr><td style="text-align: left;padding-right:1em;"><code>-replace&lt;Key&gt;AtIndexes:with&lt;Key&gt;:</code></td><td style="text-align: left;padding-right:1em;"><code>-set&lt;Key&gt;:</code></td>
 </tr></tbody></table>
@@ -651,11 +592,10 @@ Doing so, when we call `[object valueForKey:@"contacts”]`, this will return an
 
 我们要保证先把自动通知关闭，否则每次改变 KVO 都会发出两次通知。
 
+
 ### 常见的 KVO 错误
 
 首先，KVO 兼容是 API 的一部分。如果类的所有者不保证某个属性兼容 KVO，我们就不能保证 KVO 正常工作。苹果文档里有 KVO 兼容属性的文档。例如，`NSProgress` 类的大多数属性都是兼容 KVO 的。
-
-Sometimes people try to trigger KVO by putting `-willChange` and `-didChange` pairs with nothing in between *after* a change was made. This will cause a KVO notification to be posted, but it breaks observers relying on the `NSKeyValueObservingOld` option. Namely this affects KVO's own support for observing key paths. KVO relies on the `NSKeyValueObservingOld` property to support observing key paths.
 
 当做出改变*以后*，有些人试着放空的 `-willChange` 和 `-didChange` 方法来强制 KVO 的触发。KVO 通知虽然会生效，但是这样做破坏了有依赖于 `NSKeyValueObservingOld` 选项的观察者。详细来说，这影响了 KVO 对观察键路径 (key path) 的原生支持。KVO 在观察键路径 (key path) 时依赖于 `NSKeyValueObservingOld` 属性。
 
@@ -674,7 +614,9 @@ Sometimes people try to trigger KVO by putting `-willChange` and `-didChange` pa
 
 这个信息的格式不是公开的，我们不能让任何东西依赖它，因为苹果随时都可以改变它。不过这是一个很强大的排错工具。
 
+
 <a name="key-value-validation"> </a>
+
 ## 键值验证 (KVV)
 
 最后提示，KVV 也是 KVC API 的一部分。这是一个用来验证属性值的 API，只是它光靠自己很难提供逻辑和功能。
@@ -697,7 +639,7 @@ Sometimes people try to trigger KVO by putting `-willChange` and `-didChange` pa
         sender.text = self.contact.name;
     }
 
-它强大之处在于，当 model 类（`Contact`）验证 `name` 到时候，会有机会去处理名字。
+它强大之处在于，当 model 类（`Contact`）验证 `name` 的时候，会有机会去处理名字。
 
 如果我们想让名字不要有前后的空白字符，我们应该把这些逻辑放在 model 对象里面。`Contact` 类可以像这样实现 KVV：
 

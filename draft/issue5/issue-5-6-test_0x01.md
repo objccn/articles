@@ -37,15 +37,15 @@ iOS 7 中，我有很多代码路径（主要是 `UITableViewCells`）需要额�
     }
 
 
-## 处理长表视图
+## 处理长的表视图
 
-`UITableView` 非常快速高效，除非你开始使用 `tableView:heightForRowAtIndexPath:`，它会开始为你表中 *每一个* 元素调用此方法，即便没有可视对象——好让其下层的 `UIScrollView` 能获取正确的 `contentSize`。此前有一些变通方法，但都不好用。iOS 7 中，苹果公司终于承认这一问题，并添加了  `tableView:estimatedHeightForRowAtIndexPath:`，这个方法把绝大部分计算成本推迟到实际滚动的时候。如果你完全不知道一个 cell 的大小，返回 `UITableViewAutomaticDimension` 就行了。
+`UITableView` 非常快速高效，除非你开始使用 `tableView:heightForRowAtIndexPath:`，它会开始为你表中 *每一个* 元素调用此方法，即便没有可视对象——这是为了让其下层的 `UIScrollView` 能获取正确的 `contentSize`。此前有一些变通方法，但都不好用。iOS 7 中，苹果公司终于承认这一问题，并添加了  `tableView:estimatedHeightForRowAtIndexPath:`，这个方法把绝大部分计算成本推迟到实际滚动的时候。如果你完全不知道一个 cell 的大小，返回 `UITableViewAutomaticDimension` 就行了。
 
 对于段头/尾（section headers/footers），现在也有类似的 API 了。
 
 ## UISearchDisplayController
 
-苹果的 search controller 使用了新的技巧来简化移动 search bar 到 navigation bar 的过程。启用 `displaysSearchBarInNavigationBar` 就可以了（除非你还在用 scope bar，那你就太不幸了）。我倒是很喜欢这么做，但遗憾的是，iOS 7 上的 `UISearchDisplayController` 貌似被破坏得相当严重，尤其在 iPad 上。苹果公司看上去像是没时间处理这个问题，对于显示的搜索结果并不会隐藏实际的表视图。在 iOS 7 之前，这不算问题，但是现在 `searchResultsTableView` 有一个透明的背景色，使它看上去相当糟糕。作为一种变通方法，你可以设置不透明背景色或者采取一些[更富于技巧的手段][]来获得你期望的效果。关于这个控件我碰到过各种各样的结果，当使用 `displaysSearchBarInNavigationBar` 时甚至 *根本* 不会显示搜索表视图。
+苹果的 search controller 使用了新的技巧来简化移动 search bar 到 navigation bar 的过程。启用 `displaysSearchBarInNavigationBar` 就可以了（除非你还在用 scope bar，那你就太不幸了）。我倒是很喜欢这么做，但遗憾的是，iOS 7 上的 `UISearchDisplayController` 貌似被破坏得相当严重，尤其在 iPad 上。苹果公司看上去像是没时间处理这个问题，对于显示的搜索结果并不会隐藏实际的表视图。在 iOS 7 之前，这不算问题，但是现在 `searchResultsTableView` 有一个透明的背景色，使它看上去相当糟糕。作为一种变通方法，你可以设置不透明背景色或者采取一些[更富于技巧的手段](http://petersteinberger.com/blog/2013/fixing-uisearchdisplaycontroller-on-ios-7/)来获得你期望的效果。关于这个控件我碰到过各种各样的结果，当使用 `displaysSearchBarInNavigationBar` 时甚至 *根本* 不会显示搜索表视图。
 
 你的结果可能有所不同，但我依赖于一些手段（severe hacks）来让 `displaysSearchBarInNavigationBar` 工作：
 
@@ -64,7 +64,7 @@ iOS 7 中，我有很多代码路径（主要是 `UITableViewCells`）需要额�
 	- (void)searchDisplayController:(UISearchDisplayController *)controller 
       didShowSearchResultsTableView:(UITableView *)tableView 
     {
-	    // 技巧: iOS 7 依赖于重度的变通来显示搜索表视图
+	    // HACK: iOS 7 依赖于重度的变通来显示搜索表视图
 	    if (PSPDFIsUIKitFlatMode()) {
 	        if (!self.originalTableView) self.originalTableView = self.tableView;
 	        self.view = controller.searchResultsTableView;
@@ -79,11 +79,11 @@ iOS 7 中，我有很多代码路径（主要是 `UITableViewCells`）需要额�
 	}
 
 另外，别忘了在 `viewWillDisappear` 中调用 `restoreOriginalTableView`，否则程序会 crash。
-记住这是唯一的解决办法；可能有不少激进的方法不用替换视图本身，但这个问题确实应该由苹果公司来修复。（TODO: RADAR!）
+记住这只是一种解决办法；可能还有不那么激进的方法，不用替换视图本身，但这个问题确实应该由苹果公司来修复。（TODO: RADAR!）
 
 ## 分页
 
-`UIWebView` 使用了新的技巧对带有 `paginationMode` 的网站进行自动分页。有一大堆与此功能相关的新属性：
+`UIWebView` 现在可以对带有 `paginationMode` 的网站进行自动分页。有一大堆与此功能相关的新属性：
 
 	@property (nonatomic) UIWebPaginationMode paginationMode NS_AVAILABLE_IOS(7_0);
 	@property (nonatomic) UIWebPaginationBreakingMode paginationBreakingMode NS_AVAILABLE_IOS(7_0);
@@ -105,9 +105,9 @@ iOS 7 中，我有很多代码路径（主要是 `UITableViewCells`）需要额�
 
 ## 键盘支持
 
-苹果公司不只为我们提供了[全新的 framework 用于游戏控制器](https://developer.apple.com/library/ios/documentation/ServicesDiscovery/Conceptual/GameControllerPG/Introduction/Introduction.html)，它也给了我们这些键盘爱好者一些关注！你会发现新定义的公用键像  `UIKeyInputEscape` 或 `UIKeyInputUpArrow`，可以使用全新的 [`UIKeyCommand`](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIKeyCommand_class/Reference/Reference.html#//apple_ref/occ/instp/UIKeyCommand/input) 类截查。在 iOS 7 之前，只能通过一些[难以言表的手段来处理键盘命令](http://petersteinberger.com/blog/2013/adding-keyboard-shortcuts-to-uialertview/)，现在，就让我们操起蓝牙键盘试试看我们能用这个做什么！
+苹果公司不只为我们提供了[全新的 framework 用于游戏控制器](https://developer.apple.com/library/ios/documentation/ServicesDiscovery/Conceptual/GameControllerPG/Introduction/Introduction.html)，它也给了我们这些键盘爱好者一些关注！你会发现新定义的公用键，比如  `UIKeyInputEscape` 或 `UIKeyInputUpArrow`，可以使用全新的 [`UIKeyCommand`](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIKeyCommand_class/Reference/Reference.html#//apple_ref/occ/instp/UIKeyCommand/input) 类截查。在 iOS 7 之前，只能通过一些[难以言表的手段来处理键盘命令](http://petersteinberger.com/blog/2013/adding-keyboard-shortcuts-to-uialertview/)，现在，就让我们操起蓝牙键盘试试看我们能用这个做什么！
 
-开始之前，你需要对响应者链（responder chain）有个了解。你的 `UIApplication` 继承自  `UIResponder`，`UIView` 和 `UIViewController` 也是如此。如果你曾经处理过 `UIMenuItem`  并且没有使用[我的基于块的包装](https://github.com/steipete/PSMenuItem)的话，那么你对此已经有所了解。事件先被发送到最上层的响应者，然后一级级往下传递直到 UIApplication。为了捕获按键命令，你需要告诉系统你关心哪些按键命令（而不是全捕获）。为了完成这个，你需要重写 `keyCommands` 这个新属性：
+开始之前，你需要对响应链（responder chain）有个了解。你的 `UIApplication` 继承自  `UIResponder`，`UIView` 和 `UIViewController` 也是如此。如果你曾经处理过 `UIMenuItem`  并且没有使用[我的基于块的包装](https://github.com/steipete/PSMenuItem)的话，那么你对此已经有所了解。事件先被发送到最上层的响应者，然后一级级往下传递直到 UIApplication。为了捕获按键命令，你需要告诉系统你关心哪些按键命令（而不是全捕获）。为了完成这个，你需要重写 `keyCommands` 这个新属性：
 
     - (NSArray *)keyCommands 
     {
@@ -120,8 +120,9 @@ iOS 7 中，我有很多代码路径（主要是 `UITableViewCells`）需要额�
     {
         // 响应事件
     }
-	
-![工作中的响应者链](http://img.objccn.io/issue-5/responder-chain.png)
+
+
+<img src="http://img.objccn.io/issue-5/responder-chain.png" name="工作中的响应者链" width="472" height="548">
 
 现在可别太激动，需要注意的是，这个方法只在键盘可见时有效（比如有类似 `UITextView` 这样的对象作为第一响应者时）。对于全局热键，你仍然需要用上面提到的 hack 方法。除去那些，这个解决途径还是很优雅的。不要覆盖类似 cmd-V 这种系统的快捷键，它会被自动映射到 `paste:` 方法。
 
@@ -134,17 +135,17 @@ iOS 7 中，我有很多代码路径（主要是 `UITableViewCells`）需要额�
 
 ## 匹配键盘背景
 
-苹果公司终于公开了 [`UIInputView`](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIInputView_class/Reference/Reference.html)，其中提供了一种方式——使用 `UIInputViewStyleKeyboard` 来匹配键盘样式。这使得你编写的自定义键盘或者默认键盘的扩展（工具条）能适应默认样式。这个类[一开始](https://github.com/nst/iOS-Runtime-Headers/commits/master/Frameworks/UIKit.framework/UIInputView.h)就存在了，不过现在我们终于可以绕过私有API的方式来使用它了。
+苹果公司终于公开了 [`UIInputView`](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIInputView_class/Reference/Reference.html)，其中提供了一种方式——使用 `UIInputViewStyleKeyboard` 来匹配键盘样式。这使得你编写的自定义键盘或者适应默认样式的默认键盘的扩展（工具条）。这个类[一开始](https://github.com/nst/iOS-Runtime-Headers/commits/master/Frameworks/UIKit.framework/UIInputView.h)就存在了，不过现在我们终于可以绕过私有API的方式来使用它了。
 
 如果 `UIInputView` 是一个 `inputView` 或者 `inputAccessoryView` 的*根视图*，它将只显示一个背景，否则它将是透明的。遗憾的是，这并不能让你实现一个未填充的分离态的键盘，但它仍然比用一个简单的 UIToolbar 要好。我还没看到苹果在何处使用这个新 API，看上去 Safari 里仍然使用着 `UIToolbar`。
 
 ## 了解你的无线电通信
 
-虽然早在 iOS 4 的时候，载波信息的大部分已经在 CTTelephony 暴露了，但它通常只用于特定场景并非十分有用。iOS 7 中，苹果公司为其添加了一个方法，其中最有用的：`currentRadioAccessTechnology`。这个方法能告诉你手机是处于较慢的 GPRS 还是高速的 LTE 或者介于其中。目前还没有方法得到连接速度（当然手机本身也无法获取这个），但是这足以用来优化一个下载管理器，让其在 EDGE 下不用尝试 *同时* 去下载6张图片了。
+虽然早在 iOS 4 的时候，运营商信息的大部分已经在 CTTelephony 暴露了，但它通常只用于特定场景并非十分有用。iOS 7 中，苹果公司为其添加了一个方法，其中最有用的：`currentRadioAccessTechnology`。这个方法能告诉你手机是处于较慢的 GPRS 还是高速的 LTE 或者介于其中。目前还没有方法得到连接速度（当然手机本身也无法获取这个），但是这足以用来优化一个下载管理器，让其在 EDGE 下不用尝试 *同时* 去下载6张图片了。
 
 现在还没有 `currentRadioAccessTechnology` 的相关文档，为了让它工作，会遇到一些麻烦和错误。当你想要获取当前网络信号值，你应当注册一个 `CTRadioAccessTechnologyDidChangeNotification` 通知而不是去轮询这个属性。为了确切的使 iOS 发送这些通知，你需要持有一个 `CTTelephonyNetworkInfo` 的实例，但不要在通知中创建  `CTTelephonyNetworkInfo` 的实例，否则会 crash。
 
-在这个简单的例子中，我忽略了在 block 中捕获 `telephonyInfo` 将会持有它，：
+在这个简单的例子中，因为在 block 中捕获 `telephonyInfo` 将会持有它，所以我就这么用了：
 
     CTTelephonyNetworkInfo *telephonyInfo = [CTTelephonyNetworkInfo new];
     NSLog(@"Current Radio Access Technology: %@", telephonyInfo.currentRadioAccessTechnology);
@@ -189,15 +190,16 @@ Core Foundation 中出现了一个新的辅助方法，它被用于私有调用�
 	    return image;
 	}
 
-刚发现这一点时我很很兴奋，但不要高兴得太早。在我的测试中，开启即时缓存后性能确实有所 *降低*。要么这个方法是在主线程中调用的（不太可能），感觉上性能更糟，因为它在方法 `copyImageBlockSetJPEG` 中锁住了，而同时在主线程显示非加密的图片所致。在我的 app 中，我在主线程中加载小的预览图，在后台线程中加载大型图，使用了 `kCGImageSourceShouldCacheImmediately` 后小小的解压缩阻塞了主线程，同时在后台处理大量开销昂贵的操作。	
+刚发现这一点时我很很兴奋，但不要高兴得太早。在我的测试中，开启即时缓存后性能实际上有所 *降低*。要么这个方法最终是在主线程中被调用的（好像不太可能），要么感官上的性能下降是因为其在方法 `copyImageBlockSetJPEG` 中锁住了，因为这个方法也被在而同时在主线程显示非加密的图片所致。在我的 app 中，我在主线程中加载小的预览图，在后台线程中加载大型图，使用了 `kCGImageSourceShouldCacheImmediately` 后小小的解压缩阻塞了主线程，同时在后台处理大量开销昂贵的操作。	
 
-![Image Decompression Stack Trace](http://img.objccn.io/issue-5/image-decompression.png)
+<img src="http://img.objccn.io/issue-5/image-decompression.png" name="Image Decompression Stack Trace" width="662" height="1008">
+
 
 还有更多关于图片解压缩的却不是 iOS 7 中的新东西，像 `kCGImageSourceShouldCache`，它用来控制系统自动卸载解压缩图片数据的能力。确保你将它设置为 YES，否则所有的工作都将没有意义。有趣的是，苹果在 64-bit 运行时的系统中将 `kCGImageSourceShouldCache` 的 *默认值* 从 NO 改为了 YES。
 	
 ## 盗版检查
 
-苹果添加了一个方式，通过 NSBunble 上的新方法 [`appStoreReceiptURL`](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSBundle_Class/Reference/Reference.html#//apple_ref/occ/instm/NSBundle/appStoreReceiptURL) 来评估 Lion 系统上 App Store 的收据，同时也将其移植到了 iOS 上。这使得你可以检查你的应用是被合法的购买还是被破解了。检查收据还有另一个重要的原因，它包含了 *初始购买日期*，这点对于把你的应用从付费模式迁移到免费+应用内付费模式很有帮助。你可以根据这个初始购买日期来决定额外内容对于你的用户是免费（因为他们已经付过费了）还是收费的。
+苹果添加了一个方式，通过 NSBunble 上的新方法 [`appStoreReceiptURL`](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSBundle_Class/Reference/Reference.html#//apple_ref/occ/instm/NSBundle/appStoreReceiptURL) 来获取和验证 Lion 系统上 App Store 的收据，现在终于也移植到了 iOS 上了。这使得你可以检查你的应用是合法购买的还是被破解了的。检查收据还有另一个重要的原因，它包含了 *初始购买日期*，这点对于把你的应用从付费模式迁移到免费+应用内付费模式很有帮助。你可以根据这个初始购买日期来决定额外内容对于你的用户是免费（因为他们已经付过费了）还是收费的。
 
 收据还允许你检查应用程序是否通过批量购买计划购买以及该许可证是否仍有效，有一个名为  `SKReceiptPropertyIsVolumePurchase` 的属性标示了该值。
 
@@ -210,13 +212,13 @@ Core Foundation 中出现了一个新的辅助方法，它被用于私有调用�
 
 验证收据需要大量的代码。你需要使用 OpenSSL 和内嵌的[苹果根证书](http://www.apple.com/certificateauthority/)，并且你还要了解一些基本的东西像是证书、[PCKS 容器](http://en.wikipedia.org/wiki/PKCS)以及 [ASN.1](http://de.wikipedia.org/wiki/Abstract_Syntax_Notation_One)。这里有一些[样例代码](https://github.com/rmaddy/VerifyStoreReceiptiOS)，但是你不应该让它这么简单——尤其是对那些有“高尚意图”的人，别只是拷贝现有的验证方法，至少做点修改或者编写你自己的，你应该不希望一个普通的补丁程序就能在数秒内瓦解你的努力吧。
 
-你绝对应该读读苹果的指南——[验证 Mac App 商店收据](https://developer.apple.com/library/mac/releasenotes/General/ValidateAppStoreReceipt/index.html#//apple_ref/doc/uid/TP40010573-CH1-SW6)，这里面的大多数都适用于 iOS。苹果在 [WWDC 2013 的 Session 308 “Using Receipts to Protect Your Digital Sales”](https://developer.apple.com/wwdc/videos/) 中详述了“Grand Unified Receipt”的变动。
+你绝对应该读读苹果的指南——[验证 Mac App 商店收据](https://developer.apple.com/library/mac/releasenotes/General/ValidateAppStoreReceipt/index.html#//apple_ref/doc/uid/TP40010573-CH1-SW6)，这里面的大多数都适用于 iOS。苹果在 [WWDC 2013 的 Session 308 “Using Receipts to Protect Your Digital Sales”](https://developer.apple.com/wwdc/videos/) 中详述了通过新加入的“Grand Unified Receipt”而带来的变动。
  
 ## Comic Sans MS
 
 承认吧，你是怀念 Comic Sans MS 的。在 iOS 7 中，Comic Sans MS 终于回来了。iOS 6 中添加了可下载字体，但那时的字体列表很少也不见得有趣。在 iOS 7 中苹果添加了不少字体，包括 “famous”，它和 [PT Sans](http://www.fontsquirrel.com/fonts/PT-Sans) 或 [Comic Sans MS](http://sixrevisions.com/graphics-design/comic-sans-the-font-everyone-loves-to-hate/) 有些类似。`kCTFontDownloadableAttribute` 并没有在 iOS 6 中声明，所以 iOS 7 之前它并不真正可用，但苹果确是在 iOS 6 的时候就已经做了私有声明了。
 
-![Who doesn't love Comic Sans MS](http://img.objccn.io/issue-5/comic-sans-ms.png)
+<img src="http://img.objccn.io/issue-5/comic-sans-ms.png" name="Who doesn't love Comic Sans MS" width="414" height="559">
 
 字体列表是[动态变化](http://mesu.apple.com/assets/com_apple_MobileAsset_Font/com_apple_MobileAsset_Font.xml)的，以后可能就会发生变动。苹果在 [Tech Note HT5484](http://support.apple.com/kb/HT5484) 中罗列了一些可用的字体，但这个文档已经过时了，并不能反映 iOS 7 的变化。
 
@@ -243,7 +245,7 @@ Core Foundation 中出现了一个新的辅助方法，它被用于私有调用�
 
 ## 这还不够?
 
-没关系，iOS 7 的新东西远不止如此！了解一下 [NSHipster](http://nshipster.com/ios7/) 你将明白语音合成相关的东西，base64、全新的 `NSURLComponents`、`NSProgress`、bar codes、reading lists 以及 `CIDetectorEyeBlink`。还有很多我们没有涵盖到的，比如苹果的 [iOS 7 API 变化](https://developer.apple.com/library/ios/releasenotes/General/iOS70APIDiffs/index.html#//apple_ref/doc/uid/TP40013203)，[What's new in iOS](https://developer.apple.com/library/ios/releasenotes/General/WhatsNewIniOS/Articles/iOS7.html)指南以及 [Foundation Release Notes](https://developer.apple.com/library/prerelease/mac/releasenotes/Foundation/RN-Foundation/index.html#//apple_ref/doc/uid/TP30000742)（这些都是基于 OS X的，但是代码都是共享的，很多也同样适用于 iOS）。很多新方法都还没形成文档，等着你来探究和写成博客。
+没关系，iOS 7 的新东西远不止如此！了解一下 [NSHipster](http://nshipster.com/ios7/) 你将明白语音合成相关的东西，base64、全新的 `NSURLComponents`、`NSProgress`、条形码扫描、阅读列表以及 `CIDetectorEyeBlink`。还有很多我们没有涵盖到的，比如苹果的 [iOS 7 API 变化](https://developer.apple.com/library/ios/releasenotes/General/iOS70APIDiffs/index.html#//apple_ref/doc/uid/TP40013203)，[What's new in iOS](https://developer.apple.com/library/ios/releasenotes/General/WhatsNewIniOS/Articles/iOS7.html)指南以及 [Foundation Release Notes](https://developer.apple.com/library/prerelease/mac/releasenotes/Foundation/RN-Foundation/index.html#//apple_ref/doc/uid/TP30000742)（这些都是基于 OS X的，但是代码都是共享的，很多也同样适用于 iOS）。很多新方法都还没形成文档，等着你来探究和写成博客。
 
 ---
 
@@ -252,3 +254,4 @@ Core Foundation 中出现了一个新的辅助方法，它被用于私有调用�
 原文 [iOS 7: Hidden Gems and Workarounds](http://www.objc.io/issue-5/iOS7-hidden-gems-and-workarounds.html)
 
 译文 [iOS 7: 隐藏的特性和解决之道](http://test-0x01.logdown.com/posts/159702-ios-7-hidden-gems-and-workarounds)
+

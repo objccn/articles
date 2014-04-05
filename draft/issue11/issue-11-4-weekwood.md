@@ -357,7 +357,7 @@ Android has quite a bit to offer its users and developers in terms of notificati
 
 Android 提供了给用户和开发者不少通知方面的功能。从一开始，Android 有意识的朝着更大胆的方向努力，即使从今天看来它依旧无以伦比。看看前进中的 Android 以及 Android 穿戴设备，很容易发现，有一个重点强调方便的 API 来处理通知管理。虽然在细粒度的通知管理缺乏完整的UI控件方面有一些缺点，但是谨慎的说，如果你正在寻找一个通知优先的生态系统， Android 或许值得一试。
 
-#### References 引用
+#### References 参考
 
 - [Android 简史](http://www.theverge.com/2011/12/7/2585779/android-history)
 - [Android 通知文档](http://developer.android.com/guide/topics/ui/notifiers/notifications.html)

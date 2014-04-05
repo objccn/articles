@@ -141,7 +141,7 @@ iOS 7 中，我有很多代码路径（主要是 `UITableViewCells`）需要额�
 
 ## 了解你的无线电通信
 
-虽然早在 iOS 4 的时候，运营商信息的大部分已经在 CTTelephony 暴露了，但它通常只用于特定场景并非十分有用。iOS 7 中，苹果公司为其添加了一个方法，其中最有用的：`currentRadioAccessTechnology`。这个方法能告诉你手机是处于较慢的 GPRS 还是高速的 LTE 或者介于其中。目前还没有方法得到连接速度（当然手机本身也无法获取这个），但是这足以用来优化一个下载管理器，让其在 EDGE 下不用尝试 *同时* 去下载6张图片了。
+虽然早在 iOS 4 的时候，大部分的运营商信息已经在 CTTelephony 暴露了，但它通常只用于特定场景并非十分有用。iOS 7 中，苹果公司为其添加了一个方法，其中最有用的：`currentRadioAccessTechnology`。这个方法能告诉你手机是处于较慢的 GPRS 还是高速的 LTE 或者介于其中。目前还没有方法得到连接速度（当然手机本身也无法获取这个），但是这足以用来优化一个下载管理器，让其在 EDGE 下不用尝试 *同时* 去下载6张图片了。
 
 现在还没有 `currentRadioAccessTechnology` 的相关文档，为了让它工作，会遇到一些麻烦和错误。当你想要获取当前网络信号值，你应当注册一个 `CTRadioAccessTechnologyDidChangeNotification` 通知而不是去轮询这个属性。为了确切的使 iOS 发送这些通知，你需要持有一个 `CTTelephonyNetworkInfo` 的实例，但不要在通知中创建  `CTTelephonyNetworkInfo` 的实例，否则会 crash。
 

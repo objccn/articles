@@ -3,7 +3,7 @@
 [库风格应用](https://developer.apple.com/library/mac/documentation/General/Conceptual/MOSXAppProgrammingGuide/CoreAppDesign/CoreAppDesign.html#//apple_ref/doc/uid/TP40010543-CH3-SW3)(译者注:"盒子类型"，比如 iPhoto )的同步中的问题导致[很多](http://www.macworld.com/article/1167742/developers_dish_on_iclouds_challenges.html)[开发者](http://blog.caffeine.lu/problems-with-core-data-icloud-storage.html)[放弃](http://www.jumsoft.com/2013/01/response-to-sync-issues/)支持 iCloud，而选择一些其他的方案比如 [Simperium](http://simperium.com)，[TICoreDataSync](https://github.com/nothirst/TICoreDataSync) 和 [WasabiSync](http://www.wasabisync.com)。
 
 2013年初，在苹果公司不透明及充满 bug 的 iCloud Core Data 同步实现中挣扎多年后，开发者终于公开批判了这项服务的重大缺陷并将这个话题推上了[风口浪尖](http://arstechnica.com/apple/2013/03/frustrated-with-icloud-apples-developer-community-speaks-up-en-masse/)。 最终被 Ellis Hamburger 在一篇[尖锐文章](http://www.theverge.com/2013/3/26/4148628/why-doesnt-icloud-just-work)提出。
-
+l
 ## WWDC
 
 苹果也注意到了，很明显这些事情必须改变。在 WWDC 2013，[Nick Gillett](http://about.me/nickgillett) 宣布 Core Data 团队花了一年时间专注于在 iOS 7 中解决一些 iCloud 最令人挫败的漏洞，承诺大幅改善问题并且让开发者更简单的使用。“我们明显减少了开发者所需要编写的复杂代码的数量。” Nick Gillett在 [“What’s New in Core Data and iCloud”] 舞台上讲到。 在 iOS 7 中，Apple 专注于 iCloud 的速度，可靠性，和性能，事实上这卓有成效。
@@ -120,7 +120,7 @@
 
 ### 账户修改
 
-iOS 5 系统中，用户在切换 iCloud 账户或者禁用账户时，`NSPersistentStoreCoordinator` 中的数据会在应用无法知晓的情况下完全消失。事实上检查一个账号是否变更了的唯一的方法是调用 `NSFileManager` 中的 `URLForUbiquityContainerIdentifier`，这个方法可以创建一个开放性容器文件夹，并且迅速返回。在 iOS 6，这种情况随着引进 `ubiquityIdentityToken` 和相应的`NSUbiquityIdentityDidChangeNotification` 之后得到改善。因为在 ubiquity id 变化的时候会发送通知，这就可以对应用账户的变更进行有效的确认并及时的发出提示。
+iOS 5 系统中，用户在切换 iCloud 账户或者禁用账户时，`NSPersistentStoreCoordinator` 中的数据会在应用无法知晓的情况下完全消失。事实上检查一个账号是否变更了的唯一的方法是调用 `NSFileManager` 中的 `URLForUbiquityContainerIdentifier`，这个方法可以创建一个开放性容器文件夹，而且需要数秒返回。在 iOS 6，这种情况随着引进 `ubiquityIdentityToken` 和相应的`NSUbiquityIdentityDidChangeNotification` 之后得到改善。因为在 ubiquity id 变化的时候会发送通知，这就可以对应用账户的变更进行有效的确认并及时的发出提示。
 
 然而，iOS 7 中这种转换的情况就变得更加简单，账户的切换是由 Core Data 框架来处理的，因此只要你的程序能够正常响应 `NSPersistentStoreCoordinatorStoresWillChangeNotification` 和 `NSPersistentStoreCoordinatorStoresDidChangeNotification` 便可以在切换账户的时候流畅的更换信息。检查 `userInfo` 的字典中 `NSPersistentStoreUbiquitousTransitionType` 键将提供更多关于迁移的类型的细节。
 
@@ -198,7 +198,7 @@ iCloud 守护进程将使用本地网络或使用因特网这两种方式中的�
 
 因为 iOS 7 中 APIs 和功能得到了极大的改善，那些在 iOS 5 和 iOS 6 上分发的带有 iCloud Core Data 的应用的命运就显得扑朔迷离了。 由于从 API 的角度来看它们完全不同（当然我们从功能角度也验证了这一点)，Apple 的建议对于那些需要传统同步的应用来说并不那么友好。Apple **清楚地** 在[开发者论坛](https://devforums.apple.com/thread/199983?start=0&tstart=0*) 上建议，绝对不要在 iOS 7 和之前的设备同步之间同步数据。
 
-事实上，“任何时候你都不应该在 iOS 7 与 iOS 6 同步。iOS 6 将持续造成那些已经在 iOS 7 上修正了的 bug，这样做将会会污染 iCloud 账户。” 保证这种分离的最简单的方法是简单地改变你存储中的 `NSPersistentStoreUbiquitousContentNameKey`，遵循规范进行命名。这样保证从旧版本保证数据同步的方法是孤立的，并允许开发人员从原有的老的实现中完全脱身。
+事实上，“任何时候你都不应该在 iOS 7 与 iOS 6 同步。iOS 6 将持续造成那些已经在 iOS 7 上修正了的 bug，这样做将会会污染 iCloud 账户。” 保证这种分离的最简单的方法是简单地改变你存储中的 `NSPersistentStoreUbiquitousContentNameKey`，遵循规范进行命名。这样保证从旧版本数据同步的方法是孤立的，并允许开发人员从老旧的实现中完全脱身。
 
 ## 发布
  

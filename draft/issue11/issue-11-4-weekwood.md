@@ -6,7 +6,7 @@ Android 从最开始就可以接收通知这一点已经被吹捧了很长一段
 
 自从 Android 允许开发者们自由控制他们的后台进程，他们可以在任何时候以任何理由创建并显示通知。它从来没有传递通知给应用程序或状态栏的概念。它被送到任何你想要它去的地方。 
 
-你你可以在任何时候任何地方访问通知。由于大多数应用没有强迫去实现一个全屏的设计，用户在他们需要的时候可以下拉通知‘抽屉’。对多数人来说，Android 是他们的第一个智能手机，它改变了他们过往查看通知的惯例，过去你需要打开一个个单独的应用去查看你是否错过了电话，短信或者邮件。
+你可以随时随地访问通知。由于大多数应用没有强迫去实现一个全屏的设计，用户在他们需要的时候可以下拉通知‘抽屉’。对多数人来说，Android 是他们的第一个智能手机，它改变了他们过往查看通知的惯例，过去你需要打开一个个单独的应用去查看你是否错过了电话，短信或者邮件。
 
 
 Android 1.6 中的通知 (甜甜圈): 
@@ -24,14 +24,14 @@ Android 4.4 的通知 (奇巧巧克力):
 
 ### Android 1.5 - 2.3 
 
-这是对大多数人来说的 Android 的开始（包括我）。我们有一些选项可以定制，比如应用图标，标题，描述以及时间。如果你需要加入自定义的控件，比如，一个音乐播放器当然也可以。系统会维护所需的宽高，但是你需要加入你需要的视图。在通知中使用自定义的布局是大多数音乐播放器实现自定义控件的方式：
+这是对大多数人来说的 Android 的开始（包括我）。我们有一些可以定制的功能，比如应用图标，标题，描述以及时间。如果你需要加入自定义的控件，比如，一个音乐播放器当然也可以。系统会维护所需的宽高，但是你需要加入你需要的视图。在通知中使用自定义的布局是大多数音乐播放器实现自定义控件的方式：
 
     private void showNotification() {
       // 创建基本通知（the R.drawable 参考自 png 图片）
       Notification notification = new Notification(R.drawable.stat_notify_missed_call,
           "Ticket text", System.currentTimeMillis());
 
-      // 实现的点击方法
+      // 创建 Intent
       Intent intent = new Intent(this, Main.class);
 
       // 让 intent 等待直到他准备好。
@@ -61,12 +61,12 @@ Android 2.3 中的运行结果:
 
 ### Android 3.0 - 3.2
 
-通知系统在 Android 3.0 上实际有一点退步， Android 平板版本，一个用来对抗 iPad 的版本，是 Android 在大屏幕运行的一次尝鲜。相对于单一的抽屉显示，Android 尝试用额外的控件带来新的通知体验，你依旧有一个抽屉类型的通知，同时你也可以接收 'growl-like' 的通知。幸运的是，与此同时 Android 提供了一个叫做 `NotificationBuilder` 的全新 API，允许我们利用[建造者模式](http://en.wikipedia.org/wiki/Builder_pattern) 去构建我们的通知。尽管略微复杂，但构造器会根据每个新版操作系统的不同来构建复杂的通知对象：
+通知系统在 Android 3.0 上实际有一丝退步， Android 平板，一个用来对抗 iPad 的版本，是 Android 在大屏幕运行的一次尝鲜。相对于单一的抽屉显示，Android 尝试用额外的控件带来新的通知体验，你依旧有一个抽屉类型的通知，同时你也可以接收 'growl-like' 的通知。幸运的是，与此同时 Android 提供了一个叫做 `NotificationBuilder` 的全新 API，允许我们利用[建造者模式](http://en.wikipedia.org/wiki/Builder_pattern) 去构建我们的通知。尽管略微复杂，但构造器会根据每个新版操作系统的不同来构建复杂的通知对象：
 
-    // 点击方法
+    // 创建 Intent 实例
     Intent intent = new Intent(this, Main.class);
 
-    // 让 intent 等待直到他准备好。
+    // 让 Intent 等待直到他准备好。
 
     PendingIntent pi = PendingIntent.getActivity(this, 1, intent, 0);
 
@@ -78,40 +78,40 @@ Android 2.3 中的运行结果:
       .setContentIntent(pi)
       .build();
 
-    // G获取通知 manager 的实例
+    // 获取通知 manager 的实例
     NotificationManager noteManager = (NotificationManager)
         getSystemService(Context.NOTIFICATION_SERVICE);
 
     // 发布到系统栏
     noteManager.notify(1, notification);
 
-通知在 Android 3.2（蜂巢）中初始的样式：
+通知在 Android 3.2（蜂巢）接后的初始状态：
 
 ![Honeycomb notifications ticket text](http://www.objc.io/images/issue-11/hc/initially-received-hc.png)
 
 
-当你在导航栏点击他时候的样式:
+当你在导航栏点击它时候的样式:
 
 ![Honeycomb notifications tapping notification](http://www.objc.io/images/issue-11/hc/selecting_notification_hc.png)
 
-当你点击时钟看到的通知的样子:
+当你点击时钟看到的通知的样式:
 
 ![Honeycomb notifications tapping clock](http://www.objc.io/images/issue-11/hc/selecting_clock_hc.png)
 
-各种冗余的通知让用户感到困惑不知道它们代表什么，这是对开发人员的一种挑战，如何在恰当的时间返回恰当的信息给用户。
+各种冗余的通知让用户感到困惑不知道它们代表什么，这是对开发人员的一种设计挑战，如何在恰当的时间返回恰当的信息给用户。
 
 ### 最终, 4.0-4.4
 
-与其他系统相比，Android 从4.0开始真正充实和统一通知体验。虽然在4.0没有带来任何激动人心的设计，但是4.1带来一种聚合的通知（一种全新的可视化，让一个 cell 中可以显示多个通知），可扩展的通知（比如，显示电子邮件的第一段），图片通知，以及可操作的通知。不用说这种提供了一种全新的方式可以带给用户 out-of-app 的体验。如果有人在 Facebook 加我为好友，我可以简单的在通知栏上点击“接受”，再也不用打开 Facebook 应用。如果我收到了一封垃圾邮件，我可以查看，直接归档。
+与其他系统相比，Android 从4.0开始真正充实和统一通知体验。虽然在4.0没有带来任何激动人心的设计，但是4.1带来一种聚合的通知（一种全新的可视化，让一个 cell 中可以显示多个通知），可扩展的通知（比如，显示电子邮件的第一段），图片通知，以及可操作的通知。不用说这种提供了一种全新的方式可以带给用户 out-of-app 的体验。如果有人在 Facebook 加我为好友，我可以简单的在通知栏上点击“接受”，再也不用打开 Facebook 应用。如果我收到了一封垃圾邮件，我可以直接归档而不用再次查看。
 
-这里有一些[Tumblr 应用](https://play.google.com/store/apps/details?id=com.tumblr)利用了一些新的 4.0+ API的例子，使用这些通知非常简单；只需要你加入一些额外的通知风格到 `NotificationBuilder`中。
+这里有一些[Tumblr 应用](https://play.google.com/store/apps/details?id=com.tumblr)利用了一些新的 4.0+ API的例子，使用它们构建通知出人意料的简单；只需要你加入一些额外的通知风格到 `NotificationBuilder` 中。
 
 #### 大文本通知
 
 如果文字足够短，还有什么理由让我打开应用来阅读？大文本样式提供了更大的阅读空间来解决这个问题。再也不需要浪费时间打开一个应用
 
     Notification noti = new Notification.Builder()
-      ... // The same notification properties as the others 和之前一样的通知属性设置
+      ... // 和之前一样的通知属性设置
       .setStyle(new Notification.BigTextStyle().bigText("theblogofinfinite replied..."))
       .build();
 
@@ -126,10 +126,10 @@ Android 2.3 中的运行结果:
 
 #### 大图片通知
 
-大图片通知提供了内容优先并且无需打开应用的美妙体验。这是一种优雅的方式在你的通知内来展示更多的上下文。
+大图片通知用一种优雅的方式来提供了更多的上下文信息，带给人内容优先无需打开应用的美妙体验。
 
     Notification noti = new Notification.Builder()
-      ... // The same notification properties as the others 同之前一样的属性设置方法
+      ... // 同之前一样的属性设置方法
       .setStyle(new Notification.BigPictureStyle().bigPicture(mBitmap))
       .build();
 
@@ -138,7 +138,7 @@ Android 2.3 中的运行结果:
 
 #### 聚合通知
 
-聚合通知是将多个通知放在一起，聚合有一点欺骗性因为它实际上并不堆栈现有的通知，你依然可以自己创造他们，所以这真的是一种很好展示通知的方式去：
+聚合通知是将多个通知放在一起，聚合有一点欺骗性因为它实际上并不堆栈现有的通知，你依然可以自己创造他们，所以这真的是一种很好展示通知的方式：
 
     Notification noti = new Notification.Builder()
       ... // The same notification properties as the others 和之前一样的属性设置
@@ -194,7 +194,7 @@ NotificationBuilder 提供了 out-of-the-box 的 android 穿戴设备支持，�
 
 ![Custom battery notification](http://www.objc.io/images/issue-11/custom/battery_widget.png)
 
-自定义通知仅限于视图组件所支持[远程视图](http://developer.android.com/reference/android/widget/RemoteViews.html)的一个子集，这些视图组件本身不能不能高度延伸或者被覆盖。虽然只能轻度定制，但是你依然可以利用基本组件构造复杂的通知。
+自定义通知仅限于视图组件所支持[远程视图](http://developer.android.com/reference/android/widget/RemoteViews.html)的一个子集，这些视图组件本身不能高度延伸或者被覆盖。虽然只能轻度定制，但是你依然可以利用基本组件构造复杂的通知。
 
 然而创建这些自定义视图可能需要更多的工作。使用 Android 的 XML 创建自定义通知视图布局系统，你要确保在不同 Android 版本看起来依旧良好。这非常痛苦，但是当你看看这些美丽的通知，你会觉得一切又那么有价值:
 
@@ -225,8 +225,8 @@ NotificationBuilder 提供了 out-of-the-box 的 android 穿戴设备支持，�
 
 ### 推送通知
 
-现在我们已经有了大量的历史教训，让我们看一些关于通知是如何工作的有趣行为。也许这部分内容我们已经提及，开发者可以
-*完全*控制通知系统。以及就是说通知可以因为任何原因在任何时候显示或者消失。甚至不需要从 Google 推送服务接收一个通知。实际上，就算我们收到一个推送通知，它默认也不会显示在状态栏，你需要自己去捕捉推送通知并且决定如何去处理它。
+现在我们已经了解了大量历史，接下来让我们看一些关于通知是如何工作的有趣行为。也许这部分内容我们已经提及，开发者可以
+*完全*控制通知系统。就是说通知可以因为任何原因在任何时候显示或者消失。甚至不需要从 Google 推送服务接收一个通知。实际上，就算我们收到一个推送通知，它默认也不会显示在状态栏，你需要自己去捕捉推送通知并且决定如何去处理它。
 
 举例来说，一个常规的通知交互应该是这个样子：
 
@@ -241,7 +241,7 @@ NotificationBuilder 提供了 out-of-the-box 的 android 穿戴设备支持，�
 
 ### 通知回调
 
-那么开发人员是如何控制用户与通知之间的互动，当然，我们已经知道可以添加自定义控件和按钮，而且我们已经看到了如何实现一般的点击？但还有其他的么？实际上，有！有一个“删除”功能，当用户设置 `setDeleteIntent`，用户从抽屉中删除通知的时候将被逻辑删除。加入删除是一个伟大的进步，以确保我们不再次显示老旧信息:
+那么开发人员是如何控制用户与通知之间的互动？当然，我们已经知道可以添加自定义控件和按钮，而且我们已经看到了如何实现一般的点击。但还有其他的么？实际上，当然有！有一个“删除”功能，当用户设置 `setDeleteIntent`，用户从抽屉中删除通知的时候将被逻辑删除。加入删除是一个伟大的进步，以确保我们不再次显示老旧信息:
     
     // 在 Android 中，我们可以创建任意名字让组件决定它们想要处理哪种操作
     
@@ -255,7 +255,7 @@ NotificationBuilder 提供了 out-of-the-box 的 android 穿戴设备支持，�
 
 ### 重建导航层次结构
 
-让我们更深入的谈一谈通知的默认点击。现在你当然可以在点击通知后执行一些默认的行为。你可以仅仅打开那你的应用。用户可以自己找到他们想要去的页面。但是如果我们可以直接显示相关的页面那么会更加友好。如果我们收到一个邮件通知，我们直接跳转到邮件内容，如果我们的一个朋友在 Foursquare 上签到，我们直接可以打开应用显示这个他或者她所在的餐馆。这是一个很棒的功能因为它允许通知指向到一个包含内容的深度链接。但是更多时候，深度链接已经是你应用的一部分，你会遇到导航层次混乱的问题。你无法使用导航’返回‘。 Android 可以帮助你在开始之前创建视图堆栈来解决这个问题。这是通过 TaskStackBuilder 类来完成的。使用这个技术需要一些魔法并且需要一些应用架构方面的知识，但是有空你可以看看 Google 开发者网站，这里有一个[简要实现](http://developer.android.com/guide/topics/ui/notifiers/notifications.html#SimpleNotification).
+让我们更深入地谈一谈通知的默认点击。现在你当然可以在点击通知后执行一些默认的行为。你可以仅仅打开那你的应用。用户可以自己找到他们想要去的页面。但是如果我们可以直接显示相关的页面那么体验会更加友好。如果我们收到一个邮件通知，我们直接跳转到邮件内容，如果我们的一个朋友在 Foursquare 上签到，我们直接可以打开应用显示这个他或者她所在的餐馆。这是一个很棒的功能因为它允许通知指向到一个包含内容的深度链接。但是更多时候，深度链接已经是你应用的一部分，你会遇到导航层次混乱的问题。你无法使用导航’返回‘。 Android 可以帮助你在开始之前创建视图堆栈来解决这个问题。这是通过 TaskStackBuilder 类来完成的。使用这个技术需要一些魔法并且需要一些应用架构方面的知识，但是有空你可以看看 Google 开发者网站，这里有一个[简要实现](http://developer.android.com/guide/topics/ui/notifiers/notifications.html#SimpleNotification).
 
 用 Gmail 举例，我们告诉应用 "打开邮件应用，接着打开一份指定的邮件。" 来代替简单的打开邮件应用。用户将不会看到所有的视图创建，替换，他或者她只会看到最终的结果。这是多么的不可思议，因为现在我们点击返回按钮的时候，用户将不会退出应用，他或者她只会退到应用的首页。
 

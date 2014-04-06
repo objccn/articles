@@ -155,7 +155,9 @@ Core Data 的优势在于管理关系。让我们着眼于简单的情况：增�
 
 当你开始使用一个简单的 Core Data 堆栈，并且使用我们在这篇文章中讲到的知识吧，你将很快会真正体会到 Core Data 能为你做什么，并且学到它是怎么缩短你开发周期的。
 
+---
 
+[话题 #4 下的更多文章](http://objccn.io/issue-4)
 
 原文 [Core Data Overview](http://www.objc.io/issue-4/core-data-overview.html)
    

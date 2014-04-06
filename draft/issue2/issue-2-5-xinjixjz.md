@@ -49,7 +49,7 @@ XCode4 所使用的测试框架是基于 [OCUnit][4]。为了理解之前所提�
 
 <img src="http://img.objccn.io/issue-2/SenTestingKit-call-stack.png" style="width:698px" alt="SenTestingKit call stack"/>
 
-在主 run loop 运行测试框架之后，主要运行以下几个步骤：
+在测试框架在主 run loop 开始运行之后，主要执行了以下几个步骤：
 
 1. 配置一个包含所有相关测试的测试包 (比如可以在工程的 scheme 中配置)。
 2. 运行测试包，内部会调用所有以 _test_ 开头测试用例的方法。运行结束后会返回一个包含单个测试结果的对象。
@@ -59,12 +59,12 @@ XCode4 所使用的测试框架是基于 [OCUnit][4]。为了理解之前所提�
 
 当然我们有很多种方发来解决这个问题。但是所有的方法都必须在主 run loop 中运行，而且在测试方法返回和比较结果之前需要处理已入队所有操作。
 
-[Kiwi][5] 使用探测轮询，它可以在测试方法中被调用。 [GHUnit][6] 编写了一个单独的测试类，它必须在测试的方法内初始化，结束时发送一个通知。以上两种方式都是通过编写相应的代码来确保异步测试方法在测试结束之前都不会返回。
+[Kiwi][5] 使用探测轮询 (probe poller)，它可以在测试方法中被调用。 [GHUnit][6] 编写了一个单独的测试类，它必须在测试的方法内初始化，并在结束时接收一个通知。以上两种方式都是通过编写相应的代码来确保异步测试方法在测试结束之前都不会返回。
 
 
 ## SenTestingKit的异步扩展
 
-我们对这个问题的解决方案是对 SenTestingKit 添加一个 [扩展][2],它在栈上使用同步执行，而且把每个部分加入到主队列上。正如下图所见，在验证整个测试框架结果之前，报告异步测试成功或者失败的Block就被加入到队列。这种执行顺序允许我们开启一个测试并等待它的测试结果。
+我们对这个问题的解决方案是对 SenTestingKit 添加一个[扩展][2]，它在栈上使用同步执行，并把每个部分加入到主队列上。正如下图所见，在验证整个测试框架结果之前，报告异步测试成功或者失败的 Block 就被加入到队列。这种执行顺序允许我们开启一个测试并等待它的测试结果。
 
 <img src="http://img.objccn.io/issue-2/SenTestingKitAsync-call-stack.png" style="width:531px" alt="SenTestingKitAsync call stack"/>
 
@@ -86,9 +86,9 @@ XCode4 所使用的测试框架是基于 [OCUnit][4]。为了理解之前所提�
 
 ### 示例工程
 
-综上所述，我们创建了一个示例框架：[PinacotecaCore][3]，它从一个虚拟的服务器获取图像信息。框架中包含一个资源管理器，它对外提供一个可以根据图像 Id 获取图像对象的接口，该接口的工作原理是资源管理器从虚拟服务器获取图片对象的信息，并更新到数据库。
+为了运用到实际中，我们创建了一个示例框架：[PinacotecaCore][3]，它从一个虚拟的服务器获取图像信息。框架中包含一个资源管理器，它对外提供一个可以根据图像 Id 获取图像对象的接口。该接口的工作原理是资源管理器从虚拟服务器获取图片对象的信息，并更新到数据库。
 
-虽然这个示例框架只是为了演示，但在我们自己开发的许多APPs使用了这种测试方式。
+虽然这个示例框架只是为了演示，但在我们自己开发的许多应用中也使用了这种模式。
 
 <img src="http://img.objccn.io/issue-2/PinacotecaCore.png" style="width:699px" alt="PinacotecaCore architecture"/>
 
@@ -100,7 +100,7 @@ XCode4 所使用的测试框架是基于 [OCUnit][4]。为了理解之前所提�
 
 ### 模型层
 
-模型层应该尽量采用同步测试。只要不同的被管理的对象上下文之间没有太多依赖关系，测试用例应该根据上下文在主线程上设置它自己的 core data 堆栈。
+测试应该尽量使用同步的方式进行，而模型层就是一个很好的实例。只要不同的被托管对象上下文 (managed object contexts) 之间没有复杂的依赖关系，测试用例都应该根据上下文在主线程上设置它自己的 core data 堆栈，并在其中执行各自的操作。
 
 在这个[测试实例][7]中，我们就是在 `setUp` 方法中设置 core data 堆栈，然后检查 `PCImage` 实体的描述是否存在，如果不存在就构造一个，并更新它的值。当然这和异步测试没有关系，我们就不深入细说了。
 
@@ -114,7 +114,7 @@ XCode4 所使用的测试框架是基于 [OCUnit][4]。为了理解之前所提�
 
 因为服务器根本不存在，一个比较好的做法就是伪造一个代理服务器，正好 [OHHTTPStubs][8] 可以解决这个问题。在它的最新版本中，可以在示例的请求响应中包含一个 bundle，发送给客户端。
 
-为了能接管请求，对 OHHTTPStubs 进行配置需要在测试类初始化时或者 setUp 方法中进行。首先，我们需要加载一个包含请求响应对象（response）的 bundle：
+为了能 stub 请求，OHHTTPStubs 需要在测试类初始化时或者 setUp 方法中进行配置。首先，我们需要加载一个包含请求响应对象（response）的 bundle：
 
     NSURL *url = [[NSBundle bundleForClass:[self class]]
                             URLForResource:@"ServerAPIResponses"
@@ -163,7 +163,7 @@ XCode4 所使用的测试框架是基于 [OCUnit][4]。为了理解之前所提�
 
 该方法根据 id 返回一个图片对象。如果图片在数据库中不存在，它会创建一个只包含 id 的新对象，然后通过服务器接口控制器获取图片对象的详细信息。
 
-由于资源管理器的测试不应该依赖于服务器接口控制器，所以我们可以用 [OCMock][10] 来模拟。如以下的 [资源管理器测试][11] :
+由于资源管理器的测试不应该依赖于服务器接口控制器，所以我们可以用 [OCMock][10] 来模拟，如果要做方法的部分 stub，它是一个理想的框架。如以下的 [资源管理器测试][11] :
 
     OCMockObject *mo;
     mo = [OCMockObject partialMockForObject:self.resourceManager.server];
@@ -203,7 +203,6 @@ XCode4 所使用的测试框架是基于 [OCUnit][4]。为了理解之前所提�
 
 [话题 #2 下的更多文章][12]
 
-
 [1]: http://nxtbgthng.com  "nxtbgthng"
 [2]: https://github.com/nxtbgthng/SenTestingKitAsync "SenTestingKitAsync"
 [3]: https://github.com/objcio/issue-2-async-testing "Pinacoteca Core: Cocoa Framework for an Imaginary Image Service"
@@ -221,3 +220,4 @@ XCode4 所使用的测试框架是基于 [OCUnit][4]。为了理解之前所提�
    
 译文 [iOS系列译文：测试并发程序](http://blog.jobbole.com/53377/)
 
+精细校对 [xinjixjz](https://github.com/xinjixjz)

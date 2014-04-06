@@ -154,7 +154,7 @@ iOS 7 中最让我激动的特性之一就是提供了新的 API 来支持自定
 
 ## 结论
 
-本文只探讨了在 navigation controller 中的两个 view controller 之间的转场动画，但是这些做法在 tab bar controller 或者任何你自己定义的 view controller 容器中也是通用的。另外，在 iOS 7 中，`UICollectionViewController` 默认在切换布局时提供交互式的动画效果，背后使用的也是同样的机制。这真是太强大了。
+本文只探讨了在 navigation controller 中的两个 view controller 之间的转场动画，但是这些做法在 tab bar controller 或者任何你自己定义的 view controller 容器中也是通用的。另外，在 iOS 7 中，`UICollectionViewController` 也进行了扩展，现在你可以在布局之间进行自动以及交互的动画切换，背后使用的也是同样的机制。这真是太强大了。
 
 在和 [Orta](https://twitter.com/orta) 讨论这个 API 的时候，他提到他已经在大量地使用这些机制以创建更轻量的 view controller。与其在一个 view controller 中维护各种状态，不如再创建一个新的 view controller，使用自定义的转场动画，然后在这个转场动画中来移动你的各种 view。
 

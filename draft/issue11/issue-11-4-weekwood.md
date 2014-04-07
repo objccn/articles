@@ -170,8 +170,7 @@ Android 2.3 中的运行结果:
 
 现在的科技圈对于任何一个人来说都已经不再像之前那么神秘，正因如此 Android 可穿戴设备也成为了科技设备中的一份子。它是否能够成功的成为一类消费品这件事情似乎仍然有待商榷，但是对于那些想要支持 Android 穿戴设备的开发者来说，仍然有很多不容忽视存在着的障碍。没有辜负 Android 系统传承下来的一些优势，其穿戴设备在与你的设备进行同步的时候似乎总可以接受正确的通知。但事实上，你的手机与 Android 穿戴设备连接后，它将会在没有代码修改的情况下对设备推送构造器创建的通知。能够简单使用建造者模式则意味着无论出现什么设备，只要它们能够支持 Android 系统和 Android 可穿戴设备，立即会有大量熟练使用 API 来收发数据的应用开发者出现。
 
-<img style="display:inline;" alt="Action notification" src="http://img.objccn.io/issue-11/picture.png" width="40%">
-<img style="display:inline;margin-left:1em;" alt="Action notification" src="http://img.objccn.io/issue-11/hunkosis.png" width="40%">
+<img style="display:inline;" alt="Action notification" src="http://img.objccn.io/issue-11/picture.png" width="40%"><img style="display:inline;margin-left:1em;" alt="Action notification" src="http://img.objccn.io/issue-11/hunkosis.png" width="40%">
 
 NotificationBuilder 提供了 out-of-the-box 的 android 穿戴设备支持，不用写任何额外的代码！
 

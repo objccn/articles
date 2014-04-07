@@ -145,7 +145,7 @@ Core Data 的优势在于管理关系。让我们着眼于简单的情况：增�
 
 保存 values 需要协调持久化存储协调器和持久化 store 依次访问 SQLite 数据库。和在内存中操作对象比起来，取出对象和值，访问 store 和数据库是非常耗费资源的。不管你保存了多少更改，一次保存的代价是固定的。并且每个变化都有成本。这是 SQLite 的工作方式。当你做很多更改的时候，需要将更改打包，并批量更改。如果你保存每一次更改，将要付出很高的代价，因为你需要经常做保存操作。如果你很少做保存，那么你将会有一大批更改交给 SQLite 处理。
 
-同样需要注意的是保存操作是原子性的，要么所有的更改会被提交给 store/SQLite 数据库，要么任何更改都不被保存。当实现自定义 [`NSIncrementalStore`](https://developer.apple.com/library/ios/DOCUMENTATION/CoreData/Reference/NSIncrementalStore_Class/Reference/NSIncrementalStore.html)基类时，这一点一定要牢记在心。要么确保保存永远不会失败（比如说不会发生冲突），要么当保存失败时，你 store 的基类需要恢复所有的改变。否则，在内存中的对象图最终和保存在 store 中的对象不一致。
+同样需要注意的是保存操作是原子性的，要么所有的更改会被提交给 store/SQLite 数据库，要么任何更改都不被保存。当实现自定义 [`NSIncrementalStore`](https://developer.apple.com/library/ios/DOCUMENTATION/CoreData/Reference/NSIncrementalStore_Class/Reference/NSIncrementalStore.html) 基类时，这一点一定要牢记在心。要么确保保存永远不会失败（比如说不会发生冲突），要么当保存失败时，你 store 的基类需要恢复所有的改变。否则，在内存中的对象图最终和保存在 store 中的对象不一致。
 
 如果你使用一个简单的设置，保存操作通常不会失败。但是 Core Data 允许每个持久化存储协调器有多个 context，所以你可能陷入持久化存储协调器层级的冲突之中。改变是对于每个 context 的，另一个 context 的更改可能导致冲突。Core Data 甚至允许完全不同的堆栈访问磁盘上相同的 SQLite 数据库。这明显也会导致冲突（比如，一个 context 想要更新一个对象的值，而另一个 context 想要删除这个对象）。另一个导致保存失败的原因可能是验证。Core Data 支持复杂的对象验证策略。这是一个高级话题。一个简单的验证规则可能是： `Item` 的 `title` 不能超过300个字符。但是 Core Data 也支持通过属性进行复杂的验证策略。
 
@@ -155,7 +155,9 @@ Core Data 的优势在于管理关系。让我们着眼于简单的情况：增�
 
 当你开始使用一个简单的 Core Data 堆栈，并且使用我们在这篇文章中讲到的知识吧，你将很快会真正体会到 Core Data 能为你做什么，并且学到它是怎么缩短你开发周期的。
 
+---
 
+[话题 #4 下的更多文章](http://objccn.io/issue-4)
 
 原文 [Core Data Overview](http://www.objc.io/issue-4/core-data-overview.html)
    

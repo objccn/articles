@@ -97,15 +97,15 @@
 
     % xcrun clang -E helloworld.c | open -f
 
-At the very top you'll see lots and lots of lines starting with a `#` (pronounced 'hash'). These are so-called *linemarker* statements that tell us which file the following lines are from. We need this. If you look at the `helloworld.c` file again, you'll see that the first line is:
+在顶部可以看到的许多行语句都是以 `#` 开头 (读作 `hash`)。这些被称为 *行标记* 的语句告诉我们后面跟着的内容来自哪里。如果再回头看看 `helloworld.c` 文件，会发现第一行是：
 
     #include <stdio.h>
 
-We have all used `#include` and `#import` before. What it does is to tell the preprocessor to insert the content of the file `stdio.h` where the `#include` statement was. This is a recursive process: The `stdio.h` header file in turn includes other files.
+我们都用过 `#include` 和 `import`。它们所做的事情是告诉预处理器将文件 `stdio.h` 中的内容插入到 `#include` 语句所在的位置。这是一个递归的过程：`stdio.h` 可能会包含其它的文件。
 
-Since there's a lot of recursive insertion going on, we need to be able to keep track of where the lines in the resulting source originate from. To do this, the preprocessor inserts a *linemarker* beginning with a `#` whenever the origin changes. The number following the `#` is the line number followed by the name of the file. The numbers at the very end of the line are flags indicating the start of a new file (1), returning to a file (2), that the following is from a system header (3), or that the file is to be treated as wrapped in an `extern"C"` block.
+由于这样的递归插入过程很多，所以我们需要确保记住相关行号信息。为了确保无误，预处理器在发生变更的地方插入以 `#` 开头的 `行标记`。跟在 `#` 后面的数字是在源文件中的行号，而最后的数字是在新文件中的行号。回到刚才打开的文件，紧跟着的是系统头文件，或者是被看做为封装了 `extern "C"` 代码块的文件。
 
-If you scroll to the very end of the output, you'll find our `helloworld.c` code:
+如果滚动到文件末尾，可以看到我们的 `helloworld.c` 代码：
 
     # 2 "helloworld.c" 2
     int main(int argc, char *argv[])
@@ -114,29 +114,29 @@ If you scroll to the very end of the output, you'll find our `helloworld.c` code
      return 0;
     }
 
-In Xcode, you can look at the preprocessor output of any file by selecting **Product** -> **Perform Action** -> **Preprocess**. Note that it takes a few seconds for the Editor to load the preprocessed file -- it'll most likely be close to 100,000 lines long.
+在 Xcode 中，可以通过这样的方式查看任意文件的预处理结果：**Product** -> **Perform Action** -> **Preprocess**。注意，编辑器加载预处理后的文件需要花费一些时间 -- 接近 100,000 行代码。
 
-#### Compilation
+#### 编译
 
-Next up: parsing and code generation. We can tell `clang` to output the resulting assembly code like so:
+下一步：分析和代码生成。我们可以用下面的命令让 `clang` 输出汇编代码：
 
     % xcrun clang -S -o - helloworld.c | open -f
 
-Let's take a look at the output. First we'll notice how some lines start with a dot `.`. These are assembler directives. The other ones are actual x86_64 assembly. Finally there are labels, which are similar to labels in C.
+我们来看看输出的结果。首先会看到有一些以点 `.` 开头的行。这些就是汇编指令。其它的则是实际的 x86_64 汇编代码。最后是一些标记 (label)，与 C 语言中的类似。
 
-Let's start with the first three lines:
+我们先看看前三行：
 
         .section    __TEXT,__text,regular,pure_instructions
         .globl  _main
         .align  4, 0x90
 
-These three lines are assembler directives, not assembly code. The `.section` directive specifies into which section the following will go. More about sections in a bit.
+这三行是汇编指令，不是汇编代码。`.section` 指令指定接下来会执行哪一个段。
 
-Next, the `.globl` directive specifies that `_main` is an external symbol. This is our `main()` function. It needs to be visible outside our binary because the system needs to call it to run the executable.
+第二行的 `.globl` 指令说明 `_main` 是一个外部符号。这就是我们的 `main()` 函数。这个函数对于二进制文件外部来说是可见的，因为系统要调用它来运行可执行文件。
 
-The `.align` directive specifies the alignment of what follows. In our case, the following code will be 16 (2^4) byte aligned and padded with `0x90` if needed.
+`.align` 指令指出了后面代码的对齐方式。在我们的代码中，后面的代码会按照 16(2^4) 字节对其，如果需要的话，用 `0x90` 补齐。
 
-Next up is the preamble for the main function:
+接下来是 main 函数的头部：
 
     _main:                                  ## @main
         .cfi_startproc
@@ -151,17 +151,17 @@ Next up is the preamble for the main function:
         .cfi_def_cfa_register %rbp
         subq    $32, %rsp
 
-This part has a bunch of labels that work the same way as C labels do. They are symbolic references to certain parts of the assembly code. First is the actual start of our function `_main`. This is also the symbol that is exported. The binary will hence have a reference to this position.
+上面的代码中有一些与 C 标记工作机制一样的一些标记。它们是某些特定部分的汇编代码的符号链接。首先是 `_main` 函数真正开始的地址。这个符号会被 export。二进制文件会有这个位置的一个引用。
 
-The `.cfi_startproc` directive is used at the beginning of most functions. CFI is short for Call Frame Information. A *frame* corresponds loosely to a function. When you use the debugger and *step in* or *step out*, you're actually stepping in/out of call frames. In C code, functions have their own call frames, but other things can too. The `.cfi_startproc` directive gives the function an entry into `.eh_frame`, which contains unwind information -- this is how exception can unwind the call frame stack. The directive will also emit architecture-dependent instructions for CFI. It's matched by a corresponding `.cfi_endproc` further down in the output to mark the end of our `main()` function.
+`.cfi_startproc` 指令通常用于函数的开始处。CFI 是Call Frame Information 的缩写。这个调用 `帧` 以松散的方式对应着一个函数。当开发者使用 debugger 和 *step in* 或 *step out* 时，实际上是 stepping in/out 一个调用帧。在 C 代码中，函数有自己的调用帧，当然，别的一些东西也会有类似的调用帧。`.cfi_startproc` 指令给了函数一个 `.eh_frame` 入口，这个入口包含了一些调用栈的信息（表示异常如何展开调用帧堆栈）。这个指令也会发送一些和具体平台相关的指令给 CFI。它与后面的 `.cfi_endproc` 相匹配，以此标记出 `main()` 函数结束的地方。
 
-Next, there's another label `## BB#0:` and then, finally, the first assembly code: `pushq %rbp`. This is where things get interesting. On OS X, we have x86_64 code, and for this architecture there's a so-called *application binary interface* (ABI) that specifies how function calls work at the assembly code level. Part of this ABI specifies that the `rbp` register (base pointer register) must be preserved across function calls. It's the main function's responsibility to make sure the `rbp` register has the same value once the function returns. `pushq %rbp` pushes its value onto the stack so that we can pop it later.
+接着是另外一个 label `## BB#0:`。然后，终于，看到第一句汇编代码：`pushq %rbp`。从这里开始事情开始变得有趣。在 OS X上，我们会有 X86_64 的代码，对于这种架构，有一个东西叫做 *ABI* (application binary interface)，ABI 指定了函数调用是如何在汇编代码层面上工作的。在函数调用期间，ABI 会让 `rbp` 寄存器 (基于指针寄存器) 被保护起来。当函数调用返回时，确保 `rbp` 寄存器的值跟之前一样，这是属于 main 函数的职责。`pushq %rbp` 将 `rbp` 的值 push 到栈中，以便我们以后将其 pop 出来。
 
-Next, two more CFI directives: `.cfi_def_cfa_offset 16` and `.cfi_offset %rbp, -16`. Again, these will output information related to generating call frame unwinding information and debug information. We're changing the stack and the base pointer and these two basically tell the debugger where things are -- or rather, they'll cause information to be output which the debugger can later use to find its way.
+接下来是两个 CFI 指令：`.cfi_def_cfa_offset 16` 和 `.cfi_offset %rbp, -16`。这将会输出一些信息，这些信息是关于生成调用堆栈展开信息和调试信息的。我们改变了堆栈，并且这两个指令告诉编译器指针指向哪里，或者它们指明了之后调试器将会使用的信息。
 
-Now, `movq %rsp, %rbp` will allow us to put local variables onto the stack. `subq $32, %rsp` moves the stack pointer by 32 bytes, which the function can then use. We're first storing the old stack pointer in `rbp` and using that as a base for our local variables, then updating the stack pointer to past the part that we'll use.
+接下来，`movq %rsp, %rbp` 将把局部变量放置到栈上。`subq $32, %rsp`将栈指针移动 32个字节，也就是函数会调用的位置。我们先讲老的栈指针存储到 `rbp` 中，然后将此作为我们局部变量的基址，接着我们更新堆栈指针到我们将会使用的位置。
 
-Next, we'll call `printf()`:
+之后，我们调用了 `printf()`：
 
     leaq    L_.str(%rip), %rax
     movl    $0, -4(%rbp)
@@ -171,9 +171,9 @@ Next, we'll call `printf()`:
     movb    $0, %al
     callq   _printf
 
-First, `leaq` loads the pointer to `L_.str` into the `rax` register. Note how the `L_.str` label is defined further down in the assembly code. This is our C string `"Hello World!\n"`. The `edi` and `rsi` registers hold the first and second function arguments. Since we'll call another function, we first need to store their current values. That's what we'll use the 32 bytes based off `rbp` we just reserved for. First a 32-bit 0, then the 32-bit value of the `edi` register (which holds `argc`), then the 64-bit value of the `rsi` register (which holds `argv`). We're not using those values later, but since the compiler is running without optimizations, it'll store them anyway.
+首先，`leaq` 会将 `L_.str` 的指针加载到 `rax` 寄存器中。留意 `L_.str` 标记在后面的汇编代码中是如何定义的。它就是 C 字符串`"Hello World!\n"`。 `edi` 和 `rsi` 寄存器保存了函数的第一个和第二个参数。由于我们会调用别的函数，所以首先需要将它们的当前值保存起来。这就是为什么我们使用刚刚存储的`rbp` 偏移32个字节的原因。第一个 32 字节的值是 0，之后的 32 字节的值是 `edi` 寄存器的值 (存储了 `argc`)。然后是 64 字节 的值：`rsi` 寄存器的值 (存储了 `argv`)。我们在后面并没有使用这些值，但是编译器在没有经过优化处理的时候，它们还是会被存下来。
 
-Now we'll put the first function argument for `printf()`, `rax`, into the first function argument register `edi`. The `printf()` function is a variadic function. The ABI-calling convention specifies that the number of vector registers used to hold arguments need to be stored in the `al` register. In our case it's 0. Finally, `callq` calls the `printf()` function:
+现在我们会把第一个函数 `printf()` 的参数 `rax` 设置给第一个函数参数寄存器 `edi` 中。`printf()` 是一个可变参数的函数。ABI 调用约定指定，将会把使用来存储参数的寄存器数量存储在寄存器 `al` 中。在这里是 0。最后 `callq` 调用了 `printf()` 函数。
 
         movl    $0, %ecx
         movl    %eax, -20(%rbp)         ## 4-byte Spill

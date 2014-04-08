@@ -2,7 +2,7 @@
 
 真的，请相信我。
 
-也许这并不会让你感到惊讶。但毕竟我确实参与编写过一本有关java程序的书，所以这句话足以让我自己震惊。当我开始编写Android应用的时候我还并不是一个喜欢java的人，当我开始编写[书呆子编程指南](http://www.bignerdranch.com/book/android_the_big_nerd_ranch_guide)的时候，我也很难称得上是粉丝，甚至当我们完成编写的时候，我也始终不能算是一名超级粉丝。
+也许这并不会让你感到惊讶。但毕竟我确实参与编写过一本有关java程序的书，所以这句话足以让我自己震惊。当我开始编写Android应用的时候我还并不是一个喜欢java的人，当我开始编写[书虫编程指南](http://www.bignerdranch.com/book/android_the_big_nerd_ranch_guide)的时候，我也很难称得上是粉丝，甚至当我们完成编写的时候，我也始终不能算是一名超级粉丝。
 
 My beef was not original or well thought out, but here are my issues, roughly:
 

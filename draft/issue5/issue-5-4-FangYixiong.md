@@ -85,7 +85,7 @@ Upload task 的创建需要使用一个 request，另外加上一个要上传的
          
      [uploadTask resume];
 
-Download task 也许需要一个 request，但不同之处在于 `completionHandler` 这个 block。Data task 和 upload task 会在任务完成时一次性返回，但是 Download task 是将数据一点点地写入本地的临时文件。所以在 `completionHandler` 这个 block 里，我们需要把文件从一个临时地址移动到一个永久的地址保存起来：
+Download task 也需要一个 request，不同之处在于 `completionHandler` 这个 block。Data task 和 upload task 会在任务完成时一次性返回，但是 Download task 是将数据一点点地写入本地的临时文件。所以在 `completionHandler` 这个 block 里，我们需要把文件从一个临时地址移动到一个永久的地址保存起来：
 
      NSURL *URL = [NSURL URLWithString:@"http://example.com/file.zip"];
      NSURLRequest *request = [NSURLRequest requestWithURL:URL];

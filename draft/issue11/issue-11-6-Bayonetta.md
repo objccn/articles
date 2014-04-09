@@ -29,11 +29,11 @@ My beef was not original or well thought out, but here are my issues, roughly:
 
 Add some inner classes and interfaces to the mix, and that is what I learned and worked with. Not the worst thing in the world to be writing, but other languages had features and flexibility that I wished that I had in Java. Never did I find myself writing code in another language and saying, “Man, I wish this were more like Java.”
 
-My opinion has changed.
+但是，我的想法改变了。
 
 ## Java独有的特性
 
-Oddly enough, the tool that changed my mind is only popular because of problems that are peculiar to Java. Consider the following code:
+说来也奇怪，改变我想法的恰恰是Java独有的特性。思考下面的代码:
 
     public class Payroll {
         ...
@@ -52,9 +52,9 @@ Oddly enough, the tool that changed my mind is only popular because of problems 
         }
     }
 
-This class has a dependency in `getAfterTaxPay()` called `EmployeeDatabase`. There are a variety of ways that we could create this object, but in this example, I’ve used a typical singleton pattern of having a static getInstance method.
+这个类在 `getAfterTaxPay()` 方法中有一个叫做 `EmployeeDatabase` 的依赖对象。有很多种方式可以创建该对象，但在这个例子中, 我使用了单例模式，调用了一个静态的实例方法。
 
-Dependencies in Java are surprisingly strict things. Whenever I write a line of code like this:
+在Java中依赖关系是非常严格的。无论何时我写出这样的代码：
 
             long basePay = EmployeeDatabase.getInstance()
                .getBasePay(employee);
@@ -232,6 +232,6 @@ Finally, we add the annotation to our code, and call our magic method:
 
 ## 总结
 
-这些是我了解的全部内容. So much for annotations in Java. I can’t say that I’m sure that all this has made you feel the same way as I do about Java, but I hope that you’ve seen some interesting stuff. While day-to-day Java may be lacking a bit in expressivity, there are a few basic building blocks in the Java kit that make it possible for advanced developers to create powerful tools that amplify the productivity of the entire community. 
+这些是我了解的全部内容。有太多的有关Java注解的内容。我不能保证所有这些能够使你对Java的感受和我一样，但是我希望你能确实看到很多有趣的东西。虽然日常里Java在表达上欠缺一些，但是在Java的工具包中有一些基本的构建块，使高级的开发人员可以构建更强大的工具，从而扩大整个社会的生产力。
 
-If you’re interested in diving in deeper, you will find the topic of driving code generation with annotations very interesting. It’s not necessarily pretty to read or write, but folks are doing some nifty work out there with the tools as they are. The source for ButterKnife is reasonably simple, if you’re interested in an example of how it’s done in the real world.
+如果你对此很感兴趣，并且打算深入了解这些，你会发现通过注解驱动代码生成非常有趣。有时候并不一定要有漂亮的读写，但是人们会利用这些工具创造出漂亮的代码。假如你对于在实际场景中如何应用的原理很感兴趣的话，ButterKnife的源码是相当简单的。

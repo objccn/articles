@@ -4,10 +4,10 @@
 
 也许这并不会让你感到惊讶。但毕竟我确实参与编写过一本有关java程序的书，所以这句话足以让我自己震惊。**当我开始编写Android应用的时候我还并不是一个喜欢java的人，当我开始编写[书虫编程指南](http://www.bignerdranch.com/book/android_the_big_nerd_ranch_guide)的时候，我也很难称得上是粉丝，甚至当我们完成编写的时候，我也始终不能算是一名超级粉丝。**
 
-My beef was not original or well thought out, but here are my issues, roughly:
+我原本并非想抱怨什么，也并非想要深度反思一番。下面列出的这些内容大概就是一直困扰我的问题：
 
-*    It’s verbose. There’s no shortened syntax for implementing callbacks, like blocks or lambdas, so you have to write a lot of boilerplate to implement even a simple interface. If you need an object that holds four things, you have to create a class with four named fields. 
-*    It’s rigid. Writing sensible Java constantly requires you to specify exactly which exception you’re catching, to specify which type you’re taking in, to check and make sure that your references aren’t null, and to import every class you need to use. And while there is some flexibility at runtime, it’s nowhere close to what you get in the Objective-C runtime, much less something like Ruby or Python.
+*   Java很冗长。没有任何更简短的语法来执行回调，比如Blocks或者Lambda表达式（当然，Java8已经开始支持这一特性），所以你必须编写非常多的引用来实现，甚至只是一个简单的接口。如果你需要一个对象来保存四个属性，你必须创建一个拥有四个命名字段的类。
+*   Java很死板。编写清楚的Java程序时常需要你去正确的指定要捕获的异常类型，要接受的参数类型，还有仔细检查确保你的引用非空，以及导入你所使用的每一个类。另外在运行时有一定的灵活性，和Objective-c的运行时没有任何相似的地方，更不用说Ruby或者Python了。
 
 这是我眼中的Java，它的代码是这样的:
 
@@ -27,7 +27,7 @@ My beef was not original or well thought out, but here are my issues, roughly:
         }
     }
 
-Add some inner classes and interfaces to the mix, and that is what I learned and worked with. Not the worst thing in the world to be writing, but other languages had features and flexibility that I wished that I had in Java. Never did I find myself writing code in another language and saying, “Man, I wish this were more like Java.”
+增加一些Add some inner classes and interfaces to the mix, and that is what I learned and worked with. Not the worst thing in the world to be writing, but other languages had features and flexibility that I wished that I had in Java. Never did I find myself writing code in another language and saying, “Man, I wish this were more like Java.”
 
 但是，我的想法改变了。
 
@@ -70,7 +70,7 @@ When I use the new keyword, I tie myself down in all the same ways I did with th
 
 ## 依赖注入
 
-我们解决此类问题通常采用依赖注入的技术。依赖注入并非Java独有的特性，但因为上述提到的问题，Java尤其需要它。 
+我们解决此类问题通常采用依赖注入技术。它并非Java独有的特性，但对于上述提到的问题，Java尤其需要它。 
 
 依赖注入简单来说，接受合作对象作为构造函数参数而不是获取它们自身。所以 `Payroll` 类的实现会相应地变成这样：
 
@@ -235,3 +235,9 @@ ButterKnife允许我们只提供很少的代码来表示，“当绑定ID为 `R.
 这些就是我了解的全部内容。有太多与Java注解的部分。我不能保证所有的这些能够立刻让你对Java的感受变得和我一样，但是我希望你确实的看到很多有趣的东西。虽然通常Java在表达上还欠缺一些，但是在Java的工具包中有一些基本的构建块，使高级开发人员可以构建更强大的工具，从而扩大整个社会的生产力。
 
 如果你对此很感兴趣，并且打算深入了解这些，你会发现通过注解驱动代码生成非常有趣。**有时候并不一定要有漂亮的读写，**但是人们会利用这些工具创造出漂亮的代码。假如你对于实际场景如何应用依赖注入的原理很感兴趣的话，ButterKnife的源码是相当简单的。
+
+---
+
+[话题 #11 下的更多文章](http://objccn.io/issue-11)
+ 
+原文 [Dependency Injection, Annotations, and why Java is Better Than you Think it is #11](http://www.objc.io/issue-11/dependency-injection-in-java.html)

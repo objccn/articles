@@ -27,7 +27,7 @@
         }
     }
 
-增加一些Add some inner classes and interfaces to the mix, and that is what I learned and worked with. Not the worst thing in the world to be writing, but other languages had features and flexibility that I wished that I had in Java. Never did I find myself writing code in another language and saying, “Man, I wish this were more like Java.”
+我学习过并且会在工作中混合使用一些内部类和接口。虽然编写Java程序这并不是世界上最糟糕的时期，但是我还是希望Java能够其他语言的特点和灵活性。像“天啊，我多么希望这能更像Java”的感叹从没有出现过。
 
 但是，我的想法改变了。
 
@@ -52,21 +52,21 @@
         }
     }
 
-这个类在 `getAfterTaxPay()` 方法中有一个叫做 `EmployeeDatabase` 的依赖对象。有很多种方式可以创建该对象，但在这个例子中, 我使用了单例模式，调用了一个静态的实例方法。
+这个类在 `getAfterTaxPay()` 方法中有一个叫做 `EmployeeDatabase` 的依赖对象。有很多种方式可以创建该对象，但在这个例子中, 我使用了单例模式，调用一个静态的实例方法。
 
 在Java中依赖关系是非常严格的。无论何时我写出这样的代码：
 
             long basePay = EmployeeDatabase.getInstance()
                .getBasePay(employee);
 
-在 `EmployeeDatabase` 类中我创建了严格的依赖。不仅如此，我还but I also create a strict dependency on a particular method in `EmployeeDatabase`: the `getInstance()` method. In other languages, I might be able to swizzle or monkey patch this kind of thing. Not that that’s a great idea, necessarily, but it is at least possible. Not so in Java.
+在 `EmployeeDatabase` 类中我创建了严格的依赖。不仅如此，我还在`EmployeeDatabase`类的特定方法 `getInstance()` 创建了严格依赖。而在其他语言里，**I might be able to swizzle or monkey patch this kind of thing.** 并不是说这不是一个必要的好主意，但它至少存在实现的可能。但是Java不可以。
 
-Other ways of creating a dependency are even more strict than that. Let’s say that instead, I wrote that line like this:
+而其他创建依赖的方式比这更加严格。就让我们来看看下面这行：
 
             long basePay = new EmployeeDatabase()
                .getBasePay(employee);
 
-When I use the new keyword, I tie myself down in all the same ways I did with the static method, but I also add one more: calling `new EmployeeDatabase()` must always yield an instance of the `EmployeeDatabase` class. You can’t rewrite that constructor to return a mock subclass, no matter what you do.
+当使用关键字new，我会采用与调用静态方法相同的方式，但有一点不同：调用 `new EmployeeDatabase()`方法必须由 `EmployeeDatabase` 类的一个实例来完成。无论你想做什么，都不能复写构造器来返回子类。
 
 ## 依赖注入
 

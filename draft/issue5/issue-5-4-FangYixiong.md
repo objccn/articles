@@ -104,7 +104,7 @@ Download task 也需要一个 request，不同之处在于 `completionHandler` �
 
 ### NSURLSession 与 NSURLConnection 的 delegate 方法
 
-总体而言，`NSURLSession` 的 delegate 方法是 `NSURLConnection` 的演化的十年中对于 ad-hoc 模式的一个显著改善。您可以查看这个映射表来进行一个完整的概览。
+总体而言，`NSURLSession` 的 delegate 方法是 `NSURLConnection` 的演化的十年中对于 ad-hoc 模式的一个显著改善。您可以查看这个[映射表](https://gist.github.com/floriankugler/6870499)来进行一个完整的概览。
 
 以下是一些具体的观察：
 

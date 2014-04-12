@@ -1,4 +1,4 @@
-随着移动软件工业的发展，一个移动产品只局限于 iOS 系统变得越来越不切实际。 Android 目前占有近 80% 的智能手机份额[^1]，它能给一个产品带来的潜在用户数量实在不能被忽略了。
+随着移动软件工业的发展，一个移动产品只局限于 iOS 系统变得越来越不切实际。 Android 目前占有近 80% 的智能手机份额[^1]，它能给一个产品带来的潜在用户量实在不能再被忽略了。
 
 在本文中，我会在 iOS 的开发范围内介绍 Android 开发的核心内容。 Android 和 iOS 处理类似的问题集，但在大部分问题上，它们都有不同的解决方式。通过本文，我会使用一个配套项目（在 [GitHub](https://github.com/objcio/issue-11-android-101) 上）来说明如何在两个平台上开发以完成相同的任务。
 
@@ -6,7 +6,7 @@
 
 ### UI设计概要
 
-本文不会深入到介绍 iOS 和 Android 在用户体验和设计模式上的不同。然而，了解一些当今 Android 上使用的关键 UI 范式，比如 Action Bar、Overflow Menu、Back Button、Share Action 等，还是会很有好处的。如果你正在认真考虑 Android 开发，我推荐你从 Google Play Store 买个 [Nexus 5](https://play.google.com/store/devices/details?id=nexus_5_white_16gb)，将它作为你的主要设备，用满一周，强迫自己最大程度的体验这个操作系统。一个开发者若不清楚要为之开发的操作系的关键使用模式，那是对产品的不负责任。
+本文不会深入到介绍 iOS 和 Android 在用户体验和设计模式上的不同。然而，了解一些当今 Android 上使用的关键 UI 范式，比如 Action Bar、Overflow Menu、Back Button、Share Action 等，还是会很有好处的。如果你正在认真考虑 Android 开发，我推荐你从 Google Play Store 买个 [Nexus 5](https://play.google.com/store/devices/details?id=nexus_5_white_16gb)，将它作为你的主要设备，用满一周，强迫自己最大程度的去体验这个操作系统。一个开发者若不清楚要为之开发的操作系的关键使用模式，就那是对产品的不负责任。
 
 ## 语言应用结构
 
@@ -24,7 +24,7 @@ Objective-C 和 Java 之间有很多不同，虽然若能将 Objective-C 的方�
 
 Android 应用主要分为两个部分，第一部分是 Java 源代码。源代码通过 Java 包的方式进行组织，所以可按照你的喜好来决定。然而一个常见的实践是为 Activity、Fragment、View、Adapter 和 Data（模型和管理器）使用顶层的类别（top-level categories）。
 
-第二个主要部分部分是 `res` 文件夹，也就是资源文件夹。`res` 文件夹包含有图像、 XML 布局文件，以及 XML 值文件，它们构成了大部分非代码资源。在 iOS 上，图像可有 `@2x` 版本，但在 Android 上有好几种不同的屏幕密度文件夹要考虑[^2]。Android 使用文件夹来组织文件、字符串以及其他与屏幕密度相关的值。`res` 文件夹还包含有 XML 布局文件，就像 `xib` 文件一样。最后，还有其他 XML 文件存储了字符串、整数和样式资源。
+第二个主要部分是 `res` 文件夹，也就是资源文件夹。`res` 文件夹包含有图像、 XML 布局文件，以及 XML 值文件，它们构成了大部分非代码资源。在 iOS 上，图像可有 `@2x` 版本，但在 Android 上有好几种不同的屏幕密度文件夹要考虑[^2]。Android 使用文件夹来组织文件、字符串以及其他与屏幕密度相关的值。`res` 文件夹还包含有 XML 布局文件，就像 `xib` 文件一样。最后，还有其他 XML 文件存储了字符串、整数和样式资源。
  
 最后一个与项目结构相关的是 `AndroidManifest.xml` 文件。这个文件等同于 iOS 上的 `Project-Info.plist` 文件，它存储着 Activity 信息、应用名字，并设置应用能处理的 Intent [^3]（系统级事件）。关于 Intent 的更多信息，继续阅读本文，或者阅读 [Intents](http://objccn.io/issue-11-2) 这篇文章。
 
@@ -32,9 +32,9 @@ Android 应用主要分为两个部分，第一部分是 Java 源代码。源代
 
 Activity 是 Android 应用的基本显示单元，就像 `UIViewController` 是iOS的基本显示组件一样。作为 `UINavigationController` 的替代，Android 由系统来维护一个 Activity 栈。当应用完成加载，系统将应用的主 Activity（main activity）压到栈上。注意你也可以加载其他应用的 Activity 并将它们放在栈里。默认，Android 上的返回（back）按钮将从系统的 Activity 栈中弹出 Activity，所以当用户不停地按下返回时，他可以见到多个曾经加载过的应用。
 
-通过使用包含有额外的数据 Intent，Activity 同样可以初始化其他 Activity 。通过 Intent 启动 Activity 类似于通过自定义的 `init` 方法创建一个 `UIViewController`。因为最常见的加载新 Activity 的方法是创建一个有数据的 Intent，在 Android 上暴露自定义初始化方法的一个非常棒的方式是创建一个静态 Intent getter 方法。Activity 同样能在完成时返回结果（再见，modal 代理），在其完成时在 Intent 上放置额外数据即可。
+通过使用包含有额外的数据 Intent，Activity 同样可以初始化其他 Activity 。通过 Intent 启动 Activity 类似于通过自定义的 `init` 方法创建一个 `UIViewController`。因为最常见的加载新 Activity 的方法是创建一个有数据的 Intent，在 Android 上暴露自定义初始化方法的一个非常棒的方式是创建一个静态 Intent getter 方法。Activity 同样能在完成时返回结果（再见，modal 代理），当其完成时在 Intent 上放置额外数据即可。
 
-Android 和 iOS 的一大差别是任何 Activity 都可以作为你应用的入口，只要它们在 `AndroidManifest`文件里正确注册即可。在 AndroidManifest.xml 文件中，为一个 activity 设置一个 `media intent` 的 Intent 过滤器的话，就能让系统知道这个 Activity 可以作为包含有媒体数据的 Intent 的入口。一个不错的例子是相片编辑  Activity ，它打开一个相片，修改它，并在 Activity 完成时返回修改后的图片。
+Android 和 iOS 的一大差别是任何 Activity 都可以作为你应用的入口，只要它们在 `AndroidManifest`文件里正确注册即可。在 AndroidManifest.xml 文件中，为一个 Activity 设置一个 `media intent` 的 Intent 过滤器的话，就能让系统知道这个 Activity 可以作为包含有媒体数据的 Intent 的入口。一个不错的例子是相片编辑  Activity ，它打开一个相片，修改它，并在 Activity 完成时返回修改后的图片。
 
 作为一个旁注，如果你想在 Activity 和 Fragment 之间发送模型对象的话，它们必须实现 `Parcelable` 接口。实现 `Parcelable` 接口很类似于 iOS 上实现 `<NSCopying>` 协议。同样值得一提的是，`Parcelable` 对象可以存储在 activity 或者 fragment 的 savedInstanceState 里，这是为了能更容易地在它们被销毁后恢复它们的状态。
 
@@ -87,11 +87,11 @@ Android 和 iOS 的一大差别是任何 Activity 都可以作为你应用的入
 
 [Fragment](http://developer.android.com/guide/components/fragments.html) 的概念是 Android 独有的，它最近才随着 Android 3.0 的问世而出现。Fragment 是一种迷你控制器，能够被实例化来填充 Activity。它们可以存储状态信息，还有可能包含视图逻辑，但区别 Activity 和 Fragment 的最大不同在于。同一时间里屏幕上可能有多个 Fragment。同时注意 Fragment 自身没有上下文，它们严重依赖 Activity 来将它们和应用的状态联系起来。
 
-平板是使用 Fragment 的绝好例子：你可以在左边放一个列表 Fragment，右边放一个详细信息 Fragment。[^4]Fragment 能让你将 UI 和控制器逻辑分割到更小、可重用的层面上。但要当心，Fragment 的生命周期有不少细微差别，我们会在后面详细谈到。
+平板是使用 Fragment 的绝好场景：你可以在左边放一个列表 Fragment，右边放一个详细信息 Fragment。[^4]Fragment 能让你将 UI 和控制器逻辑分割到更小、可重用的层面上。但要当心，Fragment 的生命周期有不少细微差别，我们会在后面详细谈到。
 
 ![一个含有两个 fragment 的多面板 activity](http://img.objccn.io/issue-11/multipane_view_tablet.png)
 
-Fragment是App的新方式，就像在 iOS 上 `UICollectionView` 是可取代 `UITableView` 的构造列表数据的新方式。[^5] 虽然在一开始避开 Fragment 而使用 Activity 会比较容易，但你之后可能会为之后悔。然而，我们也要抗拒那种想完全放弃 Activity，转而只在单个 Activity 上使用 Fragment 的冲动，因为如果那么做了，那么当你想获得 Intent 的好处且想在同一个 Activity 上使用多个 Fragment 时，你将陷入困境。
+Fragment 是实现 App 的新方式，就像在 iOS 上 `UICollectionView` 是可取代 `UITableView` 的构造列表数据的新方式。[^5] 虽然在一开始避开 Fragment 而使用 Activity 会比较容易，但你之后可能会为之后悔。然而，我们也要抗拒那种想完全放弃 Activity，转而只在单个 Activity 上使用 Fragment 的冲动，因为如果那么做了，那么当你想获得 Intent 的好处且想在同一个 Activity 上使用多个 Fragment 时，你将陷入困境。
 
 现在来看一个例子，`UITableViewController` 和 `ListFragment` 是如何分别显示一个地铁行程预测时刻表，数据由 [MBTA](http://www.mbta.com/rider_tools/developers/default.asp?id=21898) 所提供。
 
@@ -179,7 +179,7 @@ Fragment是App的新方式，就像在 iOS 上 `UICollectionView` 是可取代 `
     @end
 
 
-### List Fragment Implementation List Fragment 实现
+### List Fragment 实现
 
 &nbsp;
 
@@ -323,7 +323,7 @@ Fragment是App的新方式，就像在 iOS 上 `UICollectionView` 是可取代 `
 
 能让开发者措手不及的问题之一是 Fragment 和 Activity 之间的通信问题。注意 `onAttach()` **先于** `onActivityCreated()` 调用。这就意味着 Activity 不能保证在 Fragment 被创建前存在。`onActivityCreated()` 方法应该在有必要的时候用于将 interface（delegate）设置到父亲 Activity 上。
 
-Fragment 同样被操作系统积极地创建和销毁，为了保存它们的状态，需要同 Activity 一样多的劳动量。下面时来自示例项目的一个例子，此处的旅程列表 Fragment 一直追踪`TripList`数据，以及地铁线路类型：
+Fragment 同样被操作系统积极地创建和销毁，为了保存它们的状态，需要同 Activity 一样多的劳动量。下面是来自示例项目的一个例子，此处的旅程列表 Fragment 一直追踪`TripList`数据，以及地铁线路类型：
  
     /**
      * Trip List Fragment 的配置标识.
@@ -368,7 +368,7 @@ Fragment 同样被操作系统积极地创建和销毁，为了保存它们的�
         }
     }    
 
-注意到 Fragment 总是用 `onCreate` 里的绑定参数（bundled arguments）来恢复它的状态，用于 `TripList` 模型对象的自定义的 setter 将会将对象添加到绑定参数中去。这就保证了如果 Fragment 在例如设备被旋转时被销毁并重建的话，Fragment 总是有最新的数据并从中恢复。
+注意到 Fragment 总是用 `onCreate` 里的绑定参数（bundled arguments）来恢复它的状态，用于 `TripList` 模型对象的自定义的 setter 会将对象添加到绑定参数中去。这就保证了如果 Fragment 在例如设备被旋转时被销毁并重建的话，Fragment 总是有最新的数据并从中恢复。
 
 ## 布局
 
@@ -459,8 +459,6 @@ Android 上可用的[数据存储选项](http://developer.android.com/guide/topi
 ## 最后的话
 
 本文中我们讨论的大部分都实现在 MBTA 地铁交通[示例项目](https://github.com/objcio/issue-11-android-101)中，并放在了Github上。创建这个项目的目的是在两个平台上展示应用的结构、绑定数据、构建 UI 等相似内容的方式。
-
-While some of the pure **implementation** details are very different on Android, it is very easy to bring problem-solving skills and patterns learned on iOS to bear. Who knows? Maybe understanding how Android works just a little bit better might prepare you for the next version of iOS.
 
 虽然在 Android 上一些纯粹的**实现**细节非常不同，但将从 iOS 学来的问题解决技能和模式用于实践依然非常容易。也许懂得一些 Android 的工作方式可能可以让你准备好面对下一版的 iOS，谁又知道会怎样呢？
 

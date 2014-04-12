@@ -538,7 +538,7 @@ Core Foundation 中没有和 `NSIndexSet` 相当的类，苹果也没有对性�
 
 ## 结论
 
-本文提供了一些真实的测试，使你在使用基础集合类的时候做出有根据的选择。除了上面讨论的类，还有一些不常用但确实有用的类，尤其是 `NSCountedSet`，[`CFBag`](http://nshipster.com/cfbag/)，[`CFTree`](https://developer.apple.com/library/mac/documentation/corefoundation/Reference/CFTreeRef/Reference/reference.html)，[CFBitVector](https://developer.apple.com/library/mac/documentation/corefoundation/Reference/CFBitVectorRef/Reference/reference.html)和[CFBinaryHeap](https://developer.apple.com/library/mac/documentation/corefoundation/Reference/CFBinaryHeapRef/Reference/reference.html)。
+本文提供了一些真实的测试，使你在使用基础集合类的时候做出有根据的选择。除了上面讨论的类，还有一些不常用但确实有用的类，尤其是 `NSCountedSet`，[`CFBag`](http://nshipster.com/cfbag/)，[`CFTree`](https://developer.apple.com/library/mac/documentation/corefoundation/Reference/CFTreeRef/Reference/reference.html)，[`CFBitVector`](https://developer.apple.com/library/mac/documentation/corefoundation/Reference/CFBitVectorRef/Reference/reference.html)和[`CFBinaryHeap`](https://developer.apple.com/library/mac/documentation/corefoundation/Reference/CFBinaryHeapRef/Reference/reference.html)。
 
 ---
 

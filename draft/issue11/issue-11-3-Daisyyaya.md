@@ -21,7 +21,7 @@ author: "<a href=\"https://twitter.com/Cstew\">Chris Stewart</a>"
 * 安卓开发者是怎样考虑屏幕密度差异（screen density variations）问题的?
 * 应用怎样才能够被优化去适应不同的设备? 怎样才能制作一款在手机和平板上都完美运行的应用呢? 
 
-## 屏幕尺寸
+## 屏幕尺寸 (Screen Size)
 
 我们首先回顾一下iOS设备的屏幕尺寸. 实际上有三种: 3.5-英寸 iPhone, 4-英寸 iPhone, and iPad. 尽管, 当然, iPad mini比iPad小, 但从开发者角度, 这仅仅只是按比例缩小了. 对许多应用来说, 3.5-英寸和4-英寸的设备屏幕尺寸的差别几乎没有影响, 因为仅仅只是高度改变了.
 

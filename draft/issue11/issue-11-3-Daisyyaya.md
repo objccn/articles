@@ -1,43 +1,43 @@
 ---
 layout: post
-title:  "Responsive Android Applications"
+title:  "响应式安卓应用"
 category: "11"
 date: "2014-04-01 09:00:00"
 tags: article
 author: "<a href=\"https://twitter.com/Cstew\">Chris Stewart</a>"
 ---
 
-## Introduction
+## 引言
 
-Developing a mobile application is a creative process. You want to build something beautiful and functional. Something that works well on any device. Something that delights your users. Something that you’re proud of. I want to show you how I develop these kinds of applications on Android. 
+开发一款移动应用是一个创造性的过程.若你想要创作或美观实用的,或在任何设备上都运行流畅的,或让用户赏心悦目的,或让自己引以为傲的作品, 下面我会告诉你我是如何创作具有这些特性的安卓应用的. 
 
-One common misconception about Android development is that it’s hard to write these kinds of applications when screen properties vary so widely. You’ve no doubt seen [Android Fragmentation Visualized](http://opensignal.com/reports/fragmentation.php), which lists a daunting number of Android devices.
+对于安卓开发存在一个普遍的误解, 那就是安卓设备尺寸的多样性使得开发出具有上述特性的应用变得十分棘手.  你肯定已经看过《安卓可视化碎片》这篇文章了([Android Fragmentation Visualized](http://opensignal.com/reports/fragmentation.php)), 文章列举出了惊人数目的不同安卓设备.
 
-The truth is, you will have to put some thought into the design, but not significantly more than you would on other platforms. Android developers have excellent tools available to support this variation in device configuration and to ensure that their applications perform beautifully on all devices. 
+事实上, 你需要在设计上花费很多心思, 但绝对不必比在其他设备上花费的多. 安卓开发者拥有高性能的工具去应对设备配置（device configuration）的多样性，并确保应用在所有设备上都能完美运行. 
 
-In this article, I will focus on three areas of variability in Android devices and how those variations affect the development and design of Android applications. I will cover these areas at a high level and from an iOS developer’s perspective: 
+在这篇文章中, 我主要讲了安卓设备多样性的三个方面，以及这种多样性是如何影响开发的，还有安卓应用的设计这三方面内容. 我会从一个较高的层次并从iOS开发者角度来谈论这些内容: 
 
-* How do Android developers optimize for minor variations in screen sizes? How are differences in width and height between devices managed? 
-* How do Android developers account for screen density variations?
-* How are applications optimized to work well on different device categories? How can I make one app that works well on phone and tablet devices? 
+* 安卓开发者是怎样针对屏幕尺寸的微小差异进行优化的? 怎样处理不同设备的宽高差异? 
+* 安卓开发者是怎样考虑屏幕密度差异（screen density variations）问题的?
+* 应用怎样才能够被优化去适应不同的设备? 怎样才能制作一款在手机和平板上都完美运行的应用呢? 
 
-## Screen Size
+## 屏幕尺寸
 
-Let’s review screen sizes on iOS. There are effectively three: 3.5-inch iPhone, 4-inch iPhone, and iPad. Although the iPad mini is, of course, smaller than the iPad, from the developer’s perspective, it is simply scaled. For many applications, the 3.5-inch versus 4-inch iPhone screen size variance has little impact, since only the height changes.
+我们首先回顾一下iOS设备的屏幕尺寸. 实际上有三种: 3.5-英寸 iPhone, 4-英寸 iPhone, and iPad. 尽管, 当然, iPad mini比iPad小, 但从开发者角度, 这仅仅只是按比例缩小了. 对许多应用来说, 3.5-英寸和4-英寸的设备屏幕尺寸的差别几乎没有影响, 因为仅仅只是高度改变了.
 
-The iOS drawing system uses points and not pixels, so the screen’s retina or non-retina status does not impact layout. Layout is either static (designed down to the point for each device, programmatically, or using device-specific XIB files) or dynamic (using Auto Layout or autoresizing masks).
+iOS 绘画系统使用点（points）而不是像素（pixels）, 因此屏幕是否是视网膜屏不会影响页面布局. 页面布局或是静态的 (针对每种设备用编程方式设计精确到点, 或者使用设备相应的xib文件) 或动态的(使用自动布局Auto Layout或者自适应Autoresizing Masks).
 
-In contrast, on Android, there are orders of a magnitude of more screen sizes that we must support. How can an Android developer possibly ensure that his or her app looks good on all of those devices? 
+相比之下, 在安卓平台上, 有数量惊人的不同尺寸的屏幕需要支持. 安卓开发者们是如何确保他们的应用在所有设备上都运行流畅呢? 
 
-In many ways, design for Android is similar to design for the web. Web designs must support any possible browser size. In the same way, Android designs are best built to anticipate changes in screen size. We design our views so that they will flow to fill the space and content that they are given.
+在许多方面, 安卓设计和网页设计很相似. 网页设计必须支持任何可能存在的浏览器尺寸. 类似的, 安卓应用设计是建立在预期了屏幕尺寸改变的前提下的. 我们设计的视图能够按照自身限制条件自动填充空间和内容.
 
-Since you must design your application with different screen sizes in mind, supporting devices in landscape comes naturally. When an application is designed to support any screen size, landscape orientation is really just a wider configuration of your device. 
+既然你在设计时必须将不同的屏幕尺寸都考虑到, 那么支持设备横屏也理所应当需要被考虑. 当一款应用需要支持任何尺寸的屏幕大小时, 横向仅仅就只是设备的一项附加配置. 
 
-### Layout Files
+### 布局文件
 
-Let’s dive in to the layout system in more detail. Layout files are XML files that describe your user interface. 
+让我们深入到布局系统的更多细节中. 布局文件是描述用户接口的XML文件. 
 
-We create a sample layout file below. This file is used as the view for a login screen in our application: 
+如下图所示, 我们创建了一个布局文件样本. 这个文件被用作应用的登录视图: 
 
     <?xml version="1.0" encoding="utf-8"?>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -63,11 +63,11 @@ We create a sample layout file below. This file is used as the view for a login 
 
 <img style="margin-top:1em;" src="{{ site.images_path }}/issue-11/image01.png">
 
-In the above layout file, `LinearLayout` has been used to align `Views` linearly. We’ve specified three views in the `LinearLayout`: a username `EditText`, a password `EditText`, and a login button. 
+在上面的布局文件中, `线性布局LinearLayout` 被用来线性排列 `视图Views`. 我们实例化了 `线性布局LinearLayout`中的三个视图: 一个用户名 `EditText`, 一个密码 `EditText`, 和一个登录按钮. 
 
-Notice the `layout_width` and `layout_height` attributes on each view in the layout file. These attributes are used to specify the width and height of a view. We used two constants in each of these parameters: `wrap_content` and `match_parent`. If `wrap_content` is specified as the height of a view, that view will be exactly as tall as it needs to be to display its contents. If a view specifies `match_parent` as its width attribute, that view will be as wide as the view that contains it. 
+需要注意的是在布局文件中的每个视图的宽 `layout_width` 和高 `layout_height` . 这些属性被用来设置视图的具体宽高. 我们使用两个常量来设置每个属性: `wrap_content` and `match_parent`. 如果用 `wrap_content` 来设置视图的高度, 那么那个视图会根据它需要呈现的内容调整至相应高度. 如果用 `match_parent` 来设置视图的宽, 那么那个视图会和它的父视图一样宽. 
 
-By making use of the `wrap_content` and `match_parent` values, we have designed a view that stretches to fill any screen size. 
+通过使用 `wrap_content` 和 `match_parent` 的值, 我们设计了一款可以自动伸缩去适应任何屏幕. 
 
 The most important distinction here from iOS is that this layout XML file and the views specified inside of it do not have a size. In fact, the views in this layout file will not have any size value associated with them until just before they are placed on the screen.
 

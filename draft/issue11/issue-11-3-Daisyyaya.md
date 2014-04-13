@@ -67,11 +67,11 @@ iOS 绘画系统使用点（points）而不是像素（pixels）, 因此屏幕�
 
 需要注意的是在布局文件中的每个视图的宽 `layout_width` 和高 `layout_height` . 这些属性被用来设置视图的具体宽高. 我们使用两个常量来设置每个属性: `wrap_content` and `match_parent`. 如果用 `wrap_content` 来设置视图的高度, 那么那个视图会根据它需要呈现的内容调整至相应高度. 如果用 `match_parent` 来设置视图的宽, 那么那个视图会和它的父视图一样宽. 
 
-通过使用 `wrap_content` 和 `match_parent` 的值, 我们设计了一款可以自动伸缩去适应任何屏幕. 
+通过使用 `wrap_content` 和 `match_parent` 的值, 我们设计了一款可以自动伸缩去适应任何屏幕的视图. 
 
-The most important distinction here from iOS is that this layout XML file and the views specified inside of it do not have a size. In fact, the views in this layout file will not have any size value associated with them until just before they are placed on the screen.
+和iOS最重要的区别在于, 布局XML文件和在其中设置的视图并未设置大小. 事实上, 在布局文件的视图被放置到屏幕上之前, 并没有被设置任何大小相关联的值.
 
-## Screen Density
+## 屏幕密度 (Screen Density)
 
 Another aspect of variability in Views on Android is screen density. How do you write an app that works on any density screen?
 
@@ -79,7 +79,7 @@ As you know, iOS developers are concerned with two sizes: normal and retina. If 
 
 Android screen density works in a similar way but with more variability. Rather than two image buckets, Android developers have many. Our standard image bucket size is `mdpi`, or medium dpi. This `mdpi` bucket is the same as iOS’s normal image size. Then, `hdpi`, or high dpi, is 1.5 times the size of `mdpi`. Finally, `xhdpi`, or extra high dpi, is 2 times the normal size, the same as iOS’s retina size. Android developers can take advantage of other image buckets, including `xxhdpi` and `xxxhdpi`.
 
-## Resource Qualifiers
+## 资源管理器 (Resource Qualifiers)
 
 The addition of many buckets may seem overwhelming, but Android makes use of a robust resource qualification system to specify how a particular resource can be used. 
 
@@ -95,7 +95,7 @@ These screen density buckets are fuzzy qualifiers. If you’re using a device wi
 
 A common pattern is to supply a high density image and allow Android to downscale that image for devices with a lower screen density. 
 
-## DIPs
+## 设备独立像素(DIPs)
 
 One final adjustment to consider for screen density variation is specification of exact dimensions in your layout files. Imagine that you want to supply padding to the outside of a screen in your app. How can we specify dimension values that also scale relative to the device’s screen density?
 
@@ -103,7 +103,7 @@ Well, iOS developers would specify this padding in point values. On a non-retina
 
 On Android, you can specify this padding in raw pixel values as well, but those values will not scale on devices with high-density screens. Instead, Android developers specify dimension units in density-independent pixels (typically called dip, or dp units). These units will scale relative to the device's density in the same way that iOS automatically performs the scaling. 
 
-## Device Category
+## 设备种类(Device Category)
 
 A final detail to consider is how device categories are managed on Android. Note that iOS has two distinct categories: iPhone and iPad. However, Android is very different, as it has a spectrum of device categories, and the distinction between a phone and tablet can be arbitrary. The resource qualification system mentioned earlier is used heavily to support this spectrum of screen sizes. 
 
@@ -135,7 +135,7 @@ In `res/values-w600dp/dimens.xml`:
 
 Now, on devices that have a minimum width of 600 dp units, the larger container margin value will be selected by the system. This additional margin will tweak our user interface so that the app is not just a stretched-out version of the application that looks great on phones.
 
-## Split Views
+## 分割检视 (Split Views)
 
 The above dimension example is a useful tool for some situations, but it is often the case that an application will become more useful on a tablet because there is more space for additional application components. 
 
@@ -179,7 +179,7 @@ In `res/layout-sw600dp/activity_home.xml`:
 
 Now, when we use the activity_home layout file on a tablet, we will have two panes in our layout instead of one, which means we can host two fragment views. We can now display the master and the detail view in the same screen with very little code modification. At runtime, the system will decide which version of the layout file to use based on the configuration of the device. 
 
-## Conclusion
+## 结论
 
 With the exception of the `sw600dp` resource qualifier, all of the tools in this article are available on any Android device that you would support. There is an older and less granular resource qualifier that existed prior to the addition of `sw600dp`, available for those older devices. 
 

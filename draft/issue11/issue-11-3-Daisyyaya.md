@@ -73,11 +73,11 @@ iOS 绘画系统使用点（points）而不是像素（pixels）, 因此屏幕�
 
 ## 屏幕密度 (Screen Density)
 
-Another aspect of variability in Views on Android is screen density. How do you write an app that works on any density screen?
+安卓开发中视图可变性的另一个影响因素是屏幕密度. 你怎样才能编写一款可以适应不同密度屏幕的应用的呢?
 
-As you know, iOS developers are concerned with two sizes: normal and retina. If the `@2x` suffix on the filename is used, the system will automatically choose the appropriate image, depending on the device. 
+你应该知道, iOS开发里会考虑到两种屏幕: 普通屏幕和Retina屏幕. 如果文件名里 `@2x` 后缀被使用, 系统会自动根据设备种类选择合适的图像. 
 
-Android screen density works in a similar way but with more variability. Rather than two image buckets, Android developers have many. Our standard image bucket size is `mdpi`, or medium dpi. This `mdpi` bucket is the same as iOS’s normal image size. Then, `hdpi`, or high dpi, is 1.5 times the size of `mdpi`. Finally, `xhdpi`, or extra high dpi, is 2 times the normal size, the same as iOS’s retina size. Android developers can take advantage of other image buckets, including `xxhdpi` and `xxxhdpi`.
+安卓应用屏幕密度适配的原理和 iOS相似，但是可变性更强. 不同于iOS有两个图片容器 (image buckets)，安卓开发者有很多. 我们标准的图片容器大小是`mdpi`(Median Dots Per Inch), 或者称作中密度. 这个 `mdpi` 容器和普通的iOS图片尺寸一致. 然后, `hdpi`(High Dots Per Inch), 或者高密度, 是中密度 `mdpi`的1.5倍. 最后, `xhdpi`(Extra High Dots Per Inch), 或称为超高密度, 是普通尺寸的2倍, 这和iOS的Retina高清屏尺寸一致.安卓还能利用其它的图像容器，包含 `xxhdpi` and `xxxhdpi`.
 
 ## 资源管理器 (Resource Qualifiers)
 

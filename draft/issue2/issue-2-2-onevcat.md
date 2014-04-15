@@ -236,7 +236,7 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
 
 就这么多了。完整的代码可以参见[GitHub上的示例工程][20]。
 
-总结来说，我们建议要么你玩时间来把事情做对做好，要么就直接使用像 [AFNetworking][19] 这样的框架。其实 [AFNetworking][19] 还提供了不少好用的小工具，比如有个 `UIImageView` 的 category，来负责异步地从一个 URL 加载图片。在你的 table view 里使用的话，还能自动帮你处理取消加载操作，非常方便。
+总结来说，我们建议要么你花时间来把事情做对做好，要么就直接使用像 [AFNetworking][19] 这样的框架。其实 [AFNetworking][19] 还提供了不少好用的小工具，比如有个 `UIImageView` 的 category，来负责异步地从一个 URL 加载图片。在你的 table view 里使用的话，还能自动帮你处理取消加载操作，非常方便。
 
 扩展阅读：
 
@@ -253,7 +253,7 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
 
 为了达到这个目的，我们使用能让我们异步处理文件的 `NSInputStream` 。根据[官方文档][21]的描述：
 
-> 如果你需总是需要从头到尾来读/写文件的话，streams 提供了一个简单的接口来异步完成这个操作
+> 如果你总是需要从头到尾来读/写文件的话，streams 提供了一个简单的接口来异步完成这个操作
 
 不管你是否使用 streams，大体上逐行读取一个文件的模式是这样的：
 
@@ -361,8 +361,8 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
    [1]: http://objccn.io/issue-2
    [6]: http://developer.apple.com/library/ios/#documentation/Cocoa/Reference/NSOperationQueue_class/Reference/Reference.html
    [7]: https://developer.apple.com/library/ios/#documentation/Performance/Reference/GCD_libdispatch_Ref/Reference/reference.html
-   [8]: http://www.objc.io/issue-2-1/
-   [9]: http://www.objc.io/issue-2-3/
+   [8]: http://www.objccn.io/issue-2-1/
+   [9]: http://www.objccn.io/issue-2-3/
    [10]: https://developer.apple.com/library/mac/#documentation/cocoa/conceptual/CoreData/Articles/cdConcurrency.html
    [11]: https://github.com/objcio/issue-2-background-core-data
    [12]: http://stg.daten.berlin.de/datensaetze/vbb-fahrplan-2013

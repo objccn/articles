@@ -460,15 +460,15 @@ In order to generate an executable, we need to link these two object files and t
 
 ### 符号表和链接
 
-Our small app was put together from two object files. The `Foo.o` object file contains the implementation of the `Foo` class, and the `helloworld.o` object file contains the `main()` function and calls/uses the `Foo` class.
+我们这个简单的程序是将两个目标文件合并到一起的。`Foo.o` 目标文件包含了 `Foo` 类的实现，而 `helloworld.o` 目标文件包含了 `main()` 函数，以及调用/使用 `Foo` 类。
 
-Furthermore, both of these use the Foundation framework. The `helloworld.o` object file uses it for the autorelease pool, and it indirectly uses the Objective-C runtime in form of the `libobjc.dylib`. It needs the runtime functions to make message calls. This is similar to the `Foo.o` object file.
+另外，这两个目标对象都使用了 Foundation framework。`helloworld.o` 目标文件使用了它的 autorelease pool，并间接的使用了  `libobjc.dylib` 中的 Objective-C 运行时。它需要运行时函数来进行消息的调用。`Foo.o` 目标文件也有类似的原理。
 
-All of these are represented as so-called *symbols*. We can think of a symbol as something that'll be a pointer once the app is running, although its nature is slightly different.
+所有的这些东西都被形象的称之为符号。我们可以把符号看成是一些在运行时将会变成指针的东西。虽然实际上并不是这样的。
 
-Each function, global variable, class, etc. that is defined or used results in a symbol. When we link object files into an executable, the linker (`ld(1)`) resolves symbols as needed between object files and dynamic libraries.
+每个函数、全局变量和类等都是通过符号的形式来定义和使用的。当我们将目标文件链接为一个可执行文件时，链接器 (`ld(1)`) 在目标文件盒动态库之间对符号做了解析处理。
 
-Executables and object files have a symbol table that specify their symbols. If we take a look at the `helloworld.o` object file with the `nm(1)` tool, we get this:
+可执行文件和目标文件有一个符号表，这个符号表规定了它们的符号。如果我们用 `nm(1)` 工具观察一下 `helloworld.0` 目标文件，可以看到如下内容：
 
     % xcrun nm -nm helloworld.o
                      (undefined) external _OBJC_CLASS_$_Foo
@@ -484,11 +484,11 @@ Executables and object files have a symbol table that specify their symbols. If 
     00000000000000e8 (__TEXT,__eh_frame) non-external EH_frame0
     0000000000000100 (__TEXT,__eh_frame) external _main.eh
 
-These are all symbols of that file. `_OBJC_CLASS_$_Foo` is the symbol as the `Foo` Objective-C class. It's an *undefined, external* symbol of the `Foo` class. *External* means it's not private to this object file, as opposed to `non-external` symbols which are private to the particular object file. Our `helloworld.o` object file references the class `Foo`, but it doesn't implement it. Hence, its symbol table ends up having an entry marked as undefined.
+上面就是那个目标文件的所有符号。`_OBJC_CLASS_$_Foo` 是 `Foo` Objective-C 类的符号。该符号是 *undefined, external* 。*External* 的意思是指对于这个目标文件该类并不是私有的，相反，`non-external` 的符号则表示对于目标文件是私有的。我们的 `helloworld.o` 目标文件引用了类 `Foo`，不过这并没有实现它。因此符号表中将其标示为 undefined。
 
-Next, the `_main` symbol for the `main()` function is also *external* because it needs to be visible in order to get called. It, however, is implemented in `helloworld.o` as well, and resides at address 0 and needs to go into the `__TEXT,__text` section. Then there are four Objective-C runtime functions. These are also undefined and need to be resolved by the linker.
+接下来是 `_main` 符号，它是表示 `main()` 函数，同样为 *external*，这是因为该函数需要被调用，所以应该为可见的。由于在 `helloworld.o` 文件中实现了 这个 main 函数。这个函数地址位于 0处，并且需要转入到  `__TEXT,__text` section。接着是 4 个 Objective-C 运行时函数。它们同样是 undefined的，需要链接器进行符号解析。
 
-If we turn toward the `Foo.o` object file, we get this output:
+如果我们转而观察 `Foo.o` 目标文件，可以看到如下输出：
 
     % xcrun nm -nm Foo.o
     0000000000000000 (__TEXT,__text) non-external -[Foo run]
@@ -511,15 +511,17 @@ If we turn toward the `Foo.o` object file, we get this output:
     00000000000001a8 (__TEXT,__eh_frame) non-external EH_frame0
     00000000000001c0 (__TEXT,__eh_frame) non-external -[Foo run].eh
 
-The fifth-to-last line shows that `_OBJC_CLASS_$_Foo` is defined and external to `Foo.o` -- it has this class's implementation.
+第五行至最后一行显示了 `_OBJC_CLASS_$_Foo` 已经定义了，并且对于 `Foo.o` 是一个外部符号 -- ·Foo.o· 包含了这个类的实现。
 
-`Foo.o` also has undefined symbols. First and foremost are the symbols for `NSFullUserName()`, `NSLog()`, and `NSObject` that we're using.
+`Foo.o` 同样有 undefined 的符号。首先是使用了符号 `NSFullUserName()`，`NSLog()`和 `NSObject`。
 
-When we link these two object files and the Foundation framework (which is a dynamic library), the linker tries to resolve all undefined symbols. It can resolve `_OBJC_CLASS_$_Foo` that way. For the others, it will need to use the Foundation framework.
+当我们将这两个目标文件和 Foundation framework (是一个动态库) 进行链接处理时，链接器会尝试解析所有的 undefined 符号。它可以解析  `_OBJC_CLASS_$_Foo`。另外，它将使用 Foundation framework。
+
+当链接器通过动态库 (此处是 Foundation framework) 解析成功一个符号时，它会记住
 
 When the linker resolves a symbol through a dynamic library (in our case, the Foundation framework), it will record inside the final linked image that the symbol will be resolved with that dynamic library. The linker records that the output file depends on that particular dynamic library, and what the path of it is. That's what happens with the `_NSFullUserName`, `_NSLog`, `_OBJC_CLASS_$_NSObject`, `_objc_autoreleasePoolPop`, etc. symbols in our case.
 
-We can look at the symbol table of the final executable `a.out` and see how the linker resolved all the symbols:
+我们可以看一下最终可执行文件 `a.out` 的符号表，并注意观察链接器是如何解析所有符号的：
 
     % xcrun nm -nm a.out 
                      (undefined) external _NSFullUserName (from Foundation)
@@ -540,9 +542,9 @@ We can look at the symbol table of the final executable `a.out` and see how the 
     0000000100001128 (__DATA,__objc_data) external _OBJC_METACLASS_$_Foo
     0000000100001150 (__DATA,__objc_data) external _OBJC_CLASS_$_Foo
 
-We see that all the Foundation and Objective-C runtime symbols are still undefined, but the symbol table now has information about how to resolve them, i.e. in which dynamic library they're to be found.
+可以看到所有的 Foundation 和 Objective-C 运行时符号依旧是 undefined，不过现在的符号表中已经多了如何解析它们的信息，例如在哪个动态库中可以找到对应的符号。
 
-The executable also knows where to find these libraries:
+可执行文件同样知道去哪里找到所需库：
 
     % xcrun otool -L a.out
     a.out:
@@ -551,16 +553,16 @@ The executable also knows where to find these libraries:
         /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 855.11.0)
         /usr/lib/libobjc.A.dylib (compatibility version 1.0.0, current version 228.0.0)
 
-These undefined symbols are resolved by the dynamic linker `dyld(1)` at runtime. When we run the executable, `dyld` will make sure that `_NSFullUserName`, etc. point to their implementation inside Foundation, etc.
+在运行时，动态链接器  `dyld(1)` 可以解析这些 undefined 符号，`dyld` 将会确定好 `_NSFullUserName` 等符号，并指向它们在 Foundation 中的实现等。
 
-We can run `nm(1)` against Foundation and check that these symbols are, in fact, defined there:
+我们可以针对 Foundation 运行 `nm(1)`，并检查这些符号的定义情况： 
 
     % xcrun nm -nm `xcrun --show-sdk-path`/System/Library/Frameworks/Foundation.framework/Foundation | grep NSFullUserName
     0000000000007f3e (__TEXT,__text) external _NSFullUserName 
 
-### The Dynamic Link Editor
+### 动态链接编辑器
 
-There are a few environment variables that can be useful to see what `dyld` is up to. First and foremost, `DYLD_PRINT_LIBRARIES`. If set, `dyld` will print out what libraries are loaded:
+有一些环境变量对于 `dyld` 的输出信息非常有用。首先，如果设置了 `DYLD_PRINT_LIBRARIES`，那么 `dyld` 将会打印出什么库被加载了：
 
     % (export DYLD_PRINT_LIBRARIES=; ./a.out )
     dyld: loaded: /Users/deggert/Desktop/command_line/./a.out
@@ -571,18 +573,18 @@ There are a few environment variables that can be useful to see what `dyld` is u
     dyld: loaded: /usr/lib/libauto.dylib
     [...]
 
-This will show you all seventy dynamic libraries that get loaded as part of loading Foundation. That's because Foundation depends on other dynamic libraries, which, in turn, depend on others, and so forth. You can run
+上面将会显示出在加载 Foundation时，同时会加载的 70 个动态库。这是由于 Foundation 依赖于另外一些动态库。运行下面的命令：
 
     % xcrun otool -L `xcrun --show-sdk-path`/System/Library/Frameworks/Foundation.framework/Foundation
 
-to see a list of the fifteen dynamic libraries that Foundation uses.
+可以看到 Foundation 使用了 15 个动态库。
 
+### dyld 的共享缓存
 
-### The dyld's Shared Cache
+当你构建一个真正的程序时，将会链接各种各样的库。它们又会依赖其他一些 framework 和 动态库。需要加载的动态库会非常多。而对于相互依赖的符号就更多了。可能将会有上千个符号需要解析处理，这将花费很长的时间：几秒钟。
 
-When you're building a real-world application, you'll be linking against various frameworks. And these in turn will use countless other frameworks and dynamic libraries. The list of all dynamic libraries that need to get loaded gets large quickly. And the list of interdependent symbols even more so. There will be thousands of symbols to resolve. This works takes a long time: several seconds.
+为了缩短这个处理过程所花费时间，在 OS X 和 iOS 上的动态链接器使用了共享缓存，共享缓存存于 `/var/db/dyld/`。对于每一种架构，操作系统都有一个单独的文件，文件中包含了绝大多数的动态库，这些库都已经链接为一个文件，并且已经处理好了它们之间的符号关系。当加载一个 Mach-O 文件 (一个可执行文件或者一个库) 时，动态链接器首先会检查 *共享缓存* 看看是否存在其中，如果存在，那么就直接从共享缓存中拿出来使用。每一个进程都把这个共享缓存映射到了自己的地址空间中。这个方法戏剧性的优化了 OS X 和 iOS 上程序的启动时间。
 
-In order to shortcut this process, the dynamic linker on OS X and iOS uses a shared cache that lives inside `/var/db/dyld/`. For each architecture, the OS has a single file that contains almost all dynamic libraries already linked together into a single file with their interdependent symbols resolved. When a Mach-O file (an executable or a library) is loaded, the dynamic linker will first check if it's inside this *shared cache* image, and if so, use it from the shared cache. Each process has this dyld shared cache mapped into its address space already. This method dramatically improves launch time on OS X and iOS.
 
 [话题 #6 下的更多文章](http://objccn.io/issue-6/)
 

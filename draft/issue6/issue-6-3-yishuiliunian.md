@@ -173,60 +173,59 @@
 
 首先，`leaq` 会将 `L_.str` 的指针加载到 `rax` 寄存器中。留意 `L_.str` 标记在后面的汇编代码中是如何定义的。它就是 C 字符串`"Hello World!\n"`。 `edi` 和 `rsi` 寄存器保存了函数的第一个和第二个参数。由于我们会调用别的函数，所以首先需要将它们的当前值保存起来。这就是为什么我们使用刚刚存储的`rbp` 偏移32个字节的原因。第一个 32 字节的值是 0，之后的 32 字节的值是 `edi` 寄存器的值 (存储了 `argc`)。然后是 64 字节 的值：`rsi` 寄存器的值 (存储了 `argv`)。我们在后面并没有使用这些值，但是编译器在没有经过优化处理的时候，它们还是会被存下来。
 
-现在我们会把第一个函数 `printf()` 的参数 `rax` 设置给第一个函数参数寄存器 `edi` 中。`printf()` 是一个可变参数的函数。ABI 调用约定指定，将会把使用来存储参数的寄存器数量存储在寄存器 `al` 中。在这里是 0。最后 `callq` 调用了 `printf()` 函数。
+现在我们把第一个函数 `printf()` 的参数 `rax` 设置给第一个函数参数寄存器 `edi` 中。`printf()` 是一个可变参数的函数。ABI 调用约定指定，将会把使用来存储参数的寄存器数量存储在寄存器 `al` 中。在这里是 0。最后 `callq` 调用了 `printf()` 函数。
 
         movl    $0, %ecx
         movl    %eax, -20(%rbp)         ## 4-byte Spill
         movl    %ecx, %eax
 
-This sets the `ecx` register to 0, saves (spills) the `eax` register onto the stack, then copies the 0 values in `ecx` into `eax`. The ABI specifies that `eax` will hold the return value of a function, and our `main()` function returns 0:
+上面的代码将 `ecx` 寄存器设置为 0，并把 `eax` 寄存器的值保存至栈中，然后将 `ect` 中的 0 拷贝至 `eax` 中。ABI 规定 `eax` 将用来保存一个函数的返回值，或者此处 `main()` 函数的返回值 0：
 
         addq    $32, %rsp
         popq    %rbp
         ret
         .cfi_endproc
 
-Since we're done, we'll restore the stack pointer by shifting the stack pointer `rsp` back 32 bytes to undo the effect of `subq $32, %rsp` from above. Finally, we'll pop the value of `rbp` we'd stored earlier and then return to the caller with `ret`, which will read the return address off the stack. The `.cfi_endproc` balances the `.cfi_startproc` directive.
+函数执行完成后，将恢复堆栈指针 —— 利用上面的指令 `subq $32, %rsp` 把堆栈指针 `rsp` 上移 32 字节。最后，把之前存储至 `rbp` 中的值从栈中弹出来，然后调用 `ret` 返回调用者， `ret` 会读取出栈的返回地址。 `.cfi_endproc` 平衡了 `.cfi_startproc` 指令。
 
-Next up is the output for our string literal `"Hello World!\n"`:
+接下来是输出字符串 `"Hello World!\n"`:
 
         .section    __TEXT,__cstring,cstring_literals
     L_.str:                                 ## @.str
         .asciz   "Hello World!\n"
 
-Again, the `.section` directive specifies which section the following needs to go into. The `L_.str` label allows the actual code to get a pointer to the string literal. The `.asciz` directive tells the assembler to output a 0-terminated string literal. 
+同样，`.section` 指令指出下面将要进入的段。`L_.str` 标记运行在实际的代码中获取到字符串的一个指针。`.asciz` 指令告诉编译器输出一个以 0 结尾的字符串。
 
-This starts a new section `__TEXT __cstring`. This section contains C strings:
+`__TEXT __cstring` 开启了一个新的段。这个段中包含了 C 字符串：
 
     L_.str:                                 ## @.str
         .asciz     "Hello World!\n"
 
-And these two lines create a null-terminated string. Note how `L_.str` is the name used further up to access the string.
+上面两行代码创建了一个 null 结尾的字符串。注意 `L_.str` 是如何命名，之后会通过它来访问字符串。
 
-The final `.subsections_via_symbols` directive is used by the static link editor.
+最后的 `.subsections_via_symbols` 指令是静态链接编辑器使用的。
 
-More information about assembler directives can be found in Apple's [OS X Assembler Reference](https://developer.apple.com/library/mac/documentation/DeveloperTools/Reference/Assembler/). The AMD 64 website has documentation on the [application binary interface for x86_64](http://www.x86-64.org/documentation/abi.pdf). It also has a [Gentle Introduction to x86-64 Assembly](http://www.x86-64.org/documentation/assembly.html).
+更过关于汇编指令的资料可以在 苹果的 [OS X Assembler Reference](https://developer.apple.com/library/mac/documentation/DeveloperTools/Reference/Assembler/) 中看到。AMD 64 网站有关于 [ABI for x86 的文档](http://www.x86-64.org/documentation/abi.pdf)。另外还有 [Gentle Introduction to x86-64 Assembly](http://www.x86-64.org/documentation/assembly.html)。
 
-Again, Xcode lets you review the assembly output of any file by selecting **Product** -> **Perform Action** -> **Assemble**.
+重申一下，通过下面的选择操作，我们可以用 Xcode 查看任意文件的汇编输出结果：**Product** -> **Perform Action** -> **Assemble**.
 
-#### Assembler
+#### 汇编程序
 
-The assembler, simply put, converts the (human-readable) assembly code into machine code. It creates a target object file, often simply called *object file*. These files have a `.o` file ending. If you build your app with Xcode, you'll find these object files inside the `Objects-normal` folder inside the *derived data* directory of your project.
+汇编程序将可读的汇编代码转换为机器代码。它会创建一个目标对象文件，一般简称为 *对象文件*。这些文件以 `.o` 结尾。如果用 Xcode 构建应用程序，可以在工程的 *derived data* 目录中，`Objects-normal` 文件夹下找到这些文件。
 
-#### Linker
+#### 链接器
 
-We'll talk a bit more about the linker later. But simply put, the linker will resolve symbols between object files and libraries. What does that mean? Recall the
+稍后我们会对连接器做更详细的介绍。这里简单介绍一下：链接器解决了目标文件和库之间的链接。什么意思呢？还记得下面的语句吗：
 
     callq   _printf
 
-statement. `printf()` is a function in the *libc* library. Somehow, the final executable needs to be able to know where in memory the `printf()` is, i.e. what the address of the `_printf` symbol is. The linker takes all object files (in our case, only one) and the libraries (in our case, implicitly *libc*) and resolves any unknown symbols (in our case, the `_printf`). It then encodes into the final executable that this symbol can be found in *libc*, and the linker then outputs the final executable that can be run: `a.out`.
+`printf()` 是 *libc* 库中的一个函数。无论怎样，最后的可执行文件需要能需要知道 `printf()` 在内存中的具体位置。例如，`_printf` 地址符号。链接器会读取所有的目标文件 (此处只有一个) 和库 (此处是 *libc*)，并解决所有未知符号 (此处是 `_printf`) 的问题。然后将它们编码进最后的可执行文件中  （可以在 *libc* 中找到符号 `_printf`），接着链接器会输出可以运行的执行文件：`a.out`。
 
+## Section
 
-## Sections 
+就像我们上面提到的一样，这里有些东西叫做段 (Section)。一个可执行文件包含多个段，也就是多个部分。可执行文件不同的部分将加载进不同的段，并且每个段会转换进一个 segment。这个概念对于所有的可执行文件都是成立的。
 
-As we mentioned above, there's something called sections. An executable will have multiple sections, i.e. parts. Different parts of the executable will each go into their own section, and each section will in turn go inside a segment. This is true for our trivial app, but also for the binary of a full-blown app.
-
-Let's take a look at the sections of our `a.out` binary. We can use the `size` tool to do that:
+我们来看看 `a.out` 二进制中的段。我们可以使用 `size` 工具来观察：
 
     % xcrun size -x -l -m a.out 
     Segment __PAGEZERO: 0x100000000 (vmaddr 0x0 fileoff 0)
@@ -245,29 +244,29 @@ Let's take a look at the sections of our `a.out` binary. We can use the `size` t
     Segment __LINKEDIT: 0x1000 (vmaddr 0x100002000 fileoff 8192)
     total 0x100003000
 
-Our `a.out` file has four segments. Some of these have sections.
+如上代码所示，我们的 `a.out` 文件有 4 个段。有些段中有多个 section。
 
-When we run an executable, the VM (virtual memory) system maps the segments into the address space (i.e. into memory) of the process. Mapping is very different in nature, but if you're unfamiliar with the VM system, simply assume that the VM loads the entire executable into memory -- even though that's not what's really happening. The VM pulls some tricks to avoid having to do so.
+当运行一个可执行文件时，虚拟内存 (VM - virtual memory) 系统将段映射到进程的地址空间上。映射完全不同于我们一般的认识，如果你对虚拟内存系统不熟悉，可以简单的想象虚拟内存系统将整个可执行文件加载进内存 -- 虽然在实际上不是这样的。VM使用了一些技巧来避免全部加载。
 
-When the VM system does this mapping, segments and sections are mapped with different properties, namely different permissions.
+当虚拟内存系统进行映射时，数据段和可执行段会以不同的参数和权限被映射。
 
-The `__TEXT` segment contains our code to be run. It's mapped as read-only and executable. The process is allowed to execute the code, but not to modify it. The code can not alter itself, and these mapped pages can therefore never become dirty.
+上面的代码中，`__TEXT` segment 包含了被执行的代码。它被以只读和可执行的方式映射。进程被允许执行这些代码，但是不能修改。这些代码也不能最自己做出修改，并且这些被映射的页从来不会被污染。
 
-The `__DATA` segment is mapped read/write but non-executable. It contains values that need to be updated.
+`__DATA` segment 以可读写和不可执行的方式映射。它包含了将会被更改的数据。
 
-The first segment is `__PAGEZERO`. It's 4GB large. Those 4GB are not actually in the file, but the file specifies that the first 4GB of the process' address space will be mapped as non-executable, non-writable, non-readable. This is why you'll get an `EXC_BAD_ACCESS` when reading from or writing to a `NULL` pointer, or some other value that's (relatively) small. It's the operating system trying to prevent you from [causing havoc](http://www.xkcd.com/371/).
+第一个 segment 是 `__PAGEZERO`。它的大小为 4GB。这 4GB 并不是文件的真实大小，但是规定了进程地址空间的前 4GB 被映射为 不可执行、不可写和不可读。这就是为什么当读写一个 `NULL` 指针或更小的值时会得到一个 `EXC_BAD_ACCESS` 错误。这是操作系统在尝试防止[引起系统崩溃](http://www.xkcd.com/371/)。
 
-Within segments, there are sections. These contain distinct parts of the executable. In the `__TEXT` segment, the `__text` section contains the compiled machine code. `__stubs` and `__stub_helper` are used for the dynamic linker (`dyld`). This allows for lazily linking in dynamically linked code. `__const` (which we don't have in our example) are constants, and similarly `__cstring` contains the literal string constants of the executable (quoted strings in source code).
+在每个 segment中，一般都会有多个 section。它们包含了可执行文件的不同部分。在 `__TEXT` segment 中，`__text` section 包含了编译所得到的机器码。`__stubs` 和 `__stub_helper` 是给动态链接器 (`dyld`) 使用的。通过这两个 section，在动态链接代码中，可以允许延迟链接。`__const` (在我们的代码中没有) 是常量，不可变的，就像 `__cstring` (包含了可执行文件中的字符串常量 -- 在源码中被双引号包含的字符串) 常量一样。
 
-The `__DATA` segment contains read/write data. In our case we only have `__nl_symbol_ptr` and `__la_symbol_ptr`, which are *non-lazy* and *lazy* symbol pointers, respectively. The lazy symbol pointers are used for so-called undefined functions called by the executable, i.e. functions that are not within the executable itself. They're lazily resolved. The non-lazy symbol pointers are resolved when the executable is loaded.
+`__DATA` segment 中包含了可读写数据。在我们的程序中只有 `__nl_symbol_ptr` 和 `__la_symbol_ptr`，它们分别是 *non-lazy* 和 *lazy* 符号指针。延迟符号指针用于可执行文件中调用未定义的函数，例如不包含在可执行文件中的函数，它们将会延迟加载。而针对非延迟符号指针，当可执行文件被加载同时，也会被加载。
 
-Other common sections in the `__DATA` segment are `__const`, which will contain constant data which needs relocation. An example is `char * const p = "foo";` -- the data pointed to by `p` is not constant. The `__bss` section contains uninitialized static variables such as `static int a;` -- the ANSI C standard specifies that static variables must be set to zero. But they can be changed at run time. The `__common` section contains uninitialized external globals, similar to `static` variables. An example would be `int a;` outside a function block. Finally, `__dyld` is a placeholder section, used by the dynamic linker.
+在 `_DATA` segment 中的其它常见 section 包括 `__const`，在这里面会包含一些需要重定向的常量数据。例如 `char * const p = "foo";` -- `p` 指针指向的数据是可变的。`__bss` section 没有被初始化的静态变量，例如 `static int a;` -- ANSI C 标准规定静态变量必须设置为 0。并且在运行时静态变量的值是可以修改的。`__common` section 包含未初始化的外部全局变量，跟 `static` 变量类似。例如在函数外面定义的 `int a;`。最后，`__dyld` 是一个 section 占位符，被用于动态链接器。
 
-Apple's [OS X Assembler Reference](https://developer.apple.com/library/mac/documentation/DeveloperTools/Reference/Assembler/) has more information about some of the section types.
+苹果的 [OS X Assembler Reference](https://developer.apple.com/library/mac/documentation/DeveloperTools/Reference/Assembler/) 文档有更多关于 section 类型的介绍。
 
+### Section 中的内容
 
-### Section Content
-
+下面，我们用 `otool(1)` 来观察一个 section 中的内容：
 We can inspect the content of a section with `otool(1)` like so:
 
     % xcrun otool -s __TEXT __text a.out 
@@ -278,7 +277,7 @@ We can inspect the content of a section with `otool(1)` like so:
     0000000100000f50 b0 00 e8 11 00 00 00 b9 00 00 00 00 89 45 ec 89 
     0000000100000f60 c8 48 83 c4 20 5d c3 
 
-This is the code of our app. Since `-s __TEXT __text` is very common, `otool` has a shortcut to it with the `-t` argument. We can even look at the disassembled code by adding `-v`:
+上面是我们 app 中的代码。由于 `-s __TEXT __text` 很常见，`otool` 对其设置了一个缩写 `-t` 。我们还可以通过添加 `-v` 来查看反汇编代码：
 
     % xcrun otool -v -t a.out
     a.out:
@@ -301,16 +300,16 @@ This is the code of our app. Since `-s __TEXT __text` is very common, `otool` ha
     0000000100000f65    popq    %rbp
     0000000100000f66    ret
 
-This is the same stuff, this time disassembled. It should look familiar -- it's what we looked at a bit further back when compiling the code. The only difference is that we don't have any of the assembler directives in the code anymore; this is the bare binary executable.
+上面的内容是一样的，只不过以反汇编形式显示出来。你应该感觉很熟悉，这就是我们在前面编译时候的代码。唯一的不同就是，在这里我们没有任何的汇编指令在里面。这是纯粹的二进制执行文件。
 
-In a similar fashion, we can look at other sections:
+同样的方法，我们可以查看别的 section：
 
     % xcrun otool -v -s __TEXT __cstring a.out
     a.out:
     Contents of (__TEXT,__cstring) section
     0x0000000100000f8a  Hello World!\n
 
-Or:
+或:
 
     % xcrun otool -v -s __TEXT __eh_frame a.out 
     a.out:
@@ -318,42 +317,42 @@ Or:
     0000000100000fe0    14 00 00 00 00 00 00 00 01 7a 52 00 01 78 10 01 
     0000000100000ff0    10 0c 07 08 90 01 00 00 
 
-#### Side Note on Performance
+#### 性能上需要注意的事项
 
-On a side note: The `__DATA` and `__TEXT` segments have performance implications. If you have a very large binary, you might want to check out Apple's documentation on [Code Size Performance Guidelines](https://developer.apple.com/library/mac/documentation/Performance/Conceptual/CodeFootprint/Articles/MachOOverview.html). Moving data into the `__TEXT` segment is beneficial, because those pages are never dirty. 
+从侧面来讲，`__DATA` 和 `__TEXT` segment对性能会有所影响。如果你有一个很大的二进制文件，你可能得去看看苹果的文档：[关于代码大小性能指南](https://developer.apple.com/library/mac/documentation/Performance/Conceptual/CodeFootprint/Articles/MachOOverview.html)。将数据移至 `__TEXT` 是个不错的选择，因为这些页从来不会被污染。
 
-#### Arbitrary Sections
+#### 任意的片段
 
-You can add arbitrary data as a section to your executable with the `-sectcreate` linker flag. This is how you'd add a Info.plist to a single file executable. The Info.plist data needs to go into a `__info_plist` section of the `__TEXT` segment. You'd pass `-sectcreate segname sectname file` to the linker by passing
+使用链接符号 `-sectcreate` 我们可以给可执行文件以 section 的方式添加任意的数据。这就是如何将一个 Info.plist 文件添加到一个独立的可执行文件中的方法。Info.plist 文件中的数据需要放入到 `__TEXT` segment 里面的一个 `__info_plist` section 中。可以将 `-sectcreate segname sectname file` 传递给链接器（通过将下面的内容传递给 clang）：
 
     -Wl,-sectcreate,__TEXT,__info_plist,path/to/Info.plist
 
-to clang. Similarly, `-sectalign` specifies the alignment. If you're adding an entirely new segment, check out `-segprot` to specify the protection (read/write/executable) of the segment. These are all documented in the main page for the linker, i.e. `ld(1)`.
+同样，`-sectalign` 规定了对其方式。如果你添加的是一个全新的 segment，那么需要通过 `-segprot` 来规定 segment 的保护方式 (读/写/可执行)。这些所有内容在链接器的帮助文档中都有，例如 `ld(1)`。
 
-You can get to sections using the functions defined in `/usr/include/mach-o/getsect.h`, namely `getsectdata()`, which will give you a pointer to the sections data and return its length by reference.
+我们可以利用定义在 `/usr/include/mach-o/getsect.h` 中的函数 `getsectdata()` 得到 section，例如 `getsectdata()` 可以得到指向 section 数据的一个指针，并返回相关 section 的长度。
 
 ### Mach-O
 
-Executables on OS X and iOS are [Mach-O](https://en.wikipedia.org/wiki/Mach-o) executables:
+在 OS X 和 iOS 中可执行文件的格式为 [Mach-O](https://en.wikipedia.org/wiki/Mach-o)：
 
     % file a.out 
     a.out: Mach-O 64-bit executable x86_64
 
-This is true for GUI applications too:
+对于 GUI 程序也是一样的：
 
     % file /Applications/Preview.app/Contents/MacOS/Preview 
     /Applications/Preview.app/Contents/MacOS/Preview: Mach-O 64-bit executable x86_64
 
-Apple has detailed information about the [Mach-O file format](https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/MachORuntime/index.html).
+关于 [Mach-O 文件格式](https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/MachORuntime/index.html) 苹果有详细的介绍。
 
-We can use `otool(1)` to peek into the executable's Mach header. It specifies what this file is and how it's to be loaded. We'll use the `-h` flag to print the header information:
+我们可以使用 `otool(1)` 来观察可执行文件的头部 -- 规定了这个文件是什么，以及文件是如何被夹在的。通过 `-h` 可以打印出头信息：
 
     % otool -v -h a.out           a.out:
     Mach header
           magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
     MH_MAGIC_64  X86_64        ALL LIB64     EXECUTE    16       1296   NOUNDEFS DYLDLINK TWOLEVEL PIE
 
-The `cputype` and `cpusubtype` specify the target architecture this executable can run on. The `ncmds` and `sizeofcmds` are the load commands which we can look at with the `-l` argument:
+`cputype` 和 `cpusubtype` 规定了这个可执行文件能够运行在哪些目标架构上。`ncmds` 和 `sizeofcmds` 是加载命令，可以通过 `-l` 来查看这两个加载命令：
 
     % otool -v -l a.out | open -f
     a.out:
@@ -365,9 +364,9 @@ The `cputype` and `cpusubtype` specify the target architecture this executable c
        vmsize 0x0000000100000000
     ...
 
-The load commands specify the logical structure of the file and its layout in virtual memory. Most of the information `otool` prints out is derived from these load commands. Looking at the `Load command 1` part, we find `initprot r-x`, which specifies the protection mentioned above: read-only (no-write) and executable.
+加载命令规定了文件的逻辑结构和文件在虚拟内存中的布局。`otool` 打印出的大多数信息都是源自这里的加载命令。看一下 `Load command 1` 部分，可以找到 `initprot r-x`，它规定了之前提到的保护方式：只读和可执行。
 
-For each segment and each section within a segment, the load command specifies where in memory it should end up, and with what protection, etc. Here's the output for the `__TEXT __text` section:
+对于每一个 segment，以及segment 中的每个 section，加载命令规定了它们在内存中结束的位置，以及保护模式等。例如，下面是 `__TEXT __text` section 的输出内容：
 
     Section
       sectname __text
@@ -383,22 +382,20 @@ For each segment and each section within a segment, the load command specifies w
      reserved1 0
      reserved2 0
 
-Our code will end up in memory at 0x100000f30. Its offset in the file is 3888. If you look at the disassembly output from before of `xcrun otool -v -t a.out`, you'll see that the code is, in fact, at 0x100000f30.
+上面的代码将在 0x100000f30 处结束。它在文件中的偏移量为 3888。如果看一下之前 `xcrun otool -v -t a.out` 输出的反汇编代码，可以发现代码实际位置在 0x100000f30。
 
-We can also take a look at which dynamic libraries the executable is using:
+我们同样看看在可执行文件中，动态链接库是如何使用的：
 
     % otool -v -L a.out
     a.out:
         /usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 169.3.0)
         time stamp 2 Thu Jan  1 01:00:02 1970
 
-This is where our executable will find the `_printf` symbol it's using.
+上面就是我们可执行文件将要找到 `_printf` 符号的地方。
 
+## 一个更复杂的例子
 
-
-## A More Complex Sample
-
-Let's look at a slightly more complex sample with three files:
+我们来看看有三个文件的复杂例子：
 
 `Foo.h`:
 
@@ -436,31 +433,32 @@ Let's look at a slightly more complex sample with three files:
         }
     }
 
-### Compiling Multiple Files
+### 编译多个文件
 
-In this sample, we have more than one file. We therefore need to tell clang to first generate object files for each input file:
+在上面的示例中，有多个源文件。所以我们需要让 clang 对输入每个文件生成对应的目标文件：
 
     % xcrun clang -c Foo.m
     % xcrun clang -c helloworld.m
 
-We're never compiling the header file. Its purpose is simply to share code between the implementation files which do get compiled. Both `Foo.m` and `helloworld.m` pull in the content of the `Foo.h` through the `#import` statement.
+我们从来不编译头文件。头文件的作用就是在被编译的实现文件中对代码做简单的共享。`Foo.m` 和 `helloworld.m` 都是通过 `#import` 语句将 `Foo.h` 文件中的内容添加到实现文件中的。
 
-We end up with two object files:
+最终得到了两个目标文件：
 
     % file helloworld.o Foo.o
     helloworld.o: Mach-O 64-bit object x86_64
     Foo.o:        Mach-O 64-bit object x86_64
 
+为了生成一个可执行文件，我们需要将这两个目标文件和 Foundation framework 链接起来：
 In order to generate an executable, we need to link these two object files and the Foundation framework with each other:
 
     xcrun clang helloworld.o Foo.o -Wl,`xcrun --show-sdk-path`/System/Library/Frameworks/Foundation.framework/Foundation
 
-We can now run our code:
+现在可以运行我们的程序了:
 
     % ./a.out 
     2013-11-03 18:03:03.386 a.out[8302:303] Daniel Eggert
 
-### Symbols and Linking
+### 符号表和链接
 
 Our small app was put together from two object files. The `Foo.o` object file contains the implementation of the `Foo` class, and the `helloworld.o` object file contains the `main()` function and calls/uses the `Foo` class.
 

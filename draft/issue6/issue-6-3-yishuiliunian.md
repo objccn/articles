@@ -2,7 +2,7 @@
 
 本文将介绍一下上面的过程中编译器都做了些什么，同时深入看看可执行文件内部是怎样的。实际上里面的东西要比我们第一眼看到的多得多。
 
-这里我们把 Xcode 放一边，将使用 command-line tools。当我们用 Xcode 构建一个程序时，Xcode 只是简单的调用了一系列的工具而已。Florian 对工具调用是如何工作的做了更详细的讨论。本文我们就直接调用这些工具，并看看它们都做了些什么。
+这里我们把 Xcode 放一边，将使用命令行工具 (command-line tools)。当我们用 Xcode 构建一个程序时，Xcode 只是简单的调用了一系列的工具而已。Florian 对工具调用是如何工作的做了更详细的讨论。本文我们就直接调用这些工具，并看看它们都做了些什么。
 
 真心希望本文能帮助你更好的理解 iOS 或 OS X 中的一个可执行文件 (也叫做 *Mach-O executable*) 是如何执行，以及怎样组装起来的。
 
@@ -16,9 +16,9 @@
 
     % xcrun clang -v
 
-上面的命令会定位到 `clang`，并执行它，附带输入 `clang` 后面的参数。
+在这里 `xcrun` 做的是定位到 `clang`，并执行它，附带输入 `clang` 后面的参数。
 
-我们为什么要这样做呢？看起来没有什么意义。不过 `xcode` 我们可以: (1) 使用多个版本的 Xcode，以及使用某个特定 Xcode 版本中的工具。(2) 针对某个特定的 SDK (software development kit) 使用不同的工具。如果你有 Xcode 4.5 和 Xcode 5，通过 `xcode-select` 和 `xcrun` 可以选择使用 Xcode 5 中 iOS SDK 的工具，或者 Xcode 4.5 中的 OS X 工具。在许多其它平台中，这是不可能做到的。查阅 `xcrun` 和 `xcode-select` 的主页内容可以了解到详细内容。不用安装 *Command Line Tools*，就能使用命令行中的开发者工具。
+我们为什么要这样做呢？看起来没有什么意义。不过 `xcode` 允许我们: (1) 使用多个版本的 Xcode，以及使用某个特定 Xcode 版本中的工具。(2) 针对某个特定的 SDK (software development kit) 使用不同的工具。如果你有 Xcode 4.5 和 Xcode 5，通过 `xcode-select` 和 `xcrun` 可以选择使用 Xcode 5 中 iOS SDK 的工具，或者 Xcode 4.5 中的 OS X 工具。在许多其它平台中，这是不可能做到的。查阅 `xcrun` 和 `xcode-select` 的主页内容可以了解到详细内容。不用安装 *Command Line Tools*，就能使用命令行中的开发者工具。
 
 ## 不使用 IDE 的 Hello World
 
@@ -48,7 +48,7 @@
 
 现在你能够在终端上看到熟悉的 `Hello World!`。这里我们编译并运行 C 程序，全程没有使用 IDE。深呼吸一下，高兴高兴。
 
-上面我们到底做了些什么呢？我们将 `helloworld.c` 编译为一个名为 `a.out` 的 Mach-o 二进制文件。注意，如果我们没有指定名字，那么编译器会默认的将其指定为 a.out。
+上面我们到底做了些什么呢？我们将 `helloworld.c` 编译为一个名为 `a.out` 的 Mach-O 二进制文件。注意，如果我们没有指定名字，那么编译器会默认的将其指定为 a.out。
 
 这个二进制文件是如何生成的呢？实际上有许多内容需要观察和理解。我们先看看编译器吧。
 
@@ -66,8 +66,8 @@
 
 ##### 语法和语义分析
 
-* 将符号化后的内容转化为一棵语法树
-* 语法树做语义分析
+* 将符号化后的内容转化为一棵解析树 (parse tree)
+* 解析树做语义分析
 * 输出一棵*抽象语法树*（Abstract Syntax Tree* (AST)）
 
 ##### 生成代码和优化
@@ -81,9 +81,9 @@
 
 * 将汇编代码转换为目标对象文件。
 
-##### Linker
+##### 链接器
 
-* 将多个目标对象文件合并为一个可执行文件(或者一个动态库)
+* 将多个目标对象文件合并为一个可执行文件 (或者一个动态库)
 
 我们来看一个关于这些步骤的简单的例子。
 
@@ -134,7 +134,7 @@
 
 第二行的 `.globl` 指令说明 `_main` 是一个外部符号。这就是我们的 `main()` 函数。这个函数对于二进制文件外部来说是可见的，因为系统要调用它来运行可执行文件。
 
-`.align` 指令指出了后面代码的对齐方式。在我们的代码中，后面的代码会按照 16(2^4) 字节对其，如果需要的话，用 `0x90` 补齐。
+`.align` 指令指出了后面代码的对齐方式。在我们的代码中，后面的代码会按照 16(2^4) 字节对齐，如果需要的话，用 `0x90` 补齐。
 
 接下来是 main 函数的头部：
 
@@ -153,13 +153,13 @@
 
 上面的代码中有一些与 C 标记工作机制一样的一些标记。它们是某些特定部分的汇编代码的符号链接。首先是 `_main` 函数真正开始的地址。这个符号会被 export。二进制文件会有这个位置的一个引用。
 
-`.cfi_startproc` 指令通常用于函数的开始处。CFI 是Call Frame Information 的缩写。这个调用 `帧` 以松散的方式对应着一个函数。当开发者使用 debugger 和 *step in* 或 *step out* 时，实际上是 stepping in/out 一个调用帧。在 C 代码中，函数有自己的调用帧，当然，别的一些东西也会有类似的调用帧。`.cfi_startproc` 指令给了函数一个 `.eh_frame` 入口，这个入口包含了一些调用栈的信息（表示异常如何展开调用帧堆栈）。这个指令也会发送一些和具体平台相关的指令给 CFI。它与后面的 `.cfi_endproc` 相匹配，以此标记出 `main()` 函数结束的地方。
+`.cfi_startproc` 指令通常用于函数的开始处。CFI 是调用帧信息 (Call Frame Information) 的缩写。这个调用 `帧` 以松散的方式对应着一个函数。当开发者使用 debugger 和 *step in* 或 *step out* 时，实际上是 stepping in/out 一个调用帧。在 C 代码中，函数有自己的调用帧，当然，别的一些东西也会有类似的调用帧。`.cfi_startproc` 指令给了函数一个 `.eh_frame` 入口，这个入口包含了一些调用栈的信息（抛出异常时也是用其来展开调用帧堆栈的）。这个指令也会发送一些和具体平台相关的指令给 CFI。它与后面的 `.cfi_endproc` 相匹配，以此标记出 `main()` 函数结束的地方。
 
-接着是另外一个 label `## BB#0:`。然后，终于，看到第一句汇编代码：`pushq %rbp`。从这里开始事情开始变得有趣。在 OS X上，我们会有 X86_64 的代码，对于这种架构，有一个东西叫做 *ABI* (application binary interface)，ABI 指定了函数调用是如何在汇编代码层面上工作的。在函数调用期间，ABI 会让 `rbp` 寄存器 (基于指针寄存器) 被保护起来。当函数调用返回时，确保 `rbp` 寄存器的值跟之前一样，这是属于 main 函数的职责。`pushq %rbp` 将 `rbp` 的值 push 到栈中，以便我们以后将其 pop 出来。
+接着是另外一个 label `## BB#0:`。然后，终于，看到第一句汇编代码：`pushq %rbp`。从这里开始事情开始变得有趣。在 OS X上，我们会有 X86_64 的代码，对于这种架构，有一个东西叫做 *ABI* ( 应用二进制接口 application binary interface)，ABI 指定了函数调用是如何在汇编代码层面上工作的。在函数调用期间，ABI 会让 `rbp` 寄存器 (基础指针寄存器 base pointer register) 被保护起来。当函数调用返回时，确保 `rbp` 寄存器的值跟之前一样，这是属于 main 函数的职责。`pushq %rbp` 将 `rbp` 的值 push 到栈中，以便我们以后将其 pop 出来。
 
-接下来是两个 CFI 指令：`.cfi_def_cfa_offset 16` 和 `.cfi_offset %rbp, -16`。这将会输出一些信息，这些信息是关于生成调用堆栈展开信息和调试信息的。我们改变了堆栈，并且这两个指令告诉编译器指针指向哪里，或者它们指明了之后调试器将会使用的信息。
+接下来是两个 CFI 指令：`.cfi_def_cfa_offset 16` 和 `.cfi_offset %rbp, -16`。这将会输出一些关于生成调用堆栈展开和调试的信息。我们改变了堆栈和基础指针，而这两个指令可以告诉编译器它们都在哪儿，或者更确切的，它们可以确保之后调试器要使用这些信息时，能找到对应的东西。
 
-接下来，`movq %rsp, %rbp` 将把局部变量放置到栈上。`subq $32, %rsp`将栈指针移动 32个字节，也就是函数会调用的位置。我们先讲老的栈指针存储到 `rbp` 中，然后将此作为我们局部变量的基址，接着我们更新堆栈指针到我们将会使用的位置。
+接下来，`movq %rsp, %rbp` 将把局部变量放置到栈上。`subq $32, %rsp` 将栈指针移动 32 个字节，也就是函数会调用的位置。我们先将老的栈指针存储到 `rbp` 中，然后将此作为我们局部变量的基址，接着我们更新堆栈指针到我们将会使用的位置。
 
 之后，我们调用了 `printf()`：
 
@@ -171,7 +171,7 @@
     movb    $0, %al
     callq   _printf
 
-首先，`leaq` 会将 `L_.str` 的指针加载到 `rax` 寄存器中。留意 `L_.str` 标记在后面的汇编代码中是如何定义的。它就是 C 字符串`"Hello World!\n"`。 `edi` 和 `rsi` 寄存器保存了函数的第一个和第二个参数。由于我们会调用别的函数，所以首先需要将它们的当前值保存起来。这就是为什么我们使用刚刚存储的`rbp` 偏移32个字节的原因。第一个 32 字节的值是 0，之后的 32 字节的值是 `edi` 寄存器的值 (存储了 `argc`)。然后是 64 字节 的值：`rsi` 寄存器的值 (存储了 `argv`)。我们在后面并没有使用这些值，但是编译器在没有经过优化处理的时候，它们还是会被存下来。
+首先，`leaq` 会将 `L_.str` 的指针加载到 `rax` 寄存器中。留意 `L_.str` 标记在后面的汇编代码中是如何定义的。它就是 C 字符串`"Hello World!\n"`。 `edi` 和 `rsi` 寄存器保存了函数的第一个和第二个参数。由于我们会调用别的函数，所以首先需要将它们的当前值保存起来。这就是为什么我们使用刚刚存储的 `rbp` 偏移32个字节的原因。第一个 32 字节的值是 0，之后的 32 字节的值是 `edi` 寄存器的值 (存储了 `argc`)。然后是 64 字节 的值：`rsi` 寄存器的值 (存储了 `argv`)。我们在后面并没有使用这些值，但是编译器在没有经过优化处理的时候，它们还是会被存下来。
 
 现在我们把第一个函数 `printf()` 的参数 `rax` 设置给第一个函数参数寄存器 `edi` 中。`printf()` 是一个可变参数的函数。ABI 调用约定指定，将会把使用来存储参数的寄存器数量存储在寄存器 `al` 中。在这里是 0。最后 `callq` 调用了 `printf()` 函数。
 
@@ -194,7 +194,7 @@
     L_.str:                                 ## @.str
         .asciz   "Hello World!\n"
 
-同样，`.section` 指令指出下面将要进入的段。`L_.str` 标记运行在实际的代码中获取到字符串的一个指针。`.asciz` 指令告诉编译器输出一个以 0 结尾的字符串。
+同样，`.section` 指令指出下面将要进入的段。`L_.str` 标记运行在实际的代码中获取到字符串的一个指针。`.asciz` 指令告诉编译器输出一个以 ‘\0’ (null) 结尾的字符串。
 
 `__TEXT __cstring` 开启了一个新的段。这个段中包含了 C 字符串：
 
@@ -209,23 +209,23 @@
 
 重申一下，通过下面的选择操作，我们可以用 Xcode 查看任意文件的汇编输出结果：**Product** -> **Perform Action** -> **Assemble**.
 
-#### 汇编程序
+#### 汇编器
 
-汇编程序将可读的汇编代码转换为机器代码。它会创建一个目标对象文件，一般简称为 *对象文件*。这些文件以 `.o` 结尾。如果用 Xcode 构建应用程序，可以在工程的 *derived data* 目录中，`Objects-normal` 文件夹下找到这些文件。
+汇编器将可读的汇编代码转换为机器代码。它会创建一个目标对象文件，一般简称为 *对象文件*。这些文件以 `.o` 结尾。如果用 Xcode 构建应用程序，可以在工程的 *derived data* 目录中，`Objects-normal` 文件夹下找到这些文件。
 
 #### 链接器
 
-稍后我们会对连接器做更详细的介绍。这里简单介绍一下：链接器解决了目标文件和库之间的链接。什么意思呢？还记得下面的语句吗：
+稍后我们会对链接器做更详细的介绍。这里简单介绍一下：链接器解决了目标文件和库之间的链接。什么意思呢？还记得下面的语句吗：
 
     callq   _printf
 
-`printf()` 是 *libc* 库中的一个函数。无论怎样，最后的可执行文件需要能需要知道 `printf()` 在内存中的具体位置。例如，`_printf` 地址符号。链接器会读取所有的目标文件 (此处只有一个) 和库 (此处是 *libc*)，并解决所有未知符号 (此处是 `_printf`) 的问题。然后将它们编码进最后的可执行文件中  （可以在 *libc* 中找到符号 `_printf`），接着链接器会输出可以运行的执行文件：`a.out`。
+`printf()` 是 *libc* 库中的一个函数。无论怎样，最后的可执行文件需要能需要知道 `printf()` 在内存中的具体位置：例如，`_printf` 的地址符号是什么。链接器会读取所有的目标文件 (此处只有一个) 和库 (此处是 *libc*)，并解决所有未知符号 (此处是 `_printf`) 的问题。然后将它们编码进最后的可执行文件中  （可以在 *libc* 中找到符号 `_printf`），接着链接器会输出可以运行的执行文件：`a.out`。
 
 ## Section
 
-就像我们上面提到的一样，这里有些东西叫做段 (Section)。一个可执行文件包含多个段，也就是多个部分。可执行文件不同的部分将加载进不同的段，并且每个段会转换进一个 segment。这个概念对于所有的可执行文件都是成立的。
+就像我们上面提到的一样，这里有些东西叫做 section。一个可执行文件包含多个段，也就是多个 section。可执行文件不同的部分将加载进不同的 section，并且每个 section 会转换进某个 segment 里。这个概念对于所有的可执行文件都是成立的。
 
-我们来看看 `a.out` 二进制中的段。我们可以使用 `size` 工具来观察：
+我们来看看 `a.out` 二进制中的 section。我们可以使用 `size` 工具来观察：
 
     % xcrun size -x -l -m a.out 
     Segment __PAGEZERO: 0x100000000 (vmaddr 0x0 fileoff 0)
@@ -244,19 +244,19 @@
     Segment __LINKEDIT: 0x1000 (vmaddr 0x100002000 fileoff 8192)
     total 0x100003000
 
-如上代码所示，我们的 `a.out` 文件有 4 个段。有些段中有多个 section。
+如上代码所示，我们的 `a.out` 文件有 4 个 segment。有些 segment 中有多个 section。
 
-当运行一个可执行文件时，虚拟内存 (VM - virtual memory) 系统将段映射到进程的地址空间上。映射完全不同于我们一般的认识，如果你对虚拟内存系统不熟悉，可以简单的想象虚拟内存系统将整个可执行文件加载进内存 -- 虽然在实际上不是这样的。VM使用了一些技巧来避免全部加载。
+当运行一个可执行文件时，虚拟内存 (VM - virtual memory) 系统将 segment 映射到进程的地址空间上。映射完全不同于我们一般的认识，如果你对虚拟内存系统不熟悉，可以简单的想象虚拟内存系统将整个可执行文件加载进内存 -- 虽然在实际上不是这样的。VM 使用了一些技巧来避免全部加载。
 
-当虚拟内存系统进行映射时，数据段和可执行段会以不同的参数和权限被映射。
+当虚拟内存系统进行映射时，segment 和 section 会以不同的参数和权限被映射。
 
-上面的代码中，`__TEXT` segment 包含了被执行的代码。它被以只读和可执行的方式映射。进程被允许执行这些代码，但是不能修改。这些代码也不能最自己做出修改，并且这些被映射的页从来不会被污染。
+上面的代码中，`__TEXT` segment 包含了被执行的代码。它被以只读和可执行的方式映射。进程被允许执行这些代码，但是不能修改。这些代码也不能对自己做出修改，因此这些被映射的页从来不会被改变。
 
 `__DATA` segment 以可读写和不可执行的方式映射。它包含了将会被更改的数据。
 
 第一个 segment 是 `__PAGEZERO`。它的大小为 4GB。这 4GB 并不是文件的真实大小，但是规定了进程地址空间的前 4GB 被映射为 不可执行、不可写和不可读。这就是为什么当读写一个 `NULL` 指针或更小的值时会得到一个 `EXC_BAD_ACCESS` 错误。这是操作系统在尝试防止[引起系统崩溃](http://www.xkcd.com/371/)。
 
-在每个 segment中，一般都会有多个 section。它们包含了可执行文件的不同部分。在 `__TEXT` segment 中，`__text` section 包含了编译所得到的机器码。`__stubs` 和 `__stub_helper` 是给动态链接器 (`dyld`) 使用的。通过这两个 section，在动态链接代码中，可以允许延迟链接。`__const` (在我们的代码中没有) 是常量，不可变的，就像 `__cstring` (包含了可执行文件中的字符串常量 -- 在源码中被双引号包含的字符串) 常量一样。
+在 segment中，一般都会有多个 section。它们包含了可执行文件的不同部分。在 `__TEXT` segment 中，`__text` section 包含了编译所得到的机器码。`__stubs` 和 `__stub_helper` 是给动态链接器 (`dyld`) 使用的。通过这两个 section，在动态链接代码中，可以允许延迟链接。`__const` (在我们的代码中没有) 是常量，不可变的，就像 `__cstring` (包含了可执行文件中的字符串常量 -- 在源码中被双引号包含的字符串) 常量一样。
 
 `__DATA` segment 中包含了可读写数据。在我们的程序中只有 `__nl_symbol_ptr` 和 `__la_symbol_ptr`，它们分别是 *non-lazy* 和 *lazy* 符号指针。延迟符号指针用于可执行文件中调用未定义的函数，例如不包含在可执行文件中的函数，它们将会延迟加载。而针对非延迟符号指针，当可执行文件被加载同时，也会被加载。
 
@@ -267,7 +267,6 @@
 ### Section 中的内容
 
 下面，我们用 `otool(1)` 来观察一个 section 中的内容：
-We can inspect the content of a section with `otool(1)` like so:
 
     % xcrun otool -s __TEXT __text a.out 
     a.out:
@@ -319,7 +318,7 @@ We can inspect the content of a section with `otool(1)` like so:
 
 #### 性能上需要注意的事项
 
-从侧面来讲，`__DATA` 和 `__TEXT` segment对性能会有所影响。如果你有一个很大的二进制文件，你可能得去看看苹果的文档：[关于代码大小性能指南](https://developer.apple.com/library/mac/documentation/Performance/Conceptual/CodeFootprint/Articles/MachOOverview.html)。将数据移至 `__TEXT` 是个不错的选择，因为这些页从来不会被污染。
+从侧面来讲，`__DATA` 和 `__TEXT` segment对性能会有所影响。如果你有一个很大的二进制文件，你可能得去看看苹果的文档：[关于代码大小性能指南](https://developer.apple.com/library/mac/documentation/Performance/Conceptual/CodeFootprint/Articles/MachOOverview.html)。将数据移至 `__TEXT` 是个不错的选择，因为这些页从来不会被改变。
 
 #### 任意的片段
 
@@ -345,7 +344,7 @@ We can inspect the content of a section with `otool(1)` like so:
 
 关于 [Mach-O 文件格式](https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/MachORuntime/index.html) 苹果有详细的介绍。
 
-我们可以使用 `otool(1)` 来观察可执行文件的头部 -- 规定了这个文件是什么，以及文件是如何被夹在的。通过 `-h` 可以打印出头信息：
+我们可以使用 `otool(1)` 来观察可执行文件的头部 -- 规定了这个文件是什么，以及文件是如何被加载的。通过 `-h` 可以打印出头信息：
 
     % otool -v -h a.out           a.out:
     Mach header
@@ -449,7 +448,6 @@ We can inspect the content of a section with `otool(1)` like so:
     Foo.o:        Mach-O 64-bit object x86_64
 
 为了生成一个可执行文件，我们需要将这两个目标文件和 Foundation framework 链接起来：
-In order to generate an executable, we need to link these two object files and the Foundation framework with each other:
 
     xcrun clang helloworld.o Foo.o -Wl,`xcrun --show-sdk-path`/System/Library/Frameworks/Foundation.framework/Foundation
 
@@ -517,9 +515,7 @@ In order to generate an executable, we need to link these two object files and t
 
 当我们将这两个目标文件和 Foundation framework (是一个动态库) 进行链接处理时，链接器会尝试解析所有的 undefined 符号。它可以解析  `_OBJC_CLASS_$_Foo`。另外，它将使用 Foundation framework。
 
-当链接器通过动态库 (此处是 Foundation framework) 解析成功一个符号时，它会记住
-
-When the linker resolves a symbol through a dynamic library (in our case, the Foundation framework), it will record inside the final linked image that the symbol will be resolved with that dynamic library. The linker records that the output file depends on that particular dynamic library, and what the path of it is. That's what happens with the `_NSFullUserName`, `_NSLog`, `_OBJC_CLASS_$_NSObject`, `_objc_autoreleasePoolPop`, etc. symbols in our case.
+当链接器通过动态库 (此处是 Foundation framework) 解析成功一个符号时，它会在最终的链接图中记录这个符号是通过动态库进行解析的。链接器会记录输出文件是依赖于哪个动态链接库，并连同其路径一起进行记录。在我们的例子中，`_NSFullUserName`，`_NSLog`，`_OBJC_CLASS_$_NSObject`，`_objc_autoreleasePoolPop` 等符号都是遵循这个过程。
 
 我们可以看一下最终可执行文件 `a.out` 的符号表，并注意观察链接器是如何解析所有符号的：
 
@@ -573,7 +569,7 @@ When the linker resolves a symbol through a dynamic library (in our case, the Fo
     dyld: loaded: /usr/lib/libauto.dylib
     [...]
 
-上面将会显示出在加载 Foundation时，同时会加载的 70 个动态库。这是由于 Foundation 依赖于另外一些动态库。运行下面的命令：
+上面将会显示出在加载 Foundation 时，同时会加载的 70 个动态库。这是由于 Foundation 依赖于另外一些动态库。运行下面的命令：
 
     % xcrun otool -L `xcrun --show-sdk-path`/System/Library/Frameworks/Foundation.framework/Foundation
 
@@ -581,10 +577,11 @@ When the linker resolves a symbol through a dynamic library (in our case, the Fo
 
 ### dyld 的共享缓存
 
-当你构建一个真正的程序时，将会链接各种各样的库。它们又会依赖其他一些 framework 和 动态库。需要加载的动态库会非常多。而对于相互依赖的符号就更多了。可能将会有上千个符号需要解析处理，这将花费很长的时间：几秒钟。
+当你构建一个真正的程序时，将会链接各种各样的库。它们又会依赖其他一些 framework 和 动态库。需要加载的动态库会非常多。而对于相互依赖的符号就更多了。可能将会有上千个符号需要解析处理，这将花费很长的时间：一般是好几秒钟。
 
-为了缩短这个处理过程所花费时间，在 OS X 和 iOS 上的动态链接器使用了共享缓存，共享缓存存于 `/var/db/dyld/`。对于每一种架构，操作系统都有一个单独的文件，文件中包含了绝大多数的动态库，这些库都已经链接为一个文件，并且已经处理好了它们之间的符号关系。当加载一个 Mach-O 文件 (一个可执行文件或者一个库) 时，动态链接器首先会检查 *共享缓存* 看看是否存在其中，如果存在，那么就直接从共享缓存中拿出来使用。每一个进程都把这个共享缓存映射到了自己的地址空间中。这个方法戏剧性的优化了 OS X 和 iOS 上程序的启动时间。
+为了缩短这个处理过程所花费时间，在 OS X 和 iOS 上的动态链接器使用了共享缓存，共享缓存存于 `/var/db/dyld/`。对于每一种架构，操作系统都有一个单独的文件，文件中包含了绝大多数的动态库，这些库都已经链接为一个文件，并且已经处理好了它们之间的符号关系。当加载一个 Mach-O 文件 (一个可执行文件或者一个库) 时，动态链接器首先会检查 *共享缓存* 看看是否存在其中，如果存在，那么就直接从共享缓存中拿出来使用。每一个进程都把这个共享缓存映射到了自己的地址空间中。这个方法大大优化了 OS X 和 iOS 上程序的启动时间。
 
+---
 
 [话题 #6 下的更多文章](http://objccn.io/issue-6/)
 

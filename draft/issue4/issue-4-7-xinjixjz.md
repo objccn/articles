@@ -4,15 +4,15 @@
 
 需要注意的是，如果对数据模型的修改只有增加一个实体或可选属性，轻量级的迁移是一个很好的选择。它们非常易于设置，所以本文只会稍稍提及它们。若想知道轻量级迁移的应用场合，请查看[官方文档](https://developer.apple.com/library/ios/documentation/cocoa/conceptual/CoreDataVersioning/Articles/vmLightweightMigration.html)。
 
-这就是说，如果你工作速度快且需要在你的数据模型上进行相对复杂的改变，那么自定义迁移就是为你准备的。
+这就是说，如果你需要快速地在你的数据模型上进行相对复杂的改变，那么自定义迁移就是为你准备的。
 
-## 映射模型（ Mapping Models ）
+## 映射模型 (Mapping Models)
 
 当你要升级你的数据模型到新版，你将先选择一个基准模型。对于轻量级迁移，持久化存储会为你自动推断一个*映射模型*。然而，如果你对新模型所做的修改并不被轻量级迁移所支持，那么你就需要创建一个映射模型。一个映射模型需要一个源数据模型和一个目标数据模型。 `NSMigrationManager` 能够推断这两个模型间的映射模型。这使得它很诱人，可用来一路创建每一个以前的模型到最新模型之间的映射模型，但这很快就会变成一团乱麻。对于每一个新版模型，你需要创建的映射模型的量将线性增长。这可能看起来不是个大问题，但随之而来的是测试这些映射模型的复杂度大大提高了。
 
 想像一下你刚刚部署一个包含版本 3 的数据模型的更新。你的某个用户已经有一段时间没有更新你的应用了，这个用户还在版本 1 的数据模型上。那么现在你就需要一个从版本 1 到版本 3 的映射模型。同时你也需要版本 2 到版本 3 的映射模型。当你添加了版本 4 的数据模型后，那你就需要创建三个新的映射模型。显然这样做的扩展性很差，那就来试试渐进式迁移吧。
 
-## 渐进式迁移（ Progressive Migrations ）
+## 渐进式迁移 (Progressive Migrations)
 
 与其为每个之前的数据模型到最新的模型间都建立映射模型，还不如在每两个连续的数据模型之间创建映射模型。以前面的例子来说，版本 1 和版本 2 之间需要一个映射模型，版本 2 和版本 3 之间需要一个映射模型。这样就可以从版本 1 迁移到版本 2 再迁移到版本 3。显然，使用这种迁移的方式时，若用户在较老的版本上迁移过程就会比较慢，但它能节省开发时间并保证健壮性，因为你只需要确保从之前一个模型到新模型的迁移工作正常即可，而更前面的映射模型都已经经过了测试。
 
@@ -81,7 +81,8 @@
 
 ## 迁移策略
 
-`NSEntityMigrationPolicy` 是自定义迁移策略的本质。 [苹果的文档](https://developer.apple.com/library/ios/documentation/cocoa/Reference/NSEntityMigrationPolicy_class/NSEntityMigrationPolicy.html)中有这么一句话: 
+`NSEntityMigrationPolicy` 是自定义迁移过程的核心。 [苹果的文档](https://developer.apple.com/library/ios/documentation/cocoa/Reference/NSEntityMigrationPolicy_class/NSEntityMigrationPolicy.html)中有这么一句话: 
+
 >  `NSEntityMigrationPolicy` 的实例为一个实体映射自定义的迁移策略。
 
 简单的说，这个类让我们不仅仅能修改实体的属性和关系，而且还能任意添加一些自定义的操作来完成每个实体的迁移。
@@ -111,21 +112,24 @@
         NSArray *destinationKeys = destinationInstance.entity.attributesByName.allKeys;
         for (NSString *key in destinationKeys) {
             id value = [sourceValues valueForKey:key];
-            // 避免value不为空
+            // 避免value为空
             if (value && ![value isEqual:[NSNull null]]) {
                 [destinationInstance setValue:value forKey:key];
             }
         }
     }
 
-然后我们将基于源实例的值创建一个 `Author` 实体。但若多本书有同一个作者会发生什么呢？我们将使用 `NSMigrationManager`  的一个 category 方法来创建一个查找字典，确保我们只会 `Author` 实体不重复。
+然后我们将基于源实例的值创建一个 `Author` 实体。但若多本书有同一个作者会发生什么呢？我们将使用 `NSMigrationManager`  的一个 category 方法来创建一个查找字典，确保对于同一个名字的作者，我们只会创建一个 `Author`。
 
     NSMutableDictionary *authorLookup = [manager lookupWithKey:@"authors"];
     // 检查该作者是否已经被创建了
     NSString *authorName = [sourceInstance valueForKey:@"author"];
     NSManagedObject *author = [authorLookup valueForKey:authorName];
     if (!author) {
-        // 创建作者并更新避免重复
+        // 创建作者
+        // ...
+
+        // 更新避免重复
         [authorLookup setValue:author forKey:authorName];
     }
     [destinationInstance performSelector:@selector(addAuthorsObject:) withObject:author];
@@ -188,7 +192,7 @@
 
 ### 大数据集
 
-如果你的存储包含了大量数据，以至到达一个临界点，迁移就会消耗过多内存，Core Data 提供了一个以数据块（chunks）的方式迁移的办法。[苹果的文档](https://developer.apple.com/library/ios/documentation/cocoa/Conceptual/CoreDataVersioning/Articles/vmCustomizing.html#//apple_ref/doc/uid/TP40004399-CH8-SW9)有简要地提到这件事。解决办法是使用多映射模型分开你的迁移并为每个映射模型迁移一次。这要求你有一个对象图（object graph），在其中，迁移可被分为两个或多个部分。但为了支持这一点而需要添加的代码其实很少。
+如果你的存储包含了大量数据，以至到达一个临界点，迁移就会消耗过多内存，Core Data 提供了一个以数据块（chunks）的方式迁移的办法。[苹果的文档](https://developer.apple.com/library/ios/documentation/cocoa/Conceptual/CoreDataVersioning/Articles/vmCustomizing.html#//apple_ref/doc/uid/TP40004399-CH8-SW9)有简要地提到这件事。解决办法是使用多映射模型分开你的迁移并为每个映射模型迁移一次。这要求你有一个对象图（object graph），在其中，迁移可被分为两个或多个部分。为了支持这一点而需要添加的代码其实很少。
 
 首先，我们更新迁移方法以支持使用多个映射模型来迁移。已知映射模型的顺序很重要，我们将通过代理方法请求它们：
 

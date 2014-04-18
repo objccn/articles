@@ -32,9 +32,9 @@ Core Data 有相当多可用的组件。这是一个非常灵活的技术。在�
 
 ## 组件如何一起工作
 
-让我们快速的看一个例子，看看组件是如何协同工作的。在我们的文章[full application using Core Data][400]中，正好有一个*实体*，即一种对象：我们有一个 *Item* 实体对应一个 title。每一个 item 可以拥有子 items，因此，我们有一个*父子关系*。
+让我们快速的看一个例子，看看组件是如何协同工作的。在我们的文章[《一个完成的 Core Data 应用》](http://objccn.io/issue-4-2/)中，正好有一个*实体*，即一种对象：我们有一个 *Item* 实体对应一个 title。每一个 item 可以拥有子 items，因此，我们有一个*父子关系*。
 
-这是我们的数据模型。正如我们[在Data Models and Model Objects][200]文章中提到的一样，在 Core Data 中有一*种*特别的对象——*实体*。在这种情况下，我们只有一个实体：*Item* 实体。同样的，我们有一个 `NSManagedObject` 的子类，叫做 `Item`。这个 *Item* 实体映射到 `Item` 类上。在[data models article][200]中会详细的谈到这个。
+这是我们的数据模型。正如我们在[《数据模型和模型对象》](http://objccn.io/issue-4-4/)一文中提到的一样，在 Core Data 中有一*种*特别的对象——*实体*。在这种情况下，我们只有一个实体：*Item* 实体。同样的，我们有一个 `NSManagedObject` 的子类，叫做 `Item`。这个 *Item* 实体映射到 `Item` 类上。在[数据模型的文章](http://objccn.io/issue-4-4/)中会详细的谈到这个。
 
 我们的程序仅有一个*根* Item。这并没有什么奇妙的地方。它是一个我们用来显示底层 item 等级的 item。它是一个我们永远不会为其设置父类的 Item。
 

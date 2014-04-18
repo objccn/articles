@@ -267,7 +267,6 @@ UTF-8 使用一到四个[^5]字节来编码一个码点。从 0 到 127 的这�
 >3. 如果 2 失败了，试试合适的老的编码。  
 这里「合适的」取决于具体情况。它可以是默认的 C 语言字符串编码，也可以是 ISO 或者 Windows Latin 1 编码，亦或者是其它的，取决于你的数据来源。  
 >4. 最终，还可以试试 Application Kit 里 `NSAttributedString` 类的载入方法（比如：`initWithFileURL:options:documentAttributes:error:`）。这些方法会尝试纯文本文件，然后返回使用的编码。可以用这些方法打开任意的文档。如果你的程序并不是专业处理文本的程序，这些方法也值得考虑。对于 Foundation 级别的工具，或者不是自然语言的文本来说，这些方法可能不太合适。  
-编者注：initWithURL:options:documentAttributes:error:实际应为initWithFileURL:options:documentAttributes:error:
 
 > <span class="secondary radius label">编者注</span> 第 4 条中 `NSAttributedString` 的方法名原文拼写有误，本译文已更正。
 

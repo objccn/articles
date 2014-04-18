@@ -81,33 +81,33 @@ iOS 绘画系统使用点（points）而不是像素（pixels）, 因此屏幕�
 
 ## 资源管理器 (Resource Qualifiers)
 
-The addition of many buckets may seem overwhelming, but Android makes use of a robust resource qualification system to specify how a particular resource can be used. 
+增添多像素似乎势不可挡, 但是安卓使用了一款强大的资源管理系统来具体化特殊资源的使用. 
 
-Below, you see an example of resource qualifiers for images. In an Android project, we have a `res` folder, which is where we store any resources that the app is going to use. This includes images, but also our layout files, as well as a few other project resources. 
+下面, 将介绍一个关于资源管理器如何处理图片的例子. 在一个安卓项目中, 有一个 `res` 文件夹,这里放置app所要使用的所有资源. 包含图片, 以及布局文件, 还有一些其他项目资源. 
 
 <img src="{{ site.images_path }}/issue-11/image00.png" width="187">
 
-Here, `ic_launcher.png` is duplicated in the following three folders: `drawable-hdpi`, `drawable-mdpi`, and `drawable-xhdpi`. We can ask for the image named `ic_launcher` and the system will automatically choose the appropriate image at runtime, depending on the device configuration.
+这里, `ic_launcher.png` 图片重复出现在下面三个文件夹: `drawable-hdpi`, `drawable-mdpi`, 和 `drawable-xhdpi`. 当请求名为 `ic_launcher` 的图片时, 系统运行时会根据设备配置自动选择适应的图片.
 
-This allows us to optimize these images for multiple screen sizes but can be somewhat wasteful since the image will be duplicated multiple times. 
+这项技术能让我们根据不同屏幕尺寸最优化图片, 但是重复存储的图片势必浪费资源. 
 
-These screen density buckets are fuzzy qualifiers. If you’re using a device with an `xxhdpi` screen in the example above, the system will automatically choose the `xhdpi` version of the image and scale the image for your screen density. This feature allows us to create one version of our images and optimize them for other screen densities as needed. 
+这些屏幕密度就是模糊限制因素 (fuzzy qualifiers). 如果你使用和上面的例子一样带 `xxhdpi` 屏幕的设备, 系统将自动选择 `xhdpi` 版本的图像然后根据屏幕密度匹配图片. 这种特性允许我们只须创建一个版本的图像就可以按需为其他密度的屏幕优化. 
 
-A common pattern is to supply a high density image and allow Android to downscale that image for devices with a lower screen density. 
+一个普遍模型是为了支持高密度图像并允许安卓降低图像分辨率去适应低屏幕密度的设备. 
 
 ## 设备独立像素(DIPs)
 
-One final adjustment to consider for screen density variation is specification of exact dimensions in your layout files. Imagine that you want to supply padding to the outside of a screen in your app. How can we specify dimension values that also scale relative to the device’s screen density?
+应对屏幕密度变化做出的最后调整是在布局文件里设置准确的尺寸. 想像你希望你的应用支持屏幕外部填充. 我们怎样设置元素值使得视图能够根据不同设备自动匹配屏幕密度?
 
-Well, iOS developers would specify this padding in point values. On a non-retina device, the raw pixel value would be used, and on retina devices, the system will automatically double that pixel size. 
+好吧, iOS开发者可以将这样的填充精确至像素点. 在非Retina屏设备上, 原像素值会被使用, 而在Retina设备上, 系统会自动double该像素值. 
 
-On Android, you can specify this padding in raw pixel values as well, but those values will not scale on devices with high-density screens. Instead, Android developers specify dimension units in density-independent pixels (typically called dip, or dp units). These units will scale relative to the device's density in the same way that iOS automatically performs the scaling. 
+在安卓上, 你也可以以原像素点为单位设置图像填充,但是那些值不会适用于高密度屏幕的设备. 相反的, 安卓开发者会设置在密度独立像素里的测量单元 (通常被称作设备独立像素, 或者设备像素单元). 这些单元会像iOS自适应大小一样 根据设备密度自动做出调整. 
 
 ## 设备种类(Device Category)
 
-A final detail to consider is how device categories are managed on Android. Note that iOS has two distinct categories: iPhone and iPad. However, Android is very different, as it has a spectrum of device categories, and the distinction between a phone and tablet can be arbitrary. The resource qualification system mentioned earlier is used heavily to support this spectrum of screen sizes. 
+最后需要考虑的一点是在安卓开发中不同种类的设备是怎样被管理的. 值得注意的是iOS有两个独立的类: iPhone 和 iPad. 但是, 安卓截然不同, 因为安卓拥有一系列不同的种类, 而且手机和平板之间的差别可以是任意的. 先前提到的资源认证体系被重度使用来支持这一范围的屏幕尺寸变化. 
 
-For simple screens, padding can be adjusted around content, based on the size of the device. For example, let’s examine dimension resources. We can define a dimension value in a common location and reference it in our layout files: 
+对于简单屏幕, 它们可以基于设备大小尺寸并根据内容调整填充. 例如, 我们可以检验一下维度资源 (dimension resources).我们可以在一个普通的位置定义一个维度值并在我们的布局文件中引用它: 
 
     <?xml version="1.0" encoding="utf-8"?>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -117,15 +117,15 @@ For simple screens, padding can be adjusted around content, based on the size of
         ...
     </LinearLayout>
 
-Notice the `@dimen/container_margin` value. This refers to a named value stored in the resources system. We can define a base margin-dimension value that is used by default:
+注意 `@dimen/container_margin` 的值. 这代表了一个存储在资源系统中的被命名值. 我们能够定义一个基本的边距属性值作为默认值:
 
-In `res/values/dimens.xml`:
+在 `res/values/dimens.xml`里:
 
     <resouces>
 	    <dimen name=”container_margin”>4dp</dimen>
     </resources>
 
-Then, we create a qualified version of this padding for tablets:
+然后, 我们为平板创建一个合格版本的填充:
 
 In `res/values-w600dp/dimens.xml`:
 
@@ -133,19 +133,19 @@ In `res/values-w600dp/dimens.xml`:
        <dimen name=”container_margin”>96dp</dimen>
     </resources>
 
-Now, on devices that have a minimum width of 600 dp units, the larger container margin value will be selected by the system. This additional margin will tweak our user interface so that the app is not just a stretched-out version of the application that looks great on phones.
+现在, 在宽度至少有600个设备点单元的设备上, 较大的容器边缘价值会被系统选择. 多余的边界会扭曲我们的用户界面因此，这款应用不仅仅只是在手机上运行流畅应用的延伸版本.
 
 ## 分割检视 (Split Views)
 
-The above dimension example is a useful tool for some situations, but it is often the case that an application will become more useful on a tablet because there is more space for additional application components. 
+上面的尺寸实例在某些情况下是一个很实用的工具, 但是，常常会出现一种情况，那就是一个应用在平板上会变得更加有用，因为会有更多的空间留给其他的应用组件. 
 
-A common pattern in universal iOS applications is the use of a split view controller. UISplitViewController allows you to host two view controllers that would typically each be visible by themselves in a single screen of your app on an iPad. 
+通常在OS应用中，一个普遍的模型是 使用一个分离的视图控制器. UISplitViewController 控件允许你控制两个视图分别显示在ipad上的应用的一个单屏幕上. 
 
-On Android, we have a similar system, but with more control and additional options for expansion. Core pieces of your application can be abstracted into reusable components called fragments, which are similar to view controllers in iOS. All of the controller logic for a single screen of your application can be specified in a fragment. When on a phone, we present one fragment to the user. When on a tablet, we can present two (or more) fragments to the user. 
+在安卓上, 我们有一个相似的系统, 但却可以有更多的控制和更多的选择用于扩展.  你的应用的核心部件可以被分为可重用的部分,就是片段 (fragments), 类似于iOS里面的视图控制器. 所有应用里的任一个单屏幕的控制逻辑都能够被以一个片段（fragment）的形式呈现出来. 当在一个手机上时候, 我们向用户呈现一个片段 (segment). 当在一个平板上面时, 我们向用户呈现两个片段 (fragments). 
 
-We can rely again on the resource qualification system to supply a distinct layout file for phones and tablets, which will allow us to host two fragments on a tablet and one on a phone. 
+我们可以再次依赖资源限制系统为手机或者平板供应一个独特的布局文件, 这将允许我们在一个平板上控制两个片段, 或者在一个手机上控制一个. 
 
-For example, the layout file defined below is intended to be used on phone devices:
+例如, 下面定义的布局文件会被用在手机设备上:
 
 In `res/layout/activity_home.xml`:
 
@@ -155,11 +155,11 @@ In `res/layout/activity_home.xml`:
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-This `FrameLayout` defined by the `container` ID will contain the master view for our application and will host the view for our master fragment. 
+这个被 `container` ID 定义的 `FrameLayout`  会包含我们应用的主视图，并且会为主片段控制视图. 
 
-We can create a qualified version of this same file for tablet devices: 
+我们可以为平板设备创建这个文件相应的合格版本: 
 
-In `res/layout-sw600dp/activity_home.xml`:
+在 `res/layout-sw600dp/activity_home.xml` 中:
 
     <?xml version="1.0" encoding="utf-8"?>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -177,10 +177,10 @@ In `res/layout-sw600dp/activity_home.xml`:
     	    android:layout_height="match_parent" />
     	</LinearLayout>
 
-Now, when we use the activity_home layout file on a tablet, we will have two panes in our layout instead of one, which means we can host two fragment views. We can now display the master and the detail view in the same screen with very little code modification. At runtime, the system will decide which version of the layout file to use based on the configuration of the device. 
+现在, 当我们在平板设备上使用 activity_home 布局文件时, 我们会选择两个窗口的布局而不是一个, 这意味着我们能够支配两个局部视图. 我们现在几乎可以不用改代码就能在相同屏幕上呈现主视图和详情视图. 在运行时候, 系统会根据设备的配置决定布局文件的使用版本. 
 
 ## 结论
 
-With the exception of the `sw600dp` resource qualifier, all of the tools in this article are available on any Android device that you would support. There is an older and less granular resource qualifier that existed prior to the addition of `sw600dp`, available for those older devices. 
+除了 `sw600dp` 资源管理器, 这篇文章提到的所有工具都可以供任何你支持的任何安卓设备使用. 有一种更老的粒子性更低的资源管理器比添加 `sw600dp`更优先存在, 他们被用于更老的设备. 
 
-As described above, Android developers have the tools needed to optimize for any type of device. You will see some Android applications that don’t adapt very well to many devices (I wouldn’t call this uncommon). I want to stress that shoehorning a design from an existing platform just won’t work on Android. I challenge you to rethink your design and provide a delightful experience for your users.
+正如文章所示, 安卓开发者拥有适用于任何设备的优化工具. 你会发现一些安卓应用在许多设备上并不非常适合 (我并不会将这种现象称作异常). 我想要强调的是 从已有平台上强移植一种设计并不适合安卓. 我强烈建议你重新思考一下你的设计并为你的用户提供一种更愉悦的体验.

@@ -10,6 +10,9 @@ CocoaPods 背后的理念主要体现在两个方面。首先，在工程中引�
 
 CocoaPods是用 Ruby 写的，并由若干个 Ruby 包 (gems) 构成的。在解析整合过程中，最重要的几个 gems 分别是： [CocoaPods/CocoaPods](https://github.com/CocoaPods/CocoaPods/), [CocoaPods/Core](https://github.com/CocoaPods/Core), 和 [CocoaPods/Xcodeproj](https://github.com/CocoaPods/Xcodeproj) (是的，CocoaPods 是一个依赖管理工具 -- 利用依赖管理进行构建的！)。
 
+> <p><span class="secondary radius label">编者注</span> CocoaPods 是一个 objc 的依赖管理工具，而其本身是利用 ruby 的依赖管理 gem 进行构建的
+
+
 ###CocoaPods/CocoaPod
 
 这是是一个面向用户的组件，每当执行一个 `pod` 命令时，这个组件都将被激活。该组件包括了所有使用 CocoaPods 涉及到的功能，并且还能通过调用所有其它的 gems 来执行任务。
@@ -102,13 +105,13 @@ Podfile 是一个文件，用于定义项目锁需要使用的第三方库。该
 
 	Integrating client project
 
-可以上到，整个过程执行了很多操作，不过把它们分解之后，再看看，会发现它们都很简单。让我妈逐步来分析一下。
+可以上到，整个过程执行了很多操作，不过把它们分解之后，再看看，会发现它们都很简单。让我们逐步来分析一下。
 
 ###读取 Podfile 文件
 
 你是否对 Podfile 的语法格式感到奇怪过，那是因为这是用 Ruby 语言写的。相较而言，这要比现有的其他格式更加简单好用一些。
 
-在安装期间，第一步是要弄清楚显示或隐式的声明了哪些第三方库。在加载 podspecs 过程中，CocoaPods 就构建了所有的第三方库与对应的版本信息。Podspecs 存储在本地路径 `~/.cocoapods` 中。
+在安装期间，第一步是要弄清楚显示或隐式的声明了哪些第三方库。在加载 podspecs 过程中，CocoaPods 就建立了包括版本信息在内的所有的第三方库的列表。Podspecs 被存储在本地路径 `~/.cocoapods` 中。
 
 ####版本控制和冲突
 
@@ -122,11 +125,11 @@ CocoaPods 使用[语义版本控制 - Semantic Versioning](http://semver.org/) �
 
 CocoaPods 执行的下一步是加载源码。每个 `.podspec` 文件都包含一个源代码的索引，这些索引一般包裹一个 git 地址和 git tag。它们以 commit SHAs 的方式存储在 `~/Library/Caches/CocoaPods` 中。这个路径中文件的创建是由 Core gem 负责的。
 
-CocoaPods 将依照 `Podfile`、`.podspec`和缓存文件的信息将源文件下载到相应的第三方库 `Pods` 路径中。
+CocoaPods 将依照 `Podfile`、`.podspec` 和缓存文件的信息将源文件下载到 `Pods` 目录中。
 
 ###生成 Pods.xcodeproj
 
-每次 `pod install` 执行，如果检测到改动时，CocoaPods 会利用Xcodeproj gem 组件对 `Pods.xcodeproj`进行更新。如果该文件不存在，则用默认配置生成。否则，会将已有的配置项加载至内存中。
+每次 `pod install` 执行，如果检测到改动时，CocoaPods 会利用 Xcodeproj gem 组件对 `Pods.xcodeproj` 进行更新。如果该文件不存在，则用默认配置生成。否则，会将已有的配置项加载至内存中。
 
 ###安装第三方库
 
@@ -137,12 +140,11 @@ CocoaPods 将依照 `Podfile`、`.podspec`和缓存文件的信息将源文件�
 - 一个编译所必须的 `prefix.pch` 文件
 - 另一个编译必须的文件 `dummy.m`
 
-一旦每个 pod 的 target 完成了上面的内容，整个 `Pods` target 就会被创建。这增加了相同文件的同时，还增加了另外几个文件。如果源码中包含有 资源 bundle，将这个 bundle 添加至程序 target 的指令将被添加到 `Pods-Resources.sh` 文件中。还有一个名为 `Pods-environment.h` 的文件，文件中包含了一些宏，这些宏可以用来检查某个组件是否来自 pod。最后，将生成两个认可文件，一个是 `plist`，另一个是 `markdown`，这两个文件用于给最终用户查阅相关许可信息。
+一旦每个 pod 的 target 完成了上面的内容，整个 `Pods` target 就会被创建。这增加了相同文件的同时，还增加了另外几个文件。如果源码中包含有资源 bundle，将这个 bundle 添加至程序 target 的指令将被添加到 `Pods-Resources.sh` 文件中。还有一个名为 `Pods-environment.h` 的文件，文件中包含了一些宏，这些宏可以用来检查某个组件是否来自 pod。最后，将生成两个认可文件，一个是 `plist`，另一个是 `markdown`，这两个文件用于给最终用户查阅相关许可信息。
 
 ###写入至磁盘
 
-直到现在，许多工作都是再内存中进行的。为了让这些成果能被重复利用，我们需要将所有的结果保存到一个文件中。所以 `Pods.xcodeproj` 文件被写入磁盘，另外两个非常重要的文件：`Podfile.lock` 和`Manifest.lock` 都将被写入磁盘。
-
+直到现在，许多工作都是在内存中进行的。为了让这些成果能被重复利用，我们需要将所有的结果保存到一个文件中。所以 `Pods.xcodeproj` 文件被写入磁盘，另外两个非常重要的文件：`Podfile.lock` 和 `Manifest.lock` 都将被写入磁盘。
 
 ####Podfile.lock
 
@@ -154,7 +156,7 @@ CocoaPods 将依照 `Podfile`、`.podspec`和缓存文件的信息将源文件�
 
 ###xcproj
 
-如果你已经依照我们的建议在系统上安装了 [xcproj](https://github.com/0xced/xcproj)，它会将 `Pods.xcodeproj` 文件转换成就旧的 ASCII plist 格式的文件。为什么要这么做呢？虽然在很久以前就不被其它软件支持了，但是 Xcode 仍然依赖于这种格式。如果没有 xcproj，你的 `Pods.xcodeproj` 文件将会以 XML 格式的 plist 文件存储，当你用 Xcode 打开它时，它会被改写，并造成大量的文件冲突。
+如果你已经依照我们的建议在系统上安装了 [xcproj](https://github.com/0xced/xcproj)，它会对 `Pods.xcodeproj` 文件执行一下 `touch` 以将其转换成为旧的 ASCII plist 格式的文件。为什么要这么做呢？虽然在很久以前就不被其它软件支持了，但是 Xcode 仍然依赖于这种格式。如果没有 xcproj，你的 `Pods.xcodeproj` 文件将会以 XML 格式的 plist 文件存储，当你用 Xcode 打开它时，它会被改写，并造成大量的文件改动。
 
 ##结果
 
@@ -162,7 +164,7 @@ CocoaPods 将依照 `Podfile`、`.podspec`和缓存文件的信息将源文件�
 
 ##补充：持续集成
 
-CocoaPods和持续集成在一起非常融洽。虽然持续集成很大程度上取决于你的项目配置，但 Cocoapods 依然能很容易地对项目进行编译。
+CocoaPods 和持续集成在一起非常融洽。虽然持续集成很大程度上取决于你的项目配置，但 Cocoapods 依然能很容易地对项目进行编译。
 
 ###Pods 文件夹的版本控制
 
@@ -172,11 +174,11 @@ CocoaPods和持续集成在一起非常融洽。虽然持续集成很大程度�
 
 如果你的 `Pods` 文件夹不受版本控制，那么你需要做一些额外的步骤来保证持续集成的顺利进行。最起码，`Podfile` 文件要放入版本控制之中。另外强烈建议将生成的 `.xcworkspace` 和 `Podfile.lock` 文件纳入版本控制，这样不仅简单方便，也能保证所使用 Pod 的版本是正确的。
 
-一旦配置完毕，在持续集成中运行 CocoaPods 的关键就是确保每次编译之前都执行了 `pod install` 命令。在大多数系统中，例如 Jenkins 或 Travis，只需要定义一个编译步骤即可 (实际上，Travis 会自动执行 `pod install` 命令)。随着 [Xcode Bots, we haven't quite figured out a smooth process as of writing](https://groups.google.com/d/msg/cocoapods/eYL8QB3XjyQ/10nmCRN8YxoJ) 的发布，我们还没有找到能像书写的这么流畅的解决方案，不过我们正朝着解决方案努力，一旦成功，我们将会立即分享。
+一旦配置完毕，在持续集成中运行 CocoaPods 的关键就是确保每次编译之前都执行了 `pod install` 命令。在大多数系统中，例如 Jenkins 或 Travis，只需要定义一个编译步骤即可 (实际上，Travis 会自动执行 `pod install` 命令)。对于 [Xcode Bots，在书写这篇文章时我们还没能找到非常流畅的方式](https://groups.google.com/d/msg/cocoapods/eYL8QB3XjyQ/10nmCRN8YxoJ)，不过我们正朝着解决方案努力，一旦成功，我们将会立即分享。
 
 ##结束语
 
-CocoaPods 简化了 Objective-C 的开发流程，我们的目标是让第三方库更容易被发现和添加。了解CocoaPods的原理能让你做出更好的应用程序。我们沿着 CocoaPods 的整个执行过程，从载入 specs 文件和源代码、创建 `.xcodeproj` 文件和所有组件，到将所有文件写入磁盘。所以接下来，我们运行 `pod install --verbose`，静静观察 CocoaPods 的魔力如何显现。
+CocoaPods 简化了 Objective-C 的开发流程，我们的目标是让第三方库更容易被发现和添加。了解 CocoaPods 的原理能让你做出更好的应用程序。我们沿着 CocoaPods 的整个执行过程，从载入 specs 文件和源代码、创建 `.xcodeproj` 文件和所有组件，到将所有文件写入磁盘。所以接下来，我们运行 `pod install --verbose`，静静观察 CocoaPods 的魔力如何显现。
 
 ---
 

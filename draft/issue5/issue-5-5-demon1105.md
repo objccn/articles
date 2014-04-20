@@ -1,4 +1,4 @@
-在 iOS 7 之前，当程序置于后台之后开发者们对他们程序所能做的事情非常有限。除了 VOIP 和基于地理位置特性以外，唯一能做的地方就是使用后台任务 (background tasks) 让代码可以执行几分钟。如果你想下载比较大的视频文件以便离线浏览，亦或者备份用户的照片到你的服务器上，你都仅能完成一部分工作。
+在 iOS 7 之前，当程序置于后台之后开发者们对他们程序所能做的事情非常有限。除了 VOIP 和基于地理位置特性以外，唯一能做的地方就是使用后台任务（background tasks）让代码可以执行几分钟。如果你想下载比较大的视频文件以便离线浏览，亦或者备份用户的照片到你的服务器上，你都仅能完成一部分工作。
 
 iOS 7 添加了两个新的 API 以便你的程序可以在后台更新界面以及内容。首先是后台获取（Background Fetch），它允许你定期地从网络获取新的内容。第二个 API 就是远程通知（Remote Notifications），这是一个当事件发生时可以让推送通知主动提醒应用的新特性，这两者都为你的应用界面保持最新提供了极大的帮助。在新的后台传输服务 (Background Transfer Service) 中执行定期的任务，也允许你在进程之外可以执行网络传输（下载和上传）工作。
 
@@ -30,7 +30,7 @@ iOS 7 添加了两个新的 API 以便你的程序可以在后台更新界面以
         return YES;
     }
 
-iOS 默认不进行后台获取，所以你需要设置一个时间间隔，否则，你的应用程序永远不能在后台被唤醒。UIApplicationBackgroundFetchIntervalMinimum 这个值要求系统尽可能频繁地去管理你的程序到底什么时候应该被唤醒，但如果你不需要这样的话，你也应该指定一个你想要的的时间间隔。例如，一个天气的应用程序，可能只需要几个小时才更新一次，iOS 将会在后台获取之间至少等待你指定的时间间隔。
+iOS 默认不进行后台获取，所以你需要设置一个时间间隔，否则，你的应用程序永远不能在后台被唤醒。`UIApplicationBackgroundFetchIntervalMinimum` 这个值要求系统尽可能频繁地去管理你的程序到底什么时候应该被唤醒，但如果你不需要这样的话，你也应该指定一个你想要的的时间间隔。例如，一个天气的应用程序，可能只需要几个小时才更新一次，iOS 将会在后台获取之间至少等待你指定的时间间隔。
 
 如果你的应用允许用户退出登录，那么就没有获取新数据的需要了，你应该把 `minimumBackgroundFetchInterval` 设置为 `UIApplicationBackgroundFetchIntervalNever`，这样可以节省资源。
 
@@ -51,7 +51,7 @@ iOS 默认不进行后台获取，所以你需要设置一个时间间隔，否�
                 return;
             }
         
-            // 解析相应/数据以决定新内容是否可用
+            // 解析响应/数据以决定新内容是否可用
             BOOL hasNewData = ...
             if (hasNewData) {
                 completionHandler(UIBackgroundFetchResultNewData);
@@ -94,13 +94,13 @@ iOS 默认不进行后台获取，所以你需要设置一个时间间隔，否�
 
 远程通知允许你在重要事件发生时，告知你的应用。你可能需要发送新的即时信息，突发新闻的提醒，或者用户喜爱电视的最新剧集已经可以下载以便离线观看的消息。远程通知很适合用于那些偶尔出现，但却很重要的内容，如果使用后台获取模式中在两次获取间需要等待的时间是不可接受的话，远程通知会是一个不错的选择。远程通知会比后台获取更有效率，因为应用程序只有在需要的时候才会启动。
 
-一条远程通知实际上只是一条普通的带有 content-available 标志的推送通知。你可以发送一条带有提醒信息的推送去告诉用户有事请发生了，同时在后台对界面进行更性。但远程通知也可以做到在安静地，没有提醒消息或者任何声音的情况下，只去更新应用界面或者触发后台工作。然后你可以在完成下载或者处理完新内容后，发送一条本地通知。
+一条远程通知实际上只是一条普通的带有 `content-available` 标志的推送通知。你可以发送一条带有提醒信息的推送去告诉用户有事请发生了，同时在后台对界面进行更性。但远程通知也可以做到在安静地，没有提醒消息或者任何声音的情况下，只去更新应用界面或者触发后台工作。然后你可以在完成下载或者处理完新内容后，发送一条本地通知。
 
 静默的推送通知有速度限制，所以你可以大胆地根据应用程序的需要发送尽可能多的通知。iOS 和苹果推送服务会控制推送通知多久被递送，发送很多推送通知是没有问题的。如果你的推送通知达到了限制，推送通知可能会被延迟，直到设备下次发送保持活动状态的数据包，或者收到另外一个通知。
 
 ### 发送远程通知
 
-要发送一条远程通知，需要在推送通知的有效负载 (payload) 设置 content－available 标志。content-available 标志和用来通知 Newsstand 应用的健值是一样的，因此，大多数推送脚本和库都已经支持远程通知。当你发送一条远程通知时，你可能还想要包含一些通知有效负载中的数据，让你应用程序可以引用事件。这可以为你节省一些网络请求，并提高应用程序的响应度。
+要发送一条远程通知，需要在推送通知的有效负载（payload）设置 content－available 标志。content-available 标志和用来通知 报刊应用（Newsstand）的健值是一样的，因此，大多数推送脚本和库都已经支持远程通知。当你发送一条远程通知时，你可能还想要包含一些通知有效负载中的数据，让你应用程序可以引用事件。这可以为你节省一些网络请求，并提高应用程序的响应度。
 
 我建议在开发的时候，使用 [Nomad CLI’s Houston](http://nomad-cli.com/#houston) 工具发送推送消息，当然你也可以使用你喜欢的库或脚本。
 
@@ -145,7 +145,7 @@ iOS 7 添加了一个新的应用程序委托方法，当接收到一条带有 c
 
 一个 `NSURLSession` 对象协调一个或多个 `NSURLSessionTask` 对象，并根据 `NSURLSessionTask` 创建的 `NSURLSessionConfiguration` 实现不同的功能。使用相同的配置，你也可以创建多组具有相关任务的 `NSURLSession` 对象。要利用后台传输服务，你将会使用 `[NSURLSessionConfiguration backgroundSessionConfiguration]` 来创建一个会话配置。添加到后台会话的任务在外部进程运行，即使应用程序被挂起，崩溃，或者被杀死，它依然会运行。
 
-[`NSURLSessionConfiguration`](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSessionConfiguration_class/Reference/Reference.html)) 允许你设置默认的 HTTP 头，配置缓存策略，限制使用蜂窝数据等等。其中一个选项是 `discretionary` 标志，这个标志允许系统为分配任务进行性能优化。这意味着只有当设备有足够电量时，设备才通过 Wifi 进行数据传输。如果电量低，或者只仅有一个蜂窝连接，传输任务是不会运行的。后台传输总是在 discretionary 模式下运行。
+[`NSURLSessionConfiguration`](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSessionConfiguration_class/Reference/Reference.html) 允许你设置默认的 HTTP 头，配置缓存策略，限制使用蜂窝数据等等。其中一个选项是 `discretionary` 标志，这个标志允许系统为分配任务进行性能优化。这意味着只有当设备有足够电量时，设备才通过 Wifi 进行数据传输。如果电量低，或者只仅有一个蜂窝连接，传输任务是不会运行的。后台传输总是在 discretionary 模式下运行。
 
 目前为止，我们大概了解了 `NSURLSession`，以及一个后台会话如何进行，接下来，让我们回到远程通知的例子，添加一些代码来处理后台传输服务的下载队列。当下载完成后，我们会通知用户该文件已经可以使用了。
 
@@ -220,7 +220,7 @@ iOS 7 添加了一个新的应用程序委托方法，当接收到一条带有 c
     {
     }
 
-当后台会话任务完成时，如果你的应用程序仍然在前台运行，上面的代码已经足够了。然而，在大多数情况下，你的应用程序可能是没有运行的，或者在后台被挂起。在这些情况下，你必须实现应用程序委托的两个方法，这样系统就可以唤醒你的应用程序。不同于以往的委托回调，该应用程序委托会被调用两次，因为您的会话和任务委托可能会收到一系列消息。app delegate 的：`handleEventsForBackgroundURLSession：` 方法会在这些 `NSURLSession` 委托的消息发送前被调用，然后，`URLSessionDidFinishEventsForBackgroundURLSession` 在随后被调用。在前面的方法中，包含了一个后台完成的回调 (completionHandler)，并在后面的方法中执行回调以便更新界面。
+当后台会话任务完成时，如果你的应用程序仍然在前台运行，上面的代码已经足够了。然而，在大多数情况下，你的应用程序可能是没有运行的，或者在后台被挂起。在这些情况下，你必须实现应用程序委托的两个方法，这样系统就可以唤醒你的应用程序。不同于以往的委托回调，该应用程序委托会被调用两次，因为您的会话和任务委托可能会收到一系列消息。app delegate 的：`handleEventsForBackgroundURLSession：` 方法会在这些 `NSURLSession` 委托的消息发送前被调用，然后，`URLSessionDidFinishEventsForBackgroundURLSession` 在随后被调用。在前面的方法中，包含了一个后台完成的回调（`completionHandler`），并在后面的方法中执行回调以便更新界面:
 
     - (void)                  application:(UIApplication *)application 
       handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
@@ -284,7 +284,7 @@ iOS 7 添加了一个新的应用程序委托方法，当接收到一条带有 c
 iOS 7 中强大的多任务和网络 API 为现有应用和新应用开启了一系列全新的可能性。如果你的应用程序可以从进程外的网络传输和数据中获益，那么尽情地使用这些美妙的 API。一般情况下，你可以就像你的应用正在前台运行那样去实现后台传输，并进行适当的界面更新，而这里绝大多数的工作都已经为你完成了。
 
 - 使用适当的新 API 来为你的应用程序提供内容。
-- 尽可能早地有效率调用 completion handler。
+- 尽可能早地调用 completion handler 以提高效率。
 - 让 completion handler 为应用程序更新界面快照。
 
 ## 扩展阅读

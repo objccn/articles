@@ -300,3 +300,5 @@ iOS 7 中强大的多任务和网络 API 为现有应用和新应用开启了一
 原文 [Multitasking in iOS 7](http://www.objc.io/issue-5/multitasking.html)
 
 译文 [iOS 7系列译文：iOS7的多任务处理 - 博客 - 伯乐在线](http://blog.jobbole.com/51660/)
+
+校对 [Nicholas Tau](http://www.taofengping.com)

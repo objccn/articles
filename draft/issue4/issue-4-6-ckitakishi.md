@@ -223,7 +223,7 @@ SQLite 会为你减轻负担，但它是要付出代价的。虽然它看起来�
 
 我们将更新 `车站` 类来自动更新 `规范名称`：
 
-    @interface Stop (CoreDataForward)
+     @interface Stop (CoreDataForward)
     
     @property (nonatomic, strong) NSString *primitiveName;
     @property (nonatomic, strong) NSString *primitiveNormalizedName;
@@ -244,8 +244,8 @@ SQLite 会为你减轻负担，但它是要付出代价的。虽然它看起来�
         [self didAccessValueForKey:@"name"];
     }
     
-  // ...
-  
+	// ...
+	
     @end
 
 有了下面的代码，我们可以用 `BEGINSWITH` 代替 `BEGINSWITH[cd]` 来搜索：

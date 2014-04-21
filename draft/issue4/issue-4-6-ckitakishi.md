@@ -94,7 +94,9 @@
 
 如果加上 `-com.apple.CoreData.SQLDebug1` 作为启动参数传递给应用程序，我们将得到如下输出：
 
-    sql: SELECT 0, t0.Z_PK, t0.Z_OPT, t0.ZIDENTIFIER, t0.ZLATITUDE, t0.ZLONGITUDE, t0.ZNAME FROM ZSTOP t0 WHERE (? <=  t0.ZLONGITUDE AND  t0.ZLONGITUDE <= ? AND ? <=  t0.ZLATITUDE AND  t0.ZLATITUDE <= ?)  LIMIT 100
+    sql: SELECT 0, t0.Z_PK, t0.Z_OPT, t0.ZIDENTIFIER, t0.ZLATITUDE, t0.ZLONGITUDE, t0.ZNAME FROM ZSTOP t0 
+         WHERE (? <=  t0.ZLONGITUDE AND  t0.ZLONGITUDE <= ? AND ? <=  t0.ZLATITUDE AND  t0.ZLATITUDE <= ?)  
+         LIMIT 100
     annotation: sql connection fetch time: 0.0008s
     annotation: total fetch execution time: 0.0013s for 15 rows.
 

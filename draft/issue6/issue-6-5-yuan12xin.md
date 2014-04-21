@@ -137,32 +137,32 @@ xctool 用法非常简单，它使用跟 `xcodebuild` 相同的参数：
 
 ## 加密证书和配置文件
 
-If your GitHub project is public, you might want to encrypt your certificates and profiles, as they contain sensitive data. If you have a private repository, you can move on to the next section.
+如果你的 GitHub 工程是公开的，你可能希望对证书和配置文件 (包含了敏感数据) 进行加密。如果你有一个私有仓库，可以跳至下一节。
 
-First, we have to come up with a password that encrypts all our files (the secret). In our example, let's choose "foo," but you should come up with a more secure password for your project. On the command line, encrypt all three sensitive files using `openssl`:
+首先，我们需要一个密码来对所有的文件进行加密。在我们的示例中，密码为 “foo”，记住在你的工程中设置的密码应该更加复杂。在命令行中，我们使用 `openssl` 加密所有的敏感文件：
 
 	openssl aes-256-cbc -k "foo" -in scripts/profile/TravisExample_Ad_Hoc.mobileprovision -out scripts/profile/TravisExample_Ad_Hoc.mobileprovision.enc -a
 	openssl aes-256-cbc -k "foo" -in scripts/certs/dist.cer -out scripts/certs/dist.cer.enc -a
 	openssl aes-256-cbc -k "foo" -in scripts/certs/dist.p12 -out scripts/certs/dist.cer.p12 -a
 
-This will create encrypted versions of our files with the ending `.enc`. You can now remove or ignore the original files. At the very least, make sure not to commit them, otherwise they will show up on GitHub. If you accidentally committed or pushed them already, [get some help](https://help.github.com/articles/remove-sensitive-data).
+通过上面的命令，可以创建出以 `.enc` 结尾的加密文件。之后可以把原始文件忽略或者移除掉。至少不要把原始文件提交到 GitHub 中，否则原始文件会显示在 GitHub中。如果你不小心把原始文件提交上去了，那么请看这里[如何解决](https://help.github.com/articles/remove-sensitive-data)。
 
-Now that our files are encrypted, we need to tell Travis to decrypt them again. For that, Travis needs the secret. We use the same approach that we used already for the `KEY_PASSWORD`:
+现在，我们的文件已经被加密了，接下来需要告诉 Travis 对文件进行解密。解密过程，需要用到密码。具体使用方法跟之前创建的 `KEY_PASSWORD` 变量一样：
 
 	travis encrypt "ENCRYPTION_SECRET=foo" --add
 
-Lastly, we have to tell Travis which files to decrypt. Add the following commands to the `before-script` phase in the `.travis.yml`:
+最后，我们需要告诉 Travis 哪些文件需要进行解密。将下面的命令添加到 `.travis.yml` 文件中的 `before-script` 部分：
 
 	before_script:
 	- openssl aes-256-cbc -k "$ENCRYPTION_SECRET" -in scripts/profile/TravisExample_Ad_Hoc.mobileprovision.enc -d -a -out scripts/profile/TravisExample_Ad_Hoc.mobileprovision
 	- openssl aes-256-cbc -k "$ENCRYPTION_SECRET" -in scripts/certs/dist.p12.enc -d -a -out scripts/certs/dist.p12
 	- openssl aes-256-cbc -k "$ENCRYPTION_SECRET" -in scripts/certs/dist.p12.enc -d -a -out scripts/certs/dist.p12
 
-With that, your files on GitHub will be secured, while Travis can still read and use them. There is only one security issue that you have to be aware of: You could (accidentally) expose a decrypted environment variable in the Travis build log. Note, however, that decryption is disabled for pull requests.
+就这样，在 GitHub 上面的文件就安全了，并且 Travis 依旧能读取并使用这些加密后的文件。但是有一个安全问题你需要知道：在 Travis 的编译日志中可能会显示出解密环境变量。不过对 pull 请求来说不会出现。
 
-### Add Scripts
+### 添加脚本
 
-Now we have to make sure that the certificates get imported in the Travis CI keychain. To do this, we should add a new file, `add-key.sh`, in the `scripts` folder:
+现在我们需要确保证书都导入至 Travis CI 的钥匙串中。为此，我们需要在 `scripts` 文件夹中添加一个名为 `add-key.sh` 的文件：
 
 	#!/bin/sh
 	security create-keychain -p travis ios-build.keychain
@@ -172,15 +172,16 @@ Now we have to make sure that the certificates get imported in the Travis CI key
 	mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
 	cp ./scripts/profile/$PROFILE_NAME.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
 
-Here we create a new temporary keychain called `ios-build` that will contain all the certificates. Note that we use the `$KEY_PASSWORD` here to import the private key. As a final step, the mobile provisioning profile is copied into the `Library` folder.
+通过上面的命令创建了一个名为 `ios-build` 的临时钥匙串，里面包含了所有证书。注意，这里我们使用了 `$KEY_PASSWORD` 来导入私钥。最后一步是将 配置文件拷贝至 `Library` 文件夹。
 
-After creating this file, make sure to give it executable rights. On the command line, type `chmod a+x scripts/add-key.sh`. You have to do this for the following scripts as well.
+创建好文件之后，确保给其授予了可执行的权限：在命令行输入：`chmod a+x scripts/add-key.sh` 即可。为了正常使用脚本，必须要这样处理一下。
 
-Now that all certificates and profiles are imported we can sign our application. Please note that we have to build the app before we can sign it. As we need to know where the build is stored on disk, I recommend specifying the output folder by declaring `OBJROOT` and `SYMROOT` in the build command. Also, we should create a release version by setting the SDK to `iphoneos` and the configuration to `Release`:
+至此，已经导入了所有的证书和配置文件，我们可以开始给应用程序签名了。注意，在给程序签名之前必须对程序进行编译。由于我们需要知道编译结果存储在磁盘的具体位置，我建议在编译命令中使用 `OBJROOT` 和 `SYMROOT` 来制定输出目录。另外，为了创建 release 版本，还需要把 SDK 设置为 `iphoneos`，以及将
+configuration 修改为 `Release`：
 
 	xctool -workspace TravisExample.xcworkspace -scheme TravisExample -sdk iphoneos -configuration Release OBJROOT=$PWD/build SYMROOT=$PWD/build ONLY_ACTIVE_ARCH=NO
 
-If you run this command, you should find the app binary in the `build/Release-iphoneos` folder afterward. Now we can sign it and create the `IPA` file. Do this by creating a new script:
+如果运行了上面的命令，那么编译完成之后，可以在 `build/Release-iphoneos` 目录找到 应用程序的二进制文件。接下来，就可以对其签名，并创建 `IPA` 文件了。为此，我们创建一个新的脚本：
 
 	#!/bin/sh
 	if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
@@ -197,17 +198,17 @@ If you run this command, you should find the app binary in the `build/Release-ip
 
 	xcrun -log -sdk iphoneos PackageApplication "$OUTPUTDIR/$APPNAME.app" -o "$OUTPUTDIR/$APPNAME.ipa" -sign "$DEVELOPER_NAME" -embed "$PROVISIONING_PROFILE"
 
-Lines two through nine are quite important. You don't want to create a new release while working on a feature branch. The same is true for pull requests. Builds for pull requests wouldn't work anyway, as secured environment variables [are disabled](http://about.travis-ci.org/docs/user/build-configuration/#Secure-environment-variables).
+第二行至第九行非常重要。我们并不希望在某个特性分支上做创建新的 release。对 pull 请求也一样的。由于安全环境变量[被禁用](http://about.travis-ci.org/docs/user/build-configuration/#Secure-environment-variables)，所以 pull 请求也不会编译。
 
-In line fourteen, we do the actual signing. This results in two new files in the `build/Release-iphoneos` folder: `TravisExample.ipa` and `TravisExample.app.dsym`. The first one contains the app which is ready to be delivered to your phone. The `dsym` file contains debug information of your binary. This is important for logging crashes on the devices. We will use both files later when we distribute the app.
+第十四行，才是真正的签名操作。这个命令会在 `build/Release-iphoneos` 目录生成 2 个文件：`TravisExample.ipa` 和 `TravisExample.app.dsym`。第一个文件包含了分发至手机上的应用程序。`dsym` 文件包含了二进制文件的调试信息。这个文件对于记录设备上的 crash 信息非常重要。之后当我们部署应用程序的时候，会用到这两个文件。
 
-The last script will remove the temporary keychain again and delete the mobile provisioning profile. It is not really necessary but helps when testing locally:
+最后一个脚本是移除之前创建的临时钥匙串，并删除配置文件。虽然这不是必须的，不过这有助于进行本地测试。
 
 	#!/bin/sh
 	security delete-keychain ios-build.keychain
 	rm -f ~/Library/MobileDevice/Provisioning\ Profiles/$PROFILE_NAME.mobileprovision
 
-As a last step, we have to tell Travis when to execute these three scripts. The keys should be added before the app is built and the signing and cleanup should happen afterwards. Add/replace the following steps in your `.travis.yml`:
+最后一步，我们必须告诉 Travis 什么时候执行这三个脚本。在应用程序编译、签名和清除等之前，需要先添加私钥。在 `.travis.yml` 文件中添加如下内容： 
 
 	before_script:
 	- ./scripts/add-key.sh
@@ -219,9 +220,9 @@ As a last step, we have to tell Travis when to execute these three scripts. The 
 	after_script:
 	- ./scripts/remove-key.sh
 
-With that done, we can push everything to GitHub and wait for Travis to sign our app. We can verify if it worked by investigating the Travis console on the project page. If everything works fine, we can have a look on how to distribute the signed app to our testers.
+完成上面的所有操作之后，我们就可以将所有内容 push 到 GitHub上，等待 Travis 对应用程序进行签名。我们可以在工程页面下的 Travis 控制台验证是否一切正常。如果一切正常的话，下面来看看如何将签好名的应用程序部署给测试人员。
 
-## Distributing the App
+## 部署应用程序
 
 There are two well-known services that help you with distributing your app: [TestFlight](http://testflightapp.com) and [HockeyApp](http://hockeyapp.net). Choose whatever is more sufficient for your needs. Personally, I prefer HockeyApp, but I'll show how to integrate both services.
 

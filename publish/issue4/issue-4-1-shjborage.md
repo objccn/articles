@@ -91,7 +91,8 @@ Core Data 的优势在于管理关系。让我们着眼于简单的情况：增�
 
 好了。同样的，这些改变仅仅存在于 managed object context 中。一旦我们保存了 context，managed object context 将会通知持久化存储协调器，像增加第一个对象一样增加新创建的对象到数据库文件中。但这也将会更新第二个 item 与第一个 item 之间的关系。记住 *Item* 实体是如何有一个*父子*关系的。它们之间有相反的关系。因为我们设置第一个 item 为第二个 item 的父亲（parent）时，第二个 item 将会变成第一个 item 的儿子（child）。Managed object context 追踪这些关系，持久化存储协调器和 store 保存这些关系到磁盘。
 
-### 弄清对象
+<a name="getting-to-objects"> </a>
+### 获取对象
 
 我们已经使用我们的程序一会儿了，并且已经为 rootItem 增加了一些子 items，甚至增加子 items 到子 items。然而，我们再次启动我们的程序。Core Data 已经将这些 items 之间的关系保存到了数据库文件。对象图是持久化的。我们现在需要取出*根* item，所以我们可以显示底层 items 的列表。有两种方法可以达到这个效果。我们先看简单点的方法。
 

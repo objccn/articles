@@ -32,7 +32,7 @@ iOS 7 和 Mac OS X 10.9 Mavericks 中一个显著的变化就是对 Foundation U
 
 <img alt="NSURLSessionTask class diagram" src="http://img.objccn.io/issue-5/NSURLSession.png" width="612" height="294">
 
-当一个 `NSURLSessionDataTask` 完成时，它会带有相关联的数据，而一个 `NSURLSessionDownloadTask` 任务结束时，它会带回已下载文件的一个临时的文件路径。因为一般来说，服务端对于一个上传任务的响应也会有相关数据返回，所以 `NSURLSessionUploadTask` 继承自 `NSURLSessionUploadTask`。
+当一个 `NSURLSessionDataTask` 完成时，它会带有相关联的数据，而一个 `NSURLSessionDownloadTask` 任务结束时，它会带回已下载文件的一个临时的文件路径。因为一般来说，服务端对于一个上传任务的响应也会有相关数据返回，所以 `NSURLSessionUploadTask` 继承自 `NSURLSessionDataTask`。
 
 所有的 task 都是可以取消，暂停或者恢复的。当一个 download task 取消时，可以通过选项来创建一个**恢复数据（resume data）**，然后可以传递给下一次新创建的 download task，以便继续之前的下载。
 

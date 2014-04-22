@@ -23,9 +23,9 @@
 
 <img src="http://img.objccn.io/issue-6/objc_travis_flick.jpg">
 
-现在只需要打开这个开关就可以为你的项目添加 Travis 服务。以后你会看到 Travis 会和 GitHub 项目设置相关联。下一步就是告诉 Travis， 当它收到项目改动通知之后该做什么。
+现在只需要打开这个开关就可以为你的项目添加 Travis 服务。之后你会看到 Travis 会和 GitHub 项目设置相关联。下一步就是告诉 Travis， 当它收到项目改动通知之后该做什么。
 
-## 轻量级的项目配置
+## 最简单的项目配置
 
 Travis CI 需要项目的一些基本信息。在项目的根目录创建一个名叫 `.travis.yml` 的文件，文件中的内容如下：
 
@@ -35,7 +35,7 @@ Travis 编译器运行在虚拟机环境下。该编译器已经利用 [Ruby](ht
 
 预装的编译脚本会分析你的 Xcode 项目，并对每个 target 进行编译。如果所有文件都没有编译错误，并且测试也没有被打断，那么项目就编译成功了。现在可以将相关改动 Push 到 GitHub 中看看能否成功编译。
 
-虽然上述配置过程真的很简单，不过对你的项目不一定适用。这里几乎没有什么文档来指导用户如何配置默认的编译行为。例如，有一次我没有用 `iphonesimulator` SDK 导致[代码签名错误](https://github.com/travis-ci/travis-ci/issues/1322)。如果刚刚那个轻量级的配置对你的项目不适用的话，让我们来看一下如何对 Travis 使用自定义的编译命令。
+虽然上述配置过程真的很简单，不过对你的项目不一定适用。这里几乎没有什么文档来指导用户如何配置默认的编译行为。例如，有一次我没有用 `iphonesimulator` SDK 导致[代码签名错误](https://github.com/travis-ci/travis-ci/issues/1322)。如果刚刚那个最简单的配置对你的项目不适用的话，让我们来看一下如何对 Travis 使用自定义的编译命令。
 
 ## 自定义编译命令
 
@@ -49,13 +49,13 @@ Travis 使用命令行对项目进行编译。因此，第一步就是使项目�
 
 	xcodebuild -project {project}.xcodeproj -target {target} -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
 
-使用 `iphonesimulator` SDK 是为了避免签名错误。直到我们稍后引入证书之前，这一步是必须的，并直到我们稍后引入证书为止。通过设置 `ONLY_ACTIVE_ARCH=NO` 我们可以确保利用模拟器架构编译工程。你也可以设置额外的属性，例如 `configuration`，输入 `man xcodebuild` 查看相关文档。
+使用 `iphonesimulator` SDK 是为了避免签名错误。直到我们稍后引入证书之前，这一步是必须的。通过设置 `ONLY_ACTIVE_ARCH=NO` 我们可以确保利用模拟器架构编译工程。你也可以设置额外的属性，例如 `configuration`，输入 `man xcodebuild` 查看相关文档。
 
 对于使用 `CocoaPods` 的项目，需要用下面的命令来指定 `workspace` 和 `scheme`：
 
 	xcodebuild -workspace {workspace}.xcworkspace -scheme {scheme} -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
 
-Schemes 是由 Xcode 自动生成的，但这在服务器上不会发生。确保所有的 scheme 都被设为 `shared` 并加入到仓库中。否则它只会在本地工作而不会被 Travis CI 识别。
+schemes 是由 Xcode 自动生成的，但这在服务器上不会发生。确保所有的 scheme 都被设为 `shared` 并加入到仓库中。否则它只会在本地工作而不会被 Travis CI 识别。
 
 <img src="http://img.objccn.io/issue-6/objc_shared_schemes.jpg">
 
@@ -70,11 +70,11 @@ Schemes 是由 Xcode 自动生成的，但这在服务器上不会发生。确�
 
 	xcodebuild test -workspace {workspace}.xcworkspace -scheme {test_scheme} -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
 
-不幸的是，`xcodebuild` 对于 iOS 来说，并不支持 target 和应用程序的测试。[这里有一些解决方案](http://www.raingrove.com/2012/03/28/running-ocunit-and-specta-tests-from-command-line.html)，不过我建议使用 Xctool。
+不幸的是，`xcodebuild` 对于 iOS 来说，并不能正确支持 target 和应用程序的测试。[这里有一些解决方案](http://www.raingrove.com/2012/03/28/running-ocunit-and-specta-tests-from-command-line.html)，不过我建议使用 Xctool。
 
 ### Xctool
 
-[Xctool](https://github.com/facebook/xctool) 是来自 Facebook 的命令行工具，它可以简化程序的编译和测试。他的彩色输出信息比 `xcodebuild` 更加简洁直观。同时还添加了对逻辑测试，应用测试的支持。
+[Xctool](https://github.com/facebook/xctool) 是来自 Facebook 的命令行工具，它可以简化程序的编译和测试。它的彩色输出信息比 `xcodebuild` 更加简洁直观。同时还添加了对逻辑测试，应用测试的支持。
 
 Travis 中已经预装了 xctool。要在本地测试的话，需要用 [Homebrew](http://brew.sh/) 安装 xctool：
 
@@ -130,7 +130,7 @@ xctool 用法非常简单，它使用的参数跟 `xcodebuild` 相同：
 	  - 'DEVELOPER_NAME="iPhone Distribution: {your_name} ({code})"'
 	  - PROFILE_NAME="TravisExample_Ad_Hoc"
 
-上面还声明了两个环境变量。第三行中的 `APP_NAME` 通常为项目默认 target 的名字。第四行的 `DEVELOPER_NAME` 是 Xcode 中，默认 target 里面 `Build Settings` 的 `Code Signing Identity` > `Release` 对应的名字。然后搜索程序的 `Ad Hoc` 或 `In House` 配置文件，将其中的黑体文件去掉。根据设置的不同，括弧中可能不会有任何信息。
+上面还声明了两个环境变量。第三行中的 `APP_NAME` 通常为项目默认 target 的名字。第四行的 `DEVELOPER_NAME` 是 Xcode 中，默认 target 里面 `Build Settings` 的 `Code Signing Identity` > `Release` 对应的名字。然后搜索程序的 `Ad Hoc` 或 `In House` 配置文件，将其中黑体文字取出。根据设置的不同，括弧中可能不会有任何信息。
 
 ## 加密证书和配置文件
 
@@ -220,7 +220,7 @@ xctool 用法非常简单，它使用的参数跟 `xcodebuild` 相同：
 
 ## 部署应用程序
 
-这里有两个知名的服务可以帮助你发布应用程序：[TestFlight](http://testflightapp.com) 和 [HockeyApp](http://hockeyapp.net)。不管选择哪个都能够满足需求。就个人来说，推荐使用 HockeyApp，不过这里我会对这两个服务都做介绍。
+这里有两个知名的服务可以帮助你发布应用程序：[TestFlight](http://testflightapp.com) 和 [HockeyApp](http://hockeyapp.net)。不管选择哪个都能够满足需求。就我个人来说，推荐使用 HockeyApp，不过这里我会对这两个服务都做介绍。
 
 首先我们对 `sign-and-build.sh` 脚本做一个扩充 -- 在里面添加一些 release 记录：
 
@@ -321,15 +321,15 @@ xctool 用法非常简单，它使用的参数跟 `xcodebuild` 相同：
 
 一旦在本地重现出和服务器上相同的错误，就可以开始调查具体问题了。当然导致问题的原因取决于具体问题。一般来说，通过 Google 都能找到引起问题的根源。
 
-如果一个问题影响到了 Travis 上其它的项目，那么可能是 Travis 环境配置的原因。我曾经遇到过几次这样的问题 (特别是刚开始)。如果发生这样的情况试着联系 Travis，取得支持，以我的经历它们的响应非常迅速。
+如果一个问题影响到了 Travis 上其它的项目，那么可能是 Travis 环境配置的原因。我曾经遇到过几次这样的问题 (特别是刚开始时)。如果发生这样的情况试着联系 Travis，取得支持，以我的经验来说，他们的响应非常迅速。
 
 ## 点评
 
-Travis CI 跟市面上同类产品相比还是有一些限制。因为 Travis 运行在一个预先配置好的虚拟机上，因此必须为每次编译都安装一遍所有的依赖软件。这会花费一些额外的时间。不过 Travis 团队已经在着手[提供一种缓存机制](http://about.travis-ci.org/docs/user/caching/)解决这个问题了。
+Travis CI 跟市面上同类产品相比还是有一些限制。因为 Travis 运行在一个预先配置好的虚拟机上，因此必须为每次编译都安装一遍所有的依赖。这会花费一些额外的时间。不过 Travis 团队已经在着手[提供一种缓存机制](http://about.travis-ci.org/docs/user/caching/)解决这个问题了。
 
-在一定程度上，你会依赖于 Travis 所提供的配置。比如你只能使用 Travis 内置的 Xcode 版本进行编译。如果你本地使用的 Xcode 版本较新，你的项目在服务器上可能无法编译通过。如果 Travis 能够为不同的 Xcode 版本都分别设置一个对应虚拟机会更好。
+在一定程度上，你会依赖于 Travis 所提供的配置。比如你只能使用 Travis 内置的 Xcode 版本进行编译。如果你本地使用的 Xcode 版本较新，你的项目在服务器上可能无法编译通过。如果 Travis 能够为不同的 Xcode 版本都分别设置一个对应虚拟机会就好了。
 
-对于复杂的项目来说，你可能希望把整个编译任务分为编译应用，运行集成测试等等。这样你可以快速获得编译信息而不用等所有的测试都完成。目前 Travis 还[不支持](https://github.com/travis-ci/travis-ci/issues/249)有依赖的编译。
+对于复杂的项目来说，你可能希望把整个编译任务分为编译应用，运行集成测试等等。这样你可以快速获得编译信息而不用等所有的测试都完成。目前 Travis 还[没有直接支持](https://github.com/travis-ci/travis-ci/issues/249)有依赖的编译。
 
 当项目被 push 到 GitHub 上时，Travis 会自动触发。不过编译动作不会立即触发，你的项目会被放到一个根据项目所用语言不同而不同的一个[全局编译队列](http://about.travis-ci.org/blog/2012-07-27-improving-the-quality-of-service-on-travis-ci/)，不过专业版允许并发编译。
 

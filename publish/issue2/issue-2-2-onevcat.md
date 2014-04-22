@@ -158,7 +158,7 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
 
 如果你确定 `drawRect:` 是你的应用的性能瓶颈，那么你可以将这些绘制代码放到后台去做。但是在你这样做之前，检查下看看是不是有其他方法来解决，比如、考虑使用 core animation layers 或者预先渲染图片而不去做 Core Graphics 绘制。可以看看 Florian 对在真机上图像性能测量的[帖子][16]，或者可以看看来自 UIKit 工程师 Andy Matuschak 对个各种方式的权衡的[评论][17]。
 
-如果你确实认为在后台执行绘制代码会是你的最好选择时再这么做。其实解决起来也很简单，把 `drawRect:` 中的代码放到一个后台操作中去做就可以了。然后将原本打算绘制的视图用一个 image view 来替换，等到操作执行完后再去更新。在绘制的方法中，使用 `UIGraphicsBeginImageContextWithOptions` 来取代 `UIGraphicsBeginImageContextWithOpertions` ：
+如果你确实认为在后台执行绘制代码会是你的最好选择时再这么做。其实解决起来也很简单，把 `drawRect:` 中的代码放到一个后台操作中去做就可以了。然后将原本打算绘制的视图用一个 image view 来替换，等到操作执行完后再去更新。在绘制的方法中，使用 `UIGraphicsBeginImageContextWithOptions` 来取代 `UIGraphicsGetCurrentContext` ：
 
 
     UIGraphicsBeginImageContextWithOptions(size, NO, 0);
@@ -170,7 +170,7 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
 
 通过在第三个参数中传入 0 ，设备的主屏幕的 scale 将被自动传入，这将使图片在普通设备和 retina 屏幕上都有良好的表现。
 
-如果你在 table view 或者是 collection view 的 cell 上做了自定义绘制的话，最好将塔门放入 operation 的子类中去。你可以将它们添加到后台操作队列，也可以在用户将 cell 滚动出边界时的 `didEndDisplayingCell` 委托方法中进行取消。这些技巧都在 2012 年的WWDC [Session 211 -- Building Concurrent User Interfaces on iOS][18]中有详细阐述。
+如果你在 table view 或者是 collection view 的 cell 上做了自定义绘制的话，最好将它们放入 operation 的子类中去。你可以将它们添加到后台操作队列，也可以在用户将 cell 滚动出边界时的 `didEndDisplayingCell` 委托方法中进行取消。这些技巧都在 2012 年的WWDC [Session 211 -- Building Concurrent User Interfaces on iOS][18]中有详细阐述。
 
 除了在后台自己调度绘制代码，以也可以试试看使用 `CALayer` 的 `drawsAsynchronously` 属性。然而你需要精心衡量这样做的效果，因为有时候它能使绘制加速，有时候却适得其反。
 

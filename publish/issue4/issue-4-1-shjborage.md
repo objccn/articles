@@ -96,10 +96,10 @@ Core Data 的优势在于管理关系。让我们着眼于简单的情况：增�
 
 我们已经使用我们的程序一会儿了，并且已经为 rootItem 增加了一些子 items，甚至增加子 items 到子 items。然而，我们再次启动我们的程序。Core Data 已经将这些 items 之间的关系保存到了数据库文件。对象图是持久化的。我们现在需要取出*根* item，所以我们可以显示底层 items 的列表。有两种方法可以达到这个效果。我们先看简单点的方法。
 
-当 `rootItem` 对象创建并保存之后我们可以向它请求它的 `NSManagedObjectID`。这是一个不透明的对象，可以唯一代表 `rootItem`。我们可以保存这个对象到 NSUSerDefaults，像这样：
+当 `rootItem` 对象创建并保存之后我们可以向它请求它的 `NSManagedObjectID`。这是一个不透明的对象，可以唯一代表 `rootItem`。我们可以保存这个对象到 `NSUSerDefaults`，像这样：
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setURL:rootItem.managedObjectID.URIRepresentation forKey:@"rootItem"];
+	[defaults setURL:rootItem.objectID.URIRepresentation forKey:@"rootItem"];
 
 现在，当程序重新运行时，我们可以像这样返回得到这个对象：
 
@@ -138,7 +138,7 @@ Core Data 的优势在于管理关系。让我们着眼于简单的情况：增�
 
     item.title = @"New title";
 
-当我们这样做时，item 的 title 改变了。此外，managed object context 会标注这个对象（`item`）已经被改变，这样当我们在 context 中调用 `-save：` 时，这个对象将会通过持久化存储协调器和附属的 store 保存起来。context最关键的职责之一就是*跟踪改变*。
+当我们这样做时，item 的 title 改变了。此外，managed object context 会标注这个对象（`item`）已经被改变，这样当我们在 context 中调用 `-save:` 时，这个对象将会通过持久化存储协调器和附属的 store 保存起来。context最关键的职责之一就是*跟踪改变*。
 
 从最后一次保存开始，context 知道哪些对象被插入，改变以及删除。你可以通过 `-insertedObjects`, `-updatedObjects`, 以及 `–deletedObjects` 方法来达到这样的效果。同样的，你可以通过 `-changedValues` 方法来询问一个被管理的对象哪些值被改变了。这个方法正是 Core Data 能够将你做出的改变推入到数据库的原因。
 

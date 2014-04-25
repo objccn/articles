@@ -103,7 +103,7 @@ GCD 通过创建所谓的[线程池](http://en.wikipedia.org/wiki/Thread_pool_pa
 
 你可以通过设置目标队列为一个全局队列来改变自己队列的优先级，但是你应该克制这么做的冲动。
 
-在大多数情况下，改变优先级不会使事情照你预想的方向运行。一些看起简单的事情实际上是一个非常复杂的问题。你很容易会碰到一个叫做[优先级反转][2]的情况。我们的文章[《Concurrent Programming: APIs and Challenges》](http://www.objc.io/issue-2/concurrency-apis-and-pitfalls.html#priority_inversion)（译注：参见objccn的译文[《并发编程：API 及挑战》][3]）有更多关于这个问题的信息，这个问题几乎导致了NASA的探路者火星漫游器变成砖头。
+在大多数情况下，改变优先级不会使事情照你预想的方向运行。一些看起简单的事情实际上是一个非常复杂的问题。你很容易会碰到一个叫做[优先级反转][2]的情况。我们的文章[《并发编程：API 及挑战》][3]有更多关于这个问题的信息，这个问题几乎导致了NASA的探路者火星漫游器变成砖头。
 
 此外，使用 `DISPATCH_QUEUE_PRIORITY_BACKGROUND` 队列时，你需要格外小心。除非你理解了 *throttled I/O* 和 *background status as per setpriority(2)* 的意义，否则不要使用它。不然，系统可能会以难以忍受的方式终止你的 app 的运行。打算以不干扰系统其他正在做 I/O 操作的方式去做 I/O 操作时，一旦和优先级反转情况结合起来，这会变成一种危险的情况。
 
@@ -117,7 +117,7 @@ GCD 通过创建所谓的[线程池](http://en.wikipedia.org/wiki/Thread_pool_pa
 
 多线程编程中，最常见的情形是你有一个资源，每次只有一个线程被允许访问这个资源。
 
-我们在[有关多线程技术的文章](http://www.objc.io/issue-2/concurrency-apis-and-pitfalls.html#shared_resources)（译注：参见 objccn [译文][4]）中讨论了*资源*在并发编程中意味着什么，它通常就是一块内存或者一个对象，每次只有一个线程可以访问它。
+我们在[有关多线程技术的文章][4]中讨论了*资源*在并发编程中意味着什么，它通常就是一块内存或者一个对象，每次只有一个线程可以访问它。
 
 举例来说，我们需要以多线程（或者多个队列）方式访问 `NSMutableDictionary` 。我们可能会照下面的代码来做：
 
@@ -197,7 +197,7 @@ GCD 通过创建所谓的[线程池](http://en.wikipedia.org/wiki/Thread_pool_pa
 <a name="async" id="async"> </a>
 ###全都使用异步分发
 
-我们在这稍稍转变以下话题。正如你在上面看到的，你可以同步和异步地分发一个  block，一个工作单元。我们在[《article about concurrency APIs and pitfalls》[http://www.objc.io/issue-2/concurrency-apis-and-pitfalls.html#dead_locks]（译注：参见 objccn 的[译文][5]）中讨论的一个非常普遍的问题就是死锁。在 GCD 中，以同步分发的方式非常容易出现这种情况。见下面的代码：
+我们在这稍稍转变以下话题。正如你在上面看到的，你可以同步和异步地分发一个  block，一个工作单元。我们在[《并发编程：API 及挑战》][5]）中讨论的一个非常普遍的问题就是[死锁][6]。在 GCD 中，以同步分发的方式非常容易出现这种情况。见下面的代码：
 
     dispatch_queue_t queueA; // assume we have this
     dispatch_sync(queueA, ^(){
@@ -732,9 +732,10 @@ GCD 事件源是以极其资源高效的方式实现的。
 
    [1]: http://objccn.io/issue-2
    [2]: http://en.wikipedia.org/wiki/Priority_inversion
-   [3]: http://objccn.io/issue-2-1
-   [4]: http://objccn.io/issue-2-1
-   [5]: http://objccn.io/issue-2-1
+   [3]: http://objccn.io/issue-2-1#priority_inversion
+   [4]: http://objccn.io/issue-2-1#shared_resources
+   [5]: http://objccn.io/issue-2-1#dead_locks
+   [6]: http://zh.wikipedia.org/wiki/死锁
 
 原文 [Low-Level Concurrency APIs](http://www.objc.io/issue-2/low-level-concurrency-apis.html)
 

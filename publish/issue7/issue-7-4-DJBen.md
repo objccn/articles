@@ -175,4 +175,4 @@ Target-action 机制非常适合响应 UI 的事件。没有其他的消息传�
 
 原文 [Communication Patterns](http://www.objc.io/issue-7/communication-patterns.html)
 
-参考译文 [消息传递机制 - 破船之家](http://beyondvincent.com/blog/2013/12/14/124-communication-patterns/)
+参考译文 [iOS中消息的传递机制 - 破船之家](http://beyondvincent.com/blog/2013/12/14/124-communication-patterns/)

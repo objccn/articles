@@ -61,7 +61,7 @@ Apple 有一个[针对 iOS 和 Mac 的很好的总览性文档](ttps://developer
       
 `ptrdiff_t` 可能会吓到你，但是实际上这就是一个简单的指针算术，因为其实 Objective-C 的类仅仅只是 C 结构体而已。
 
-`objc_setrProperty` 调用的是如下方法：
+`objc_setProperty` 调用的是如下方法：
 
     static inline void reallySetProperty(id self, SEL _cmd, id newValue, 
       ptrdiff_t offset, bool atomic, bool copy, bool mutableCopy) 

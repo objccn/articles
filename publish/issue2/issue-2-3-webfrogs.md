@@ -1,6 +1,6 @@
 这篇文章里，我们将会讨论一些 iOS 和 OS X 都可以使用的底层 API。除了 `dispatch_once` ，我们一般不鼓励使用其中的任何一种技术。
 
-但是我们想要揭示出表面之下深层次的一些可利用的方面。这些底层的 API 提供了大量的灵活性，随之而来的是大量的复杂度和更多的责任。在我们的文章[常见的后台实践](http:/objccn.io/issue-2-2/)中提到的高层的 API 和模式能够让你专注于手头的任务并且免于大量的问题。通常来说，高层的 API 会提供更好的性能，除非你能承受起使用底层 API 带来的纠结于调试代码的时间和努力。
+但是我们想要揭示出表面之下深层次的一些可利用的方面。这些底层的 API 提供了大量的灵活性，随之而来的是大量的复杂度和更多的责任。在我们的文章[常见的后台实践](http://objccn.io/issue-2-2/)中提到的高层的 API 和模式能够让你专注于手头的任务并且免于大量的问题。通常来说，高层的 API 会提供更好的性能，除非你能承受起使用底层 API 带来的纠结于调试代码的时间和努力。
 
 尽管如此，了解深层次下的软件堆栈工作原理还是有很有帮助的。我们希望这篇文章能够让你更好的了解这个平台，同时，让你更加感谢这些高层的 API。
 
@@ -732,9 +732,9 @@ GCD 事件源是以极其资源高效的方式实现的。
 
    [1]: http://objccn.io/issue-2
    [2]: http://en.wikipedia.org/wiki/Priority_inversion
-   [3]: http://objccn.io/issue-2-1#priority_inversion
-   [4]: http://objccn.io/issue-2-1#shared_resources
-   [5]: http://objccn.io/issue-2-1#dead_locks
+   [3]: http://objccn.io/issue-2-1/#priority_inversion
+   [4]: http://objccn.io/issue-2-1/#shared_resources
+   [5]: http://objccn.io/issue-2-1/#dead_locks
    [6]: http://zh.wikipedia.org/wiki/死锁
 
 原文 [Low-Level Concurrency APIs](http://www.objc.io/issue-2/low-level-concurrency-apis.html)

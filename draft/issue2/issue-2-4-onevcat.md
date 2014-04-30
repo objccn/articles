@@ -117,7 +117,7 @@ Apple 有一个[针对 iOS 和 Mac 的很好的总览性文档](ttps://developer
 
 ### 你自己的类
 
-单独使用原子属性并不会是你的类变成线程安全。它不能保护你应用的逻辑，只能保护你免于在 setter 中遭遇到[竞态条件](http://objccn.io/issue-3-1)的困扰。看看下面的代码片段：
+单独使用原子属性并不会使你的类变成线程安全。它不能保护你应用的逻辑，只能保护你免于在 setter 中遭遇到[竞态条件](http://objccn.io/issue-3-1)的困扰。看看下面的代码片段：
 
     if (self.contents) {
         CFAttributedStringRef stringRef = CFAttributedStringCreate(NULL, 

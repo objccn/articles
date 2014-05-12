@@ -15,8 +15,7 @@ Collection View 深入太多了，事实上，[Ole Begeman](http://oleb.net) 和
 
 ### 插入删除元素
 
-一般来说，我们对布局属性从初始状态到结束状态进行线性插值来计算 collection view 的动画参数。然而，新插入或者删除的元素并没有最初或最终状态来进行插值。要计算这样的 cells 的动画，collection view 将通过  `initialLayoutAttributesForAppearingItemAtIndexPath:` 以及 `finalLayoutAttributesForAppearingItemAtIndexPath:` 方法来询问其布局对象，以获取最初的和最后的属性。苹果默认的实现中，对于特定的某个 indexPath，返回的是它的通常的位置，但 `alpha` 值为 0.0，这就
-产生了一个淡入或淡出动画。如果你想要更漂亮的效果，比如你的新的 cells 从屏幕底部发射并且旋转飞到对应位置，你可以如下实现这样的布局子类：
+一般来说，我们对布局属性从初始状态到结束状态进行线性插值来计算 collection view 的动画参数。然而，新插入或者删除的元素并没有最初或最终状态来进行插值。要计算这样的 cells 的动画，collection view 将通过  `initialLayoutAttributesForAppearingItemAtIndexPath:` 以及 `finalLayoutAttributesForAppearingItemAtIndexPath:` 方法来询问其布局对象，以获取最初的和最后的属性。苹果默认的实现中，对于特定的某个 indexPath，返回的是它的通常的位置，但 `alpha` 值为 0.0，这就产生了一个淡入或淡出动画。如果你想要更漂亮的效果，比如你的新的 cells 从屏幕底部发射并且旋转飞到对应位置，你可以如下实现这样的布局子类：
 
     - (UICollectionViewLayoutAttributes*)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath *)itemIndexPath
     {

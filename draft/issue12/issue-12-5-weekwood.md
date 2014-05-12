@@ -56,7 +56,7 @@ Collection View 深入太多了，事实上，[Ole Begeman](http://oleb.net) 和
 
 为了防止这种不想要的动画，初始化位置 -> 删除动画 -> 插入动画 -> 最终位置的顺序必须完全匹配 collection view 的每一项，以便最终呈现出一个平滑动画。换句话说，`finalLayoutAttributesForAppearingItemAtIndexPath:` 以及 `initialLayoutAttributesForAppearingItemAtIndexPath:` 应该针对元素到底是真的在显示或者消失，还是 collection view 正在经历的边界改变动画的不同情况，做出不同反应，并返回不同的布局属性。
 
-幸运的是，collection view 会告知布局对象哪一种动画将被执行。它分别通过调用 `prepareForAnimatedBoundsChange:` 和 `prepareForCollectionViewUpdates:` 来对应边界变化以及元素更新。出于本实例的说明目的，我们可以使用 `prepareForCollectionViewUpdates:` 来跟踪更新对象：
+幸运的是，collection view 会告知布局对象哪一种动画将被执行。它分别通过调用 `prepareForAnimatedBoundsChange:` 和 `prepareForCollectionViewUpdates:` 来对应 bounds 变化以及元素更新。出于本实例的说明目的，我们可以使用 `prepareForCollectionViewUpdates:` 来跟踪更新对象：
 
     - (void)prepareForCollectionViewUpdates:(NSArray *)updateItems
     {

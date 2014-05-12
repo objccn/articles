@@ -8,23 +8,25 @@ It's so much deeper, in fact, that [Ole Begeman](http://oleb.net) and [Ash Furro
 
 The first section of this article will concentrate on how different classes and methods work together to animate a collection view layout with the help of a few common examples. In the second section, we will look at view controller transitions with collection views and see how to use `useLayoutToLayoutNavigationTransitions` for the cases when it works, and implement custom transitions for the cases when it does not.
 
-本文的第一部分将集中讨论并举例说明如何用不同的类和方法来共同帮助实现一些常见的 `UICollectionView` 动画。在第二部分，我们将看一下 collection views 的 view 转场动画以及 `useLayoutToLayoutNavigationTransitions` 正常运行情况下如何工作，另一部分是如果不工作如何自定义转场动画。
+本文的第一部分将集中讨论并举例说明如何用不同的类和方法来共同帮助实现一些常见的 `UICollectionView` 动画。在第二部分，我们将看一下 collection views 的 view 转场动画以及 `useLayoutToLayoutNavigationTransitions` 正常运行情况下如何工作，如果不工作如何自定义转场动画。
 
 The two example projects for this article are available on GitHub:
 
 你可以在 GitHub 中找到本文提到的两个示例工程:
 
-- [Layout Animations](https://github.com/objcio/issue-12-CollectionViewAnimations)
-- [Custom Collection View Transitions](https://github.com/objcio/issue-12-CustomCollectionViewTransition)
+- [布局动画](https://github.com/objcio/issue-12-CollectionViewAnimations)
+- [自定义 collection view 转场动画](https://github.com/objcio/issue-12-CustomCollectionViewTransition)
 
 
-##Collection View Layout Animations Collection View 布局动画
+##Collection View Layout Animations 
+##Collection View 布局动画
 
 The standard `UICollectionViewFlowLayout` is very customizable except for its animations; Apple opted for the safe approach and implemented a simple fade animation as default for all layout animations. If you would like to have custom animations, the best way is to subclass the `UICollectionViewFlowLayout` and implement your animations at the appropriate locations. Let's go through a few examples to understand how various methods in your `UICollectionViewFlowLayout` subclasses should work together to deliver custom animations.
 
-标准 `UICollectionViewFlowLayout` 除了动画是非常容易自定义动画的，苹果选择了一种安全的途径去实现一个简单的淡入淡出动画作为默认的布局动画。如果你想实现自定义动画，最好的办法是子类化 `UICollectionViewFlowLayout` 并且在适当的地方实现你的动画。让我们通过一些例子来了解 `UICollectionViewFlowLayout` 子类中的一些方法如何协助完成自定义动画。
+标准 `UICollectionViewFlowLayout` 除了动画是非常容易自定义的，苹果选择了一种安全的途径去实现一个简单的淡入淡出动画作为默认的布局动画。如果你想实现自定义动画，最好的办法是子类化 `UICollectionViewFlowLayout` 并且在适当的地方实现你的动画。让我们通过一些例子来了解 `UICollectionViewFlowLayout` 子类中的一些方法如何协助完成自定义动画。
 
-###Inserting and Removing Items 插入删除元素
+###Inserting and Removing Items 
+###插入删除元素
 
 In general, layout attributes are linearly interpolated from the initial state to the final state to compute the collection view animations. However, for the newly inserted or removed items, there are no initial and final attributes to interpolate from. To compute the animations for such cells, the collection view will ask its layout object to provide the initial and final attributes through the `initialLayoutAttributesForAppearingItemAtIndexPath:` and `finalLayoutAttributesForAppearingItemAtIndexPath:` methods. The default Apple implementation returns the layout attributes corresponding to the normal position at the specific index path, but with an `alpha` value of 0.0, resulting in a fade-in or fade-out animation. If you would like to have something fancier, like having your new cells shoot up from the bottom of the screen and rotate while flying into place, you could implement something like this in your layout subclass:
 
@@ -50,11 +52,12 @@ The corresponding `finalLayoutAttributesForAppearingItemAtIndexPath:` method for
 
 显示动画类似 `finalLayoutAttributesForAppearingItemAtIndexPath:` 的一些方法除了不同的 transform 以外，其他几乎都很相似。
 
-###Responding to Device Rotations 设备旋转响应
+###Responding to Device Rotations 
+###设备旋转响应
 
 A device orientation change usually results in a bounds change for a collection view. The layout object is asked if the layout should be invalidated and recomputed with the method `shouldInvalidateLayoutForBoundsChange:`. The default implementation in `UICollectionViewFlowLayout` does the correct thing, but if you are subclassing `UICollectionViewLayout` instead, you should return `YES` on a bounds change:
 
-**设备方向变化通常会导致 collection view 的边界变化。布局对象如果询问布局无效，将通过 `shouldInvalidateLayoutForBoundsChange:` 重新计算。 `UICollectionViewFlowLayout` 默认实现正确处理了这个情况，但是如果你子类化 `UICollectionViewLayout`，你需要在边界变化时返回 `YES`。**
+设备方向变化通常会导致 collection view 的边界变化。布局对象如果询问布局无效，将通过 `shouldInvalidateLayoutForBoundsChange:` 重新计算。 `UICollectionViewFlowLayout` 默认实现正确处理了这个情况，但是如果你子类化 `UICollectionViewLayout`，你需要在边界变化时返回 `YES`。
 
 
     - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
@@ -165,16 +168,16 @@ Our handler method could look something like this:
 
         if (sender.state == UIGestureRecognizerStateBegan ||
             sender.state == UIGestureRecognizerStateChanged) {
-            // Get the pinch points.
+            // Get the pinch points. 获取捏合的点
             CGPoint p1 = [sender locationOfTouch:0 inView:[self collectionView]];
             CGPoint p2 = [sender locationOfTouch:1 inView:[self collectionView]];
 
-            // Compute the new spread distance.
+            // Compute the new spread distance. 计算扩展距离
             CGFloat xd = p1.x - p2.x;
             CGFloat yd = p1.y - p2.y;
             CGFloat distance = sqrt(xd*xd + yd*yd);
 
-            // Update the custom layout parameter and invalidate.
+            // Update the custom layout parameter and invalidate. 更新自定义布局参数以及废弃
             FJAnimatedFlowLayout* layout = (FJAnimatedFlowLayout*)[[self collectionView] collectionViewLayout];
 
             NSIndexPath *pinchedItem = [self.collectionView indexPathForItemAtPoint:CGPointMake(0.5*(p1.x+p2.x), 0.5*(p1.y+p2.y))];
@@ -231,14 +234,15 @@ in your `UICollectionViewLayout` subclass and returning the appropriate attribut
 
 在你的 `UICollectionViewLayout` 子类和那些从可返回`UICollectionViewLayoutAttributes`的途径发回的对应属性。更引人入胜的动画可以在 objc.io 推的出 [issue #5](http://www.objc.io/issue-5/collection-views-and-uidynamics.html) 结合这些技术与动态的 UIKit 来实现。
 
-## View Controller Transitions with Collection Views View controller 转场动画和 Collection views
+## View Controller Transitions with Collection Views 
+## View controller 转场动画和 Collection views
 
 One of the big improvements in iOS 7 was with the custom view controller transitions, as [Chris](https://twitter.com/chriseidhof) [wrote about](http://www.objc.io/issue-5/view-controller-transitions.html) in objc.io [issue #5](http://www.objc.io/issue-5/index.html). In parallel to the custom transitions, Apple also added the `useLayoutToLayoutNavigationTransitions` flag to `UICollectionViewController` to enable navigation transitions which reuse a single collection view. Apple's own Photos and Calendar apps on iOS represent a great example of what is possible using such transitions.
 
 iOS 7 其中的一个重大更新是自定义 View controller 转场动画，就如 [Chris](https://twitter.com/chriseidhof) 之前在 objc.io 的[文章] (http://www.objc.io/issue-5/view-controller-transitions.html)。平行于自定义转场动画，苹果也在 `UICollectionViewController` 添加了 `useLayoutToLayoutNavigationTransitions` 标记来启用可复用的单个 collection view 的导航转场。苹果自己的照片和日历应用就是非常好的转场动画的代表作。
 
 
-### Transitions Between UICollectionViewController Instances UICollectionViewController 实例之间的转场动画
+### Transitions Between UICollectionViewController Instances ### UICollectionViewController 实例之间的转场动画
 
 Let's look at how we can achieve a similar effect using the same sample project from the previous section:
 
@@ -276,7 +280,7 @@ The workaround for this problem is to implement the navigation controller delega
 
 When the detail collection view is pushed onto the stack, we set the collection view's data source to the detail view controller, which makes sure that only the selected color of cells is shown in the detail collection view. If we were not to do this, the layout would correctly transition but the collection would still be showing all cells. In a real-world app, the detail data source would usually be responsible for showing more detail about the data in such a transition.
 
-当详细页面的 collection view 被推入导航栈，我们重新设置 collection view 的数据源到详细视图控制器，确保只有被选择的 cell颜色显示在详细页面的 collection view 中。如果我们不打算这样做，布局依然可以正确过渡，但是collection将显示所有的 cells。在实际应用中，细节数据源通常负责在转场动画过程中显示详细数据。
+当详细页面的 collection view 被推入导航栈，我们重新设置 collection view 的数据源到详细视图控制器，确保只有被选择的 cell 颜色显示在详细页面的 collection view 中。如果我们不打算这样做，布局依然可以正确过渡，但是collection 将显示所有的 cells。在实际应用中，细节数据源通常负责在转场动画过程中显示详细数据。
 
 ### Collection View Layout Animations for General Transitions用于常规转换的Collection View 布局动画 
 
@@ -304,7 +308,7 @@ An animation controller for such a custom transition could be designed along the
 
 The downside of such an animator design is two-fold: it can only animate the items visible in the initial collection view, since the [snapshot APIs](https://developer.apple.com/library/ios/documentation/uikit/reference/uiview_class/UIView/UIView.html#//apple_ref/doc/uid/TP40006816-CH3-SW198) only work for views already visible on the screen, and depending on the number of visible items, there could be a lot of views to correctly keep track of and to animate. On the other hand, the big advantage of this design would be that it would work for all kinds of `UICollectionViewLayout` combinations. The implementation of such a system is left as an exercise for the reader.
 
-一个这样的动画设计作品的缺陷具有两面性的：它只能在 collection view 初期将元素制作成可见动画，因为[快照 APIs ](https://developer.apple.com/library/ios/documentation/uikit/reference/uiview_class/UIView/UIView.html#//apple_ref/doc/uid/TP40006816-CH3-SW198) 只在屏幕上可见的 views 工作，并依赖于可见的元素数量，这样就可能会有很多的views需要进行正确的跟踪或将其制作成动画。而反之，它又具有一个明显的优势，那就是这样的设计可能为所有类型的 `UICollectionViewLayout` 组合所运用。这样一个系统的实现就留给读者们去进行实践吧。
+一个这样的动画设计作品的缺陷具有两面性的：它只能在 collection view 初期将元素制作成可见动画，因为[快照 APIs ](https://developer.apple.com/library/ios/documentation/uikit/reference/uiview_class/UIView/UIView.html#//apple_ref/doc/uid/TP40006816-CH3-SW198) 只在屏幕上可见的 views 工作，并依赖于可见的元素数量，这样就可能会有很多的 views 需要进行正确的跟踪或将其制作成动画。而反之，它又具有一个明显的优势，那就是这样的设计可能为所有类型的 `UICollectionViewLayout` 组合所运用。这样一个系统的实现就留给读者们去进行实践吧。
 
 Another approach, which is implemented in the accompanying demo project, relies on a few quirks of the `UICollectionViewFlowLayout`.
 
@@ -375,9 +379,9 @@ Once this is set up, the collection view machinery would take care of keeping tr
 
 First, the animation controller makes sure that the destination collection view starts with the exact same frame and layout as the original. Then, it assigns the layout of the source collection view to the destination collection view, making sure that it does not get invalidated. At the same time, the layout is 'copied' into a new layout object, which gets assigned to the original collection view to prevent strange layout bugs when navigating back to the original view controller. We also force a large bottom content inset on the destination collection view to make sure that the layout stays on a single line for the initial positions for the animation. If you look at the logs, you will see the collection view complaining about this temporary condition because the item size plus the insets are larger than the non-scrolling dimension of the collection view. In this state, the behavior of the collection view is not defined, and we are only using this unstable state as the initial state for our transition animation. Finally, the convoluted animation block does its magic by first setting the frame of the destination collection view to its final position, and then performing a non-animated layout change to the final layout inside the updates block of `performBatchUpdates:completion:`, which is followed by the resetting of the content insets to the original values in the completion block.
 
-首先，动画控制器确保目标 collection view 以完全相同的框架和布局作为原始开端。接着，它委托源 collection view 的布局到目标 collection view 以确保其没有失效。与此同时，该布局已经复制到另一个新的布局对象，而这个布局对象则是为防止在导航回原始视图控制器时出现特殊的布局 bug 。我们还会迫使底部内容嵌入目标 collection view 来确保布局保持在动画初始位置的那一行。观察日志的话你会发现元素的大小再加上插入元素的尺寸会比 collection view 的非滚动维度要大，因此 collection view 十分不满意现有状态。在这样的状态下，collection view 的行为是没有意义的，这样我们只能使用这样一个不稳定的状态来作为我们转换动画的初始状态。最后，复杂的动画块采集将展现它的魅力，将目的collection view 的框架到最终位置，然后使无动画布局移动到 `performBatchUpdates:completion:` 更新块内的最终布局位置，紧随其后便是在完成模块将嵌入内容重置为原始值。
+首先，动画控制器确保目标 collection view 以完全相同的框架和布局作为原始开端。接着，它委托源 collection view 的布局到目标 collection view 以确保其没有失效。与此同时，该布局已经复制到另一个新的布局对象，而这个布局对象则是为防止在导航回原始视图控制器时出现特殊的布局 bug。我们还会迫使底部内容嵌入目标 collection view 来确保布局保持在动画初始位置的那一行。观察日志的话你会发现元素的大小再加上插入元素的尺寸会比 collection view 的非滚动维度要大，因此 collection view 十分不满意现有状态。在这样的状态下，collection view 的行为是没有意义的，这样我们只能使用这样一个不稳定的状态来作为我们转换动画的初始状态。最后，复杂的动画块采集将展现它的魅力，将目的collection view 的框架到最终位置，然后使无动画布局移动到 `performBatchUpdates:completion:` 更新块内的最终布局位置，紧随其后便是在完成模块将嵌入内容重置为原始值。
 
-###In Conclusion
+###In Conclusion 结论
 
 We looked at two different approaches to achieve layout transitions between collection views. The first method, with the help of the built-in `useLayoutToLayoutNavigationTransitions`, looks quite impressive and is very easy to implement, but is limited in cases where it can be used. For the cases where `useLayoutToLayoutNavigationTransitions` is not applicable, a custom animator is required to drive the transition animation. In this post, we have seen an example of how such an animator could be implemented, however, since your app will almost certainly require a completely different animation between two different view hierarchies, as in this example, don't be reluctant about trying out a different approach and seeing if it works.
 

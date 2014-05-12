@@ -137,8 +137,6 @@ iOS 7 自定义视图控制器转场的 API 基本上都是以协议的方式提
 
 非常酷，我们甚至没有写一行动画相关的代码。
 
-This is reflected in the code with the [stage-2](https://github.com/objcio/issue-12-custom-container-transitions/tree/stage-2) tag. To see the full extent of the stage 2 changes, check the [diff against stage 1](https://github.com/objcio/issue-12-custom-container-transitions/compare/stage-1...stage-2).
-
 你可以在 [阶段-2](https://github.com/objcio/issue-12-custom-container-transitions/tree/stage-2) 标签下看到这部分代码的变化。在[与 阶段－1 的对比](https://github.com/objcio/issue-12-custom-container-transitions/compare/stage-1...stage-2)这里你可以看到 阶段-2 和 阶段-1 相对比的完整的代码改变。
 
 ### 阶段 3: 封装

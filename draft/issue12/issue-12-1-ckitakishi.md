@@ -42,13 +42,13 @@ By using `-[CALayer presentationLayer]` and `-[CALayer modelLayer]`, you can swi
 Probably the most common case is to animate a view's property from one value to another. Consider this example:
 可能最常见的情况是将一个 view 的属性从一个值改变为另一个值，考虑下面这个例子：
 
-<center><img src="img.objccn.io/issue-12/rocket-linear.gif" width="400px"></center>
+<center><img src="http://img.objccn.io/issue-12/rocket-linear.gif" width="400px"></center>
 
 Here, we animate our little red rocket from an x-position of `77.0` to one of `455.0`, which is just beyond the edge of its parent view. In order to fill in all the steps along the way, we need to determine where our rocket is going to be at any given point in time. This is commonly done using linear interpolation:
 在这里，我们让红色小火箭的 x-position 从 `77.0` 变为 `455.0`，刚好超过它的 parent view 的边。为了填充所有路径，我们需要确定我们的火箭及时到达了所有给定的点。这通常使用线性插值法来完成。
 
 <center>
-    <img src="img.objccn.io/issue-12/lerp.png" width="135">
+    <img src="http://img.objccn.io/issue-12/lerp.png" width="135">
 </center>
 
 That is, for a given fraction of the animation `t`, the x-coordinate of the rocket is the x-coordinate of the starting point `77`, plus the distance to the end point `∆x = 378`, multiplied with said fraction.
@@ -74,10 +74,6 @@ However, when we run this code, we realize that our rocket jumps back to its ini
 Once the animation is removed, the presentation layer will fall back to the values of the model layer, and since we've never modified that layer's `position`, our spaceship reappears right where it started.
 一旦动画被移除，presentation layer 将回到 model layer 的值，并且因为我们从未修改该 layer 的 `position` 属性，我们的飞船将重新出现在它开始的地方。
 
----
-
-[话题 #12 下的更多文章](http://objccn.io/issue-12)
- 
 There are two ways to deal with this issue:
 这里有两种解决这个问题的方法：
 
@@ -152,7 +148,7 @@ Let's say we are working on a log-in form for our next iPhone application and wa
 比方说我们正致力于下一个 iPhone 应用程序上的登陆表单，希望当用户输入错误的密码时表单会晃动。使用关键帧动画，看起来大概像下面这样：
 
 <center>
-    <img src="img.objccn.io/issue-12/form.gif" width="320px">
+    <img src="http://img.objccn.io/issue-12/form.gif" width="320px">
 </center>
 
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animation];
@@ -188,7 +184,7 @@ Thankfully, `CAKeyframeAnimation` offers the more convenient `path` property as 
 For instance, this is how we would animate a view in a circle:
 举个例子，我们如何让一个 view 做圆周运动：
 
-<center><img src="img.objccn.io/issue-12/planets.gif" width="400px"></center>
+<center><img src="http://img.objccn.io/issue-12/planets.gif" width="400px"></center>
 
     CGRect boundingRect = CGRectMake(-150, -150, 300, 300);
 
@@ -214,7 +210,7 @@ Setting it to `kCAAnimationPaced` also disregards any `keyTimes` we would've set
 Setting the `rotationMode` property to `kCAAnimationRotateAuto` ensures that the satellite follows the rotation along the path. By contrast, this is what the animation would look like had we left the property `nil`:
 设置 `rotationMode` 属性为 `kCAAnimationRotateAuto` 确保飞船沿着路径旋转。作为对比，如果我们将该属性设置为 `nil` 那动画会是什么样的呢。
 
-<center><img src="img.objccn.io/issue-12/planets-incorrect.gif" width="400px"></center>
+<center><img src="http://img.objccn.io/issue-12/planets-incorrect.gif" width="400px"></center>
 
 You can achieve a couple of interesting effects using animations with paths;
 fellow objc.io author [Ole Begemann](https://twitter.com/oleb) wrote [a great post](http://oleb.net/blog/2010/12/animating-drawing-of-cgpath-with-cashapelayer) about how you can combine path-based animations with `CAShapeLayer` to create cool drawing animations with only a couple of lines of code.
@@ -226,7 +222,7 @@ fellow objc.io author [Ole Begemann](https://twitter.com/oleb) wrote [a great po
 Let's look at our first example again:
 让我们再次来看看第一个例子：
 
-<center><img src="img.objccn.io/issue-12/rocket-linear.gif" width="400px"></center>
+<center><img src="http://img.objccn.io/issue-12/rocket-linear.gif" width="400px"></center>
 
 You'll notice that there is something very artificial about the animation of our rocket. That is because most movements we see in the real world take time to accelerate or decelerate. Objects that instantly reach their top speed and then stop immediately tend to look very unnatural. Unless you're [dancing the robot](https://www.youtube.com/watch?v=o8HkEprSaAs&t=1m2s), that's rarely a desired effect.
 你会发现我们的火箭的动画有一些看起来非常人为化的地方。那是因为我们在现实世界中看到的大部分运动需要时间来加速或减速。对象瞬间达到最高速度，然后再立即停止往往看起来非常不自然。除非你在让 [机器人跳舞](https://www.youtube.com/watch?v=o8HkEprSaAs&t=1m2s)，但这很少是想要的效果。
@@ -240,7 +236,7 @@ We can achieve this by introducing a _timing function_ (also sometimes referred 
 我们可以通过引入一个 _定时函数（timing function）_ （有时也被称为缓动函数（easing function））来实现这个目标。该函数通过修改持续时间的分数来控制动画的速度。
 
 <center>
-    <img src="img.objccn.io/issue-12/lerp-with-easing.png" width="145">
+    <img src="http://img.objccn.io/issue-12/lerp-with-easing.png" width="145">
 </center>
 
 The simplest easing function is _linear_. It maintains a constant speed throughout the animation and is effectively what we see above.

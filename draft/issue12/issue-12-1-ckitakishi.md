@@ -200,13 +200,13 @@
 Core Animation 附带了一些 linear 之外的内置 easing 函数，如：
 
 * Ease in (`kCAMediaTimingFunctionEaseIn`):  
-  <center><img src="{{site.images_path}}/issue-12/rect-easein.gif" width="540px"></center>
+  <center><img src="http://img.objccn.io/issue-12/rect-easein.gif" width="540px"></center>
 * Ease out (`kCAMediaTimingFunctionEaseOut`):  
-  <center><img src="{{site.images_path}}/issue-12/rect-easeout.gif" width="540px"></center>
+  <center><img src="http://img.objccn.io/issue-12/rect-easeout.gif" width="540px"></center>
 * Ease in ease out (`kCAMediaTimingFunctionEaseInEaseOut`):  
-  <center><img src="{{site.images_path}}/issue-12/rect-easeineaseout.gif" width="540px"></center>
+  <center><img src="http://img.objccn.io/issue-12/rect-easeineaseout.gif" width="540px"></center>
 * 默认 (`kCAMediaTimingFunctionDefault`):  
-  <center><img src="{{site.images_path}}/issue-12/rect-default.gif" width="540px"></center>
+  <center><img src="http://img.objccn.io/issue-12/rect-default.gif" width="540px"></center>
 
 在一定限度内，你也可以使用 `+functionWithControlPoints::::` 创建自己的 easing 函数。通过传递 cubic Bézier 曲线的两个控制点的 _x_ 和 _y_ 坐标，你可以轻松的创建自定义 easing 函数，比如我为我们的红色小火箭选择的那个。
 

@@ -99,7 +99,7 @@
     - layoutSubviews
     {
         [super layoutSubviews];
-        if (self.subviews[0].frame.size.width &lt;= MINIMUM_WIDTH)
+        if (self.subviews[0].frame.size.width <= MINIMUM_WIDTH)
         {
             [self removeSubviewConstraints];
             self.layoutRows += 1; [super layoutSubviews];

@@ -312,7 +312,7 @@ TextKit 包括了超过 100 个方法，一篇文章根本没办法尽数涉及�
         NSRange range;
         NSURL *linkURL = [layoutManager.textStorage attribute:NSLinkAttributeName
                                                       atIndex:charIndex
-                                               effectiveRange:&amp;range];
+                                               effectiveRange:&range];
 
         return !(linkURL && charIndex > range.location && charIndex <= NSMaxRange(range));   
 

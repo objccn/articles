@@ -240,7 +240,7 @@ TextKit 包括了超过 100 个方法，一篇文章根本没办法尽数涉及�
         [super processEditing];
 
         static NSRegularExpression *iExpression;
-        NSString *pattern = @"i[\p{Alphabetic}&amp;&amp;\p{Uppercase}][\p{Alphabetic}]%2B";
+        NSString *pattern = @"i[\\p{Alphabetic}&&\\p{Uppercase}][\\p{Alphabetic}]+";
         iExpression = iExpression ?: [NSRegularExpression regularExpressionWithPattern:pattern
                                                                                options:0
                                                                                  error:NULL];
@@ -314,7 +314,7 @@ TextKit 包括了超过 100 个方法，一篇文章根本没办法尽数涉及�
                                                       atIndex:charIndex
                                                effectiveRange:&amp;range];
 
-        return !(linkURL &amp;&amp; charIndex &gt; range.location &amp;&amp; charIndex   
+        return !(linkURL && charIndex > range.location && charIndex <= NSMaxRange(range));   
 
 想要一个可运行的例子的话，请在前面提到的 [TextKitDemo][7] 中查看“Layout”标签页。以下是截屏：
 

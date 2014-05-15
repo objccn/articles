@@ -102,7 +102,7 @@
         if (self.subviews[0].frame.size.width &lt;= MINIMUM_WIDTH)
         {
             [self removeSubviewConstraints];
-            self.layoutRows %2B= 1; [super layoutSubviews];
+            self.layoutRows += 1; [super layoutSubviews];
         }
     }
 

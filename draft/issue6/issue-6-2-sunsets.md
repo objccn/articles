@@ -97,7 +97,7 @@ LLVM 的优点主要得益于它的三层式架构 -- 第一层支持多种语�
       return 0;
     }
 
-用clang的max.c编译一下，结果是：
+用 `clang max.c` 编译一下，结果是：
 
     largest: 201
     i: 202

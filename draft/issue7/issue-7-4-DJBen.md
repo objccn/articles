@@ -16,9 +16,7 @@ KVO 是提供对象属性被改变时的通知的机制。KVO 的实现在 Found
 
 如果只对某个对象的值的改变感兴趣的话，就可以使用 KVO 消息传递。不过有一些前提：第一，接收者（接收对象改变的通知的对象）需要知道发送者 （值会改变的对象）；第二，接收者需要知道发送者的生命周期，因为它需要在发送者被销毁前注销观察者身份。如果这两个要去符合的话，这个消息传递机制可以一对多（多个观察者可以注册观察同一个对象的变化）
 
-If you plan to use KVO on Core Data objects, you have to know that things work a bit differently here. This has to do with Core Data's faulting mechanism. Once a managed object turns into a fault, it will fire the observers on its properties although their values haven't changed.
-
-如果要在 Core Data 上使用 KVO 的话，方法会有些许差别。这和 Core Data 的 faulting 机制有关。一旦一个 managed object 被 faulting 处理的话，即使它的属性没有被改变，它还是会触发相应的观察者。
+如果要在 Core Data 上使用 KVO 的话，方法会有些许差别。这和 Core Data 的惰性加载机制有关。一旦一个 managed object 被 惰性加载处理的话，即使它的属性没有被改变，它还是会触发相应的观察者。
 
 > <p><span class="secondary radius label">编者注</span> 把属性值先取入缓存中，在对象需要的时候再进行一次访问，这在 Core Data 中是默认行为，这种技术称为 Faulting。这么做可以避免降低内存开销，但是如果你确定将访问结果对象的具体属性值时，可以禁用 Faults 以提高获取性能。关于这个技术更多的情况，请移步[官方文档](https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/CoreData/Articles/cdFaultingUniquing.html)
 

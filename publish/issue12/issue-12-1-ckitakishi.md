@@ -325,4 +325,4 @@ Facebook 最近开源了 Paper 背后的动画引擎 [Pop](https://github.com/fa
 
 [话题 #12 下的更多文章](http://objccn.io/issue-12)
  
-原文 [Animations Explained](http://http://www.objc.io/issue-12/animations-explained.html)
+原文 [Animations Explained](http://www.objc.io/issue-12/animations-explained.html)

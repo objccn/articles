@@ -8,7 +8,7 @@
 
 上个月，我们有幸在柏林和一支非常棒开发者的团队 [UIKonf][1] 坐在起为这次话题进行头脑风暴：
 
-![](http://www.objc.io/images/issue-13/uikonf-meeting.jpg)
+![](http://img.objccn.io/issue-13/uikonf-meeting.jpg)
 
 最终的确定的这五篇文章针对了截然不同的架构问题：[Ash Furrow][31] 撰写的 [MVVM 的概念][3]，由 [Stephen Poletto][41] 创作的[防止单例滥用][4]，[Chris Eidhof][51] 为大家带来的[通过对组合进行类别划分][5]，还有 [Krzystof Zablłocki][61] 的大作 [Interface Builder 模块化的行为][6]，最后，由 [Conrad Stoll][71] 和 [Jeff Gilbert][72] 为大家介绍的一个被称为 [VIPER][7] 的非传统 MVC 架构。
 

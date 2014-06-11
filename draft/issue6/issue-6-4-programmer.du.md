@@ -23,7 +23,7 @@ Core 组件提供支持与 CocoaPods 相关文件的处理，文件主要是 Pod
 
 #####Podfile
 
-Podfile 是一个文件，用于定义项目锁需要使用的第三方库。该文件支持高度定制，你可以根据个人喜好对其做出定制。更多相关信息，请查阅 [Podfile 指南](http://guides.cocoapods.org/syntax/podfile.html)。
+Podfile 是一个文件，用于定义项目所需要使用的第三方库。该文件支持高度定制，你可以根据个人喜好对其做出定制。更多相关信息，请查阅 [Podfile 指南](http://guides.cocoapods.org/syntax/podfile.html)。
 
 ####Podspec
 

@@ -118,13 +118,13 @@
 这里我们将展示在一个 UIViewController 类（不是自定义的类）中添加一个视差动画是一件多么容易的事情：
 
 <video controls="1" style="display:block;max-width:100%;height:auto;border:0;">
-  <source src="http://www.objc.io/images/issue-13/parallaxAnimationBehaviour.mov">
+  <source src="http://img.objccn.io/issue-13/parallaxAnimationBehaviour.mp4">
 </video>
 
 或者需要从你的相册或者相机中获取一张图片？
 
 <video controls="1" style="display:block;max-width:100%;height:auto;border:0;">
-  <source src="http://www.objc.io/images/issue-13/imagePickerBehaviour.mp4">
+  <source src="http://img.objccn.io/issue-13/imagePickerBehaviour.mp4">
 </video>
 
 ##进阶特性

@@ -5,7 +5,7 @@ It's well known in the field of architecture that we shape our buildings, and af
 
 It's important to design our code so that each piece is easily identifiable, has a specific and obvious purpose, and fits together with other pieces in a logical fashion. This is what we call software architecture. Good architecture is not what makes a product successful, but it does make a product maintainable and helps preserve the sanity of the people maintaining it!
 
-编写代码至关重要，其过程需要使每一部分容易被识别，赋有一个特定而明显的目，,并与其他部分在逻辑关系中完美契合。这就是我们所说的软件架构。好的架构不仅让一个产品成功投入使用，还可以让产品具有可维护性，并让人不断头脑清醒的对它进行维护！
+编写代码至关重要，其过程需要使每一部分容易被识别，赋有一个特定而明显的目，并与其他部分在逻辑关系中完美契合。这就是我们所说的软件架构。好的架构不仅让一个产品成功投入使用，还可以让产品具有可维护性，并让人不断头脑清醒的对它进行维护！
 
 In this article, we will introduce an approach to iOS application architecture called [VIPER](http://mutualmobile.github.io/blog/2013/12/04/viper-introduction/). VIPER has been used to build many large projects, but for the purposes of this article we will be showing you VIPER by building a to-do list app. You can follow along with the example project [here on GitHub](https://github.com/objcio/issue-13-viper):
 
@@ -31,7 +31,7 @@ Most iOS apps are architected using MVC (model–view–controller). Using MVC a
 
 VIPER's distinct layers help deal with this challenge by providing clear locations for application logic and navigation-related code. With VIPER applied, you'll notice that the view controllers in our to-do list example are lean, mean, view controlling machines. You'll also find that the code in the view controllers and all of the other classes is easy to understand, easier to test, and as a result, also easier to maintain.
 
-VIPER 的不同层提供了明确的程序逻辑以及导航控制代码来应对这个挑战，利用 VIPER ，你会注意到在我们的待办事项示例清单中的视图控制器是基于精益，意义明确的视图控制。你也会发现视图控制器中代码和所有的其他类很容易理解，容易测试，也更易维护。
+VIPER 的不同层提供了明确的程序逻辑以及导航控制代码来应对这个挑战，利用 VIPER ，你会注意到在我们的待办事项示例清单中的视图控制器是基于精益，有明确的视图控制意图。你也会发现视图控制器中代码和所有的其他类很容易理解，容易测试，也更易维护。
 
 ## Application Design Based on Use Cases 用例应用设计
 Apps are often implemented as a set of use cases. Use cases are also known as acceptance criteria, or behaviors, and describe what an app is meant to do. Maybe a list needs to be sortable by date, type, or name. That's a use case. A use case is the layer of an application that is responsible for business logic. Use cases should be independent from the user interface implementation of them. They should also be small and well-defined. Deciding how to break down a complex app into smaller use cases is challenging and requires practice, but it's a helpful way to limit the scope of each problem you are solving and each class that you are writing.
@@ -68,13 +68,14 @@ This separation also conforms to the [Single Responsibility Principle](http://ww
 这种分隔形式同样遵循[单一责任原则](http://www.objectmentor.com/resources/articles/srp.pdf)。交互器负责业务分析的部分，主持人代表交互设计师，而视图就像视觉设计师。
 
 Below is a diagram of the different components and how they are connected:
+
 以下则是不同组件的相关图解，并展示了他们之间是如何关联的：
 
 <img alt="VIPER breaks down an app into different components based around use cases, including components that create the user interface and the logic that powers it." src="http://img.objccn.io/issue-13/2014-06-07-viper-wireframe.png">
 
 While the components of VIPER can be implemented in an application in any order, we've chosen to introduce the components in the order that we recommend implementing them. You'll notice that this order is roughly consistent with the process of building an entire application, which starts with discussing what the product needs to do, followed by how a user will interact with it.
 
-当 VIPER 的组件在程序中可以以任何形式实现的时候，我们已经选择介绍那些我们建议的实现进程的相关组件。 你会注意到这个顺序与构建整个应用的进程大致符合，这将引发有关产品所需的功能的热议及用户如何与之进行交互。
+当 VIPER 的组件在程序中可以以任何形式实现的时候，我们已经选择介绍那些我们建议的实现的相关组件。 你会注意到这个顺序与构建整个应用的进程大致符合，这将引发有关产品所需的功能的热议及用户如何与之进行交互。
 
 ### Interactor 交互器
 An Interactor represents a single use case in the app. It contains the business logic to manipulate model objects (Entities) to carry out a specific task. The work done in an Interactor should be independent of any UI. The same Interactor could be used in an iOS app or an OS X app.
@@ -215,7 +216,7 @@ Routes from one screen to another are defined in the wireframes created by an in
 
 Since the Presenter contains the logic to react to user inputs, it is the Presenter that knows when to navigate to another screen, and which screen to navigate to. Meanwhile, the wireframe knows how to navigate. So, the Presenter will use the wireframe to perform the navigation. Together, they describe a route from one screen to the next. 
 
-由于主持人能够对用户的输入进行有关的逻辑反应，它就拥有知晓何时导航至另一个屏幕以及具体是哪一个屏幕的能力。同样的，线框也有导航的功能。因此在两者结合起来的情况下，主持人可以使用线框来进行实现导航功能，从而描述一个路线从一个屏幕至另一个。
+由于主持人能够对用户的输入进行有关的逻辑反应，它就拥有知晓何时导航至另一个屏幕以及具体是哪一个屏幕的能力。同样的，线框也有导航的功能。因此在两者结合起来的情况下，主持人可以使用线框来进行实现导航功能，从而描述一个屏幕至另一个的路线。
 
 The wireframe is also an obvious place to handle navigation transition animations. Take a look at this example from the add wireframe:
 
@@ -353,7 +354,7 @@ One reason to keep the data store as a distinct layer with clear boundaries is t
 
 Using Core Data in an iOS project can often spark more debate than architecture itself. However, using Core Data with VIPER can be the best Core Data experience you've ever had. Core Data is a great tool for persisting data while maintaining fast access and a low-memory footprint. But it has a habit of snaking its `NSManagedObjectContext` tendrils all throughout an app's implementation files, particularly where they shouldn't be. VIPER keeps Core Data where it should be: at the data store layer. 
 
-在 iOS 的项目中使用核心数据经常比构架本身还容易引起更多争议。然而，利用 VIPER 来使用核心数据将是你前所未有的体验。当你可以保持快速存取和低内存占用的时候核心数据将是持久化数据的神器，但是有个怪癖，它会将触须般的 `NSManagedObjectContext`  延伸至你所有的应用实现文件中，特别是他们不该呆的地方。 VIPER 可以使核心数据待在正确的地方：数据存储层。
+在 iOS 的项目中使用 Core Data 经常比构架本身还容易引起更多争议。然而，利用 VIPER 来使用 Core Data 将是你前所未有的体验。当你可以保持快速存取和低内存占用的时候 Core Data 将是持久化数据的神器，但是有个怪癖，它会将触须般的 `NSManagedObjectContext`  延伸至你所有的应用实现文件中，特别是他们不该呆的地方。 VIPER 可以使核心数据待在正确的地方：数据存储层。
 
 In the to-do list example, the only two parts of the app that know that Core Data is being used are the data store itself, which sets up the Core Data stack, and the data manager. The data manager performs a fetch request, converts the NSManagedObjects returned by the data store into standard PONSO model objects, and passes those back to the business logic layer. That way, the core of the application is never dependent on Core Data, and as a bonus, you never have to worry about stale or poorly threaded NSManagedObjects gunking up the works.
 
@@ -395,7 +396,7 @@ Here's what it looks like inside the data manager when a request gets made to ac
 
 Almost as controversial as Core Data are UI Storyboards. Storyboards have many useful features, and ignoring them entirely would be a mistake. However, it is difficult to accomplish all of the goals of VIPER while employing all the features that a storyboard has to offer.
 
-想核心数据一样极富争议的恐怕就是 UI 故事板了。故事板具有很多有用的功能，如果完全忽视它将会是一个错误，然而，调用故事版所能提供的所有功能来完成 VIPER 的所有目标仍然是很困难的。
+与 Core Data 一样极富争议的恐怕就是 UI 故事板了。故事板具有很多有用的功能，如果完全忽视它将会是一个错误，然而，调用故事版所能提供的所有功能来完成 VIPER 的所有目标仍然是很困难的。
 
 The compromise we tend to make is to choose not to use segues. There may be some cases where using the segue makes sense, but the danger with segues is they make it very difficult to keep the separation between screens -- as well as between UI and application logic -- intact. As a rule of thumb, we try not to use segues if implementing the prepareForSegue method appears necessary.
 

@@ -244,13 +244,7 @@ iOS 应用程序的主力是 `UIViewController`，我们不难想象找一个竞
 
 数据存储模块负责提供实体给交互器。因为交互器要完成业务逻辑，因此它需要从数据存储中获取实体并操纵它们，然后将更新后的实体再放回数据存储中。数据存储管理实体的持久化，而实体应该对数据库全然不知，正因如此，实体并不知道如何对自己进行持久化。
 
-The Interactor should not know how to persist the entities either. Sometimes the Interactor may want to use a type of object called a data manager to facilitate its interaction with the data store. The data manager handles more of the store-specific types of operations, like creating fetch requests, building queries, etc. This allows the Interactor to focus more on application logic and not have to know anything about how entities are gathered or persisted. One example of when it makes sense to use a data manager is when you are using Core Data, which is described below. 
-
-交互器同样不需要知道如何将实体变得更加长久，有时交互器更希望使用某类对象，我们称之为数据管理器，来促进其与数据库的交互作用。数据管理器可以操作更多的库内特定类型的操作，比如创建获取请求，构建查询等等。这就使交互器能够将更多的注意力放在应用逻辑上，而不必在了解如何聚集或持久化实体。一个实例可以说明使用数据管理器时间有意义的，那就是当你使用核心数据，可以产生以下描述：
-
-Here's the interface for the example app's data manager:
-
-这是示例应用程序的数据管理器的界面：
+交互器同样不需要知道如何将实体持久化，有时交互器更希望使用一个 data manager 来使其与数据存储的交互变得容易。Data manager 可以处理更多的针对存储的操作，比如创建获取请求，构建查询等等。这就使交互器能够将更多的注意力放在应用逻辑上，而不必再了解实体是如何被聚集或持久化的。下面我们举一个例子来说明使用 data manager 有意义的，这个例子假设你在使用 Core Data。这是示例应用程序的 data manager 的接口：
 
     @interface VTDListDataManager : NSObject
     
@@ -260,25 +254,15 @@ Here's the interface for the example app's data manager:
     
     @end
 
-When using TDD to develop an Interactor, it is possible to switch out the production data store with a test double/mock. Not talking to a remote server (for a web service) or touching the disk (for a database) allows your tests to be faster and more repeatable.
+当使用 TDD 来开发一个交互器时，是可以用一个测试用的模拟存储来代替生产环境的数据存储的。避免与远程服务器通讯（网络服务）以及避免读取磁盘（数据库）可以加快你测试的速度并加强其可重复性。
 
-当使用 TDD 来开发一个交互器时，是可以用一个测试双/模拟来代替生产数据库。不能与远程控制器说话（网络服务）或者接触磁盘（对于一个数据库）可以加快你测试的速度并加强其可重复性。
+将数据存储保持为一个界限清晰的特定层的原因之一是，这可以让你延迟选择一个特定的持久化技术。如果你的数据存储是一个独立的类，那你就可以使用一个基础的持久化策略来开始你的应用，然后等到有意义的时候升级至 SQLite 或者 Core Data。而因为数据存储层的存在，你的应用代码库中就不需要改变任何东西。
 
-One reason to keep the data store as a distinct layer with clear boundaries is that it allows you to delay choosing a specific persistence technology. If your data store is a single class, you can start your app with a basic persistence strategy, and then upgrade to SQLite or Core Data later if and when it makes sense to do so, all without changing anything else in your application's code base.
+在 iOS 的项目中使用 Core Data 经常比构架本身还容易引起更多争议。然而，利用 VIPER 来使用 Core Data 将给你带来使用 Core Data 的前所未有的良好体验。在持久化数据的工具层面上，Core Data 可以保持快速存取和低内存占用方面，简直是个神器。但是有个很恼人的地方，它会像触须一样把 `NSManagedObjectContext`  延伸至你所有的应用实现文件中，特别是那些它们不该待的地方。VIPER 可以使 Core Data 待在正确的地方：数据存储层。
 
-将数据库保持为一个界限清晰的特定层的原因之一是它可以让你延迟选择一个特定的持久性技术。如果你的数据库是一个独立的类，那你就可以利用一个基本的持久性策略来启动你的应用，然后等到有意义的时候升级至SQLite 或者 Core Data，这样在你的应用代码库中就不需要改变任何东西。
+在待办事项示例中，应用仅有的两部分知道使用了 Core Data，其一是数据存储本身，它负责建立 Core Data 堆栈；另一个是 data manager。Data manager 执行了获取请求，将数据存储返回的 NSManagedObject 对象转换为标准的 PONSO 模型对象，并传输回业务逻辑层。这样一来，应用程序核心将不再依赖于 Core Data，附加得到的好处是，你也再也不用担心过期数据 (stale) 和没有良好组织的多线程 NSManagedObjects 来糟蹋你的工作成果了。
 
-Using Core Data in an iOS project can often spark more debate than architecture itself. However, using Core Data with VIPER can be the best Core Data experience you've ever had. Core Data is a great tool for persisting data while maintaining fast access and a low-memory footprint. But it has a habit of snaking its `NSManagedObjectContext` tendrils all throughout an app's implementation files, particularly where they shouldn't be. VIPER keeps Core Data where it should be: at the data store layer. 
-
-在 iOS 的项目中使用 Core Data 经常比构架本身还容易引起更多争议。然而，利用 VIPER 来使用 Core Data 将是你前所未有的体验。当你可以保持快速存取和低内存占用的时候 Core Data 将是持久化数据的神器，但是有个怪癖，它会将触须般的 `NSManagedObjectContext`  延伸至你所有的应用实现文件中，特别是他们不该呆的地方。 VIPER 可以使核心数据待在正确的地方：数据存储层。
-
-In the to-do list example, the only two parts of the app that know that Core Data is being used are the data store itself, which sets up the Core Data stack, and the data manager. The data manager performs a fetch request, converts the NSManagedObjects returned by the data store into standard PONSO model objects, and passes those back to the business logic layer. That way, the core of the application is never dependent on Core Data, and as a bonus, you never have to worry about stale or poorly threaded NSManagedObjects gunking up the works.
-
-在待办事项示例中，应用仅有的两部分知道使用核心数据是数据存储本身建立了核心数据堆栈和数据管理器。数据管理器执行了一个获取请求，将数据库反馈的 NSManagedObjects 转换为标准的 PONSO 模型对象，最终传输回业务逻辑层。这样一来，应用程序核心将不再依赖于核心数据，可喜可贺的是，你也再也不用担心过期和螺纹不良的 NSManagedObjects 糟蹋了你的工作成果了。
-
-Here's what it looks like inside the data manager when a request gets made to access the Core Data store:
-
-这里是在请求得以访问核心数据存储时数据管理器呈现的样子：
+在通过请求访问 Core Data 存储时，data manager 中看起来是这样的：
 
     @implementation VTDListDataManager
     
@@ -310,17 +294,11 @@ Here's what it looks like inside the data manager when a request gets made to ac
     
     @end
 
-Almost as controversial as Core Data are UI Storyboards. Storyboards have many useful features, and ignoring them entirely would be a mistake. However, it is difficult to accomplish all of the goals of VIPER while employing all the features that a storyboard has to offer.
+与 Core Data 一样极富争议的恐怕就是 UI 故事板了。故事板具有很多有用的功能，如果完全忽视它将会是一个错误。然而，调用故事版所能提供的所有功能来完成 VIPER 的所有目标仍然是很困难的。
 
-与 Core Data 一样极富争议的恐怕就是 UI 故事板了。故事板具有很多有用的功能，如果完全忽视它将会是一个错误，然而，调用故事版所能提供的所有功能来完成 VIPER 的所有目标仍然是很困难的。
+我们所能做出的妥协就是选择不使用 segues 。有时候使用 segues 是有效的，但是使用 segues 的危险性在于它们很难原封不动地保持屏幕之间的分离，以及 UI 和应用逻辑之间的分离。一般来说，如果实现 prepareForSegue 方法是必须的话，我们就尽量不去使用 segues。
 
-The compromise we tend to make is to choose not to use segues. There may be some cases where using the segue makes sense, but the danger with segues is they make it very difficult to keep the separation between screens -- as well as between UI and application logic -- intact. As a rule of thumb, we try not to use segues if implementing the prepareForSegue method appears necessary.
-
-我们所能做出的妥协就是选择不使用 segues 。有时候使用 segues 是有效的，但是使用 segues 的危险性在于他们很难原封不动的保持屏幕之间的距离，同时，和 UI 及应用逻辑之间的距离。一般来说，如果实现 prepareForSegue 方法显得必要，我们尽量不使用 segues。
-
-Otherwise, storyboards are a great way to implement the layout for your user interface, especially while using Auto Layout. We chose to implement both screens for the to-do list example using a storyboard, and use code such as this to perform our own navigation:
-
-另一方面，故事板是一个实现用户界面布局有效方法，特别是在使用自动布局的时候。我们选择在实现待办事项两个界面的实例中使用故事板，并且使用这样的代码来执行自己的导航操作。
+除此之外，故事板是一个实现用户界面布局有效方法，特别是在使用自动布局的时候。我们选择在实现待办事项两个界面的实例中使用故事板，并且使用这样的代码来执行自己的导航操作。
 
     static NSString *ListViewControllerIdentifier = @"VTDListViewController";
     
@@ -353,18 +331,13 @@ Otherwise, storyboards are a great way to implement the layout for your user int
     
     @end
 
-## Using VIPER to Build Modules 使用 VIPER 建立模块
-Often when working with VIPER, you will find that a screen or set of screens tends to come together as a module. A module can be described in a few ways, but usually it's best thought of as a feature. In a podcasting app, a module might be the audio player or the subscription browser. In our to-do list app, the list and add screens are each built as separate modules.
+## 使用 VIPER 构建模块
 
-一般在使用 VIPER 的时候，你会发现屏幕或一组屏幕倾向于聚在一起作为一个模块。模块可以以多种形式体现，但一般被认为是一种特性。在播客应用中，一个模块可能是音频播放器或订阅浏览器。然而在待办事项中，列表和添加屏幕都将作为单独的模块被建立。
+一般在使用 VIPER 的时候，你会发现一个屏幕或一组屏幕倾向于聚在一起作为一个模块。模块可以以多种形式体现，但一般最好把它想成是一种特性。在播客应用中，一个模块可能是音频播放器或订阅浏览器。然而在我们的待办事项应用中，列表和添加事项的屏幕都将作为单独的模块被建立。
 
-There are a few benefits to designing your app as a set of modules. One is that modules can have very clear and well-defined interfaces, as well as be independent of other modules. This makes it much easier to add/remove features, or to change the way your interface presents various modules to the user.
+将你的应用作为一组模块来设计有很多好处，其中之一就是模块可以有非常明确和定义良好的接口，并且独立于其他的模块。这就使增加或者移除特性变得更加简单，也使在界面中向用户展示各种可变模块变得更加简单。
 
-将你的应用作为一组模块来设计有一些优势，其中之一就是模块可以有非常明确和定义良好的界面，并且独立于其他的模块，这就使增加或者移除特性变得更加简单，或者更加容易向用户展示各种可变的界面。
-
-We wanted to make the separation between modules very clear in the to-do list example, so we defined two protocols for the add module. The first is the module interface, which defines what the module can do. The second is the module delegate, which describes what the module did. Example:
-
-我们希望能否将待办事项中各模块之间分隔更加明确，这样就可以为添加模块定义两个协议。一个是模块界面，用来定义模块的功能；另一个则是模块指令，用来描述该模块做了什么。例如：
+我们希望能将待办事项中各模块之间分隔更加明确，我们为添加模块定义了两个协议。一个是模块接口，它定义了模块可以做什么；另一个则是模块的代理，用来描述该模块做了什么。例如：
 
     @protocol VTDAddModuleInterface <NSObject>
 
@@ -381,40 +354,24 @@ We wanted to make the separation between modules very clear in the to-do list ex
 
     @end
 
-Since a module has to be presented to be of much value to the user, the module's Presenter usually implements the module interface. When another module wants to present this one, its Presenter will implement the module delegate protocol, so that it knows what the module did while it was presented.
 
-对于用户来说一个模型的展示不得不体现出它的价值，这样一来模型的展示器通常需要实现模型界面。当另一个模型想要展现在这个区域时，它的展示器就会实现模型的委托协议，从而得知模型在显示的时候进行过什么行为。
+因为模块必须要被展示，才能对用户产生价值，所以模块的展示器通常需要实现模型的接口。当另一个模型想要展现当前模块时，它的展示器就需要实现模型的委托协议，这样它就能在展示时知道当前模块做了些什么。
 
-A module might include a common application logic layer of entities, interactors, and managers that can be used for multiple screens. This, of course, depends on the interaction between these screens and how similar they are. A module could just as easily represent only a single screen, as is shown in the to-do list example. In this case, the application logic layer can be very specific to the behavior of its particular module.
+一个模块可能包括实体，交互器和管理器的通用应用逻辑层，这些通常可用于多个屏幕。当然，这取决于这些屏幕之间的交互及它们的相似度。一个模块可以像在待办事项列表里面一样，简单的只代表一个屏幕。这样一来，应用逻辑层对于它的特定模块的行为来说就非常特有了。
 
-一个模块会包括一个常见的应用程序逻辑层的实体，交互器和管理器，这些通常可用于多个屏幕。当然，这同样取决于这些屏幕之间的交互器及他们的相似度。一个模型可以像在待办事项列表里面一样，简单的只代表一个屏幕。这样一来应用逻辑层对于特定模块的行为来说就变得极为特殊。
+模块同样是组织代码的简便途径。将模块所有的编码都放在它自己的文件夹中并在 Xcode 中建一个 group，这会在你需要寻找和改变更加容易。当你在要寻找一个类时，它恰到好处地就在你所期待的地方，这种感觉真是无法形容的棒。
 
-Modules are also just a good simple way to organize code. Keeping all of the code for a module tucked away in its own folder and group in Xcode makes it easy to find when you need to change something. It's a great feeling when you find a class exactly where you expected to look for it.
+利用 VIPER 建立模块的另一个好处是它使得扩展到多平台时变得更加简单。独立在交互器层中的所有用例的应用逻辑允许你可以专注于为平板，电话或者 Mac 构建新的用户界面，同时可以重用你的应用层。
 
-模块同样是组织代码的简便途径。将模块所有的编码都藏在其自身的文件夹中并集合成 Xcode 会更加容易发现你应当进行变化的时机。当你正满怀期待寻找一个类的时候它就出现的感觉真是无法形容的棒。
+进一步来说，iPad 应用的用户界面能够将部分 iPhone 应用的视图，视图控制器及展示器进行再利用。在这种情况下，iPad 屏幕将由 ‘super’ 展示器和线框来代表，这样可以利用 iPhone 使用过的展示器和线框来组成屏幕。建立进而维护一个跨多平台的应用是一个巨大的挑战，但是好的构架可以对整个模型和应用层的再利用有大幅度的提升，并使其实现起来更加容易。
 
-Another benefit to building modules with VIPER is they become easier to extend to multiple form factors. Having the application logic for all of your use cases isolated at the Interactor layer allows you to focus on building the new user interface for tablet, phone, or Mac, while reusing your application layer.
+## 利用 VIPER 进行测试
 
-另一个利用 VIPER 建立模块的优势就是扩展到多种形式因素变得更加简单，对于你独立在交互层的所有用例来说，拥有应用逻辑可以帮助你集中建立新的针对平板电脑，移动电话或者苹果笔记本的用户界面，并且还可以反复利用你的应用层。
+VIPER 的出现激发了一个关注点的分离，这使得采用 TDD 变得更加简便。交互器包含独立与任何 UI 的纯粹逻辑，这使测试驱动开发更加简单。同时展示器包含用来为显示准备数据的逻辑，并且它也独立于任何一个 UIKit 部件。对于这个逻辑的开发也很容易用测试来驱动。
 
-Taking this a step further, the user interface for iPad apps may be able to reuse some of the views, view controllers, and presenters of the iPhone app. In this case, an iPad screen would be represented by 'super' presenters and wireframes, which would compose the screen using existing presenters and wireframes that were written for the iPhone. Building and maintaining an app across multiple platforms can be quite challenging, but good architecture that promotes reuse across the model and application layer helps make this much easier.
+我们更倾向于先从交互器下手。用户界面里所有部分都服务于用例，而通过采用 TDD 来测试驱动交互器的 API 可以让你对用户界面和用例之间的关系有一个更好的了解。
 
-进一步来说，iPad 应用的用户界面能够将部分 iPhone 应用的视图，视图控制器及展示器进行再利用。在这项实例中，iPad 屏幕需要由‘超级’展示器和线框进行代表，这样可以利用 iPhone 使用过的展示器和线框来组成屏幕。建立进而维护一个跨多平台的应用是一个巨大的挑战，但是好的构架可以对整个模型和应用层的再利用有大幅度的提升，并使其实现起来更加容易。
-
-## Testing with VIPER 利用 VIPER 进行测试
-Following VIPER encourages a separation of concerns that makes it easier to adopt TDD. The Interactor contains pure logic that is independent of any UI, which makes it easy to drive with tests. The Presenter contains logic to prepare data for display and is independent of any UIKit widgets. Developing this logic is also easy to drive with tests.
-
-VIPER 的出现激发了一个关注点的分离，这使得采用 TDD 变得更加简便。交互器包含独立与任何 UI 的纯粹逻辑使测试更加简单化，同时展示器包含的用来为显示器准备数据的逻辑，并且它也独立于任何一个 UIKit 小部件。开发这个逻辑也很容易启动测试。
-
-Our preferred method is to start with the Interactor. Everything in the UI is there to serve the needs of the use case. By using TDD to test drive the API for the Interactor, you will have a better understanding of the relationship between the UI and the use case.
-
-我们更倾向于先启动交互器这个方法。用户界面里所有部分都服务于用例，而通过采用 TDD 来测试驱动交互器的 API 可以让你对用户界面和用例之间的关系有一个更好的了解。
-
-As an example, we will look at the Interactor responsible for the list of upcoming to-do items. The policy for finding upcoming items is to find all to-do items due by the end of next week and classify each to-do item as being due today, tomorrow, later this week, or next week.
-
-比如说，我们要看一下负责待办事项列表的交互器。寻找待办事项的准则为找出所有的将在下一周末前截止的项目，并将这些项目分别归类至截止于今天，明天，本周末或者下周。
-
-The first test we write is to ensure the Interactor finds all to-do items due by the end of next week:
+作为实例，我们来看一下负责待办事项列表的交互器。寻找待办事项的策略是要找出所有的将在下周末前截止的项目，并将这些项目分别归类至截止于今天，明天，本周或者下周。
 
 我们编写的第一个测试是为了保证交互器能够找到所有的截止于下周末的待办事项：
 
@@ -424,8 +381,6 @@ The first test we write is to ensure the Interactor finds all to-do items due by
         [[self.dataManager expect] todoItemsBetweenStartDate:self.today endDate:self.endOfNextWeek completionBlock:OCMOCK_ANY];
         [self.interactor findUpcomingItems];
     }
-
-Once we know that the Interactor asks for the appropriate to-do items, we will write several tests to confirm that it allocates the to-do items to the correct relative date group (e.g. today, tomorrow, etc.):
 
 一旦知道了交互器找到了正确的待办事项后，我们就需要编写几个小测试用来确认它确实将待办事项分配到了正确的相对日期组内（比如说今天，明天，等等）。
 
@@ -440,9 +395,7 @@ Once we know that the Interactor asks for the appropriate to-do items, we will w
         [self.interactor findUpcomingItems];
     }
 
-Now that we know what the API for the Interactor looks like, we can develop the Presenter. When the Presenter receives upcoming to-do items from the Interactor, we will want to test that we properly format the data and display it in the UI:
-
-既然我们已经知道了交互器的 API 长什么样，接下来就是开发展示器。一旦展示器接收到了交互器传来的待办事项，我们就需要知道我们是否适当的将数据进行格式化并且在用户界面中正确的显示它。
+既然我们已经知道了交互器的 API 长什么样，接下来就是开发展示器。一旦展示器接收到了交互器传来的待办事项，我们就需要测试看看我们是否适当的将数据进行格式化并且在用户界面中正确的显示它。
 
     - (void)testFoundZeroUpcomingItemsDisplaysNoContentMessage
     {
@@ -481,8 +434,6 @@ Now that we know what the API for the Interactor looks like, we can develop the 
         [self.presenter foundUpcomingItems:@[groceries]];
     }
 
-We also want to test that the app will start the appropriate action when the user wants to add a new to-do item:
-
 同样需要测试的是应用是否在用户想要新建待办事项时正确启动了相应操作：
 
     - (void)testAddNewToDoItemActionPresentsAddToDoUI
@@ -491,8 +442,6 @@ We also want to test that the app will start the appropriate action when the use
     
         [self.presenter addNewEntry];
     }
-
-We can now develop the View. When there are no upcoming to-do items, we want to show a special message:
 
 这时我们可以开发视图功能了，并且在没有待办事项的时候我们想要展示一个特殊的信息。
 
@@ -503,9 +452,7 @@ We can now develop the View. When there are no upcoming to-do items, we want to 
         XCTAssertEqualObjects(self.view.view, self.view.noContentView, @"the no content view should be the view");
     }
 
-When there are upcoming to-do items to display, we want to make sure the table is showing:
-
-有待办事项出现时，我们要确保桌面有所提示：
+有待办事项出现时，我们要确保列表是显示出来的：
 
     - (void)testShowingUpcomingItemsShowsTableView
     {
@@ -514,41 +461,27 @@ When there are upcoming to-do items to display, we want to make sure the table i
         XCTAssertEqualObjects(self.view.view, self.view.tableView, @"the table view should be the view");
     }
 
-Building the Interactor first is a natural fit with TDD. If you develop the Interactor first, followed by the Presenter, you get to build out a suite of tests around those layers first and lay the foundation for implementing those use cases. You can iterate quickly on those classes, because you won't have to interact with the UI in order to test them. Then, when you go to develop the View, you'll have a working and tested logic and presentation layer to connect to it. By the time you finish developing the View, you might find that the first time you run the app everything just works, because all your passing tests tell you it will work.
-
-首先建立交互器是一种符合 TDD 的自然规律。如果你首先开发交互器，紧接着是展示器，你就可以首先建立一个位于这些层的套件测试，并且为实现这是实例奠定基础。由于你不需要为了测试他们而与用户界面进行交互，那这些类可以进行快速迭代。在你需要开发视图的时候，你会进行测试逻辑和表现层用来与其进行连接。在快要完成对视图的开发时，你会发现第一次运行程序一切都是有效地，因为你所有的通过测试已经告知你它会有效地。
+首先建立交互器是一种符合 TDD 的自然规律。如果你首先开发交互器，紧接着是展示器，你就可以首先建立一个位于这些层的套件测试，并且为实现这是实例奠定基础。由于你不需要为了测试它们而去与用户界面进行交互，所以这些类可以进行快速迭代。在你需要开发视图的时候，你会有一个可以工作并测试过的逻辑和表现层来与其进行连接。在快要完成对视图的开发时，你会发现第一次运行程序时所有部件都运行良好，因为你所有已通过的测试已经告诉你它可以工作。
 
 ## 结论
-We hope you have enjoyed this introduction to VIPER. Many of you may now be wondering where to go next. If you wanted to architect your next app using VIPER, where would you start?
 
-我们希望你能够通过这篇介绍对 VIPER 能够有所了解。或许你们都很好奇接下来还会有什么，如果你希望通过 VIPER 来对你下一个应用进行设计，该从哪里开始呢？
+我们希望你喜欢这篇对 VIPER 的介绍。或许你们都很好奇接下来应该做什么，如果你希望通过 VIPER 来对你下一个应用进行设计，该从哪里开始呢？
 
-This article and our example implementation of an app using VIPER are as specific and well-defined as we could make them. Our to-do list app is rather straightforward, but it should also accurately explain how to build an app using VIPER. In a real-world project, how closely you follow this example will depend on your own set of challenges and constraints. In our experience, each of our projects have varied the approach taken to using VIPER slightly, but all of them have benefited greatly from using it to guide their approaches.
+我们竭尽全力使这篇文章和我们利用 VIPER 实现的应用实例足够明确并且进行了很好的定义。我们的待办事项里列表程序相当直接简单，但是它准确地解释了如何利用 VIPER 来建立一个应用。在实际的项目中，你可以根据你自己的挑战和约束条件来决定要如何实践这个例子。根据以往的经验，我们的每个项目在使用 VIPER 时都或多或少地改变了一些策略，但它们无一例外的都从中得益，找到了正确的方向。
 
-这篇文章和我们利用 VIPER 实现的应用实例就像我们在制作他们的时候一样明确并且进行了很好的定义。我们的待办事项里列表程序相当简单，但是仍需要详细阐述如何利用 VIPER 来建立一个应用。在实际的项目中，你如何密切的跟进这个案例取决于你自己的挑战能力和约束条件。根据以往的经验，我们的每个项目在采取各种各样的方法时都多少使用了 VIPER，但他们无一例外的都从中得益，找到了正确的方向。
+很多情况下由于某些原因，你可能会想要偏离 VIPER 所指引的道路。可能你遇到了了很多 ['bunny'](http://inessential.com/2014/03/16/smaller_please) 对象，或者你的应用使用了故事板的 segues。没关系的，在这些情况下，你只需要在做决定时稍微考虑下 VIPER 所代表的精神就好。VIPER 的核心在于它是建立在[单一责任原则](http://en.wikipedia.org/wiki/Single_responsibility_principle)上的架构。如果你碰到了些许麻烦，想想这些原则再考虑如何前进。
 
-There may be cases where you wish to deviate from the path laid out by VIPER for various reasons. Maybe you have run into a warren of ['bunny'](http://inessential.com/2014/03/16/smaller_please) objects, or your app would benefit from using segues in Storyboards. That's OK. In these cases, consider the spirit of what VIPER represents when making your decision. At its core, VIPER is an architecture based on the [Single Responsibility Principle](http://en.wikipedia.org/wiki/Single_responsibility_principle). If you are having trouble, think about this principle when deciding how to move forward.
-
-很多情况下由于某些原因，你可能会想要偏离 VIPER 所指引的道路。可能你误入了很多['bunny'](http://inessential.com/2014/03/16/smaller_please)项目，或者你的应用会受益于故事板中的 segues 。没关系的，在这些实例中，你只需要在做决定时稍微考虑下 VIPER 所代表的精神就好。VIPER 的核心在于它是建立在[单一责任原则](http://en.wikipedia.org/wiki/Single_responsibility_principle)上的架构。如果你碰到了些许麻烦，想想这些原则再考虑如何前进。
-
-You may also be wondering if it's possible to use VIPER in your existing app. In this scenario, consider building a new feature with VIPER. Many of our existing projects have taken this route. This allows you to build a module using VIPER, and also helps you spot any existing issues that might make it harder to adopt an architecture based on the Single Responsibility Principle.
-
-你一定想知道在现有的应用中能否只用 VIPER 。在这种情况下，你可以考虑使用 VIPER 建立一个新功能，许多现有项目都使用了这个方法。你可以利用 VIPER 建立一个模块，这能帮助你发现许多建立在单一责任原则基础上造成难以运用架构的现有问题。
-
-One of the great things about developing software is that every app is different, and there are also different ways of architecting any app. To us, this means that every app is a new opportunity to learn and try new things. If you decide to try VIPER, we think you'll learn a few new things as well. Thanks for reading.
+你一定想知道在现有的应用中能否只用 VIPER 。在这种情况下，你可以考虑使用 VIPER 构建新的特性。我们许多现有项目都使用了这个方法。你可以利用 VIPER 建立一个模块，这能帮助你发现许多建立在单一责任原则基础上造成难以运用架构的现有问题。
 
 软件开发最伟大的事情之一就是每个应用程序都是不同的，而设计每个应用的架构的方式也是不同的。这就意味着每个应用对于我们来说都是一个学习和尝试的机遇，如果你决定开始使用 VIPER，你会受益匪浅。感谢你的阅读。
 
-## Swifit 补遗
-Last week at WWDC Apple introduced the [Swift](https://developer.apple.com/swift/) programming language as the future of Cocoa and Cocoa Touch development. It's too early to have formed complex opinions about the Swift language, but we do know that languages have a major influence on how we design and build software. We decided to [rewrite our VIPER TODO example app using Swift](https://github.com/objcio/issue-13-viper-swift) to help us learn what this means for VIPER. So far, we like what we see. Here are a few features of Swift that we feel will improve the experience of building apps using VIPER.
+## Swifit 补充
 
-苹果上周在 WWDC 介绍了一门称之为 [Swift](https://developer.apple.com/swift/) 的编程语言来代替 Cocoa 和 Cocoa Touch 开发。现在发表关于 Swift 的意见还言之尚早，但众所周知编程语言对我们如何设计和构建应用有着重大影响。我们决定利用 Swift 重写我们的[待办事项清单](https://github.com/objcio/issue-13-viper-swift)，帮助我们学习 VIPER 的理念。至今为止，收获颇丰。Swift 中的一些特性对于构建应用的体验有着显著的提升。
-
+苹果上周在 WWDC 介绍了一门称之为 [Swift](https://developer.apple.com/swift/) 的编程语言来作为 Cocoa 和 Cocoa Touch 开发的未来。现在发表关于 Swift 的完整意见还为时尚早，但众所周知编程语言对我们如何设计和构建应用有着重大影响。我们决定使用 [Swift 重写我们的待办事项清单](https://github.com/objcio/issue-13-viper-swift)，帮助我们学习它对 VIPER 意味着什么。至今为止，收获颇丰。Swift 中的一些特性对于构建应用的体验有着显著的提升。
 
 ### 结构体
-In VIPER we use small, lightweight, model classes to pass data between layers, such as from the Presenter to the View. These PONSOs are usually intended to simply carry small amounts of data, and are usually not intended to be subclassed. Swift structs are a perfect fit for these situations. Here's an example of a struct used in the VIPER Swift example. Notice that this struct needs to be equatable, and so we have overloaded the == operator to compare two instances of its type:
 
-在 VIPER 中我们使用小型，轻量级的模块类来在不同层中传递数据，例如从展示器到视图。这些 PONSOs 通常是为了处理少量的数据，并且通常这些类不会被继承。Swift 的结构体完美的诠释了这个情况，下面的结构体的例子来自 VIPER Swift。这个结构体需要被判断是否相等，所以我们重载了 == 操作符来比较两个实例。
+在 VIPER 中我们使用小型，轻量级的 model 类来在比如从展示器到视图这样不同的层间传递数据。这些 PONSOs 通常是只是简单地带有少量数据，并且通常这些类不会被继承。Swift 的结构体非常适合这个情况。下面的结构体的例子来自 VIPER Swift。这个结构体需要被判断是否相等，所以我们重载了 == 操作符来比较这个类型的两个实例。
 
 
     struct UpcomingDisplayItem : Equatable, Printable {
@@ -597,9 +530,13 @@ In VIPER we use small, lightweight, model classes to pass data between layers, s
 - [另一个计数器应用](https://github.com/mutualmobile/Counter)
 - [Mutual Mobile 关于 VIPER 的介绍](http://mutualmobile.github.io/blog/2013/12/04/viper-introduction/)
 - [简明架构](http://blog.8thlight.com/uncle-bob/2011/11/22/Clean-Architecture.html)
-- [更轻量的 View Controllers](http://www.objc.io/issue-1/lighter-view-controllers.html)
-- [测试 View Controllers](http://www.objc.io/issue-1/testing-view-controllers.html)
+- [更轻量的 View Controllers](http://objccn.io/issue-1-1/)
+- [测试 View Controllers](http://objccn.io/issue-1-3/)
 - [Bunnies](http://inessential.com/2014/03/16/smaller_please)
 
+---
 
+[话题 #13 下的更多文章](http://objccn.io/issue-13)
+
+原文 [Architecting iOS Apps with VIPER](http://www.objc.io/issue-13/viper.html)
 

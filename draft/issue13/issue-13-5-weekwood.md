@@ -469,7 +469,7 @@ VIPER 的出现激发了一个关注点的分离，这使得采用 TDD 变得更
 
 我们竭尽全力使这篇文章和我们利用 VIPER 实现的应用实例足够明确并且进行了很好的定义。我们的待办事项里列表程序相当直接简单，但是它准确地解释了如何利用 VIPER 来建立一个应用。在实际的项目中，你可以根据你自己的挑战和约束条件来决定要如何实践这个例子。根据以往的经验，我们的每个项目在使用 VIPER 时都或多或少地改变了一些策略，但它们无一例外的都从中得益，找到了正确的方向。
 
-很多情况下由于某些原因，你可能会想要偏离 VIPER 所指引的道路。可能你遇到了了很多 ['bunny'](http://inessential.com/2014/03/16/smaller_please) 对象，或者你的应用使用了故事板的 segues。没关系的，在这些情况下，你只需要在做决定时稍微考虑下 VIPER 所代表的精神就好。VIPER 的核心在于它是建立在[单一责任原则](http://en.wikipedia.org/wiki/Single_responsibility_principle)上的架构。如果你碰到了些许麻烦，想想这些原则再考虑如何前进。
+很多情况下由于某些原因，你可能会想要偏离 VIPER 所指引的道路。可能你遇到了很多 ['bunny'](http://inessential.com/2014/03/16/smaller_please) 对象，或者你的应用使用了故事板的 segues。没关系的，在这些情况下，你只需要在做决定时稍微考虑下 VIPER 所代表的精神就好。VIPER 的核心在于它是建立在[单一责任原则](http://en.wikipedia.org/wiki/Single_responsibility_principle)上的架构。如果你碰到了些许麻烦，想想这些原则再考虑如何前进。
 
 你一定想知道在现有的应用中能否只用 VIPER 。在这种情况下，你可以考虑使用 VIPER 构建新的特性。我们许多现有项目都使用了这个方法。你可以利用 VIPER 建立一个模块，这能帮助你发现许多建立在单一责任原则基础上造成难以运用架构的现有问题。
 
@@ -516,14 +516,6 @@ VIPER 的出现激发了一个关注点的分离，这使得采用 TDD 变得更
 也许 Objective-C 和 Swift 的最大区别是它们在对于类型处理上的不同。 Objective-C 是动态类型，而 Swift 故意在编译时做了严格的类型检查。对于一个类似 VIPER 的架构， 应用由不同层构成，类型安全是提升程序员效率和设计架构有非常大的好处。编译器帮助你确保正确类型的容器和对象在层的边界传递。如上所示，这是一个使用结构体的好地方。如果一个结构体的被设计为存在于两层之间，那么由于类型安全，你可以保证它将永远无法脱离这些层之间。
 
 ## 扩展阅读
-- [VIPER TODO, article example app](https://github.com/objcio/issue-13-viper)
-- [VIPER SWIFT, article example app built using Swift](https://github.com/objcio/issue-13-viper-swift)
-- [Counter, another example app](https://github.com/mutualmobile/Counter)
-- [Mutual Mobile Introduction to VIPER](http://mutualmobile.github.io/blog/2013/12/04/viper-introduction/)
-- [Clean Architecture](http://blog.8thlight.com/uncle-bob/2011/11/22/Clean-Architecture.html)
-- [Lighter View Controllers](http://www.objc.io/issue-1/lighter-view-controllers.html)
-- [Testing View Controllers](http://www.objc.io/issue-1/testing-view-controllers.html)
-- [Bunnies](http://inessential.com/2014/03/16/smaller_please)
 
 - [VIPER TODO, 文章示例](https://github.com/objcio/issue-13-viper)
 - [VIPER SWIFT, 基于 Swift 的文章示例](https://github.com/objcio/issue-13-viper-swift)

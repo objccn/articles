@@ -270,7 +270,7 @@ One reason to keep the data store as a distinct layer with clear boundaries is t
 
 Using Core Data in an iOS project can often spark more debate than architecture itself. However, using Core Data with VIPER can be the best Core Data experience you've ever had. Core Data is a great tool for persisting data while maintaining fast access and a low-memory footprint. But it has a habit of snaking its `NSManagedObjectContext` tendrils all throughout an app's implementation files, particularly where they shouldn't be. VIPER keeps Core Data where it should be: at the data store layer. 
 
-在 iOS 的项目中使用核心数据经常比构架本身还容易引起更多争议。然而，利用 VIPER 来使用核心数据将是你前所未有的体验。当你可以保持快速存取和低内存占用的时候核心数据将是持久化数据的神器，但是有个怪癖，它会将触须般的 `NSManagedObjectContext`  延伸至你所有的应用实现文件中，特别是他们不该呆的地方。 VIPER 可以使核心数据待在正确的地方：数据存储层。
+在 iOS 的项目中使用 Core Data 经常比构架本身还容易引起更多争议。然而，利用 VIPER 来使用 Core Data 将是你前所未有的体验。当你可以保持快速存取和低内存占用的时候 Core Data 将是持久化数据的神器，但是有个怪癖，它会将触须般的 `NSManagedObjectContext`  延伸至你所有的应用实现文件中，特别是他们不该呆的地方。 VIPER 可以使核心数据待在正确的地方：数据存储层。
 
 In the to-do list example, the only two parts of the app that know that Core Data is being used are the data store itself, which sets up the Core Data stack, and the data manager. The data manager performs a fetch request, converts the NSManagedObjects returned by the data store into standard PONSO model objects, and passes those back to the business logic layer. That way, the core of the application is never dependent on Core Data, and as a bonus, you never have to worry about stale or poorly threaded NSManagedObjects gunking up the works.
 
@@ -312,7 +312,7 @@ Here's what it looks like inside the data manager when a request gets made to ac
 
 Almost as controversial as Core Data are UI Storyboards. Storyboards have many useful features, and ignoring them entirely would be a mistake. However, it is difficult to accomplish all of the goals of VIPER while employing all the features that a storyboard has to offer.
 
-想核心数据一样极富争议的恐怕就是 UI 故事板了。故事板具有很多有用的功能，如果完全忽视它将会是一个错误，然而，调用故事版所能提供的所有功能来完成 VIPER 的所有目标仍然是很困难的。
+与 Core Data 一样极富争议的恐怕就是 UI 故事板了。故事板具有很多有用的功能，如果完全忽视它将会是一个错误，然而，调用故事版所能提供的所有功能来完成 VIPER 的所有目标仍然是很困难的。
 
 The compromise we tend to make is to choose not to use segues. There may be some cases where using the segue makes sense, but the danger with segues is they make it very difficult to keep the separation between screens -- as well as between UI and application logic -- intact. As a rule of thumb, we try not to use segues if implementing the prepareForSegue method appears necessary.
 

@@ -26,13 +26,13 @@ Apple没有把 UIKit 设计为线程安全的类是有意为之的，将其打�
 
 #### 内存回收 (deallocation) 问题
 
-另一个在后台使用 UIKit 对象的的危险之处在于“内存回收问题”。Apple 在技术笔记 [TN2109](ttp://developer.apple.com/library/ios/#technotes/tn2109/_index.html) 中概述了这个问题，并提供了多种解决方案。这个问题其实是要求 UI 对象应该在主线程中被回收，因为在它们的 `dealloc` 方法被调用回收的时候，可能会去改变 view 的结构关系，而如我们所知，这种操作应该放在主线程来进行。
+另一个在后台使用 UIKit 对象的的危险之处在于“内存回收问题”。Apple 在技术笔记 [TN2109](http://developer.apple.com/library/ios/#technotes/tn2109/_index.html) 中概述了这个问题，并提供了多种解决方案。这个问题其实是要求 UI 对象应该在主线程中被回收，因为在它们的 `dealloc` 方法被调用回收的时候，可能会去改变 view 的结构关系，而如我们所知，这种操作应该放在主线程来进行。
 
 因为调用者被其他线程持有是非常常见的（不管是由于 operation 还是 block 所导致的），这也是很容易犯错并且难以被修正的问题。在 [AFNetworking 中也一直长久存在这样的 bug](https://github.com/AFNetworking/AFNetworking/issues/56)，但是由于其自身的隐蔽性而鲜为人知，也很难重现其所造成的崩溃。在异步的 block 或者操作中一致使用 `__weak`，并且不去直接访问局部变量会对避开这类问题有所帮助。
 
 #### Collection 类
 
-Apple 有一个[针对 iOS 和 Mac 的很好的总览性文档](ttps://developer.apple.com/library/ios/#documentation/Cocoa/Conceptual/Multithreading/ThreadSafetySummary/ThreadSafetySummary.html#//apple_ref/doc/uid/10000057i-CH12-SW1)，为大多数基本的 foundation 类列举了其线程安全特性。总的来说，比如 `NSArry` 这样不可变类是线程安全的。然而它们的可变版本，比如 `NSMutableArray` 是线程不安全的。事实上，如果是在一个队列中串行地进行访问的话，在不同线程中使用它们也是没有问题的。要记住的是即使你申明了返回类型是不可变的，方法里还是有可能返回的其实是一个可变版本的 collection 类。一个好习惯是写类似于 `return [array copy]` 这样的代码来确保返回的对象事实上是不可变对象。
+Apple 有一个[针对 iOS 和 Mac 的很好的总览性文档](https://developer.apple.com/library/ios/#documentation/Cocoa/Conceptual/Multithreading/ThreadSafetySummary/ThreadSafetySummary.html#//apple_ref/doc/uid/10000057i-CH12-SW1)，为大多数基本的 foundation 类列举了其线程安全特性。总的来说，比如 `NSArry` 这样不可变类是线程安全的。然而它们的可变版本，比如 `NSMutableArray` 是线程不安全的。事实上，如果是在一个队列中串行地进行访问的话，在不同线程中使用它们也是没有问题的。要记住的是即使你申明了返回类型是不可变的，方法里还是有可能返回的其实是一个可变版本的 collection 类。一个好习惯是写类似于 `return [array copy]` 这样的代码来确保返回的对象事实上是不可变对象。
 
 与和[Java]()这样的语言不一样，Foundation 框架并不提供直接可用的 collection 类，这是有其道理的，因为大多数情况下，你想要的是在更高层级上的锁，以避免太多的加解锁操作。但缓存是一个值得注意的例外，iOS 4 中 Apple 添加的 `NSCache` 使用一个可变的字典来存储不可变数据，它不仅会对访问加锁，更甚至在低内存情况下会清空自己的内容。
 

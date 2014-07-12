@@ -312,7 +312,7 @@ Quartz 2D 拥有比我们这里谈到更多的装饰。我们这里不会过多�
 
 当你调用 `-setNeedsDisplay`，UIKit 将会在这个视图的图层上调用 `-setNeedsDisplay`。这为图层设置了一个标识，标记为 dirty(直译是脏的意思，想不出用什么词比较贴切,污染？)，但还显示原来的内容。它实际上没做任何工作，所以在一个row 中可以多次调用 `-setNeedsDisplay`。
 
-下面，当渲染系统准备好，它会调用视图图层的-display方法.此时，图层会装配它的后备存储。然后建立一个 Core Graphics 上下文(CGContextRef)，将后备存储对应内存中的数据恢复出来，绘图会进入对应的内存区域，并使用 CGContextRef 绘制。
+下面，当渲染系统准备好，它会调用视图图层的 `-display` 方法.此时，图层会装配它的后备存储。然后建立一个 Core Graphics 上下文(CGContextRef)，将后备存储对应内存中的数据恢复出来，绘图会进入对应的内存区域，并使用 CGContextRef 绘制。
 
 当你使用 UIKit 的绘制方法，例如: `UIRectFill()` 或者 `-[UIBezierPath fill]` 代替你的 `-drawRect:` 方法，他们将会使用这个上下文。使用方法是，UIKit 将后备存储的 CGContextRef 推进他的 graphics context stack，也就是说，它会将那个上下文设置为当前的。因此 `UIGraphicsGetCurrent()` 将会返回那个对应的上下文。既然 UIKit 使用 `UIGraphicsGetCurrent()` 绘制方法，绘图将会进入到图层的后备存储。如果你想直接使用 Core Graphics 方法，你可以自己调用 `UIGraphicsGetCurrent()` 得到相同的上下文，并且将这个上下文传给 Core Graphics 方法。
 

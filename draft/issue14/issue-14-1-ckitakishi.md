@@ -297,3 +297,9 @@ Matt Neuburg 的 [AppleScript 权威指南](http://www.amazon.com/AppleScript-De
 - [AppleScript 概览](https://developer.apple.com/library/mac/documentation/applescript/conceptual/applescriptx/AppleScriptX.html#//apple_ref/doc/uid/10000156-BCICHGIE)
 
 此外，请参阅 Apple 的一个素描应用，它实现了脚本化。
+
+---
+
+[话题 #14 下的更多文章](http://www.objc.io/issue-14/)
+ 
+原文 [Making Your Mac App’s Data Scriptable](http://www.objc.io/issue-14/scripting-data.html)

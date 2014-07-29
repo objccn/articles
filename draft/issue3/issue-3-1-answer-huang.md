@@ -310,7 +310,7 @@ Quartz 2D 拥有比我们这里谈到更多的装饰。我们这里不会过多�
 
 如果你的视图类实现了 `-drawRect:`，他们将像这样工作:
 
-当你调用 `-setNeedsDisplay`，UIKit 将会在这个视图的图层上调用 `-setNeedsDisplay`。这为图层设置了一个标识，标记为 dirty(直译是脏的意思，想不出用什么词比较贴切,污染？)，但还显示原来的内容。它实际上没做任何工作，所以在一个row 中可以多次调用 `-setNeedsDisplay`。
+当你调用 `-setNeedsDisplay`，UIKit 将会在这个视图的图层上调用 `-setNeedsDisplay`。这为图层设置了一个标识，标记为 dirty(直译是脏的意思，想不出用什么词比较贴切,污染？)，但还显示原来的内容。它实际上没做任何工作，所以多次调用 `-setNeedsDisplay`并不会造成性能损失。
 
 下面，当渲染系统准备好，它会调用视图图层的-display方法.此时，图层会装配它的后备存储。然后建立一个 Core Graphics 上下文(CGContextRef)，将后备存储对应内存中的数据恢复出来，绘图会进入对应的内存区域，并使用 CGContextRef 绘制。
 

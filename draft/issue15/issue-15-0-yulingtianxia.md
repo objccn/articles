@@ -1,0 +1,27 @@
+嗨，大家好！  
+
+本月的文章是我们很久前就想要涉及的一个话题：测试。  
+
+自动化测试是一个有争议的话题；有些人喜欢它，而其他人讨厌它。但测试分很多方面，无论你属于哪个阵营，我们都希望这期文章能帮助你提高项目的质量。 
+
+我们将从各种不同的观点看一看’测试’这个术语，并让你对所有涉及到的技术有一个大概的了解。  
+
+我们先看看 [behavior-driven development][1] 是什么以及如何使用它。然后，我们将探讨学习使用苹果的 [XCTest toolchain][2]。下一步，我们将深入钻研[dependency injection][3]，还有它是如何与测试关联的。如果你曾想知道[bad testing practices][4]，我们也为你涵盖了这方面内容。编写测试时，[Mocking][5]是工具箱中的另一种常见的工具，所以我们将会了解一下它。最后，我们以两篇有关用户界面代码相关测试的文章来结束这一期：[user interface testing][6]和[snapshot testing][7]。感谢贡献自己在这方面经验的所有作者！  
+
+祝测试愉快。  
+
+Chris，Daniel，与 Florian  
+
+--- 
+
+[话题 #15 下的更多文章](http://objccn.io/issue-15)
+
+原文 [Editorial Issue #15](http://www.objc.io/issue-15/editorial.html)
+
+[1]: http://objccn.io/issue-15-1/
+[2]: http://objccn.io/issue-15-2/
+[3]: http://objccn.io/issue-15-3/
+[4]: http://objccn.io/issue-15-4/
+[5]: http://objccn.io/issue-15-5/
+[6]: http://objccn.io/issue-15-6/
+[7]: http://objccn.io/issue-15-7/

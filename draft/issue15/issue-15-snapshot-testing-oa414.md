@@ -16,15 +16,15 @@
 
 它通过渲染 view 或者 layer 和已经存在的截图到两个 `CGContextRefs`，并且用 C 函数 `memcmp()` 来进行内存比较。 这样比较会非常快，我在一台 MacBook Air 上 测试生成一个 iPad 或者 iPhone 的全屏截图只要 0.013 到 0.086 秒之间。
 
-当它配置完成的时候，它默认会将图片存储到你项目的 `[Project]Tests` 目录里面的一个叫 `ReferenceImages` 的子文件夹。 文件夹中是根据你的单元测试的类名建立的文件夹，里面是每个参考图片的链接。 当一个测试失败的时候，它会将失败的结果和差异对比生成图片。三种图片都会存储到应用的 tmp 目录，截图同时会用 `NSLog` 将命令输出到控制台来用 [Kaleidoscope][kaleidoscope] 做可视化的比较。
+当它配置完成的时候，它默认会将图片存储到你项目的 `[Project]Tests` 目录里面的一个叫 `ReferenceImages` 的子文件夹。文件夹中是根据你的单元测试的类名建立的文件夹，里面是每个参考图片的链接。 当一个测试失败的时候，它会将失败的结果和差异对比生成图片。三种图片都会存储到应用的 tmp 目录，截图同时会用 `NSLog` 将命令输出到控制台来用 [Kaleidoscope][kaleidoscope] 做可视化的比较。
 
 ### 安装
 
-我们就不在这里兜圈子了：你需要使用 [CocoaPods][cocoapods]， 所以安装仅仅需要在你的 Podfile 的测试 target 里面加入 `pod "FBSnapshotTestCase"`。运行 `pod install`  就可以安装这个库了。
+我们就不在这里兜圈子了：你需要使用 [CocoaPods][cocoapods]，所以安装仅仅需要在你的 Podfile 的测试 target 里面加入 `pod "FBSnapshotTestCase"`。运行 `pod install`  就可以安装这个库了。
 
 ### XCTest 和截图
 
-默认的截图测试需要继承 `FBSnapshotTestCase` 而不是 `XCTestCase`， 然后使用 `FBSnapshotVerifyView(viewOrLayer, "optional identifier")` 宏来验证比较已经存在的图片。 这里的子类有一个 `recordMode` boolean 属性。 当设置了这个值的时候，会录制一个新的截图而不是把结果和参考图片做比较。
+默认的截图测试需要继承 `FBSnapshotTestCase` 而不是 `XCTestCase`，然后使用 `FBSnapshotVerifyView(viewOrLayer, "optional identifier")` 宏来验证比较已经存在的图片。这里的子类有一个 `recordMode` boolean 属性。当设置了这个值的时候，会录制一个新的截图而不是把结果和参考图片做比较。
 
 # Headers
 
@@ -72,7 +72,7 @@
 
 ##### FBSnapShots + Specta + Expecta
 
-我没有使用原生的 XCTest。我用的是 [Specta 和 Expecta][specta]，因为使用的时候更加简单，可读性也更强。这是你在创建一个 [新 CocoaPod][newcocoapod] 的时候的初始配置。 我是 pod [Expecta+Snapshots][expmatchers] 的贡献者， 它为  `FBSnapshotTestCase` 提供了一个类似 Expecta 的API。 它会为截图命名，同时可以在视图的生命周期里面选择性运行。我的 Podfile 看起来是这样子的：
+我没有使用原生的 XCTest。我用的是 [Specta 和 Expecta][specta]，因为使用的时候更加简单，可读性也更强。这是你在创建一个 [新 CocoaPod][newcocoapod] 的时候的初始配置。我是 pod [Expecta+Snapshots][expmatchers] 的贡献者，它为  `FBSnapshotTestCase` 提供了一个类似 Expecta 的API。 它会为截图命名，同时可以在视图的生命周期里面选择性运行。我的 Podfile 看起来是这样子的：
 
     target 'MyApp Tests', :exclusive => true do
         pod 'Specta','~> 1.0'
@@ -112,7 +112,7 @@
 
 ### 总结
 
-[`FBSnapshotTestCase`][fbsnapshot] 给你一个测试视图相关代码的方法， 它可以用来测试视图相关的状态而不用依赖于模拟器。如果你使用Xcode的话，你应该用我的插件[Snapshots][snapshots] 来使用它。有些时候它令人沮丧，但是同时它也是有效果的。它可以让设计师参与 code review 阶段。它可以成为为现有项目写测试的简单的第一步，你可以试一试。
+[`FBSnapshotTestCase`][fbsnapshot] 给你一个测试视图相关代码的方法，它可以用来测试视图相关的状态而不用依赖于模拟器。如果你使用Xcode的话，你应该用我的插件[Snapshots][snapshots] 来使用它。有些时候它令人沮丧，但是同时它也是有效果的。它可以让设计师参与 code review 阶段。它可以成为为现有项目写测试的简单的第一步，你可以试一试。
 
 开源项目案例:
 

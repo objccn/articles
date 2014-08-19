@@ -135,7 +135,6 @@ Because OCMock lets you stub out class methods, you could also test this using O
 
 ## 模拟测试时的注意事项
 
- That said, there are a number of things you can do to minimize the possible negative effects of using test fakes.
 在任何形式的测试中你有可能碰到的最大的问题之一是写的测试和实现代码耦合过于紧密。测试中一个最重要的关键点是降低未来的变化所带来的成本；如果改变代码的实现细节破坏了当前的测试，则这种成本已经增加了。也就是说，其实为了最小化由于使用模拟测试所造成不利影响，其实你有很多可以做的。
 
 ### 依赖注入是你的好伙伴

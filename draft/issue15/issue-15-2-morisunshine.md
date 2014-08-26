@@ -524,3 +524,7 @@ BDD框架的附加功能的重要性是取决于项目的大小。我们的结�
 ##总结
 
 XCTest 是不是正确的选择呢？你必须根据手头的项目来做判断。我们选择使用 XCTest 作为[KISS](https://en.wikipedia.org/wiki/Keep_it_simple_stupid)的一部分，这里有一个关于我们希望改进的愿望清单。尽管我们不得不做一些取舍，但是 XCTest 对我们来说是很好的选择。对于其他的测试框架，这些取舍将会是另外一些事情。
+
+[话题 #15 下的更多文章](http://objcnn.io/issue-15)
+
+原文 [Real-World Testing with XCTest](http://www.objc.io/issue-15/xctest.html)

@@ -50,7 +50,7 @@ But what is a behavior? Well, to answer this question, we have to get a little b
 
 Let's consider an object that is a part of an app you wrote. It has an interface that defines its methods and dependencies. These methods, these dependencies, declare *contract* of your object. They define how it should interact with the rest of your application and what capabilities and functionalities it has. They define its *behavior*.
 
-让我们思考你设计的 app 中的一个对象。它有一个接口定义了其方法和依赖关系。这些方法和依赖，决定了你对象的功能。它们定义了如何与你应用的其他部分交互，以及它的功能和性能是什么。它们定义了它的*行为*
+让我们思考你设计的 app 中的一个对象。它有一个接口定义了其方法和依赖关系。这些方法和依赖，声明了你对象的约定。它们定义了如何与你应用的其他部分交互，以及它的功能和性能是什么。它们定义了对象的*行为*。
 
 And that is what you should be aiming at: testing how your object behaves. 
 
@@ -945,7 +945,7 @@ What is also great about these tests is that we have leveraged the capabilities 
 
 Behavior-driven development is not as hard as it might initially look. All you need to do is change your mindset a bit—think more of how an object should behave (and how its interface should look) and less of how it should be implemented. By doing so, you will end up with a more robust codebase, along with a great test suite. Moreover, your tests will become less prone to breaking during refactors, and they will focus on testing the contract of your object rather than its internal implementation.
 
-行为驱动开发看起来并不像最初那么困难。所有你需要的只是改变你的思维方式 - 更多思考一个对象的表现（它的接口应该如何）并且减少对实现的关注。通过这样做，你将拥有更健壮的代码。以及同样杰出的测试套件。此外，你的测试变的不那么容易被打破重构，它们将专注于测试对象而不是内部实现。
+行为驱动开发看起来并不像最初那么困难。所有你需要的只是改变你的思维方式 - 更多思考一个对象的表现（它的接口应该如何）并且减少对实现的关注。通过这样做，你将拥有更健壮的代码。以及同样杰出的测试套件。此外，你的测试在生产代码修改时失效的可能性降低，它们将专注于测试对象的行为而不是内部实现。
 
 And with the great tools provided by the iOS community, you should be able to start BDDing your apps in no time. Now that you know *what* to test, there's really no excuse, is there?
 

@@ -192,16 +192,16 @@
 
 使用 XCTest，我们可以这样测试它：
 
-- (void)testThatItAppendsAString;
-{
-    NSString *s1 = @"Foo";
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Handler called"];
-    [s1 appendString:@"Bar" resultHandler:^(NSString *result){
-        [expectation fulfill];
-        XCTAssertEqualObjects(result, @"FooBar");
-    }]
-    [self waitForExpectationsWithTimeout:0.1 handler::nil];
-}
+    - (void)testThatItAppendsAString;
+    {
+        NSString *s1 = @"Foo";
+        XCTestExpectation *expectation = [self expectationWithDescription:@"Handler called"];
+        [s1 appendString:@"Bar" resultHandler:^(NSString *result){
+            [expectation fulfill];
+            XCTAssertEqualObjects(result, @"FooBar");
+        }]
+        [self waitForExpectationsWithTimeout:0.1 handler::nil];
+    }
 
 大部分的测试框架都有类似这样的东西。
 

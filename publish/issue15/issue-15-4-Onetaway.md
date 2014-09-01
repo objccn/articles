@@ -196,7 +196,7 @@ stubbing 伞在某些情况下能帮上忙，但是对于 `UsersController` 类�
 
 ---
 
-[话题 #15 下的更多文章](http://www.objc.io/issue-15)
+[话题 #15 下的更多文章](http://objccn.io/issue-15)
 
 原文 [Bad Testing Practices](http://www.objc.io/issue-15/bad-testing-practices.html)
 

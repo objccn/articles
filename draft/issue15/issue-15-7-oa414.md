@@ -115,7 +115,7 @@
 
 ---
 
-[话题 #15 下的更多文章](http://www.objc.io/issue-15)
+[话题 #15 下的更多文章](http://objccn.io/issue-15)
 
 原文 [Snapshot Testing](http://www.objc.io/issue-15/snapshot-testing.html)
 

@@ -753,8 +753,6 @@ Cedar 用了一点黑客技术才能与 XCTest 集成，如果 Apple 决定改�
 
 ---
 
----
-
 [话题 #15 下的更多文章](http://objccn.io/issue-15)
 
 原文 [Behavior-Driven Development](http://www.objc.io/issue-15/behavior-driven-development.html)

@@ -178,7 +178,7 @@ View controllers 通常是 iOS 项目中最大的文件，并且它们包含了�
    [5]: http://twitter.com/chriseidhof
    [6]: https://github.com/objcio/issue-1-lighter-view-controllers/blob/master/PhotoData/ArrayDataSource.h
    [7]: https://github.com/objcio/issue-1-lighter-view-controllers/blob/master/PhotoData/PhotoCell.xib
-   [8]: http://objccn.io/issue1
+   [8]: http://objccn.io/issue-1
    [11]: http://developer.apple.com/library/ios/#featuredarticles/ViewControllerPGforiPhoneOS/BasicViewControllers/BasicViewControllers.html
    [12]: http://developer.apple.com/library/mac/#documentation/General/Conceptual/DevPedia-CocoaCore/ControllerObject.html
    [13]: http://subjective-objective-c.blogspot.de/2011/08/writing-high-quality-view-controller.html

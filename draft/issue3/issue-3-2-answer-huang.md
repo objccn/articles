@@ -68,7 +68,7 @@
 ##世界之窗：Content Size
 
 现在，最难的部分已经过去了，我们再看看 UIScrollView 另一个属性：[contentSize][12]。
-scroll view 的 content size 并不会改变其 bounds 的任何东西，所以这并不会影响 scroll view 如何组合自己的子视图。反而，content size 定义了可滚动区域。scroll view 的默认 content size 为 {w:0, h:0}。既然没有可滚动区域，用户是不可以滚动的，但是 scroll view 任然会显示其 bounds 范围内所有的子视图。
+scroll view 的 content size 并不会改变其 bounds 的任何东西，所以这并不会影响 scroll view 如何组合自己的子视图。反而，content size 定义了可滚动区域。scroll view 的默认 content size 为 {w:0, h:0}。既然没有可滚动区域，用户是不可以滚动的，但是 scroll view 仍然会显示其 bounds 范围内所有的子视图。
 当 content size 设置为比 bounds 大的时候，用户就可以滚动视图了。你可以认为 scroll view 的 bounds 为可滚动区域上的一个窗口：
 
 ![][13]

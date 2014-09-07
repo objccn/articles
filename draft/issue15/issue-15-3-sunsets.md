@@ -6,21 +6,20 @@ By [Jon Reid](http://qualitycoding.org/about/)
 
 从一个例子开始，比如说写了这样一个方法：
 
-`- (NSNumber *)nextReminderId
-{
-    NSNumber *currentReminderId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentReminderId"];
-    if (currentReminderId) {
-        // Increment the last reminderId
-        currentReminderId = @([currentReminderId intValue] + 1);
-    } else {
-        // Set to 0 if it doesn't already exist
-        currentReminderId = @0;
+    - (NSNumber *)nextReminderId
+    {
+        NSNumber *currentReminderId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentReminderId"];
+        if (currentReminderId) {
+          // Increment the last reminderId
+          currentReminderId = @([currentReminderId intValue] + 1);
+        } else {
+          // Set to 0 if it doesn't already exist
+          currentReminderId = @0;
+        }
+        // Update currentReminderId to model
+        [[NSUserDefaults standardUserDefaults] setObject:currentReminderId forKey:@"currentReminderId"];
+        return currentReminderId;
     }
-    // Update currentReminderId to model
-    [[NSUserDefaults standardUserDefaults] setObject:currentReminderId forKey:@"currentReminderId"];
-
-    return currentReminderId;
-}`
 
 如何针对这个方法编写单元测试（unit tests）呢？这里需要注意一点，该方法中有操作一个不属于其控制的对象`NSUserDefaults`。
 
@@ -42,20 +41,20 @@ By [Jon Reid](http://qualitycoding.org/about/)
 
 构造器注入，即将某个依赖（对象）传入到构造器中（在Objective-C中指特定的初始化方法）并存储起来，以便在后续过程中适用：
 
-`@interface Example ()`
-`@property (nonatomic, strong, readonly) NSUserDefaults *userDefaults;
-@end`
-
-`@implementation Example
-- (instancetype)initWithUserDefaults:(NSUserDefaults *userDefaults)
-{
-    self = [super init];
-    if (self) {
-        _userDefaults = userDefaults;
+    @interface Example ()
+        @property (nonatomic, strong, readonly) NSUserDefaults *userDefaults;
+    @end
+    
+    @implementation Example
+    - (instancetype)initWithUserDefaults:(NSUserDefaults *userDefaults)
+    {
+        self = [super init];
+        if (self) {
+            _userDefaults = userDefaults;
+        }
+        return self;
     }
-    return self;
-}
-@end`
+    @end
 
 可以用实例变量或者是属性来存储依赖对象。上面的例子中用一个只读的属性来存储，防止依赖对象被篡改。
 

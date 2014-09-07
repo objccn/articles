@@ -41,20 +41,20 @@ By [Jon Reid](http://qualitycoding.org/about/)
 
 构造器注入，即将某个依赖（对象）传入到构造器中（在Objective-C中指特定的初始化方法）并存储起来，以便在后续过程中适用：
 
-    @interface Example ()
-        @property (nonatomic, strong, readonly) NSUserDefaults *userDefaults;
-    @end
-    
-    @implementation Example
-    - (instancetype)initWithUserDefaults:(NSUserDefaults *userDefaults)
-    {
-        self = [super init];
-        if (self) {
-            _userDefaults = userDefaults;
-        }
-        return self;
-    }
-    @end
+	@interface Example ()
+    @property (nonatomic, strong, readonly) NSUserDefaults *userDefaults;
+	@end
+
+	@implementation Example
+	- (instancetype)initWithUserDefaults:(NSUserDefaults *userDefaults)
+	{
+    	self = [super init];
+    	if (self) {
+        	_userDefaults = userDefaults;
+    	}
+    	return self;
+	}
+	@end
 
 可以用实例变量或者是属性来存储依赖对象。上面的例子中用一个只读的属性来存储，防止依赖对象被篡改。
 
@@ -62,36 +62,37 @@ By [Jon Reid](http://qualitycoding.org/about/)
 
 至此，Example类中每一处要使用单例`[NSUserDefaults standardUserDefaults]`的地方，都可以用`self.userDefaults`来替代：
 
-`- (NSNumber *)nextReminderId
-{
-    NSNumber *currentReminderId = [self.userDefaults objectForKey:@"currentReminderId"];
-    if (currentReminderId) {
-        currentReminderId = @([currentReminderId intValue] + 1);
-    } else {
-        currentReminderId = @0;
-    }
-    [self.userDefaults setObject:currentReminderId forKey:@"currentReminderId"];
-    return currentReminderId;
-}`
+
+	- (NSNumber *)nextReminderId
+	{
+    	NSNumber *currentReminderId = [self.userDefaults objectForKey:@"currentReminderId"];
+    	if (currentReminderId) {
+        	currentReminderId = @([currentReminderId intValue] + 1);
+    	} else {
+        	currentReminderId = @0;
+    	}
+    	[self.userDefaults setObject:currentReminderId forKey:@"currentReminderId"];
+    	return currentReminderId;
+	}
 
 ###属性注入
 
 属性注入，下面例子中的`nextReminderId`也是同样的要引用`self.userDefaults`，这次不是将依赖对象传递给初始化方法，而是采用属性赋值方式：
 
-`@interface Example
-@property (nonatomic, strong) NSUserDefaults *userDefaults;
-- (NSNumber *)nextReminderId;
-@end`
+	@interface Example
+	@property (nonatomic, strong) NSUserDefaults *userDefaults;
+	- (NSNumber *)nextReminderId;
+	@end
 
 可在单元测试中创建一个对象，然后通过属性setter为`userDefaults`赋值。这里需要在getter中做懒初始化操作为其设置一个适当的默认值，这样即使从未对`userDefaults`这个属性赋非nil值或者赋了nil值，也都能保证始终可以通过getter拿到一个确切的值：
 
-`- (NSUserDefaults *)userDefaults
-{
-    if (!_userDefaults) {
-        _userDefaults = [NSUserDefaults standardUserDefaults];
-    }
+	- (NSUserDefaults *)userDefaults
+	{
+    	if (!_userDefaults) {
+       		 _userDefaults = [NSUserDefaults standardUserDefaults];
+    	}
     return _userDefaults;
-}`
+	}
 
 这样的话，对`userDefaults`来说，如果在使用者取值之前做过赋值操作，那么从`self.userDefaults`得到的就是通过setter赋的值。如果这个属性在使用前未被赋值，从`self.userDefaults`得到的就是`[NSUserDefaults standardUserDefaults]`。
 
@@ -99,17 +100,17 @@ By [Jon Reid](http://qualitycoding.org/about/)
 
 如果依赖对象只在某一个方法中被使用，则可以利用方法参数做注入：
 
-`- (NSNumber *)nextReminderIdWithUserDefaults:(NSUserDefaults *)userDefaults
-{
-    NSNumber *currentReminderId = [userDefaults objectForKey:@"currentReminderId"];
-    if (currentReminderId) {
-        currentReminderId = @([currentReminderId intValue] + 1);
-    } else {
-        currentReminderId = @0;
-    }
-    [userDefaults setObject:currentReminderId forKey:@"currentReminderId"];
-    return currentReminderId;
-}`
+	- (NSNumber *)nextReminderIdWithUserDefaults:(NSUserDefaults *)userDefaults
+	{
+    	NSNumber *currentReminderId = [userDefaults objectForKey:@"currentReminderId"];
+    	if (currentReminderId) {
+        	currentReminderId = @([currentReminderId intValue] + 1);
+    	} else {
+        	currentReminderId = @0;
+    	}
+    	[userDefaults setObject:currentReminderId forKey:@"currentReminderId"];
+    	return currentReminderId;
+	}
 
 再一次说明，这样看起来可能会很奇怪，并不是所有的例子中`NSUserDefaults`作为依赖都显得恰如其分。比如说这个例子中，如果使用`NSDate`做注入参数传入可能更会彰显其特点（后面对每种注入方式的优点做阐述的时候会有更深入的探讨）。
 
@@ -134,39 +135,39 @@ By [Jon Reid](http://qualitycoding.org/about/)
 
 修改后的代码如下：
 
-`- (NSNumber *)nextReminderId
-{
-    NSNumber *currentReminderId = [[self userDefaults] objectForKey:@"currentReminderId"];
-    if (currentReminderId) {
-        currentReminderId = @([currentReminderId intValue] + 1);
-    } else {
-        currentReminderId = @0;
-    }
-    [[self userDefaults] setObject:currentReminderId forKey:@"currentReminderId"];
-    return currentReminderId;
-}`
-
-`- (NSUserDefaults *)userDefaults
-{
-    return [NSUserDefaults standardUserDefaults];
-}`
+	- (NSNumber *)nextReminderId
+	{
+    	NSNumber *currentReminderId = [[self userDefaults] objectForKey:@"currentReminderId"];
+    	if (currentReminderId) {
+        	currentReminderId = @([currentReminderId intValue] + 1);
+    	} else {
+        	currentReminderId = @0;
+    	}
+    	[[self userDefaults] setObject:currentReminderId forKey:@"currentReminderId"];
+    	return currentReminderId;
+	}
+	
+	- (NSUserDefaults *)userDefaults
+	{
+    	return [NSUserDefaults standardUserDefaults];
+	}
 
 妥当完成后，进入最后一步：
 
 步骤3:创建一个专门的**测试子类，**复写刚刚抽取的方法：
 
 
-`@interface TestingExample : Example
-@end`
+    @interface TestingExample : Example
+	@end
 
-`@implementation TestingExample`
+	@implementation TestingExample
 
-`- (NSUserDefaults *)userDefaults
-{
-    // Do whatever you want!
-}`
+	- (NSUserDefaults *)userDefaults
+	{
+    	// Do whatever you want!
+	}
 
-`@end`
+	@end
 
 这样就不用直接初始化Example，而是利用创建`TestingExample`来进行测试，至此就可以全权掌控任何对`[self userDefaults]`的调用结果了。
 

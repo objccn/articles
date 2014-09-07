@@ -75,7 +75,7 @@ Supplementary views 和 decoration views 必须是 [UICollectionReusableView][8]
 
 3. 如果你的布局包含 supplementary views，计算矩形内可见 supplementary view 的 index paths。在循环中调用你实现的 `layoutAttributesForSupplementaryViewOfKind:atIndexPath:` ，并且将这些对象加到数组中。通过为 kind 参数传递你选择的不同字符，你可以区分出不同种类的supplementary views（比如headers和footers）。当需要创建视图时，collection view 会将 kind 字符传回到你的数据源。记住 supplementary 和 decoration views 的数量和种类完全由布局控制。你不会受到 headers 和 footers 的限制。
 
-4. 如果布局包含 decoration views，计算矩形内可见 decoration views 的 index paths。在循环中调用你实现的 layoutAttributesForDecorationViewOfKind:atIndexPath: ，并且将这些对象加到数组中。
+4. 如果布局包含 decoration views，计算矩形内可见 decoration views 的 index paths。在循环中调用你实现的 `layoutAttributesForDecorationViewOfKind:atIndexPath:` ，并且将这些对象加到数组中。
 
 5. 返回数组。
 

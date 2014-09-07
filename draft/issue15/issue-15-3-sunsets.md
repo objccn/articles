@@ -6,9 +6,9 @@ By [Jon Reid](http://qualitycoding.org/about/)
 
 从一个例子开始，比如说写了这样一个方法：
 
-`- (NSNumber *)nextReminderId`
-`{`
-    `NSNumber *currentReminderId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentReminderId"];
+`- (NSNumber *)nextReminderId
+{
+    NSNumber *currentReminderId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentReminderId"];
     if (currentReminderId) {
         // Increment the last reminderId
         currentReminderId = @([currentReminderId intValue] + 1);
@@ -17,10 +17,10 @@ By [Jon Reid](http://qualitycoding.org/about/)
         currentReminderId = @0;
     }
     // Update currentReminderId to model
-    [[NSUserDefaults standardUserDefaults] setObject:currentReminderId forKey:@"currentReminderId"];`
+    [[NSUserDefaults standardUserDefaults] setObject:currentReminderId forKey:@"currentReminderId"];
 
     return currentReminderId;
-`}`
+}`
 
 如何针对这个方法编写单元测试（unit tests）呢？这里需要注意一点，该方法中有操作一个不属于其控制的对象`NSUserDefaults`。
 

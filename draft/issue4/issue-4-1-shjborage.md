@@ -32,9 +32,9 @@ Core Data 有相当多可用的组件。这是一个非常灵活的技术。在�
 
 ## 组件如何一起工作
 
-让我们快速的看一个例子，看看组件是如何协同工作的。在我们的文章[full application using Core Data][400]中，正好有一个*实体*，即一种对象：我们有一个 *Item* 实体对应一个 title。每一个 item 可以拥有子 items，因此，我们有一个*父子关系*。
+让我们快速的看一个例子，看看组件是如何协同工作的。在我们的文章[《一个完成的 Core Data 应用》](http://objccn.io/issue-4-2/)中，正好有一个*实体*，即一种对象：我们有一个 *Item* 实体对应一个 title。每一个 item 可以拥有子 items，因此，我们有一个*父子关系*。
 
-这是我们的数据模型。正如我们[在Data Models and Model Objects][200]文章中提到的一样，在 Core Data 中有一*种*特别的对象——*实体*。在这种情况下，我们只有一个实体：*Item* 实体。同样的，我们有一个 `NSManagedObject` 的子类，叫做 `Item`。这个 *Item* 实体映射到 `Item` 类上。在[data models article][200]中会详细的谈到这个。
+这是我们的数据模型。正如我们在[《数据模型和模型对象》](http://objccn.io/issue-4-4/)一文中提到的一样，在 Core Data 中有一*种*特别的对象——*实体*。在这种情况下，我们只有一个实体：*Item* 实体。同样的，我们有一个 `NSManagedObject` 的子类，叫做 `Item`。这个 *Item* 实体映射到 `Item` 类上。在[数据模型的文章](http://objccn.io/issue-4-4/)中会详细的谈到这个。
 
 我们的程序仅有一个*根* Item。这并没有什么奇妙的地方。它是一个我们用来显示底层 item 等级的 item。它是一个我们永远不会为其设置父类的 Item。
 
@@ -91,14 +91,15 @@ Core Data 的优势在于管理关系。让我们着眼于简单的情况：增�
 
 好了。同样的，这些改变仅仅存在于 managed object context 中。一旦我们保存了 context，managed object context 将会通知持久化存储协调器，像增加第一个对象一样增加新创建的对象到数据库文件中。但这也将会更新第二个 item 与第一个 item 之间的关系。记住 *Item* 实体是如何有一个*父子*关系的。它们之间有相反的关系。因为我们设置第一个 item 为第二个 item 的父亲（parent）时，第二个 item 将会变成第一个 item 的儿子（child）。Managed object context 追踪这些关系，持久化存储协调器和 store 保存这些关系到磁盘。
 
-### 弄清对象
+<a name="getting-to-objects"> </a>
+### 获取对象
 
 我们已经使用我们的程序一会儿了，并且已经为 rootItem 增加了一些子 items，甚至增加子 items 到子 items。然而，我们再次启动我们的程序。Core Data 已经将这些 items 之间的关系保存到了数据库文件。对象图是持久化的。我们现在需要取出*根* item，所以我们可以显示底层 items 的列表。有两种方法可以达到这个效果。我们先看简单点的方法。
 
-当 `rootItem` 对象创建并保存之后我们可以向它请求它的 `NSManagedObjectID`。这是一个不透明的对象，可以唯一代表 `rootItem`。我们可以保存这个对象到 NSUSerDefaults，像这样：
+当 `rootItem` 对象创建并保存之后我们可以向它请求它的 `NSManagedObjectID`。这是一个不透明的对象，可以唯一代表 `rootItem`。我们可以保存这个对象到 `NSUSerDefaults`，像这样：
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setURL:rootItem.managedObjectID.URIRepresentation forKey:@"rootItem"];
+	[defaults setURL:rootItem.objectID.URIRepresentation forKey:@"rootItem"];
 
 现在，当程序重新运行时，我们可以像这样返回得到这个对象：
 
@@ -137,7 +138,7 @@ Core Data 的优势在于管理关系。让我们着眼于简单的情况：增�
 
     item.title = @"New title";
 
-当我们这样做时，item 的 title 改变了。此外，managed object context 会标注这个对象（`item`）已经被改变，这样当我们在 context 中调用 `-save：` 时，这个对象将会通过持久化存储协调器和附属的 store 保存起来。context最关键的职责之一就是*跟踪改变*。
+当我们这样做时，item 的 title 改变了。此外，managed object context 会标注这个对象（`item`）已经被改变，这样当我们在 context 中调用 `-save:` 时，这个对象将会通过持久化存储协调器和附属的 store 保存起来。context最关键的职责之一就是*跟踪改变*。
 
 从最后一次保存开始，context 知道哪些对象被插入，改变以及删除。你可以通过 `-insertedObjects`, `-updatedObjects`, 以及 `–deletedObjects` 方法来达到这样的效果。同样的，你可以通过 `-changedValues` 方法来询问一个被管理的对象哪些值被改变了。这个方法正是 Core Data 能够将你做出的改变推入到数据库的原因。
 

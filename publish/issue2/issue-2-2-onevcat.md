@@ -158,7 +158,7 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
 
 如果你确定 `drawRect:` 是你的应用的性能瓶颈，那么你可以将这些绘制代码放到后台去做。但是在你这样做之前，检查下看看是不是有其他方法来解决，比如、考虑使用 core animation layers 或者预先渲染图片而不去做 Core Graphics 绘制。可以看看 Florian 对在真机上图像性能测量的[帖子][16]，或者可以看看来自 UIKit 工程师 Andy Matuschak 对个各种方式的权衡的[评论][17]。
 
-如果你确实认为在后台执行绘制代码会是你的最好选择时再这么做。其实解决起来也很简单，把 `drawRect:` 中的代码放到一个后台操作中去做就可以了。然后将原本打算绘制的视图用一个 image view 来替换，等到操作执行完后再去更新。在绘制的方法中，使用 `UIGraphicsBeginImageContextWithOptions` 来取代 `UIGraphicsBeginImageContextWithOpertions` ：
+如果你确实认为在后台执行绘制代码会是你的最好选择时再这么做。其实解决起来也很简单，把 `drawRect:` 中的代码放到一个后台操作中去做就可以了。然后将原本打算绘制的视图用一个 image view 来替换，等到操作执行完后再去更新。在绘制的方法中，使用 `UIGraphicsBeginImageContextWithOptions` 来取代 `UIGraphicsGetCurrentContext` ：
 
 
     UIGraphicsBeginImageContextWithOptions(size, NO, 0);
@@ -170,7 +170,7 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
 
 通过在第三个参数中传入 0 ，设备的主屏幕的 scale 将被自动传入，这将使图片在普通设备和 retina 屏幕上都有良好的表现。
 
-如果你在 table view 或者是 collection view 的 cell 上做了自定义绘制的话，最好将塔门放入 operation 的子类中去。你可以将它们添加到后台操作队列，也可以在用户将 cell 滚动出边界时的 `didEndDisplayingCell` 委托方法中进行取消。这些技巧都在 2012 年的WWDC [Session 211 -- Building Concurrent User Interfaces on iOS][18]中有详细阐述。
+如果你在 table view 或者是 collection view 的 cell 上做了自定义绘制的话，最好将它们放入 operation 的子类中去。你可以将它们添加到后台操作队列，也可以在用户将 cell 滚动出边界时的 `didEndDisplayingCell` 委托方法中进行取消。这些技巧都在 2012 年的WWDC [Session 211 -- Building Concurrent User Interfaces on iOS][18]中有详细阐述。
 
 除了在后台自己调度绘制代码，以也可以试试看使用 `CALayer` 的 `drawsAsynchronously` 属性。然而你需要精心衡量这样做的效果，因为有时候它能使绘制加速，有时候却适得其反。
 
@@ -236,7 +236,7 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
 
 就这么多了。完整的代码可以参见[GitHub上的示例工程][20]。
 
-总结来说，我们建议要么你玩时间来把事情做对做好，要么就直接使用像 [AFNetworking][19] 这样的框架。其实 [AFNetworking][19] 还提供了不少好用的小工具，比如有个 `UIImageView` 的 category，来负责异步地从一个 URL 加载图片。在你的 table view 里使用的话，还能自动帮你处理取消加载操作，非常方便。
+总结来说，我们建议要么你花时间来把事情做对做好，要么就直接使用像 [AFNetworking][19] 这样的框架。其实 [AFNetworking][19] 还提供了不少好用的小工具，比如有个 `UIImageView` 的 category，来负责异步地从一个 URL 加载图片。在你的 table view 里使用的话，还能自动帮你处理取消加载操作，非常方便。
 
 扩展阅读：
 
@@ -253,7 +253,7 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
 
 为了达到这个目的，我们使用能让我们异步处理文件的 `NSInputStream` 。根据[官方文档][21]的描述：
 
-> 如果你需总是需要从头到尾来读/写文件的话，streams 提供了一个简单的接口来异步完成这个操作
+> 如果你总是需要从头到尾来读/写文件的话，streams 提供了一个简单的接口来异步完成这个操作
 
 不管你是否使用 streams，大体上逐行读取一个文件的模式是这样的：
 
@@ -361,8 +361,8 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
    [1]: http://objccn.io/issue-2
    [6]: http://developer.apple.com/library/ios/#documentation/Cocoa/Reference/NSOperationQueue_class/Reference/Reference.html
    [7]: https://developer.apple.com/library/ios/#documentation/Performance/Reference/GCD_libdispatch_Ref/Reference/reference.html
-   [8]: http://www.objc.io/issue-2-1/
-   [9]: http://www.objc.io/issue-2-3/
+   [8]: http://www.objccn.io/issue-2-1/
+   [9]: http://www.objccn.io/issue-2-3/
    [10]: https://developer.apple.com/library/mac/#documentation/cocoa/conceptual/CoreData/Articles/cdConcurrency.html
    [11]: https://github.com/objcio/issue-2-background-core-data
    [12]: http://stg.daten.berlin.de/datensaetze/vbb-fahrplan-2013

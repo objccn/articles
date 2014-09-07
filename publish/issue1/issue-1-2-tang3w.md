@@ -20,7 +20,7 @@ Table view controllers 的 view 属性永远都是一个 table view。如果你�
 
 最后，你需要把迁移后丢失的 table view controller 的特性给补回来。大多数都是 `viewWillAppear:` 或 `viewDidAppear:` 中简单的一条语句。切换编辑模式需要实现一个 action 方法，用来切换 table view 的 `editing` 属性。大多数工作来自重新创建对键盘的支持。
 
-在选择条路之前，其实还有一个更轻松的选择，它可以通过分离我们需要关心的功能（关注点分离），让你获得额外的好处：
+在选择这条路之前，其实还有一个更轻松的选择，它可以通过分离我们需要关心的功能（关注点分离），让你获得额外的好处：
 
 ### 使用Child View Controllers
 

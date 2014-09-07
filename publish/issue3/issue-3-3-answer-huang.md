@@ -139,7 +139,7 @@ Supplementary views 和 decoration views 必须是 [UICollectionResuableView][8]
 
 最后，当 collection view 的 bounds 改变时，布局需要告诉 collection view 是否需要重新计算布局。我的猜想是：当 collection view 改变大小时，大多数布局会被作废，比如设备旋转的时候。因此，一个幼稚的实现可能只会简单的返回 YES。虽然实现功能很重要，但是 scroll view 的 bounds 在滚动时也会改变，这意味着你的布局每秒会被丢弃多次。根据计算的复杂性判断，这将会对性能产生很大的影响。
 
-当 collection view 的宽度改变时，我们自定义的布局必须被丢弃，但这滚动并不会影响到布局。幸运的是，collection view 将它的新 bounds 传给 shouldInvalidateLayoutForBoundsChange: method。这样我们便能比较视图当前的bounds 和新的 bounds 来确定返回值：
+当 collection view 的宽度改变时，我们自定义的布局必须被丢弃，但这滚动并不会影响到布局。幸运的是，collection view 将它的新 bounds 传给 `shouldInvalidateLayoutForBoundsChange:` 方法。这样我们便能比较视图当前的bounds 和新的 bounds 来确定返回值：
 
     - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
     {

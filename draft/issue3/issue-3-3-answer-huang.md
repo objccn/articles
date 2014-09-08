@@ -18,7 +18,7 @@ collection view 中的 **Supplementary views** 相当于 table view 的 section 
 
 **Decoration views** 纯粹为一个装饰品。他们完全属于布局对象，并被布局对象管理，他们并不从 data source 获取的 contents。当布局对象指定需要一个 decoration view 的时候，collection view 会自动创建，并将布局对象提供的布局参数应用到上面去。并不需要为自定义视图准备任何内容。
 
-Supplementary views 和 decoration views 必须是 [UICollectionResuableView][8] 的子类。布局使用的每个视图类都需要在 collection view 中注册，这样当 data source 让它们从 reuse pool 中出列时，它们才能够创建新的实例。如果你是使用的 Interface Builder，则可以通过在可视编辑器中拖拽一个 cell 到 collection view 上完成 cell 在 collection view 中的注册。同样的方法也可以用在 supplementary view 上，前提是你使用了 `UICollectionViewFlowLayout`。如果没有，你只能通过调用 [`registerClass:`][9] 或者 [`registerNib:`][10] 方法手动注册视图类了。你需要在 `viewDidLoad` 中做这些操作。
+Supplementary views 和 decoration views 必须是 [UICollectionReusableView][8] 的子类。布局使用的每个视图类都需要在 collection view 中注册，这样当 data source 让它们从 reuse pool 中出列时，它们才能够创建新的实例。如果你是使用的 Interface Builder，则可以通过在可视编辑器中拖拽一个 cell 到 collection view 上完成 cell 在 collection view 中的注册。同样的方法也可以用在 supplementary view 上，前提是你使用了 `UICollectionViewFlowLayout`。如果没有，你只能通过调用 [`registerClass:`][9] 或者 [`registerNib:`][10] 方法手动注册视图类了。你需要在 `viewDidLoad` 中做这些操作。
 
 ## 自定义布局
 
@@ -75,7 +75,7 @@ Supplementary views 和 decoration views 必须是 [UICollectionResuableView][8]
 
 3. 如果你的布局包含 supplementary views，计算矩形内可见 supplementary view 的 index paths。在循环中调用你实现的 `layoutAttributesForSupplementaryViewOfKind:atIndexPath:` ，并且将这些对象加到数组中。通过为 kind 参数传递你选择的不同字符，你可以区分出不同种类的supplementary views（比如headers和footers）。当需要创建视图时，collection view 会将 kind 字符传回到你的数据源。记住 supplementary 和 decoration views 的数量和种类完全由布局控制。你不会受到 headers 和 footers 的限制。
 
-4. 如果布局包含 decoration views，计算矩形内可见 decoration views 的 index paths。在循环中调用你实现的 layoutAttributesForDecorationViewOfKind:atIndexPath: ，并且将这些对象加到数组中。
+4. 如果布局包含 decoration views，计算矩形内可见 decoration views 的 index paths。在循环中调用你实现的 `layoutAttributesForDecorationViewOfKind:atIndexPath:` ，并且将这些对象加到数组中。
 
 5. 返回数组。
 

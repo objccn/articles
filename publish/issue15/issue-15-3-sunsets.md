@@ -25,7 +25,7 @@
 
 其实一提到 DI，很多人会直接想到依赖注入框架或者是控制反转 (Inversion of Control 简称 IoC) 容器。请把这些概念都暂且搁置，我会在后面的 FAQ (常见问题) 中做说明。
 
-现行有很多技术可以处理在依赖中注入某些东西这件事情。比如说 Objective-C runtime 中的 swizzling 就是其一，swizzling 可以在运行时动态地将方法进行替换。当然也有人提出质疑，他们觉得 [swizzling 的存在让 DI 变得无关紧要](http://sharpfivesoftware.com/2013/03/20/dependency-injection-is-not-a-virtue-in-objective-c/)，甚至应尽量避免使用 DI。但是我更倾向于那些使依赖关系能够清晰化的代码，因为这样更便于观察它们 (并且促使我们去处理那些由于依赖过于复杂而导致的变坏或者错误的代)。
+现行有很多技术可以处理在依赖中注入某些东西这件事情。比如说 Objective-C runtime 中的 swizzling 就是其一，swizzling 可以在运行时动态地将方法进行替换。当然也有人提出质疑，他们觉得 [swizzling 的存在让 DI 变得无关紧要](http://sharpfivesoftware.com/2013/03/20/dependency-injection-is-not-a-virtue-in-objective-c/)，甚至应尽量避免使用 DI。但是我更倾向于那些使依赖关系能够清晰化的代码，因为这样更便于观察它们 (并且促使我们去处理那些由于依赖过于复杂而导致的变坏或者错误的代码)。
 
 接下来我们快速了解一下 DI 的形式。其中除一个以外，其他的例子都来自于 Mark Seemann 的 [*Dependency Injection in .Net*](http://www.amazon.com/Dependency-Injection-NET-Mark-Seemann/dp/1935182501)
 

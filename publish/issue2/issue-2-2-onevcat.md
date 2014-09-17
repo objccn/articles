@@ -82,7 +82,7 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
 
 然而，如果你执行示例代码的话，你会发现它运行逐渐变得很慢，取消操作也有迟滞。这是因为主操作队列中塞满了要更新进度条的 block 操作。一个简单的解决方法是降低更新的频度，比如只在每导入一百行时更新一次：
 
-    NSInteger progressGranularity = lines.count / 100;
+    NSInteger progressGranularity = 100;
 
     if (idx % progressGranularity == 0) {
         self.progressCallback(idx / (float) count);

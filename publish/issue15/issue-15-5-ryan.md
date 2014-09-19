@@ -86,7 +86,7 @@
     
     OCMVerifyAll();
  
-由于 OCMock 也支持对类方法的 stub，你也可以用这种方式来来测试，如果 `doSomething` 方法通过 `[UIApplication sharedApplication]` 来实现而不是 `UIApplication` 对象的注入初始化：
+由于 OCMock 也支持对类方法的 stub，你也可以用这种方式来测试，如果 `doSomething` 方法通过 `[UIApplication sharedApplication]` 来实现而不是 `UIApplication` 对象的注入初始化：
 
     id app = OCMClassMock([UIApplication class]);
     OCMStub([app sharedInstance]).andReturn(app);

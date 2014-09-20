@@ -704,10 +704,10 @@ In Objective-C, using blocks as parameters is popular for completion and error h
 
 
 ## Access Controls
-## 访问控制
+## 权限控制
 
 Swift has three levels of [Access Controls](https://developer.apple.com/library/prerelease/mac/documentation/Swift/Conceptual/Swift_Programming_Language/AccessControl.html): 
-Swift 有三个级别的[访问控制](https://developer.apple.com/library/prerelease/mac/documentation/Swift/Conceptual/Swift_Programming_Language/AccessControl.html): 
+Swift 有三个级别的[权限控制](https://developer.apple.com/library/prerelease/mac/documentation/Swift/Conceptual/Swift_Programming_Language/AccessControl.html): 
 
 - **Public access** enables entities to be used within any source file from their defining module, and also in a source file from another module that imports the defining module. You typically use public access when specifying the public interface to a framework.
 - **Internal access** enables entities to be used within any source file from their defining module, but not in any source file outside of that module. You typically use internal access when defining an app’s or a framework’s internal structure.

@@ -1,6 +1,6 @@
 Although Objective-C has some strange-looking syntax compared to other programming languages, the method syntax is pretty straightforward once you get the hang of it. Here is a quick throwback:  
 
-虽然 Objective-C 的语法相较于其他编程语言来说有一点点奇怪，但是你真的这去使用的时候它的语法还是相当简单。下面有一些例子：
+虽然 Objective-C 的语法相对于其他编程语言来说写法有点奇怪，但是当你真正使用的时候它的语法还是相当的简单。下面有一些例子：
 
 ```objectivec
 
@@ -28,15 +28,15 @@ Although Objective-C has some strange-looking syntax compared to other programmi
 
 In contrast, while Swift syntax looks a lot more like other programming languages, it can also get a lot more complicated and confusing than Objective-C. 
 
-相比而言，Swift 的语法看起来与其他编程语言有更多相似的地方，也比 Objective-C 更加复杂和更令人费解。
+相比而言，Swift 的语法与其他编程语言有更多相似的地方，同时也比 Objective-C 更加复杂和令人费解。
 
 Before I continue, I want to clarify the difference between a Swift *method* and *function*, as I'll be using both terms throughout this article. Here is the definition of Methods, according to Apple's [Swift Programming Language Book](https://developer.apple.com/library/prerelease/mac/documentation/Swift/Conceptual/Swift_Programming_Language/Methods.html):
 
-在继续之前，我需要澄清 Swift 中 *method* 和 *function* 之间的不同，因为在本文中我们将使用这两个术语。按照 Apple 的 [Swift Programming Language Book](https://developer.apple.com/library/prerelease/mac/documentation/Swift/Conceptual/Swift_Programming_Language/Methods.html) 里面的方法定义：
+在继续之前，我需要澄清 Swift 中**方法**和**函数**之间的不同，因为在本文中我们将使用这两个术语。按照 Apple 的 [Swift Programming Language Book](https://developer.apple.com/library/prerelease/mac/documentation/Swift/Conceptual/Swift_Programming_Language/Methods.html) 里面的方法定义：
 
 > Methods are functions that are associated with a particular type. Classes, structures, and enumerations can all define instance methods, which encapsulate specific tasks and functionality for working with an instance of a given type. Classes, structures, and enumerations can also define type methods, which are associated with the type itself. Type methods are similar to class methods in Objective-C.
 
-> 方法是关联到一个特定类型的函数。类，结构，枚举都可以定义封装特定任务和功能处理给定类型的一个实例方法。类，结构，枚举也可以定义相关类型本身的方法。类型方法与 Objective-C 中的类方法类似。
+> 方法是与某些特定类型相关联的函数。类、结构体、枚举都可以定义实例方法；实例方法为给定类型的实例封装了具体的任务与功能。类、结构体、枚举也可以定义类型方法；类型方法与类型本身相关联。类型方法与 Objective-C 中的类方法（class methods）相似。
 
 TL;DR: Functions are standalone, while methods are functions that are encapsulated in a class, struct, or enum. 
 TL;DR (译者注：the phrase too long; didn't read。意思就是太长了，别读了。这里应该是总结成一句话): 函数是独立的，而方法是函数封装在类，结构或者枚举中。
@@ -91,7 +91,7 @@ This function takes in one parameter named `param1` of type `String` and one par
 
 One of the big differences between Swift and Objective-C is how parameters work when a Swift function is called. If you love the verbosity of Objective-C, like I do, keep in mind that parameter names are not included externally by default when a Swift function is called: 
 
-Swift 和 Objective-C 之间其中一个巨大的差别就是当 Swift 函数被调用的时候参数的是如何工作的。如果你喜欢 Objective-C 冗长的命名方式，如我一般，那么请记住，在默认情况下 Swift 函数被调用时参数名不被外部包含在内。
+Swift 和 Objective-C 之间其中一个巨大的差别就是当 Swift 函数被调用的时候参数工作方式。如果你喜欢 Objective-C 冗长的命名方式，如我一般，那么请记住，在默认情况下 Swift 函数被调用时参数名不被外部包含在内。
 
 ```swift
 func hello(name: String) {
@@ -103,7 +103,7 @@ hello("Mr. Roboto")
 
 This might not seem so bad until you add a few more parameters to your function: 
 
-一切看起来并不是太糟糕，直到你增加更多的参数到你的函数中：
+在你增加更多参数到函数之前，一切看起来不是那么糟糕：
 
 ```swift
 func hello(name: String, age: Int, location: String) {
@@ -117,9 +117,9 @@ From reading just `hello("Mr. Roboto", 5, "San Francisco")`, you would have a ha
 
 如果仅阅读 `hello("Mr. Roboto", 5, "San Francisco")`，你可能很难知道每一个参数代表什么。
 
-In Swift, there is a concept of an *external parameter name* to clarify this confusion: 
+In Swift, there is a concept of an *external parameter name*  clarify this confusion: 
 
-在 Swift 中，有一个概念称为 **external parameter name* * 用来阐明困惑之处：
+在 Swift 中，有一个概念称为 **外部参数名称* * 用来阐明困惑之处：
 
 ```swift
 func hello(fromName name: String) {
@@ -131,7 +131,7 @@ hello(fromName: "Mr. Roboto")
 
 In the above function, `fromName` is an external parameter, which gets included when the function is called, while `name` is the internal parameter used to reference the parameter inside the function execution. 
 
-上面函数中，`fromName` 是一个外部参数，是在函数被调用的时候，内部参数 `name` 用来引用去执行函数。
+上面函数中，`fromName` 是一个外部参数，是在函数被调用的时候，被内部参数 `name` 引用去执行函数。
 
 If you want the external and internal parameter names to be the same, you don't have to write out the parameter name twice: 
 
@@ -167,7 +167,7 @@ And of course, the rules for how parameters work are slightly different for Meth
 
 When encapsulated in a class (or struct or enum), the first parameter name of a method is *not* included externally, while all following parameter names are included externally when the method is called:
 
-当分装在类（或者结构，枚举）中，方法的第一个参数名**不**被外部包含，尽管后面的参数在方法调用时候被外部包含：
+当分装在类（或者结构，枚举）中，方法的第一个参数名**不**被外部包含，反而后面的参数在方法调用时候被外部包含：
 
 ```swift
 class MyFunClass {
@@ -246,7 +246,7 @@ class MyHelloWorldClass {
 
 I can create a variable that points to the class's `helloWithName` function: 
 
-我可以建立一个变量指向类里面的 `helloWithName` 中：
+我可以建立一个变量指向类中的 `helloWithName` ：
 
 ```swift
 let helloWithNameFunc = MyHelloWorldClass.helloWithName
@@ -254,7 +254,7 @@ let helloWithNameFunc = MyHelloWorldClass.helloWithName
 ``` 
 My new `helloWithNameFunc` is of type `MyHelloWorldClass -> (String) -> String`, a function that takes in an instance of my class and returns another function that takes in a String value and returns a String value. 
 
-我新的 `helloWithNameFunc` 是 `MyHelloWorldClass -> (String) -> String` 类型，一个函数，接受我的类的一个实例并返回另一个函数，它接受一个字符串值，并返回一个字符串值。
+我新的 `helloWithNameFunc` 是 `MyHelloWorldClass -> (String) -> String` 类型，函数接受我的类的一个实例并返回另一个函数，它接受一个字符串值，并返回一个字符串值。
 
 So I can actually call my function like this: 
 
@@ -272,13 +272,14 @@ helloWithNameFunc(myHelloWorldClassInstance)("Mr. Roboto")
 
 A special `init` method is called when a class, struct, or enum is initialized. In Swift, you can define initialization parameters, just like with any other method: 
 
-特殊的 `init` 方法是在类，结构体或者枚举初始化的时候调用。在 Swift 中 你可以像其他方法那样定义初始化参数：
+特殊的 `init` 方法是在类，结构体或者枚举初始化的时候调用。在 Swift 中你可以像其他方法那样定义初始化参数：
 
 ```swift
 class Person {
     
     init(name: String) {
         // your init implementation
+        // 你的初始化方法实现
     }
     
 }
@@ -299,6 +300,7 @@ class Person {
     
     init(fromName name: String) {
         // your init implementation
+        // 你的初始化方法实现
     }
     
 }
@@ -336,44 +338,52 @@ let bodyTemperature = Celsius(37.0)
 
 Skipping the external parameter can also be useful if you want to abstract how your class / enum / struct gets initialized. I love the use of this in [David Owen's](https://twitter.com/owensd) [json-swift library](https://github.com/owensd/json-swift/blob/master/src/JSValue.swift): 
 
-如果你希望抽象你的类/枚举/结构体如何初始化，调过外部参数也可以很有用。我喜欢在  [David Owen's](https://twitter.com/owensd) 的 [json-swift library](https://github.com/owensd/json-swift/blob/master/src/JSValue.swift) 中这样使用。
+如果你希望抽象类/枚举/结构体的初始化，跳过外部参数可以非常有用。我喜欢在  [David Owen's](https://twitter.com/owensd) 的 [json-swift library](https://github.com/owensd/json-swift/blob/master/src/JSValue.swift) 中这样使用。
 
 ```swift
 public struct JSValue : Equatable {
     
     // ... truncated code
+    // ... 截断的部分代码
 
     /// Initializes a new `JSValue` with a `JSArrayType` value.
+    /// 初始化 `JSValue` 包含初始化参数 `JSArrayType`。 
     public init(_ value: JSArrayType) {
         self.value = JSBackingValue.JSArray(value)
     }
 
     /// Initializes a new `JSValue` with a `JSObjectType` value.
+    /// 初始化 `JSValue` 包含初始化参数 `JSObjectType`。 
     public init(_ value: JSObjectType) {
         self.value = JSBackingValue.JSObject(value)
     }
 
     /// Initializes a new `JSValue` with a `JSStringType` value.
+    /// 初始化 `JSValue` 包含初始化参数 `JSStringType`。
     public init(_ value: JSStringType) {
         self.value = JSBackingValue.JSString(value)
     }
 
     /// Initializes a new `JSValue` with a `JSNumberType` value.
+    /// 初始化 `JSValue` 包含初始化参数 `JSNumberType`。
     public init(_ value: JSNumberType) {
         self.value = JSBackingValue.JSNumber(value)
     }
 
     /// Initializes a new `JSValue` with a `JSBoolType` value.
+    /// 初始化 `JSValue` 包含初始化参数 `JSBoolType`。
     public init(_ value: JSBoolType) {
         self.value = JSBackingValue.JSBool(value)
     }
 
     /// Initializes a new `JSValue` with an `Error` value.
+    /// 初始化 `JSValue` 包含初始化参数 `Error`。
     init(_ error: Error) {
         self.value = JSBackingValue.Invalid(error)
     }
 
     /// Initializes a new `JSValue` with a `JSBackingValue` value.
+    /// 初始化 `JSValue` 包含初始化参数 `JSBackingValue`。
     init(_ value: JSBackingValue) {
         self.value = value
     }
@@ -386,7 +396,6 @@ Compared to Objective-C, Swift has a lot of extra options for what type of param
 相较于 Objective-C，Swift 有很多额外的选项用来指定可以传入的参数类型，下面是一些例子
 
 ### Optional Parameter Types
-
 ### 可选参数类型
 
 In Swift, there is a new concept of [optional types](https://developer.apple.com/library/prerelease/mac/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html): 
@@ -394,10 +403,9 @@ In Swift, there is a new concept of [optional types](https://developer.apple.com
 在 Swift 中有一个新的概念称之为  [optional types](https://developer.apple.com/library/prerelease/mac/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html): 
 
 > Optionals say either “there is a value, and it equals x” or “there isn’t a value at all.” Optionals are similar to using nil with pointers in Objective-C, but they work for any type, not just classes. Optionals are safer and more expressive than nil pointers in Objective-C and are at the heart of many of Swift’s most powerful features.
-> 可选是说“有一个值，并且等于 x”或者“没有值”。可选类似于在 Objective-C 中使用 nil 指针，但是它作用于任何类型，不仅仅是类。可选相较于 Objective-C 中的 nil更安全更具有表现力，也是 Swfit 中许多强大功能的核心。
+> 可选表示“那儿有一个值，并且它等于 x ”或者“那儿没有值”。可选有点像在 Objective-C 中使用nil，但是它可以用在任何类型上，不仅仅是类。可选类型比 Objective-C 中的nil指针更加安全也更具表现力，它是 Swift 许多强大特性的重要组成部分。
 
 To indicate that a parameter type is optional (can be nil), just add a question mark after the type specification: 
-
 表明一个参数是可选（可以是 nil），可以在类型规范后添加一个问号：
 
 ```swift
@@ -410,6 +418,7 @@ myFuncWithOptionalType(nil)
 ```
 
 When working with optionals, don't forget to unwrap!
+使用可选时候不要忘记拆包！
 
 ```swift
 func myFuncWithOptionalType(optionalParameter: String?) {
@@ -429,10 +438,10 @@ myFuncWithOptionalType(nil)
 
 Coming from Objective-C, getting used to working with optionals definitely takes some time!
 
-如果学习过 Objective-C，那么习惯于使用可选肯定需要一些时间！
+如果学习过 Objective-C，那么习惯使用可选肯定需要一些时间！
 
 ### Parameters with Default Values
-### 参数默认值
+### 默认参数值
 
 ```swift
 func hello(name: String = "you") {
@@ -451,14 +460,13 @@ Note that a parameter with a default value automatically has an external paramet
 
 And since parameters with a default value can be skipped when the function is called, it is best practice to put all your parameters with default values at the end of a function's parameter list. Here is a note from the [Swift Programming Language Book](https://developer.apple.com/library/prerelease/mac/documentation/Swift/Conceptual/Swift_Programming_Language/Functions.html) on the topic:  
 
-由于参数的默认值可以在函数被调用时调过，所以最佳时间是把含有默认值的参数放在函数参数列表的最后。
+由于参数的默认值可以在函数被调用时调过，所以最佳时间是把含有默认值的参数放在函数参数列表的最后。[Swift Programming Language Book](https://developer.apple.com/library/prerelease/mac/documentation/Swift/Conceptual/Swift_Programming_Language/Functions.html) 包含相关的内容介绍
 
 > Place parameters with default values at the end of a function’s parameter list. This ensures that all calls to the function use the same order for their non-default arguments, and makes it clear that the same function is being called in each case.
 > 把含有默认值的参数放在参数列表最后，是确保所有无默认值参数使用了相同的顺序，而且清晰表述了在不同情况下相同函数被调用。
 
 I'm a huge fan of default parameters, mostly because it makes code easy to change and backward compatible. You might start out with two parameters for your specific use case at the time, such as a function to configure a custom `UITableViewCell,` and if another use case comes up that requires another parameter (such as a different text color for your cell's label), just add a new parameter with a default value—all the other places where this function has already been called will be fine, and the new part of your code that needs the parameter can just pass in the non-default value!
-
-我是默认参数的粉丝，主要使得代码容易改变而且向后兼容。你可以在你的用例中用两个参数开始，比如配置一个自定义的 `UITableViewCell,`，如果另一个用例出现，需要另一个参数(如你的 Cell 的label 的不同文字颜色)，只需要添加一个新包含默认值的参数 — 函数的其他部分已经被正确调用，并且你代码最新部分仅需要参数传入一个非默认值。
+我是默认参数的粉丝，主要使得代码容易改变而且向后兼容。你可以在你的用例中用两个参数开始，比如配置一个自定义的 `UITableViewCell,`，如果另一个用例出现，需要另一个参数(如你的 Cell 的 label 含有不同文字颜色)，只需要添加一个包含新默认值的参数 — 函数的其他部分已经被正确调用，并且你代码最新部分仅需要参数传入一个非默认值。
 
 ### Variadic Parameters 
 ### 可变参数
@@ -512,10 +520,10 @@ Another note about variadic parameters—the variadic parameter must be the *las
 可变参数另一个要注意的地方是 — 可变参数必须是在函数列表的**最后**一个！
 
 ### Inout Parameters
-### Inout 参数
+### 输入输出参数
 
 With inout parameters, you have the ability to manipulate external variables (aka pass by reference):
-利用 inout 参数，你有能力操纵外部变量（即经过引用）:
+利用输入输出参数，你有能力操纵外部变量（即经过引用）:
 
 ```swift
 var name1 = "Mr. Potato"
@@ -537,7 +545,6 @@ name2
 ``` 
 
 This is a very common pattern in Objective-C for handling error scenarios. `NSJSONSerialization` is just one example: 
-
 这是 Objective-C 中非常常见的模式用来处理错误场景。 `NSJSONSerialization` 只是其中一个例子：
 
 ```objectivec
@@ -554,7 +561,7 @@ This is a very common pattern in Objective-C for handling error scenarios. `NSJS
 
 Since Swift is so new, there aren't clear conventions on handling errors just yet, but there are definitely a lot of options beyond inout parameters! Take a look at David Owen's recent blog post on [error handling in Swift](http://owensd.io/2014/08/22/error-handling-take-two.html). More on this topic should also be covered in [Functional Programming in Swift](http://www.objc.io/books/). 
 
-Swift 非常之新，所以这里没有一个明确的处理错误的方案，但是在 inout 参数之下肯定有非常多的选择！看下 David Owen's  最新的博客 [Swfit 中的错误处理](http://owensd.io/2014/08/22/error-handling-take-two.html). 更多相关内容已经在 [Functional Programming in Swift](http://www.objc.io/books/) 中涵盖. 
+Swift 非常之新，所以这里没有一个明确的处理错误的方案，但是在输入输出参数之下肯定有非常多的选择！看看 David Owen's  最新的博客 [Swfit 中的错误处理](http://owensd.io/2014/08/22/error-handling-take-two.html). 以及更多相关内容已经在 [Functional Programming in Swift](http://www.objc.io/books/) 中涵盖. 
 
 
 ### Generic Parameter Types
@@ -562,7 +569,7 @@ Swift 非常之新，所以这里没有一个明确的处理错误的方案，�
 
 I'm not going to get too much into generics in this post, but here is a very simple example for how you can make a function accept parameters of different types while making sure that both parameters are of the same type:
 
-我不会在本文中提到过多的泛型参数，但是这里有个简单的例子来阐述你一个函数中如果接受不同类型的参数来确保两个参数相同类型：
+我不会在本文中提到过多的泛型参数，但是这里有个简单的例子来阐述你一个函数中如果接受不同类型的参数来确保两个参数相同：
 
 ```swift
 func valueSwap<T>(inout value1: T, inout value2: T) {
@@ -597,7 +604,7 @@ For a lot more information on Generics, I recommend taking a look at the [Generi
 
 By default, parameters that are passed into a function are constants, so they cannot be manipulated within the scope of the function. If you would like to change that behavior, just use the var keyword for your parameters:
 
-默认情况下，参数传入函数是一个常亮，所以他在函数范围内不能被操纵，如果你想修改这个行为，只需要使用 var 关键字在你的参数中：
+默认情况下，参数传入函数是一个常量，所以他在函数范围内不能被操纵，如果你想修改这个行为，只需要在你的参数使用 var 关键字：
 
 ```swift
 var name = "Mr. Roboto"
@@ -678,7 +685,7 @@ func luckyNumberForName(name: String, #lotteryHandler: lotteryOutputHandler) -> 
 ```
 
 You can also have a function without a name as a parameter type (similar to blocks in Objective-C): 
-你也可以有一个函数不含名称的参数类型（类似于 Objective-C 中的 blocks）：
+你也可以有一个不包含名为 name 参数的函数（类似于 Objective-C 中的 blocks）：
 
 ```swift
 func luckyNumberForName(name: String, #lotteryHandler: (String, Int) -> String) -> String {
@@ -693,24 +700,21 @@ luckyNumberForName("Mr. Roboto", lotteryHandler: {name, number in
 ```
 
 In Objective-C, using blocks as parameters is popular for completion and error handlers in methods that execute an asynchronous operation. This should continue to be a popular pattern in Swift as well. 
-
-在 Objective-C 中，使用 blocks 作为参数是异步操作完成和错误处理的流行方式，这一方式在 Swift 中得到了很好的延续。
+在 Objective-C 中，使用 blocks 作为参数是异步操作完成和错误处理的常见方式，这一方式在 Swift 中得到了很好的延续。
 
 
 ## Access Controls
 ## 访问控制
 
 Swift has three levels of [Access Controls](https://developer.apple.com/library/prerelease/mac/documentation/Swift/Conceptual/Swift_Programming_Language/AccessControl.html): 
-
 Swift 有三个级别的[访问控制](https://developer.apple.com/library/prerelease/mac/documentation/Swift/Conceptual/Swift_Programming_Language/AccessControl.html): 
-
 
 - **Public access** enables entities to be used within any source file from their defining module, and also in a source file from another module that imports the defining module. You typically use public access when specifying the public interface to a framework.
 - **Internal access** enables entities to be used within any source file from their defining module, but not in any source file outside of that module. You typically use internal access when defining an app’s or a framework’s internal structure.
 - **Private access** restricts the use of an entity to its own defining source file. Use private access to hide the implementation details of a specific piece of functionality.
-- **Public access** 使实体可以在模块定义的代码中使用,也从一个源文件的模块中导入定义模块。你通常使用公共访问指定的公共接口框架。
-- **Internal access**使尸体可以在模块定义的代码中使用，但是不能被外部模块引用，您通常使用内部访问当定义一个应用程序或框架的内部结构。
-- **Private access**限制使用一个实体自身定义的源文件。使用私人访问隐藏特定功能的实现细节。
+- **Public access** 可以访问自己模块或应用中源文件里的任何实体，别人也可以访问引入该模块中源文件里的所有实体。通常情况下，某个接口或 Framework 是可以被任何人使用时，你可以将其设置为 public 级别
+- **Internal access** 可以访问自己模块或应用中源文件里的任何实体，但是别人不能访问该模块中源文件里的实体。通常情况下，某个接口或 Framework 作为内部结构使用时，你可以将其设置为 internal 级别。
+- **Private access** 只能在当前源文件中使用的实体，称为私有实体。使用 private 级别，可以用作隐藏某些功能的实现细节。
 
 By default, every function and variable is internal—if you want to change that, you have to use the `private` or `public` keyword in front of every single method and variable: 
 默认情况下，每个函数和变量是内部的—如果你希望修改他们，你需要使用 `private` 或者 `public` 关键字在每个方法和变量的前面：
@@ -757,7 +761,6 @@ class MyFunClass {
 ```
 
 Hopefully future releases of Swift will include an option to use one private keyword to indicate that all methods below it are private, similar to how access controls work in other programming languages.
-
 希望 Swift 在将来的版本中包含一个选项可以用一个私有关键字来表明以下所有的方法都是私有的，类似于其他语言那样做访问控制
 
 
@@ -787,7 +790,7 @@ myFuncWithOptonalReturnType()
 ```
 
 And of course, when you're using the optional return value, don't forget to unwrap:
-当然，当你使用可选返回值，不要忘记 unwrap：
+当然，当你使用可选返回值，不要忘记拆包：
 
 ```swift
 let optionalString = myFuncWithOptonalReturnType()
@@ -806,10 +809,10 @@ The best explanation I've seen of optionals is from a [tweet by @Kronusdark](htt
 
 
 ### Multiple Return Values
-### 多返回值
+### 多重返回值
 
 One of the most exciting features of Swift is the ability for a function to have multiple return values:
-Swift 其中一个令人兴奋的功能是函数可以有多个返回值
+Swift 其中一个令人兴奋的功能是函数可以有多重返回值
 
 ```swift 
 func findRangeFromNumbers(numbers: Int...) -> (min: Int, max: Int) {
@@ -835,7 +838,7 @@ findRangeFromNumbers(1, 234, 555, 345, 423)
 ```
 
 As you can see, the multiple return values are returned in a tuple, a very simple data structure of grouped values. There are two ways to use the multiple return values from the tuple: 
-就像你看到的那样，在一个元组中返回多个值，一个非常简单的数据结构的组合值。有两种方法可以使用多个返回值的元组:
+就像你看到的那样，在一个元组中返回多个值，一个非常简单的数据结构的组合值。有两种方法可以使用多重返回值的元组:
 
 ```swift
 let range = findRangeFromNumbers(1, 234, 555, 345, 423)
@@ -851,10 +854,9 @@ println("From numbers: 236, 8, 38, 937, 328. The min is \(min). The max is \(max
 ### 多返回值与可选
 
 The tricky part about multiple return values is when the return values can be optional, but there are two ways to handle dealing with optional multiple return values. 
-多返回值的有一部分非常棘手，当返回值是可选的时候，对于这种情况有两种解决办法。
+多重返回值的有一部分非常棘手，当返回值是可选的时候，对于这种情况有两种解决办法。
 
 In the above example function, my logic is flawed—it is possible that no values could be passed in, so my program would actually crash if that ever happened. If no values are passed in, I might want to make my whole return value optional: 
-
 在上面的例子函数中，我的逻辑是有缺陷的—它有可能没有值传入，所以我的代码有可能在没有值传入的时候崩溃，所以我希望我整个返回值是可选的：
 
 ```swift
@@ -900,7 +902,7 @@ func componentsFromUrlString(urlString: String) -> (host: String?, path: String?
 ``` 
 
 If you decide that some of your tuple values could be optionals, things become a little bit more difficult to unwrap, since you have to consider every single combination of optional values: 
-如果你决定你元组值中一些值是可选，unwrap 时候会变的有些复杂，你需要考虑没中单独的可选返回值的组合
+如果你决定你元组值中一些值是可选，拆包时候会变的有些复杂，你需要考虑没中单独的可选返回值的组合：
 
 ```swift
 let urlComponents = componentsFromUrlString("http://name.com/12345;param?foo=1&baa=2#fragment")
@@ -984,6 +986,6 @@ Swift 函数有更多的选项以及更为强大功能。从你开始利用 Swif
 
 Swift best practices haven't been fully established yet, and the language is still constantly changing, so get your code reviewed by friends and co-workers. I've found that people who've never seen Swift before sometimes teach me the most about my Swift code.
 
-Swift 的最佳事件还没被确立，这门语言也在不断的进化，所以让你的代码被同事和朋友审查。我发现一些从来没见过 Swift 在我的 Swift 代码中提供了很大帮助。
+Swift 的最佳事件还没被确立，这门语言也在不断的进化，所以让你的代码被同事和朋友审查，因为我发现一些从来没见过 Swift 在我的 Swift 代码中提供了很大帮助。
 
 Happy Swifting!

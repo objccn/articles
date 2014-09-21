@@ -44,7 +44,7 @@ Accelerate 框架包括了许多功能强大的并行处理大型数据集的方
 
 Swift 提供了一个机会，通过方法重载或为 Accelerate 框架进行包装后，可以让交互更加容易。这已经在 Chris Liscio 的库 [SMUGMath](https://github.com/liscio/SMUGMath-Swift) 的实践中被证实，这也正是我们接下来将要创建的原型的灵感来源。
 
-假设你有一系列正弦波的数据样本，然后想通过这些数据来确定这个正弦波的频率和幅度，你会怎么做呢？一个解决方案是通过傅里叶变换来算出这些值，傅里叶变换能从一个或多个重叠的正弦波提取频率和幅度信息。Accelerate 框架提供了另一个解决方案，叫做快速傅里叶变换 (FFT），关于这个方案[这里](http://jakevdp.github.io/blog/2013/08/28/understanding-the-fft/)有一个 (基于 IPython notebook 的) 很好的解释。
+假设你有一系列正弦波的数据样本，然后想通过这些数据来确定这个正弦波的频率和幅度，你会怎么做呢？一个解决方案是通过傅里叶变换来算出这些值，傅里叶变换能从一个或多个重叠的正弦波提取频率和幅度信息。Accelerate 框架提供了另一个解决方案，叫做快速傅里叶变换 （FFT），关于这个方案[这里](http://jakevdp.github.io/blog/2013/08/28/understanding-the-fft/)有一个 (基于 IPython notebook 的) 很好的解释。
 
 我们在例子 [AccelerateFunctions.playground](https://github.com/objcio/PersonalSwiftPlaygrounds) 中实现了这个原型，你可以对照这个例子来看下面的内容。请确认你已经打开 Assistant Editor (在菜单上依次点击 View | Assistant Editor | Show Assistant Editor) 以查看每一阶段所产生的图形。
 

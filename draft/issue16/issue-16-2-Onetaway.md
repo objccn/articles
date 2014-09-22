@@ -116,7 +116,7 @@ Swift 增强了对值类型的支持，这提供了一个巨大的机会：值�
 
 ---
 
-[话题 #16 下的更多文章](http://www.objc.io/issue-16)
+[话题 #16 下的更多文章](http://www.objccn.io/issue-16)
 
 原文 [A Warm Welcome to Structs and Value Types](http://www.objc.io/issue-16/swift-classes-vs-structs.html)
 

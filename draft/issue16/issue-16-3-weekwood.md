@@ -123,9 +123,7 @@ Swift 和 Objective-C 之间其中一个巨大的差别就是当 Swift 函数被
     let myFunClass = MyFunClass()
     myFunClass.helloWithName("Mr. Roboto", age: 5, location: "San Francisco")
 
-相对于调用函数 “hello”，我将其重命名为 `helloWithName`，这使得第一个参数 `name` 变得很清晰。
-
-If for some special reason you want to skip the external parameter names in your function (I'd recommend having a very good reason for doing so), use an `_` for the external parameter name: 
+相对于调用函数 “hello”，我将其重命名为 `helloWithName`，这使得第一个参数 `name` 变得很清晰。 
 
 如果出于一些原因你希望在函数中跳过外部参数名 (我建议如果要这么做的话，你需要一个非常好的理由)，为外部函数添加 `_` 来解决：
 
@@ -187,7 +185,7 @@ If for some special reason you want to skip the external parameter names in your
 
 注意下，不像其他方法，初始化方法的第一个参数必须在实例时必须是外部的。
 
-大多数情况下的最佳实践是添加一个不同的外部参数名 — 本例中的 `fromName` —让初始化更具有颗读性：
+大多数情况下的最佳实践是添加一个不同的外部参数名 — 本例中的 `fromName` —让初始化更具有可读性：
 
     class Person {
         
@@ -222,11 +220,9 @@ If for some special reason you want to skip the external parameter names in your
     // freezingPointOfWater.temperatureInCelsius 是 0.0
 
     let bodyTemperature = Celsius(37.0)
-    // bodyTemperature.temperatureInCelsius 是 37.0
+    // bodyTemperature.temperatureInCelsius 是 37.0 
 
-Skipping the external parameter can also be useful if you want to abstract how your class / enum / struct gets initialized. I love the use of this in [David Owen's](https://twitter.com/owensd) [json-swift library](https://github.com/owensd/json-swift/blob/master/src/JSValue.swift): 
-
-如果你希望抽象类/枚举/结构体的初始化，跳过外部参数可以非常有用。我喜欢在 [David Owen](https://twitter.com/owensd) 的 [json-swift library](https://github.com/owensd/json-swift/blob/master/src/JSValue.swift) 中对这项技术的使用。
+如果你希望抽象类/枚举/结构体的初始化，跳过外部参数可以非常有用。我喜欢在 [David Owen](https://twitter.com/owensd) 的 [json-swift library](https://github.com/owensd/json-swift/blob/master/src/JSValue.swift) 中对这项技术的使用：
 
     public struct JSValue : Equatable {
         
@@ -266,7 +262,7 @@ Skipping the external parameter can also be useful if you want to abstract how y
         init(_ value: JSBackingValue) {
             self.value = value
         }
-}
+	}
 
 ## 华丽的参数
 
@@ -326,8 +322,6 @@ Skipping the external parameter can also be useful if you want to abstract how y
 我是默认参数的粉丝，主要是它使得代码容易改变而且向后兼容。比如配置一个自定义的 `UITableViewCell` 的函数里，你可以在你的某个用例中用两个参数开始，如果另一个用例出现，需要另一个参数 (比如你的 Cell 的 label 含有不同文字颜色)，只需要添加一个包含新默认值的参数 — 函数的其他部分已经被正确调用，并且你代码最新部分仅需要参数传入一个非默认值。
 
 ### 可变参数
-
-Variadic parameters are simply a more readable version of passing in an array of elements. In fact, if you were to look at the type of the internal parameter names in the below example, you'd see that it is of type `[String]` (Array of Strings): 
 
 可变参数是传入数组元素的一个更加可读的版本。实际上，比如下面例子中的内部参数名类型，你可以看到它是 `[String]` 类型 (String 数组): 
 

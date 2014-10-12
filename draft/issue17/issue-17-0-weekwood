@@ -4,15 +4,15 @@ Hi all,
 
 This month's issue is about security. It's a comparatively small issue — we really would have liked to include more articles on this important subject, but September was a busy month for us and our contributors, and several articles didn't make it into this issue because of time constraints. So if you still have to catch up with older issues, this month is your chance!
 
-本期话题是关于安全，比较而言这一期的话题相对很小 - 我们真的希望包含更多的这个话题的文章，但是九月份对我们和我们的贡献者来说都是异常忙碌，由于时间限制几篇文章都来不及加入这个话题之中，如果你没来得及阅读之前的话题，现在是你的机会来了。
+本期话题是关于安全，比较而言这一期的话题内容较少 - 我们真的希望包含更多的这个话题的文章，但是九月份对我们和我们的贡献者来说都是异常忙碌的月份，由于时间限制几篇文章都来不及加入这个话题之中，如果你没来得及阅读之前的话题，现在你补救的机会来了。
 
 Nevertheless, we do have three great articles in this issue. First, Graham talks about [why security still matters today](/issue-17/why-security.html). Next, Thomas goes to great lengths to shed some light on every iOS and OS X developer's greatest nightmare: [code signing](/issue-17/inside-code-signing.html). Last but not least, Laurent walks us through the process of how to [validate App Store receipts](/issue-17/receipt-validation.html).
 
-然而，我们依然有三篇极好的文章在本期话题之中。首先，Graham 谈到了关于[为什么今天安全仍然重要](/issue-17-1)。接着，Thomas 竭尽所能阐明对每一个 iOS 和 OS X 开发者来说最大的噩梦[代码签名内幕](/issue-17-2)。最后但并非最不重要的一点是，Laurent 带着我们实现了如何进行[收据验证](/issue-17-3)。
+然而，本期话题之中依然有三篇极好的文章。首先，Graham 谈到了关于[为什么今天安全仍然重要](/issue-17-1)。接着，Thomas 竭尽所能阐明对每一个 iOS 和 OS X 开发者来说最大的噩梦：[代码签名内幕](/issue-17-2)。最后但并非最不重要的一点是，Laurent 带着我们学习了如何进行[收据验证](/issue-17-3)。
 
 Additionally, we have something else for you this month. On the heels of our recent book release ([Functional Programming in Swift](/books)), we decided to create a new newsletter: [Functional Snippets](/snippets). Every week, we'll send you a small functional Swift code snippet for learning and inspiration!
 
-另外，我们还有另外一些内容带给你们。在我们发布的新书 ([Swift 中的函数式编程](http://objc.io/books))，我们决定建立一个新的简讯：[函数片段](http://objc.io/snippets)。每周，我们将通过邮件发送给您一份帮助你学习和带来灵感的 Swift 代码片段。
+此外，我们还有额外一些内容带给你们。在我们发布的新书 ([Swift 中的函数式编程](http://objc.io/books))后，我们决定建立一个新的简讯：[函数片段](http://objc.io/snippets)。每周，我们将通过邮件发送给您一份帮助你学习和带来灵感的 Swift 代码片段。
 
 We don't want to clutter up the main objc.io mailing list with this, so please sign up [here](/snippets) if you want to receive this weekly dose of Swift.
 

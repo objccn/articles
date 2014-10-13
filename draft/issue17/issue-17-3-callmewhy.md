@@ -2,7 +2,7 @@
 
 收据 (Receipts) 是在 OS X 10.6.6 更新后，和 Mac App Store 一起出现的。 iOS 在内购的时候总是需要向服务器提供收据，而在 iOS 7 之后， iOS 和 OS X 的收据格式开始统一。
 
-一个收据意味着一个一次可信任的购买记录，包括所有内购的记录。这有点像是去超市购物后拿到的那一张纸质收据一样。
+一个收据意味着一次可信任的购买记录，每次应用内的购买都会得到一个收据，就像是去超市购物后会拿到一张纸质的收据一样。
 
 关于收据，有以下几个关键的概念：
 
@@ -41,7 +41,7 @@
 
 ![](http://img.objccn.io/issue-17/ReceiptStructure.png)
 
-收据文件由一个经过签名的 [PKCS #7](https://www.ietf.org/rfc/rfc2315.txt) 容器组成，内嵌 [DER](http://en.wikipedia.org/wiki/X.690#DER_encoding) 编码的 [ASN.1](http://www.itu.int/ITU-T/recommendations/rec.aspx?id=9608) 负载区 (payload)，一个证书链，和一个数字签名。
+收据文件由一个经过签名的 [PKCS #7](https://www.ietf.org/rfc/rfc2315.txt) 容器组成，这个容器内嵌 [DER](http://en.wikipedia.org/wiki/X.690#DER_encoding) 编码的 [ASN.1](http://www.itu.int/ITU-T/recommendations/rec.aspx?id=9608) 负载区 (payload)，一个证书链，和一个数字签名。
 
 - **负载区** 是包含着收据信息的一组属性，每个属性都包含了一个类型、一个版本号和一个值。在属性的值里，你可以找到这个收据所对应的 bundle id 和版本号。
 - **证书链** 是一组用来验证签名摘要的证书 - 其中的叶证书 (leaf certificate) 是用来对负载区进行签名的。

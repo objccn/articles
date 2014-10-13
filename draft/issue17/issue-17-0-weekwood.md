@@ -11,3 +11,8 @@
 来至柏林的祝福
 
 Chris，Daniel，与 Florian。
+---
+
+[话题 #17 下的更多文章](http://objccn.io/issue-17)
+
+原文 [Editorial Issue #17](http://www.objc.io/issue-17/editorial.html)

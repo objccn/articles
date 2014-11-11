@@ -12,7 +12,7 @@ We’ve found great contributors who chimed in with their knowledge about game-r
 
 Mike starts off with an article about what makes mobile games great. Max and Warren give an introduction to Apple’s new low-level graphics framework, “Metal.” JP and David write about topics that are relevant to not only game developers: Multipeer Connectivity and Scene Kit. Last but not least, Janie gives us a taste of the wonderful world of sound design.
 
-Mike 以一篇讲述是什么使[手机游戏变得伟大](http://objccn.io/issue-18-1)的文章作为开始。 Max 和 Warren 给出了一篇关于[苹果新的低层次图形框架，"Metal"](http://objccn.io/issue-18-2) 的介绍。 JP  和 David 写的话题关系到的不仅仅是游戏开发者： [多点互联](http://objccn.io/issue-18-3) 和 [Scene Kit](http://objccn.io/issue-18-4)。最后但并非最不重要的是，Janie 带我们领略了[音效设计](http://objccn.io/issue-18-4)的美好世界。
+Mike 以一篇讲述是什么使[手机游戏变得伟大](http://objccn.io/issue-18-1)的文章作为开始。 Max 和 Warren 给出了一篇关于[苹果新的低层次图形框架，"Metal"](http://objccn.io/issue-18-2) 的介绍。 JP  和 David 写的话题关系到的不仅仅是游戏开发者： [多点互联](http://objccn.io/issue-18-3) 和 [Scene Kit](http://objccn.io/issue-18-4)。最后但并非最不重要的是，Janie 带我们领略了[声音设计](http://objccn.io/issue-18-5)的美好世界。
 
 All the best from Berlin,
 

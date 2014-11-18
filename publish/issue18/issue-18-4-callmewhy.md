@@ -222,12 +222,19 @@ WebSocket 协议 ([RFC 6455](http://tools.ietf.org/html/rfc6455)) 允许服务�
 ## 资料
 
 [Multipeer Connectivity Reference](https://developer.apple.com/library/IOs/documentation/MultipeerConnectivity/Reference/MultipeerConnectivityFramework/index.html)
+
 [Multipeer Connectivity WWDC 2013 Session](https://developer.apple.com/videos/enterprise/#15)
+
 [GameKit Reference](https://developer.apple.com/LIBRARY/ios/documentation/GameKit/Reference/GameKit_Collection/index.html)
+
 [NSHipster Article on Multipeer Connectivity](http://nshipster.com/multipeer-connectivity)
+
 [PeerKit: An open-source Swift framework for building event-driven, zero-config MPC apps](https://github.com/jpsim/PeerKit)
+
 [CardsAgainst: An open-source iOS game built with MPC](https://github.com/jpsim/CardsAgainst)
+
 [DeckRocket: An open-source presentation remote control app for iOS/OSX built with MPC](https://github.com/jpsim/DeckRocket)
+
 
 ---
 

@@ -239,19 +239,19 @@ It can also be animated by creating a `CAAnimation` for that key path:
 ![Animated twisting torus](http://img.objccn.io/issue-18/twist.gif)
 
 ## Deferred Shading
-## 延迟渲染
+## 延时着色
 
 There are some graphic effects that can't be achieved in a single render pass, even in pure OpenGL. Instead, different shaders operate in a sequence to perform post-processing or [deferred shading][deferred]. Scene Kit represents such rendering techniques using the [SCNTechnique class][technique]. It is created with a dictionary that defines the drawing passes, their inputs and outputs, shader files, symbols, etc.
 
-即使在纯OpenGL环境下，有些图像效果也无法通过单次渲染完成，我们可以将不同shader进行序列操作，以达到后续处理的目的，称为[延迟渲染][deferred]。Scene Kit使用[SCNTechnique类][technique]来表示这种技术。它使用字典来创建，字典中定义了绘图步骤、输入输出、shader文件、符号等等。
+即使在纯OpenGL环境下，有些图像效果也无法通过一次渲染pass完成，我们可以将不同shader进行序列操作，以达到后续处理的目的，称为[延时着色][deferred]。Scene Kit使用[SCNTechnique类][technique]来表示这种技术。它使用字典来创建，字典中定义了绘图步骤、输入输出、shader文件、符号等等。
 
 The first pass is always Scene Kit's default rendering, which outputs both the color and the depth of the scene. If you don't want the colors to be shaded, the materials can be configured to have the "constant" lighting model, or all lights in the scene can be replaced with a single ambient light.
 
-第一步永远是Scene Kit的默认渲染，它输出场景的颜色和景深。如果你不想这时计算色值，可以将材质设置成"恒定"的光照模型，或者将场景里所有光照都设置成环境光。
+第一个渲染pass永远是Scene Kit的默认渲染，它输出场景的颜色和景深。如果你不想这时计算色值，可以将材质设置成"恒定"的光照模型，或者将场景里所有光照都设置成环境光。
 
 For example, by getting the depth from Scene Kit's initial pass and the normals from a second pass, and performing edge detection on both of them in a third pass, you can draw strong contours both along the outline and along edges:
 
-比如，从Scene Kit渲染流程的第一步获取景深，第二步获取法线，或第三步对其执行边界检测，你即可以沿轮廓也可以沿边缘画粗线：
+比如，从Scene Kit渲染流程的第一个pass获取景深，第二个获取法线，第三个对其执行边界检测，你即可以沿轮廓也可以沿边缘画粗线：
 
 ![Bishop with strong contours](http://img.objccn.io/issue-18/bishop.png)
 

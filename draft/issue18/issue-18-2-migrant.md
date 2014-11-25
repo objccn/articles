@@ -32,7 +32,7 @@ Metal 为了速度而在安全性上做了必要的妥协。对于错误，苹�
 
 ## 基础 Metal 程序
 
-在这部分中，我们会介绍写出第一个 Metal 程序所必要的部分。这个简单的程序绘制了一个正方形的旋转。你可以在 [GitHub 中下载这篇文章的示例代码中](https://github.com/warrenm/metal-demo-objcio)。
+在这部分中，我们会介绍写出第一个 Metal 程序所必要的部分。这个简单的程序绘制了一个正方形的旋转。你可以在 [GitHub 中下载这篇文章的示例代码](https://github.com/warrenm/metal-demo-objcio)。
 
 虽然不能涵盖每一个细节，但我们尽量涉及至少所有的移动部分。你可以阅读源代码和参阅线上资源来深入理解。
 
@@ -71,7 +71,7 @@ id<MTLLibrary> library = [device newDefaultLibrary]
 接下来构建渲染管道状态的时候将使用这个库。
 
 ### 命令队列
-    
+
 命令通过与 Metal 设备相关联的命令队列提交给 Metal 设备。命令队列以线程安全的方式接收命令并顺序执行。创建一个命令队列:
 
 ```objc
@@ -83,7 +83,7 @@ id<MTLCommandQueue> commandQueue = [device newCommandQueue];
 当我们在 Metal 编程中提到管道，指的是顶点数据在渲染时经历的变化。顶点着色器和片段着色器是管道中两个可编程的节点，但还有其它一定会发生的事件 (剪切，栅格化和视图变化) 不在我们的直接控制之下。管道特性中的后者的类组成了固定功能管道。
 
 在 Metal 中创建一个管道，我们需要指定对于每个顶点和每个像素分别想要执行哪个顶点和片段函数 (译者注: 片段着色器又被称为像素着色器)。我们还需要将帧缓冲区的像素格式告诉管道。在本例中，该格式必须与 Metal layer 的格式匹配，因为我们想在屏幕上绘制。
-    
+
 从库中通过名字来获取函数:
 
 ```objc
@@ -165,7 +165,7 @@ memcpy(bufferPointer, &uniforms, sizeof(Uniforms));
 ```
 
 ### 准备绘制
-    
+
 为了在 Metal layer 上绘制，首先我们需要从 layer 中获得一个 'drawable' 对象。这个可绘制对象管理着一组适合渲染的纹理:
 
 ```objc
@@ -182,14 +182,14 @@ renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(1, 1, 1,
 renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
 ```
 
-### 发布绘制指定
-    
+### 发布绘制指令
+
 要放入设备的命令队列的命令必须被编码到命令缓冲区里。命令缓冲区是一个或多个命令的集合，可以以一种 GPU 了解的紧凑的方式执行和编码。
 
 ```objc
 id<MTLCommandBuffer> commandBuffer = [self.commandQueue commandBuffer];
 ```
-    
+
 为了真正编码渲染命令，我们还需要另一个知道如何将我们的绘制指令转换为 GPU 懂得的语言的对象。这个对象叫做命令编码器。我们将上面创建的渲染路径描述器作为参数传入，就可以向命令缓冲区请求一个编码器:
 
 ```objc
@@ -211,6 +211,10 @@ id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderW
 ```
     
 最后，执行 `endEncoding` 通知编码器发布绘制指令完成。
+
+```objc
+[renderEncoder endEncoding];
+```
 
 ### 展示帧缓冲区
 

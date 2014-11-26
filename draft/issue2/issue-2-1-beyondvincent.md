@@ -24,7 +24,8 @@ OS X 和 iOS 提供了几种不同的 API 来支持并发编程。每一个 API 
 
 先把线程调度的复杂情况放一边，开发者可以使用 [POSIX 线程][12] API，或者 Objective-C 中提供的对该 API 的封装 `NSThread`，来创建自己的线程。下面这个小示例利用 `pthread` 来在一百万个数字中查找最小值和最大值。其中并发执行了 4 个线程。从该示例复杂的代码中，应该可以看出为什么你不会希望直接使用 pthread 。
 
-
+    #import <pthread.h>
+    
     struct threadInfo {
         uint32_t * inputValues;
         size_t count;
@@ -129,7 +130,7 @@ OS X 和 iOS 提供了几种不同的 API 来支持并发编程。每一个 API 
 要想启动一个新的线程，需要创建一个线程对象，然后调用它的 `start` 方法：
 
 
-    NSSet *threads = [NSMutableSet set];
+    NSMutableSet *threads = [NSMutableSet set];
     NSUInteger numberCount = self.numbers.count;
     NSUInteger threadCount = 4;
     for (NSUInteger i = 0; i < threadCount; i++) {

@@ -305,3 +305,9 @@ OS X 上支持 Metal 也是迟早的事。API 本身并不局限于 iPhone 和 i
 * [Metal Programming Guide](https://developer.apple.com/Library/ios/documentation/Miscellaneous/Conceptual/MetalProgrammingGuide/Introduction/Introduction.html)
 * [Metal Shading Language Guide](https://developer.apple.com/library/ios/documentation/Metal/Reference/MetalShadingLanguageGuide/Introduction/Introduction.html)
 * [Metal by Example](http://metalbyexample.com)
+
+---
+
+[话题 #18 下的更多文章](http://www.objccn.io/issue-18)
+
+原文 [Metal](http://www.objc.io/issue-18/metal.html)

@@ -154,7 +154,7 @@ Scene Kit 与普通 Cocoa 或 Cocoa Touch 应用使用一样的机制来处理�
 
 如果你想了解更多使用 Scene Kit 做游戏的知识的话，我推荐今年的 WWDC 中的 ["Building a Game with Scene Kit" video][wwdc game]，并看看 [Bananas sample code][bananas].
 
-如果你想学习 Scene Kit 基础知识，我推荐看[这一年的][wwdc 14]和[去年的][wwdc 13] "What's New in Scene Kit" 相关视频。如果你还想学习更多，可以关注[我即将发布的这个主题的书](book)。
+如果你想学习 Scene Kit 基础知识，我推荐看[这一年的][wwdc 14]和[去年的][wwdc 13] "What's New in Scene Kit" 相关视频。如果你还想学习更多，可以关注[我即将发布的这个主题的书][book]。
  
 
 [collada]: https://en.wikipedia.org/wiki/COLLADA

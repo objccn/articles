@@ -19,15 +19,15 @@ So how do we achieve these sorts of elegant designs we want in our games? Let's 
 
 People play mobile games differently than most other kinds of games. Players demand games that are playable in short bursts, such as while they're waiting in line or on the toilet, but they also want the ability to partake in more meaningful, longer-term play sessions. Most studies peg the average iOS game session length at somewhere between one and two minutes, but at the same time, most mobile games are in actuality played at home rather than on the go. Striking a balance to make your game fun and rewarding in both situations is a *really* challenging problem.
 
-玩家玩手机游戏相较于其他平台有很大不同。玩家需要在碎片化的时间内有游戏可玩，比如排队或者上厕所的时候，但是它们也希望游戏更加有意义，可以长时间玩下去。研究表明 iOS 游戏会话时长大多介于一到两分钟之间，与此同时，大多数手机游戏实际在家里玩的时间要比路上更多。想要让你的游戏在乐趣和奖励机制之间做到平衡是一个 **极有**挑战性问题。
+玩家玩手机游戏相较于其他平台有很大不同。玩家需要在碎片化的时间内有游戏可玩，比如排队或者上厕所的时候，但是它们也希望游戏更加有意义，可以长时间玩下去。研究表明 iOS 游戏会话时长大多介于一到两分钟之间，与此同时，大多数手机游戏实际在家里玩的时间要比路上更多。想要让你的游戏在乐趣和奖励机制之间做到平衡是一个**极有**挑战性问题。
 
 To help us think about designing for both of these contexts, it's useful to think about a game as a collection of feedback loops. At any given moment of a game, you have a mental model of the game's system. Based on that, you're going to perform some action that will result in the game giving you feedback, which will in turn inform your mental model.
 
-帮助我们思考设计这两种情景，构造一个游戏反馈循环的集合非常有用。在任何时候，你的游戏有一个心智模型。在这个基础上，你需要执行一些操作，让游戏给你反馈，同时反过来完善你的心智模型。
+为了帮我们思考设计这两种情况，构造一个游戏反馈循环的集合非常有用。在任何时候，你的游戏有一个心智模型。在这个基础上，你需要执行一些操作，让游戏给你反馈，来完善你的心智模型。
 
 The key thing about these feedback loops is that they're fractal in nature; at any given moment, there could be any number of nested feedback loops at play. As an example, let's think about what is happening when you play a game of [Angry Birds](https://www.angrybirds.com).
 
-关于这些反馈循环的关键一点是，他们是分形性质；在任何给定的时刻，可能有任意数量的嵌套的反馈循环。比如，让我们思考下玩[愤怒的小鸟](https://www.angrybirds.com)发生了什么。
+关于这些反馈循环的关键一点是，他们是碎片化的；在任何时刻，可能有任意数量级嵌套的反馈循环。比如，让我们思考在玩[愤怒的小鸟](https://www.angrybirds.com)时发生了什么。
 
 ![如何玩愤怒的小鸟](http://img.objccn.io/issue-18/AngryBirds.png)
 
@@ -41,22 +41,22 @@ Taking a step back, the next most atomic unit of measurement is the level. Each 
 
 In aggregate, all of the levels themselves form a feedback loop and narrative arc, giving you a clear sense of progression over time, in addition to providing you with a sense of your skill, relative to the overall system.
 
-总的来说，所有的关卡本身形成一个反馈循环和叙事模式，随着时间的推移相对于整体系统的进展，给你一个清晰的发展，另外也为您提供你的技能。
+总的来说，所有的关卡本身形成一个反馈循环和叙事模式，随着时间的推移相对于整体系统，给你一个清晰的发展，另外也为您提供你的技能。
 
 We could keep going with examples, but I think the concept is clear. Again, this isn't a game design concept that is unique to mobile games; if either the moment-to-moment experience of playing your game or the overarching sense of personal progression is lacking, your game likely has room for improvement, no matter the platform.
 
-这个例子我们可以继续延伸，但我认为基本概念是明确的。再次声明，这不是一个游戏设计常规概念，而是独一无二的手机游戏的理念，如果缺乏想时时刻刻的玩你的游戏的冲动或是总体意义上的个人发展，不管何种平台，你的游戏还有很大的改进余地。
+我们可以继续延伸，但我认为基本概念是明确的。再次声明，这不是一个游戏设计常规概念，而是独一无二的手机游戏的理念，如果缺乏想时时刻刻的玩你的游戏的冲动或是总体意义上的个人发展，不管何种平台，你的游戏还有很大的改进余地。
 
 This becomes particularly relevant when thinking about the problem of play session length, though. It's possible to have a game with fun moment-to-moment gameplay, while still having the smallest systemic loops be sufficiently long that trying to pick it up for a minute or two while in line wouldn't be fun. That same minute or two in Angry Birds lets you experience multiple full iterations of some of the game's feedback loops, giving a sense of fun even in such a short playtime. The existence of higher-level feedback loops means that these atomic micro-moments of fun don't come at the expense of ruining the potential for longer-term meaningful play.
 
-这样来想游戏会话时长的问题，变得尤为重要。它可能是一个即时反馈乐趣的游戏，同时还具有足够长的最小系统性循环，试图把它捡起来一两分钟，依然有趣。在玩愤怒的小鸟一两分钟内，让您体验游戏反馈循环的多个完整的迭代，即使是在如此短的会话时长内依然给人一种畅快感。上级反馈循环的存在意味着不以这些微瞬间的乐趣为代价破坏长期有意义游戏。
+这样来想游戏会话时长设计，变得尤为重要。它可能是一个即时反馈乐趣的游戏，同时还具有足够长的最小系统性循环，哪怕把玩几分钟，依然有趣。在玩愤怒的小鸟一两分钟内，让您体验游戏反馈循环的多个完整的迭代，即使是在如此短的会话时长内依然给人一种畅快感。上级反馈循环的存在意味着不以这些微瞬间的乐趣为代价破坏长期有意义游戏。
 
 ## The Controller Conundrum
 ## 控制器难题
 
 Most platforms for digital games — game consoles, PCs, and even arcade cabinets — have a larger number of inputs than smartphones or tablets. Many great mobile games find unique ways to use multitouch or the iPhone's accelerometer, rather than throwing lots of virtual buttons on the screen, but that still leaves iOS devices with far less discrete inputs than most other forms of digital games. The result is a difficult design challenge: how can we make interesting, meaningful, and deep game systems when our input is constrained? This is a relatively frequent topic of discussion for game design students — creating a one-button game is a classic educational exercise for aspiring designers — but the restrictions of iOS frequently make it more than an academic concern. Ultimately, it's a similar problem to that of gameplay session length: how do you create something that's simple and immediately approachable without giving up the depth and meaningful play that other forms of games exhibit?
 
-数字游戏的平台 — 游戏控制器，PC 电脑，甚至商场柜机 — 相较于智能手机或平板电脑来说有大量的输入端。许多伟大的手机游戏找到独特的方式来使用多点触控或 iPhone 的加速器，而不是把大量的虚拟按钮显示在屏幕上，但这仍然留给 iOS 设备远大于其他形式数字游戏的输入方式的空间。其结果是一个艰难的设计挑战：怎么才能让在有限输入端游戏系统有趣，有意义并更深入？这是游戏设计专业的学生相讨论对频繁的主题 - 对有抱负的设计师创建一个一键式的游戏是永恒的课题 - 但 iOS 的限制，常常使其比一个学术需要关注更多。归根结底，这是一个类似游戏会话时长的问题：你如何创造东西，很简单，在不放弃的深度和意义的前提下平易近人，就像其他平台展示的那样？
+数字游戏的平台 — 游戏控制器，PC 电脑，甚至商场柜机 — 它们相对于智能手机或平板电脑来说有大量的输入端。许多伟大的手机游戏找到独特的方式来使用多点触控或 iPhone 的加速器，而不是把大量的虚拟按钮显示在屏幕上，但这仍然留给 iOS 设备远大于其他形式数字游戏的输入方式的空间。其结果是一个艰难的设计挑战：怎么才能让在有限输入端游戏系统有趣，有意义并更深入？这是游戏设计专业的学生相讨论对频繁的主题 - 对有抱负的设计师创建一个一键式的游戏是永恒的课题 - 但 iOS 的限制，常常使其比一个学术需要关注更多。归根结底，这是一个类似游戏会话时长的问题：你如何创造的东西，很简单，在不放弃的深度和意义的前提下平易近人，就像其他平台展示的那样？
 
 One useful way for framing interactions in a game is to reduce the formal elements of the game down to 'nouns' and 'verbs.' Let's take the original Super Mario Bros. as an example. Mario has two main verbs: he can *run* and he can *jump*. The challenge in Mario comes from the way the game introduces and arranges nouns to shape these verbs over the course of the game, giving you different obstacles that require you to apply and combine these two verbs in interesting and unique ways.
 

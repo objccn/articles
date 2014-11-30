@@ -1,12 +1,12 @@
-> Mental 框架支持 GPU 加速高级 3D 图像渲染，以及数据并行计算工作。Mental 提供了先进合理的 API，它不仅为图形的组织、处理和呈现，也为计算命令以及为这些命令相关的数据和资源的管理，提供了细粒度和底层的控制。Mental 的主要目的是最小化 GPU 工作时 CPU 所要的消耗。
+> Metal 框架支持 GPU 加速高级 3D 图像渲染，以及数据并行计算工作。Metal 提供了先进合理的 API，它不仅为图形的组织、处理和呈现，也为计算命令以及为这些命令相关的数据和资源的管理，提供了细粒度和底层的控制。Metal 的主要目的是最小化 GPU 工作时 CPU 所要的消耗。
 
 – [Metal Programming Guide](https://developer.apple.com/library/ios/documentation/Miscellaneous/Conceptual/MetalProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40014221-CH1-SW1)
 
-Mental 是针对 iPhone 和 iPad 中 GPU 编程的高度优化的框架。其名字来源是因为 Metal 是 iOS 平台中最底层的图形框架 (意指 "最接近硬件")。
+Metal 是针对 iPhone 和 iPad 中 GPU 编程的高度优化的框架。其名字来源是因为 Metal 是 iOS 平台中最底层的图形框架 (意指 "最接近硬件")。
 
 该框架被设计用来实现两个目标: 3D 图形渲染和并行计算。这两者有很多共同点。它们都在数量庞大的数据上并行运行特殊的代码，并可以在 [GPU](https://en.wikipedia.org/wiki/Graphics_processing_unit).  上执行。
 
-## 什么人应该使用 Mental?
+## 什么人应该使用 Metal?
 
 在谈论 API 和语言本身之前，我们应该讨论一下什么样的开发者能从 Metal 中受益。正如上面提过的，Metal 提供两个功能: 图形渲染和并行计算。
 

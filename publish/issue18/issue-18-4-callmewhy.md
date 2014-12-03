@@ -26,10 +26,10 @@ MPC 的关键用途在于创建临时网络中的点对点连接，而不需要�
 
 ### 方法一：默认方式
 
-苹果提供了一个内置的 ViewController ，可以很方便地进行匹配和初始化连接。只需要设置好 `serviceType` 和 `session` 并且弹出一个 [MCBrowserViewController](https://developer.apple.com/library/IOs/documentation/MultipeerConnectivity/Reference/MCBrowserViewController_class) 即可，MPC 会帮你做好剩下的事情。注意，`serviceType` 最多是 15 位 ASCII 字符，并且通常使用逆向的 DNS 标记 (例如： io.objccn.mpc)。
+苹果提供了一个内置的 ViewController ，可以很方便地进行匹配和初始化连接。只需要设置好 `serviceType` 和 `session` 并且弹出一个 [MCBrowserViewController](https://developer.apple.com/library/IOs/documentation/MultipeerConnectivity/Reference/MCBrowserViewController_class) 即可，MPC 会帮你做好剩下的事情。注意，`serviceType` 最多是 15 位 ASCII 字符。使用方法通常像逆向的 DNS 标记一样 (例如： io-objc-mpc)：
 
     let session = MCSession(peer: MCPeerID(displayName: "Mary"))
-    let serviceType = "io.objc.mpc" // 最多 15 ASCII 字符
+    let serviceType = "io-objc-mpc" // 最多 15 ASCII 字符
     window!.rootViewController = MCBrowserViewController(serviceType: serviceType, session: session)
 
 ![](http://img.objccn.io/issue-18/browser.png)

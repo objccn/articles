@@ -12,7 +12,7 @@ But there's always more to learn about debugging. Do you use LLDB to its full po
 
 Peter starts off with a [debugging case study](/issue-19/debugging-case-study.html): he walks us through the workflow and the tools he used to track down a regression bug in UIKit, from first report to filed radar. Next, Ari shows us the [power of LLDB](/issue-19/lldb-debugging.html), and how you can leverage it to make debugging less cumbersome. Chris writes about his [debugging checklist](/issue-19/debugging-checklist.html), a list of the many things to consider when diagnosing bugs. Last but not least, Daniel and Florian talk about two powerful but relatively unknown debugging technologies: [DTrace](/issue-19/dtrace.html) and [Activity Tracing](/issue-19/activity-tracing.html).
 
-Peter 会以一个[调试用例的研究][1]作为开始：他为我们带来的是他在捕捉一个 UIKit 自身的 bug 时所用到的工作流程和工具，他正是使用这些手段把最初的用户报告转变为了向 Apple 提交的 radar。接下来，Ari 会向我们展示 [LLDB 的力量][2]，你可以利用它，使调试不那么麻烦。Chris 写的内容基于他的[调试核对清单][3]。这份清单列出了许多值得被关注的内容，你可以利用它们来诊断 bug。结尾处，Daniel 和 Florian 会讲解两个强大但是名不见经传的调试工具，[DTrace][4] 和 [Activity Tracing][5]。
+Peter 会以一个[调试用例的研究][1]作为开始：他为我们带来的是他在捕捉一个 UIKit 自身的 bug 时所用到的工作流程和工具，他正是使用这些手段把最初的用户报告转变为了向 Apple 提交的 radar。接下来，Ari 会向我们展示 [LLDB 的力量][2]，你可以利用它，使调试不那么麻烦。Chris 写的内容基于他的[调试核对清单][3]。这份清单列出了许多值得被关注的内容，你可以利用它们来诊断 bug。结尾处，Daniel 和 Florian 会讲解两个强大但是名不见经传的调试工具，[DTrace][4] 和[活动追踪][5]。
 
 We'd love for you to never need all of this — but since that's not going to happen, we at least hope you'll enjoy these articles! :-)
 
@@ -26,8 +26,8 @@ Chris, Daniel, and Florian.
 
 Chris，Daniel，与 Florian。
 
-[1]:/issue-19/debugging-case-study.html
-[2]:/issue-19/lldb-debugging.html
-[3]:/issue-19/debugging-checklist.html
-[4]:/issue-19/dtrace.html
-[5]:/issue-19/activity-tracing.html
+[1]:http://objccn.io/issue-19-1
+[2]:http://objccn.io/issue-19-2
+[3]:http://objccn.io/issue-19-3
+[4]:http://objccn.io/issue-19-4
+[5]:http://objccn.io/issue-19-5

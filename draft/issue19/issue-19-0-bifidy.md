@@ -4,11 +4,11 @@ Welcome to objc.io issue 19: all about debugging.
 
 We're all making mistakes, all the time. As such, debugging is a core part of what we do every day, and we've all developed debugging habits — our own way of approaching the all-too-common situation where something is not working as it should.
 
-我们在任何情况下都会犯错误。以此想来，我们每个工作日的核心部分都该是调试。而且，总会有代码不按照预定方式去工作的情况发生，这些情况又往往太过相似，我们以自己的方式去寻找这些代码的过程，已经演变成了我们调试的习惯。
+我们在任何情况下都会犯错误。以此想来，我们每个工作日的核心部分都该是调试。而且，总会有代码不按照预定的方式去工作，而这种情况又实在太普遍。我们自己寻找这些代码的方法，也已演变了成我们调试的习惯。
 
 But there's always more to learn about debugging. Do you use LLDB to its full potential? Have you disassembled framework code to glance under the covers? Have you ever used the DTrace framework? Do you know about Apple's new activity tracing APIs? We're going to take a look at these topics and more in this issue.
 
-不过关于调试，总是有更多东西可学。你是否已经发挥出 LLDB 所有的潜力了？你是否已经吃透了框架代码并且窥见了底层？你可曾用过 DTrace 框架？苹果新发布的动态追踪 API 你又了解多少？在本期内容中，我们将详尽探讨以上的命题，只多不少。
+不过关于调试，总是有更多东西可学。你是否已经发挥出 LLDB 所有的潜力了？你是否已经吃透了框架代码并且窥见了底层？你可曾用过 DTrace 框架？苹果新发布的活动追踪 API 你又了解多少？在本期内容中，我们将详尽探讨以上的命题，只多不少。
 
 Peter starts off with a [debugging case study](/issue-19/debugging-case-study.html): he walks us through the workflow and the tools he used to track down a regression bug in UIKit, from first report to filed radar. Next, Ari shows us the [power of LLDB](/issue-19/lldb-debugging.html), and how you can leverage it to make debugging less cumbersome. Chris writes about his [debugging checklist](/issue-19/debugging-checklist.html), a list of the many things to consider when diagnosing bugs. Last but not least, Daniel and Florian talk about two powerful but relatively unknown debugging technologies: [DTrace](/issue-19/dtrace.html) and [Activity Tracing](/issue-19/activity-tracing.html).
 

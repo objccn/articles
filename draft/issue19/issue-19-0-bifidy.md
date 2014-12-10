@@ -4,7 +4,7 @@ Welcome to objc.io issue 19: all about debugging.
 
 We're all making mistakes, all the time. As such, debugging is a core part of what we do every day, and we've all developed debugging habits — our own way of approaching the all-too-common situation where something is not working as it should.
 
-我们在任何情况下都会犯错误。以此想来，我们每个工作日的核心部分都该是调试。而且，总会有代码不按照预定的方式去工作，而这种情况又实在太普遍。我们自己寻找这些代码的方法，也已演变了成我们调试的习惯。
+我们在任何情况下都会犯错误。以此想来，我们每个工作日的核心部分都该是调试。而且，总会有代码不按照预定的方式去工作，而这种情况又实在太普遍。我们自己寻找这些代码的方法，也已演变成了我们调试的习惯。
 
 But there's always more to learn about debugging. Do you use LLDB to its full potential? Have you disassembled framework code to glance under the covers? Have you ever used the DTrace framework? Do you know about Apple's new activity tracing APIs? We're going to take a look at these topics and more in this issue.
 

@@ -5,20 +5,18 @@ hard to find or reproduce. As a first step, it is always useful to find a way
 to reproduce the bug. Once you have a way to reproduce it consistently, you can
 get to the next stage: finding the bug.
 
-寻找 bug 非常耗费时间；几乎每一个有经验的开发者都可以讲出一个花费了自己许多天的 bug 。在一个平台上开发的时间越久，就越容易找到 bug。当然，总有一些 bug 是难以找到与复现的。在第一阶段，找到一个方法去复现 bug 总是很有用的。一旦你找到了复现的方法 始终，你就可以进入下一步，找到 bug。
-
-
+寻找 bug 非常耗费时间；几乎每一个有经验的开发者，都曾卡在某一个 bug 上花费过很多天。在一个平台上开发的时间越久，就会越容易找到 bug。然而，总有一些 bug 是难以找到与复现的。在最开始的时候，找到一种途径去复现 bug 总是很有用的。一旦你找到了某种途径，可以持续的复现 bug ，你就可以开始下一步工作，找到 bug。
 
 This article tries to sketch a number of common problems that we usually run into when
 debugging. You could use this as a checklist when you encounter a bug, and
 maybe by checking some of these things, you'll find that bug way sooner.
 And hopefully, some of the techniques help to prevent the bugs in the first place.
 
-这篇文章试图描绘一系列常见问题 我们常常在调试中 经历。你可以把它们当做一个核对清单 当你 遇到了一个 bug，而当你核对列表中的其中一部分时，你可能会更快的发现这个 bug。值得庆幸的是，一些技术可以帮助我们在第一时间阻止 bug。
+这篇文章试图描绘的是，我们在调试中经常遇到的一系列相对常见的问题。当你遇到了一个 bug 时，你可以把它们当做一份核对清单。核对这份清单列出的一些问题，可能会使你更快的找到这个  bug。好消息是，一些技巧可以帮助我们在第一时间阻止这些 bug。
 
 We'll start off with a couple of very common sources of bugs that happen to us a lot.
 
-我们将从一系列常见的 bug 的源头 很多 发生在我们身上。
+我们会从一系列引起 bug 的原因开始讲起，其中一大部分 bug 对大家都不算陌生。
 
 ## Are Your Callbacks on the Right Thread?
 
@@ -26,11 +24,11 @@ We'll start off with a couple of very common sources of bugs that happen to us a
 
 One source of unexpected behavior is when things are happening on the wrong thread. For example, when you update UIKit objects from any other thread than the main thread, things could break. Sometimes updating works, but mostly you will get strange behavior, or even crashes. One thing you can do to mitigate this is having assertions in your code that check whether or not you're on the main thread. Common callbacks that might (unexpectedly) happen on a background thread could be coming from network calls, timers, file reading, or external libraries.
 
-一个源头不希望的行为 是 当 事情正在发生 在错误的线程上。举个例子，当你更新 UIKit 的对象优先在其它线程 主线程，它就会搞破坏。有时更新会工作，但更多的情况是你会得到奇怪的行为，甚至崩溃。一件事你可以做去缓和这个是利用断言 在你的代码中 它可以检查 是否你在主线程中。通常回调可能（不被欢迎的）发生在一个后台线程 比如来自一个网络请求，计时器，文件阅读器，或额外的库。
+一个引发意外行为的原因，是有些东西运行在错误的线程上。举个例子，当你在在其它线程上更新  UIKit 的对象而非主线程时，事情就会变的糟糕。有的时候，更新会正常运转，但大多数情况下，发生的情况都很怪异，甚至会引起崩溃。在你的代码利用断言可以缓和这种情况，它可以检查 你是否在主线程中。通常来说，可能（意外地）发生在一个后台线程中的回调，可以来自一个网络请求，计时器，文件阅读器，也可以是某个被引入的资源库。
 
 Another solution is to keep the places where threading happens very isolated. As an example, if you are building a wrapper around an API on the network, you could handle all threading in that wrapper. All network calls will happen on a background thread, but all callbacks could happen on the main thread, so that you'll never have to worry about that occurring in the calling code. Having a simple design really helps.
 
-另一个解决方法是保持一个地方 哪里 线程 发生 独立。 举个例子，如果你正建立一个封装 基于 网络 API，你可以把所有线程都封装在那里处理。所有的网络请求会发生在后台线程，但是所有的回调会发生在主线程，所以你再也不会得到一个错误 存在于调用代码中。有一个简单的设计很实用。
+另一个解决方法是划分出一个线程独立的区域。举个例子，如果你正在构建一个基于网络 API 的封装，你可以把所有的线程都封装在那里进行处理。在后台线程中执行所有的网络请求，但把它们的回调全部转移到主线程中。如此一来，你就再也不必担心调用代码中会出现什么问题。一个简单的设计在开发中真的很有用。
 
 ## Is This Object Really the Right Class?
 
@@ -38,28 +36,32 @@ Another solution is to keep the places where threading happens very isolated. As
 
 This is mostly an Objective-C problem; in Swift, there's a stronger type system with more precise guarantees about the type of an object or value. However, in Objective-C, it's fairly common to accidentally have objects of the wrong class.
 
-这大多是 Objective-C 的问题；在 Swift 中，有强制类型系统 与 更精确的保证关于一个对象或者值的类型。然而，在 Objective=C 中，这常见 偶然的 有错误类的对象。
+这个问题基本上只存在于 Objective-C；在 Swift 中，有一个强大的类型系统，可以精确的保证对象和值的类型安全。而在 Objective-C 中，对象的类型错误却很常见。
 
 For example, in [Deckset](http://www.decksetapp.com), we were adding a new feature that had to do with fonts. One of the objects had a `fonts` array property, and I assumed the objects in the array were of type `NSFont`. As it turned out, the array contained `NSString` objects (the font names). It took quite a while to figure this out, because, for the most part, things worked as expected. In Objective-C, one way to check this is by having assertions. Another way to help yourself is to encode type information in the name (e.g. this array could have been named `fontNames`). In Swift, these errors can be prevented by having precise types (e.g. `[NSFont]` rather than `[AnyObject]`).
 
-举个例子，在 [Deckset][Deckset]，我们加入了一个新的特性 不得不做与字体。一个类有一个 `fonts` 的数组属性，而且我 假设 数组中的对象类型为 `NSFont`。当它 穿戴好，数组包含 `NSString` 对象（字体名）。需要花费一点时间去弄明白，因为，在大多数部分，事情会按照预计的情况工作。在 Objective-C 中，一种方法去检查是利用断言。另一种方法去帮助你自己是 在命名时假如类型信息（如这个数组可以命名为 `fontNames`）。在 Swift 中，这些错误可以因为明确类型而避免（如使用 `[NSFont]` 而非 `[AnyObject]`）。 
+例如，在 [Deckset](http://www.decksetapp.com)中，我们加入了一个与字体相关的新特性。其中，有一个对象的某个数组属性命名为 `fonts` 的，然后我假定这个数组中的对象类型都为 `NSFont`。可在填充后，数组里其实包含了 `NSString` 类型的对象（字体名）。我花费了一些时间才找到了原因，这是因为，在大多数部分情况下，程序是正常工作的。在 Objective-C 中，一种检查类型问题的方法是利用断言。另一种可以帮到自己的方法，是在命名时添加类型信息（如：这个数组可以命名为 `fontNames`）。在 Swift 中，确定类型就可以避免这些错误（如：使用 `[NSFont]` 而非 `[AnyObject]`）。 
 
 When unsure about whether the object is of the right type, you can always print it in the debugger. It is also useful to have assertions that check whether or not an object is the right class using `isKindOfClass:`. In Swift, rather than force casting with the `as` keyword, rely on having optionals and use `as?` to typecast whenever you need to. This will let you minimize the chances of errors.
 
-当不确定一个对象是否是正确的类型，你可以打印它的类型 在 调试中。断言也是一种很有用 的方法，去检查 是否 一个对象的类是否正确 使用 `isKindOfClass:`。在 Swift 中，比利用 关键字 `as` force casting 更好的办法，可以靠 使用一个可选值 使用 `as?`做类型适配 当你需要的时候。这可以使你 大大减少出错的概率。
+当不确定一个对象的类型是否正确时，你可以在调试器中将类型打印出来。另外，使用 `isKindOfClass:`的断言去检查一个对象的类是否正确也很实用。
+TODO:
+在 Swift 中，比利用关键字 `as` force casting 更好的办法，可以靠 使用一个可选值 使用 `as?`做类型适配 当你需要的时候。这可以使你 大大减少出错的概率。
 
 ## Build-Specific Settings
 
-## 某个 Build 设置
+## 具体的 Build 设置
 
 
 Another common source of bugs that are hard to find is when there are settings that differ between builds. For example, sometimes optimizations that happen in the compiler could cause bugs in production builds that never show up during debugging. This is relatively uncommon, although there are reports of this happening with the the current Swift releases.
 
-另一个常见的原因是 他们难以发现 当 build 中的设置有区别。比如，有时 编译器的优化 可以 使 production build 中的 bug 根本不会出现在调试时。这个情况相对来说并不常见，不过 有 报告出现在当前的Swift发布版中。
+另一个常见的原因，是 build 设置中有一些不易被发现的改动。比如，有时编译器会做一些优化，
+TODO:
+使 production build 中的 bug 根本不会出现在调试时。这个情况相对来说并不常见，不过在当前的Swift发布版中，就有这样的报告出现。
 
 Another source of bugs is where certain variables or macros are defined differently. For example, some code might be commented out during development. We had an instance where we were writing incorrect (crashing) analytics code, but during development we turned off analytics, so we never saw these crashes when developing the app. 
 
-还有一个bug的原因是 某个确定的变量或宏定义被重新定义。举例，一些代码可能会在开发中注释出来。我们一个实例 我们写在 错误的（引发崩溃的）analytics 代码，但在开发中我们关掉了 analytics，所以我们不会看到这些崩溃当我们开发 app 时。
+>还有一种 bug 的原因，是某个确定的变量或宏定义被不同的方式定义。举例，一些代码可能会在开发中注释出来。我们一个实例 我们写在 错误的（引发崩溃的）analytics 代码，但在开发中我们关掉了 analytics，所以我们不会看到这些崩溃当我们开发 app 时。
 
 These kinds of bugs can be hard to detect during development. As such, you should always thoroughly test the release build of your app. Of course, it's even better if someone else (e.g. a QA department) can test it.
 

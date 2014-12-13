@@ -9,11 +9,11 @@ author: "<a href=\"https://twitter.com/floriankugler\">Florian Kugler</a>"
 
 Tracking down crashes in asynchronous code is often very hard, because the stack trace is confined to the crashed thread and you're missing contextual information. At the same time, writing asynchronous code has become significantly easier with APIs like [libdispatch](/issue-2/low-level-concurrency-apis.html), operation queues, and [XPC](/issue-14/xpc.html).
 
-追查出异步执行的代码中出现的错误往往是一件非常困难的事，因为栈追踪信息(stack trace)局限于发生崩溃的线程，这就意味着你无法获得全部的上下文信息。与此同时，编写异步代码却得益于 [libdispatch](/issue-2/low-level-concurrency-apis.html)，运行队列(operation queues)和 [XPC](/issue-14/xpc.html) 提供的 API 变得越发的简单。
+追查出异步执行的代码中出现的错误往往是一件非常困难的事，因为栈追踪(stack trace)局限于发生崩溃的线程，这就意味着你无法获得全部的上下文信息。与此同时，编写异步代码却得益于 [libdispatch](http://objccn.io/issue-2-3/)，运行队列(operation queues)和 [XPC](http://objccn.io/issue-14-4/) 提供的 API 变得越发的简单。
 
 Activity tracing is a new technology introduced in iOS 8 and OS X 10.10 that aims to alleviate this problem. This year's WWDC had an excellent [session][wwdcsession] about it, but we thought it would be a good idea to give another overview here, since it is not widely known yet.
 
-活动追踪是一项 iOS 8 和 OS X 10.10 新引入的技术，他正是为了减轻上面我们提到的这个问题。今年的 WWDC 有一个有关这个主题非常棒的[会议][wwdcsession]，不过我们认为在这里为它写一篇简介也很必要，因为很多人应该还没有听说过这项技术。
+活动追踪是一项 iOS 8 和 OS X 10.10 新引入的技术，它正是为了帮助我们更好地解决上面提到的这个问题。今年的 WWDC 有一个有关这个主题非常棒的[session][wwdcsession]，不过我们认为在这里为它另外写一篇简介也是一个好主意，毕竟知道它的人还不多。
 
 The basic idea is that work done in response to user interactions or other events is grouped under an activity, no matter if the work is done synchronously or if it's dispatched to other queues or processes. For example, if the user triggers a refresh in your app, you'll know that this particular user interaction caused a subsequent crash, even if it happens on a different queue and several other code paths could have led to the crashing code as well.
 
@@ -21,11 +21,11 @@ The basic idea is that work done in response to user interactions or other event
 
 Activity tracing has three different parts to it: activities, breadcrumbs, and trace messages. We'll go into those in more detail below, but here's the gist of it: Activities allow you to trace the crashing code back to its originating event in a cross-queue and cross-process manner. With breadcrumbs, you can leave a trail of meaningful events across activities leading up to a crash. And finally, trace messages allow you to add further detail to the current activity. All this information will show up in the crash report in case anything goes wrong.
 
-活动追踪由三部分组成：活动，面包屑[(参考面包屑导航)](http://zh.wikipedia.org/wiki/%E9%9D%A2%E5%8C%85%E5%B1%91%E5%AF%BC%E8%88%AA)，追踪信息。我们会在接下来详细探讨这三部分，在这里先给出要点：活动可以在跨队列跨进程的情况下帮助你追踪出导致崩溃发生的事件。面包屑可以帮你跨越多个活动画出导致崩溃发生的事件轨迹。最后，追踪信息可以帮助你为当前活动添加更详细的信息。出现任何问题，这三种信息都会出现在最终的崩溃报告中。
+活动追踪由三部分组成：活动，面包屑[(译者注：参考面包屑导航)](http://zh.wikipedia.org/wiki/%E9%9D%A2%E5%8C%85%E5%B1%91%E5%AF%BC%E8%88%AA)和追踪信息。我们会在接下来详细探讨这三部分，在这里先给出要点：活动可以在跨队列跨进程的情况下帮助你追踪出导致崩溃发生的事件。面包屑可以帮你跨越多个活动画出导致崩溃发生的事件轨迹。最后，追踪信息可以帮助你为当前活动添加更详细的信息。出现任何问题，这三种信息都会出现在最终的崩溃报告中。
 
 Before we go into more detail, let me just quickly mention a potential pitfall when trying to get activity tracing to work: if the activity messages are not showing up, check the `system.log` for any messages from the `diagnosticd` daemon, like "Signature Validation Failed" — you might be running into code signing issues. Also, note that on iOS, activity tracing only works on a real device, and not in the simulator.
 
-在我们进入细节讲解之前，让我简单的提一下使用活动追踪过程中可能的坑：如果活动追踪信息没有显示出来，检查 `system.log` 中是否有守护进程([参考守护进程](http://zh.wikipedia.org/wiki/%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B))`diagnosticd` 给出的类似 "Signature Validation Failed" 的信息，你可以会遇到代码签名的问题。此外，注意在 iOS 上活动追踪只能在真机上工作，在模拟器上不行。
+在我们进入细节讲解之前，让我简单的提一下使用活动追踪过程中可能的坑：如果活动追踪信息没有显示出来，检查 `system.log` 中是否有守护进程([译者注：参考守护进程](http://zh.wikipedia.org/wiki/%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B))`diagnosticd` 给出的类似 "Signature Validation Failed" 的信息，你可以会遇到代码签名的问题。此外，注意在 iOS 上活动追踪只能在真机上工作，在模拟器上不行。
 
 ## Activities
 
@@ -71,7 +71,7 @@ os_activity_end(activity);
 
 Note that activities will not show up in crash reports (or other ways of inspecting them) if you don't set at least one trace message. See below for more details on trace messages.
 
-注意如果你没有设置至少一个追踪信息，活动就不会出现在崩溃报告或者其他任何形式的查看方式中。在后面会有更多有关追踪信息的细节。
+注意你必须设置至少一个追踪信息，否则活动就不会出现在崩溃报告或者其他任何形式的查看方式中。在后面会有更多有关追踪信息的细节。
 
 
 ## Breadcrumbs
@@ -111,7 +111,7 @@ os_trace("my message");
 
 Trace messages can do more than that though. The first argument to `os_trace` is a format string, similar to what you'd use with `printf` or `NSLog`. However, there are some restrictions to this: the format string can be a maximum of 100 characters long and can contain a placeholder for up to seven *scalar* values. This means that you cannot log strings. If you try to do so, the strings will be replaced by a placeholder.
 
-除此之外，追踪信息可以起到更大的作用。`os_trace` 的第一个参数是一个格式化字符串，和你在 `printf` 或 `NSLog` 中的用法一样。不过 `os_trace` 有一些限制：格式化字符串最长只能包含100个字符和最多7个标量值的占位符。这就意味着你不能传入字符串作为输出，如果你传入了一个字符串，字符串会被占位符所替换。
+除此之外，追踪信息可以起到更大的作用。`os_trace` 的第一个参数是一个格式化字符串，和你在 `printf` 或 `NSLog` 中的用法一样。不过 `os_trace` 有一些限制：格式化字符串最长只能包含100个字符和最多7个*标量*值的占位符。这就意味着你不能传入字符串作为输出，如果你传入了一个字符串，字符串会被一个占位符所替换。
 
 Here are two examples of using format strings with `os_trace`:
 
@@ -124,7 +124,7 @@ os_trace("Processed %d records in %g seconds", count, time);
 
 One caveat that I stumbled upon while experimenting with this API is that trace messages don't show up in crash reports if no trace messages are sent from the crashing thread.
 
-在我尝试使用这个 API 时偶然发现了一个坑，那就是如果没有从发生崩溃的线程中发送出来追踪信息，那么所有的追踪信息都不会出现在崩溃报告中。
+我在尝试使用这个 API 时偶然发现了一个坑，那就是如果没有从发生崩溃的线程中发送出来追踪信息，那么所有的追踪信息都不会出现在崩溃报告中。
 
 
 ### Trace Message Variants
@@ -133,7 +133,7 @@ One caveat that I stumbled upon while experimenting with this API is that trace 
 
 There are several variants to the basic `os_trace` API. First, there's `os_trace_debug`, which you can use to output trace messages that only show up in debug mode. This can be helpful to reduce the amount of trace messages in production, so that you will only see the most meaningful ones, and don't flood the limited ring buffer that's used to storing those messages with less useful information. To enable debug mode, set the environment variable `OS_ACTIVITY_MODE` to `debug`.
 
-`os_trace` 有好几个功能相似的 API。首先是 `os_trace_debug`，可以用来只在调试模式下输出追踪信息。在生产环境中这会很有帮助，减少环形缓冲区存储的无用追踪信息，你就可以得到最有价值的那些。要开启调试模式，需要设置环境变量 `OS_ACTIVITY_MODE` 为 `debug`。
+在 `os_trace` 的基础上有好几个功能相似的 API。首先是 `os_trace_debug`，可以用来只在调试模式下输出追踪信息。在生产环境中这会很有帮助，减少环形缓冲区存储的无用追踪信息，你就可以得到最有价值的那些。要开启调试模式，需要设置环境变量 `OS_ACTIVITY_MODE` 为 `debug`。
 
 Additionally, there are two more variants of these macros to output trace messages: `os_trace_error` and `os_trace_fault`. The first one can be used to indicate unexpected errors, and the second one to indicate catastrophic failures, i.e. that you're about to crash.
 
@@ -141,7 +141,7 @@ Additionally, there are two more variants of these macros to output trace messag
 
 As discussed above, the standard `os_trace` API only accepts a constant format string of limited length and scalar values. This is done for privacy, security, and performance reasons. However, there are situations where you'd like to see more data when debugging a problem. This is where payload trace messages come in.
 
-前面我们提到了，标准的 `os_trace` API 只接受一个限制长度和变量类型的格式化字符串。这样的设计是基于对隐私性安全性和运行效率的考虑。但是，当你在调试一个问题的时候，总有一些情况下会想要得到更多的数据。这个时候带有负载的追踪信息就派上了用场。
+前面我们提到了，标准的 `os_trace` API 只接受一个限制长度和变量类型的格式化字符串。这样的设计是基于对隐私性，安全性和运行效率的考虑。但是，当你在调试一个问题的时候，总有一些情况下会想要得到更多的数据。这个时候带有负载的追踪信息就派上了用场。
 
 The API for this is `os_trace_with_payload`, and may seem a bit weird at first: similar to `os_trace`, it takes a format string, a variable number of value arguments, and a block with a parameter of type `xpc_object_t`. This block will not be called in production mode, and therefore poses no overhead. However, when debugging, you can store whatever data you want in the dictionary that the block receives as its first and only argument:
 

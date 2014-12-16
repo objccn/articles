@@ -6,10 +6,10 @@ tags: article
 author: "<a href=\"https://twitter.com/ari_grant\">Ari Grant</a>"
 ---
 ---
-标题 ：与调试器共舞-LLDB的华尔兹
-分类 : "19"
-日期 : "2014-12-08 10:00:00"
-标签 : article
+标题:与调试器共舞-LLDB的华尔兹
+分类:"19"
+日期:"2014-12-08 10:00:00"
+标签:article
 作者: "<a href=\"https://twitter.com/ari_grant\">Ari Grant</a>"
 ---
 
@@ -17,29 +17,28 @@ Have you ever been stuck trying to understand your code and logged the contents 
 
     NSLog(@"%@", whatIsInsideThisThing);
     
+你是否曾经被理解你的代码困住，并且 log 一个变量的值？
+
+    NSLog(@"%@", whatIsInsideThisThing);
+    
 Or skipped a function call to simplify the behavior of the program?
     
+    NSNumber *n = @7; // theFunctionThatShouldReallyBeCalled();
+    
+或者跳过一个函数调用来简化程序的行为？
+
     NSNumber *n = @7; // theFunctionThatShouldReallyBeCalled();
     
 Or short-circuited a logical check?
     
     if (1 || theBooleanAtStake) { ... }
     
-Or faked the implementation of a function?
-    
-
-你是否曾经被理解你的代码困住，并且 log 一个变量的值？
-
-    NSLog(@"%@", whatIsInsideThisThing);
-    
-或者跳过一个函数调用来简化程序的行为？
-
-    NSNumber *n = @7; // theFunctionThatShouldReallyBeCalled();
-    
 或者短路一个逻辑检查？
 
     if (1 || theBooleanAtStake) { ... }
-
+    
+Or faked the implementation of a function?
+   
 或者伪造一个函数实现？
 
 	int calculateTheTrickyValue {

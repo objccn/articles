@@ -6,7 +6,11 @@ tags: article
 author: "<a href=\"https://twitter.com/ari_grant\">Ari Grant</a>"
 ---
 ---
-标题：与调试器共舞-LLDB的华尔兹
+标题 ：与调试器共舞-LLDB的华尔兹
+分类 : "19"
+日期 : "2014-12-08 10:00:00"
+标签 : article
+作者: "<a href=\"https://twitter.com/ari_grant\">Ari Grant</a>"
 ---
 
 Have you ever been stuck trying to understand your code and logged the contents of a variable?
@@ -85,11 +89,11 @@ In the meantime, let's begin our journey and start with how to print variables i
 
 Here is a small, simple program that logs a string. Notice that a breakpoint has been added on line 8, which was made by clicking in the gutter in the source view in Xcode:
 
-<img src="/images/issue-19/Image_2014-11-20_at_10.01.46_PM.png" width="400" />
+<img src="http://img.objccn.io/issue-19/Image_2014-11-20_at_10.01.46_PM.png" width="400" />
 
 这里有一个简单的小程序，它会打印一个字符串。注意断点已经被加在第8行。断点是通过点击 xcode 的源码窗口的侧边槽创建的。
 
-<img src="/images/issue-19/Image_2014-11-20_at_10.01.46_PM.png" width="400" />
+<img src="http://img.objccn.io/issue-19/Image_2014-11-20_at_10.01.46_PM.png" width="400" />
 
 The program will pause its execution at that line and the console will open, allowing us to interact with the debugger. What shall we type?
 
@@ -110,11 +114,11 @@ The easiest command to try is `help`, which will list all the commands. And if y
 
 Printing values is easy; just try the `print` command:
 
-<img src="/images/issue-19/Image_2014-11-20_at_10.09.38_PM.png" width="600" />
+<img src="http://img.objccn.io/issue-19/Image_2014-11-20_at_10.09.38_PM.png" width="600" />
 
 打印值很简单；只要试试 `print` 命令:
 
-<img src="/images/issue-19/Image_2014-11-20_at_10.09.38_PM.png" width="600" />
+<img src="http://img.objccn.io/issue-19/Image_2014-11-20_at_10.09.38_PM.png" width="600" />
 
 LLDB actually does prefix matching, so you would be fine to try `prin`, `pri`, or `p`. You can't use `pr`, since LLDB can't disambiguate it from the `process` command (luckily for us, `p` has been disambiguated).
 
@@ -131,11 +135,11 @@ You'll also notice that the result has a `$0` in it. You can actually use this t
 
 What if you want to modify a value? _Modify_, you say? Yes, modify! That's where the handy `expression` command comes in:
 
-<img src="/images/issue-19/Image_2014-11-20_at_10.15.01_PM.png" width="240" />
+<img src="http://img.objccn.io/issue-19/Image_2014-11-20_at_10.15.01_PM.png" width="240" />
 
 如果想改变一个值怎么办？你或许会猜_Modify_.是的，就是 modify。 这是`expression`命令的方便之处。
 
-<img src="/images/issue-19/Image_2014-11-20_at_10.15.01_PM.png" width="240" />
+<img src="http://img.objccn.io/issue-19/Image_2014-11-20_at_10.15.01_PM.png" width="240" />
 
 This doesn't just modify the value in the debugger. It actually modifies the value in the program! If you resume the program at this point, it will print `42 red balloons`. Magic.
 
@@ -353,11 +357,11 @@ When you insert a breakpoint in the gutter in the source editor in Xcode (or add
 
 Then there are four buttons in the debug bar that you can use to control the flow of execution of the program:
 
-<img src="/images/issue-19/Image_2014-11-22_at_10.37.45_AM.png" width="200" />
+<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_10.37.45_AM.png" width="200" />
 
 调试条上会出现四个你可以用来控制程序的执行流程的按钮。
 
-<img src="/images/issue-19/Image_2014-11-22_at_10.37.45_AM.png" width="200" />
+<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_10.37.45_AM.png" width="200" />
 
 The buttons are, in order from left to right: continue, step over, step into, step out.
 
@@ -388,9 +392,9 @@ Consider this partial program:
 
 考虑下面一段程序：
 
-<img src="/images/issue-19/Image_2014-11-22_at_10.53.52_AM.png" width="320" />
+<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_10.53.52_AM.png" width="320" />
 
-<img src="/images/issue-19/Image_2014-11-22_at_10.53.52_AM.png" width="320" />
+<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_10.53.52_AM.png" width="320" />
 
 Say we run the program, allow it to stop at the breakpoint, and then execute this sequence of commands:
 
@@ -526,11 +530,11 @@ xcode 提供一系列工具来创建个管理断点。我们会一个个看过�
 
 In the left pane in Xcode, there is a collection of buttons. One looks like a breakpoint. Clicking it opens the breakpoint navigator, a pane where you can manipulate all of your breakpoints at a glance:
 
-<img src="/images/issue-19/Image_2014-11-22_at_11.38.24_AM.png" width="620" />
+<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_11.38.24_AM.png" width="620" />
 
 在 xcode 的左面板，有一组按钮。一个看起来像断点。点击它打开断点导航，一个可以快速管理所有断点的窗口。
 
-<img src="/images/issue-19/Image_2014-11-22_at_11.38.24_AM.png" width="620" />
+<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_11.38.24_AM.png" width="620" />
 
 Here you can see all of your breakpoints — `breakpoint list` (or `br li`) in LLDB. You can also click on an individual breakpoint to turn it on or off — `breakpoint enable <breakpointID>` and `breakpoint disable <breakpointID>` in LLDB:
 
@@ -640,19 +644,19 @@ These breakpoints will now stop exactly at the start of the function, and this w
 
 If you want to create a symbolic breakpoint in Xcode's UI, then click the `+` button at the bottom left of the breakpoint navigator:
 
-<img src="/images/issue-19/Image_2014-11-22_at_11.52.50_AM.png" width="300" />
+<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_11.52.50_AM.png" width="300" />
 
 如果想在 xcode 的UI上创建符号断点，你可以点击断点栏左侧的 `+` 按钮。
 
-<img src="/images/issue-19/Image_2014-11-22_at_11.52.50_AM.png" width="300" />
+<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_11.52.50_AM.png" width="300" />
 
 Then choose the third option:
 
-<img src="/images/issue-19/Image_2014-11-22_at_11.54.44_AM.png" width="430" />
+<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_11.54.44_AM.png" width="430" />
 
 然后选择第三个选项：
 
-<img src="/images/issue-19/Image_2014-11-22_at_11.54.44_AM.png" width="430" />
+<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_11.54.44_AM.png" width="430" />
 
 A popover will appear where you can enter in a symbol such as `-[NSArray objectAtIndex:]`, and then the breakpoint will cause the program to stop **any time** that method is called, whether from your code or Apple's!
 
@@ -660,11 +664,11 @@ A popover will appear where you can enter in a symbol such as `-[NSArray objectA
 
 If we look at the other options, we can see that there are some enticing options, which are also available for **any** breakpoint if you right click it in Xcode's UI and select the "Edit Breakpoint" option:
 
-<img src="/images/issue-19/Image_2014-11-22_at_11.58.06_AM.png" width="570" />
+<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_11.58.06_AM.png" width="570" />
 
 如果你正确的在 Xcode 的UI 上点击 然后选择 "Edit Breakpoint" 选项，看看其他的选项，有一些适用所有断点的选项，也都非常诱人。
 
-<img src="/images/issue-19/Image_2014-11-22_at_11.58.06_AM.png" width="570" />
+<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_11.58.06_AM.png" width="570" />
 
 Here, the breakpoint has been modified to **only** stop when `i` is `99`. You can also use the "ignore" option to tell the breakpoint to not stop the first `n` times it is called (and the condition is true).
 
@@ -680,19 +684,19 @@ And then there is that "Add Action" button...
 
 Perhaps in the example breakpoint above, you want to know the value of `i` every time the breakpoint is hit. We can use the action `p i`, and then when the breakpoint is hit and we enter the debugger, it will execute that command before giving you control:
 
-<img src="/images/issue-19/Screen_Shot_2014-11-22_at_12.01.32_PM.png" width="600" />
+<img src="http://img.objccn.io/issue-19/Screen_Shot_2014-11-22_at_12.01.32_PM.png" width="600" />
 
 上面的例子中，你或许想知道每一次到达断点的时候 `i` 的值。我们可以使用 `p i` action ，这样每次到达断点的时候，都会自动运行这个命令。
 
-<img src="/images/issue-19/Screen_Shot_2014-11-22_at_12.01.32_PM.png" width="600" />
+<img src="http://img.objccn.io/issue-19/Screen_Shot_2014-11-22_at_12.01.32_PM.png" width="600" />
 
 You can also add multiple actions, which can be debugger commands, shell commands, or more robust printing:
 
-<img src="/images/issue-19/Image_2014-11-22_at_12.06.34_PM.png" width="400" />
+<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_12.06.34_PM.png" width="400" />
 
 你也可以添加多个 action，可以是调试器命令，shell 命令，也可以是更粗鲁的打印：
 
-<img src="/images/issue-19/Screen_Shot_2014-11-22_at_12.01.32_PM.png" width="600" />
+<img src="http://img.objccn.io/issue-19/Screen_Shot_2014-11-22_at_12.01.32_PM.png" width="600" />
 
 You can see that it printed `i`, then it said that sentence aloud (!), and then printed the custom expression.
 
@@ -892,12 +896,12 @@ Now that we know the basic steps, it's time to dance and do some crazy things. I
 
 When an application is running, the debug bar in Xcode's UI shows a pause button instead of a continue one:
 
-<img src="/images/issue-19/Screen_Shot_2014_11_22_at_1_50_56_PM.png" width="300" />
+<img src="http://img.objccn.io/issue-19/Screen_Shot_2014_11_22_at_1_50_56_PM.png" width="300" />
 
 
 程序运行时，Xcode 的调试条上出现暂停按钮，而不是继续按钮：
 
-<img src="/images/issue-19/Screen_Shot_2014_11_22_at_1_50_56_PM.png" width="300" />
+<img src="http://img.objccn.io/issue-19/Screen_Shot_2014_11_22_at_1_50_56_PM.png" width="300" />
 
 Clicking that button will pause the app (it runs `process interrupt`, since LLDB is always attached behind the scenes). This will then give you access to the debugger, but it might not look like you can do much, since there are no variables in scope, and there is no specific area of the code to look at.
 

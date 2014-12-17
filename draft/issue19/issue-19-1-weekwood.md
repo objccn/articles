@@ -19,18 +19,18 @@ My first guess was that we might have code that dismisses the view controller, a
 
 Apple added the [Debug View Hierarchy](https://developer.apple.com/library/ios/recipes/xcode_help-debugger/using_view_debugger/using_view_debugger.html) feature in Xcode 6, and it's likely that this move was inspired by the popular [Reveal](http://revealapp.com/) and [Spark Inspector](http://sparkinspector.com/) apps, which, in many ways, are still better and more feature rich than the Xcode feature.
 
-苹果在 Xcode 6 中添加了 [调试视图层次结构](https://developer.apple.com/library/ios/recipes/xcode_help-debugger/using_view_debugger/using_view_debugger.html)，这一举动很可能是收到了非常受欢迎的应用  [Reveal](http://revealapp.com/) 和 [Spark Inspector](http://sparkinspector.com/) 的启发。相对于 Xcode 它们在许多方面表现更好，更多功能。
+苹果在 Xcode 6 中添加了 [调试视图层次结构](https://developer.apple.com/library/ios/recipes/xcode_help-debugger/using_view_debugger/using_view_debugger.html)的功能，这一举动很可能是受到非常受欢迎的应用  [Reveal](http://revealapp.com/) 和 [Spark Inspector](http://sparkinspector.com/) 的启发。相对于 Xcode 它们在许多方面表现更好，功能更多。
 
 ## Using LLDB
 ## 使用 LLDB
 
 Before there was visual debugging, the common way to inspect the hierarchy was using `po [[UIWindow keyWindow] recursiveDescription]` in LLDB, which prints out [the whole view hierarchy in text form](https://gist.github.com/steipete/5a3c7a3b6e80d2b50c3b). 
 
-在虚拟调试器之前，最常见的做法是在 LLDB 使用 `po [[UIWindow keyWindow] recursiveDescription]` 来检查层次结构。打印的[完整层次结构](https://gist.github.com/steipete/5a3c7a3b6e80d2b50c3b)。
+在虚拟调试器之前，最常见的做法是在 LLDB 使用 `po [[UIWindow keyWindow] recursiveDescription]` 来检查层次结构。[完整层次结构 gist](https://gist.github.com/steipete/5a3c7a3b6e80d2b50c3b)。
 
 Similar to inspecting the view hierarchy, we can also inspect the view controller hierarchy using `po [[[UIWindow keyWindow] rootViewController] _printHierarchy]`. This is a [private helper](https://github.com/nst/iOS-Runtime-Headers/blob/a8f9f7eb4882c9dfc87166d876c547b75a24c5bb/Frameworks/UIKit.framework/UIViewController.h#L365) on `UIViewController` that Apple silently added in iOS 8:
 
-类似于检查视图层次，我们也可以用 `po [[[UIWindow keyWindow] rootViewController] _printHierarchy]` 来检查视图控制器。这是一个苹果默默在  iOS 8 中为 `UIViewController` 添加的[私有 helper](https://github.com/nst/iOS-Runtime-Headers/blob/a8f9f7eb4882c9dfc87166d876c547b75a24c5bb/Frameworks/UIKit.framework/UIViewController.h#L365) 。
+类似于检查视图层次，我们也可以用 `po [[[UIWindow keyWindow] rootViewController] _printHierarchy]` 来检查视图控制器。这是一个苹果默默在  iOS 8 中为 `UIViewController` 添加的[私有 helper 方法](https://github.com/nst/iOS-Runtime-Headers/blob/a8f9f7eb4882c9dfc87166d876c547b75a24c5bb/Frameworks/UIKit.framework/UIViewController.h#L365) 。
 
 ```
 (lldb) po [[[UIWindow keyWindow] rootViewController] _printHierarchy]
@@ -46,8 +46,8 @@ Similar to inspecting the view hierarchy, we can also inspect the view controlle
 
 LLDB is quite powerful and can also be scripted. Facebook released [a collection of python scripts named Chisel](https://github.com/facebook/chisel) that help a lot with daily debugging. `pviews` and `pvc` are the equivalents for view and view controller hierarchy printing. Chisel's view controller tree is similar, but also displays the view rects. I often use it to inspect the [responder chain](https://developer.apple.com/library/ios/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/event_delivery_responder_chain/event_delivery_responder_chain.html), and while you could manually loop over `nextResponder` on the object you're interested in, or [add a category helper](https://gist.github.com/n-b/5420684), typing `presponder object` is by far the quickest way.
 
-LLDB 非常强大并且可以脚本化。 Facebook 发布了一组名为 [Chisel 的脚本集合](https://github.com/facebook/chisel) 对日常调试提供了非常多的帮助。`pviews` 和 `pvc` 等价于视图和视图控制器的层次打印。Chisel 的视图控制器树也很相似，但是同时也显示了视图的 rect。
-我通常用他来检查[响应链](https://developer.apple.com/library/ios/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/event_delivery_responder_chain/event_delivery_responder_chain.html)，虽然你可以对你感兴趣的对象手动循环执行`nextResponder`，或者[添加一个类别 helper](https://gist.github.com/n-b/5420684)，输入 `presponder object` 是迄今为止最快的方法。
+LLDB 非常强大并且可以脚本化。 Facebook 发布了一组名为 [Chisel 的脚本集合](https://github.com/facebook/chisel) 对日常调试提供了非常多的帮助。`pviews` 和 `pvc` 等价于视图和视图控制器的层次打印。Chisel 的视图控制器树类似，但是同时也显示了视图的 rect。
+我通常用它来检查[响应链](https://developer.apple.com/library/ios/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/event_delivery_responder_chain/event_delivery_responder_chain.html)，虽然你可以对你感兴趣的对象手动循环执行 `nextResponder`，或者[添加一个类别 helper](https://gist.github.com/n-b/5420684)，但输入 `presponder object` 依旧是迄今为止最快的方法。
 
 ## Adding Breakpoints
 ## 添加断点
@@ -79,15 +79,15 @@ Let's first figure out what code is actually dismissing our view controller. The
 
 With LLDB's `bt` command, you can print the breakpoint. `bt all` will do the same, but it prints the state of all threads, and not just the current one.
 
-利用 LLDB 的 `bt` 命令，你可以打印断点。`bt all` 可以达到一样的效果。但是打印全部线程的状态，而不仅是当前的线程。
+利用 LLDB 的 `bt` 命令，你可以打印断点。`bt all` 可以达到一样的效果。区别在于会打印全部线程的状态，而不仅是当前的线程。
 
 Looking at the stack trace, we notice that the view controller is already dismissing, as we're called from a scheduled animation, so we need to add a breakpoint earlier. In this case, we are interested in calls to `-[UIViewController dismissViewControllerAnimated:completion:]`. We add a *symbolic breakpoint* to Xcode's breakpoint list and run the sample again. 
 
-看看这个堆栈，我们注意到视图控制器已经被 dismiss，但我们已经执行了预定的动画，所以我们需要在更早的地方增加断点。在这个例子中，我们兴趣在于调用了 `-[UIViewController dismissViewControllerAnimated:completion:]`。我们添加*符号断点* 到 Xcode 的断点列表，并且重新执行示例代码。
+看看这个堆栈，我们注意到视图控制器已经被 dismiss，但我们已经执行了预定的动画，所以我们需要在更早的地方增加断点。在这个例子中，我们关注在于调用了 `-[UIViewController dismissViewControllerAnimated:completion:]`。我们添加*符号断点* 到 Xcode 的断点列表，并且重新执行示例代码。
 
 The Xcode breakpoint interface is very powerful, allowing you to add [conditions, skip counts, or even custom actions like playing a sound effect and automatically continuing](http://www.peterfriese.de/debugging-tips-for-ios-developers/). We don't need these features here, but they can save quite a bit of time:
 
-Xcode 的断点界面非常强大，允许你添加[条件，跳过计数，或者自定义动作比如添加音效和自动继续]。这里我们不需要这些特性。但是他们可以节省相当多的时间：
+Xcode 的断点界面非常强大，允许你添加[条件，跳过计数，或者自定义动作比如添加音效和自动继续]。这里我们不需要这些特性。虽然它们可以节省相当多的时间：
 
 ```
 (lldb) bt
@@ -109,7 +109,7 @@ Xcode 的断点界面非常强大，允许你添加[条件，跳过计数，或�
 
 Now we're talking! As expected, the fullscreen `UIDimmingView` receives our touch and processes it in `handleSingleTap:`, then forwarding it to `UIPopoverPresentationController`'s `dimmingViewWasTapped:`, which dismisses the controller (as it should). However, when we tap quickly, this breakpoint is called twice. Is there a second dimming view? Is it called on the same instance? We only have the assembly on this breakpoint, so calling `po self` will not work.
 
-现在如我们所说！正如预期的，全屏 `UIDimmingView` 接收到我们的触摸并且在 `handleSingleTap:` 中处理，接着转发到 `UIPopoverPresentationController` 中的 `dimmingViewWasTapped:` 方法来 dismiss 视图控制器（就像它该做的那样），然而。当我们快速点击，断点被调用两次。这里有第二个 dimming 视图？他们调用了相同的实例？我们只有断点时候的程序集，所以调用 `po self` 是无效的。
+如我们所说！正如预期的，全屏 `UIDimmingView` 接收到我们的触摸并且在 `handleSingleTap:` 中处理，接着转发到 `UIPopoverPresentationController` 中的 `dimmingViewWasTapped:` 方法来 dismiss 视图控制器（就像它该做的那样），然而。当我们快速点击，断点被调用两次。这里有第二个 dimming 视图？他们调用了相同的实例？我们只有断点时候的程序集，所以调用 `po self` 是无效的。
 
 ## Calling Conventions 101
 ## 调用约定 101
@@ -165,7 +165,7 @@ Another technique to track method execution is overriding the methods with a log
 
 This hooks into `dimmingViewWasTapped:`, which is private — thus we use `NSSelectorFromString`. You can verify that this method exists, and also look up all other private and public methods of pretty much every framework class, by using the [iOS Runtime Headers](https://github.com/nst/iOS-Runtime-Headers). This project uses the fact that one can't really hide methods at runtime to query all classes and create a more complete header than what Apple gives us. (Of course, actually calling a private API is not a good idea — this is just to better understand what's going on.)
 
-为 `dimmingViewWasTapped:` 添加钩子，他是私有方法 — 我们使用 `NSSelectorFromString`。你需要验证方法是否存在，并通过使用 [iOS Runtime Headers](https://github.com/nst/iOS-Runtime-Headers) 查找每个框架类的其他私有方法和公共方法。本项目采用的方式不是在运行时隐藏所有类，而创建一个比苹果给我们更完整的头文件。（当然，调用私有 API 并不是一个好主意 — 这里只是用来便于理解事情如何发生）
+为 `dimmingViewWasTapped:` 添加钩子，它是私有方法 — 我们使用 `NSSelectorFromString`。你需要验证方法是否存在，并通过使用 [iOS Runtime Headers](https://github.com/nst/iOS-Runtime-Headers) 查找每个框架类的其他私有方法和公共方法。本项目采用的方式不是在运行时隐藏所有类，而创建一个比苹果能提供的完整的头文件。（当然，调用私有 API 并不是一个好主意 — 这里只是用来便于理解事情如何发生）
 
 With the log message in the hooked method, we get the following output:
 
@@ -208,13 +208,13 @@ We now know what is happening — so let's move to the *why*. UIKit is closed so
 
 Some basics in assembly are quite useful when reading through the code. However, you can also use the pseudo-code view to get something more C-like:
 
-程序集的一些基本阅读代码时非常有用。然而，你也可以使用伪代码视图来得到比 C-like 更多的东西:
+程序集的一些基本内容对阅读代码时非常有用。然而，你也可以使用伪代码视图来得到比 C-like 更多的东西:
 
 ![](http://img.objccn.io/issue-19/pseudo-code.png)
 
 Reading the pseudo-code is quite eye-opening. There are two code paths — one if the delegate implements `popoverPresentationControllerShouldDismissPopover:`, and one if it doesn't — and the code paths are actually quite different. While the one reacting to the delegate basically has an `if (controller.presented && !controller.dismissing)`, the other code path (that we currently fall into) doesn't, and always dismisses. With that inside knowledge, we can attempt to work around this bug by implementing our own `UIPopoverPresentationControllerDelegate`:
 
-阅读伪代码结果是令人膛目的。有两个代码路径 — 其中一个是代理方法实现`popoverPresentationControllerShouldDismissPopover:`，如果不进入 — 代码路径实际上相当不同。而一个反应基本代表代理方法包含 `if (controller.presented && !controller.dismissing)`，另一个代码路径（我们实际进入），总是被 dismiss。通过内部信息，我们可以尝试通过实现我们自己的 `UIPopoverPresentationControllerDelegate` 来解决这个 bug：
+阅读伪代码结果是令人膛目结舌。有两个代码路径 — 其中一个是代理方法实现`popoverPresentationControllerShouldDismissPopover:`，如果不进入 — 代码路径实际上相当不同。而一个反应基本代表代理方法包含 `if (controller.presented && !controller.dismissing)`，另一个代码路径（我们实际进入），总是被 dismiss。通过内部信息，我们可以尝试通过实现我们自己的 `UIPopoverPresentationControllerDelegate` 来解决这个 bug：
 
 ```
 - (BOOL)popoverPresentationControllerShouldDismissPopover:(UIPopoverPresentationController *)popoverPresentationController {
@@ -224,14 +224,14 @@ Reading the pseudo-code is quite eye-opening. There are two code paths — one i
 
 My first attempt was to set this to the main view controller that creates the popover. However, that broke `UIPopoverController`. While not documented, the popover controller sets itself as the delegate in `_setupPresentationController`, and taking the delegate away will break things. Instead, I used a `UIPopoverController` subclass and added the above method directly. The connection between these two classes is not documented, and our fix relies on this undocumented behavior; however, the implementation matches the default and exists purely to work around this issue, so it's future-proof code.
 
-我的第一次尝试是设置的主要视图控制器创建 popover。然而它破坏了  `UIPopoverController` 。没有文档化，popover 控制器在 `_setupPresentationController` 中设置代理，并且拿走委托将打破东西。相反，我使用 `UIPopoverController` 子类来直接添加上面的方法。这两个类之间的联系没有文档化，和我们确定依赖于这种非法行为；然而，实现匹配存在违约，纯粹为了解决这个问题，所以它是不会过时的代码。
+我的第一次尝试是主要视图控制器创建 popover。然而它破坏了  `UIPopoverController` 。没有文档显示，popover 控制器在 `_setupPresentationController` 中设置代理，并且拿走委托将打破东西。相反，我使用 `UIPopoverController` 子类来直接添加上面的方法。这两个类之间的联系没有文档化，和我们确定依赖于这种非法行为法行为w；然而，执行结果匹配默认和存在纯粹是为了解决此问题，所以它是经得起未来考验的代码。
 
 ## Reporting a Radar
 ## 反馈 Radar
 
 Now please don't stop here. You should always properly document such workarounds, and most importantly, file a radar with Apple. As an additional benefit, this allows you to verify that you actually understood the bug, and that no other side effects from your application play a role — and if you drop an iOS version, it's easy to go back and test if the radar is still valid:
 
-现在请不要停下。我们通常需要使用文档内的方法来解决问题，相当重要的是，写一个bug report 给 Apple，额外的好处是，这样你能够真正理解错误，并且在你的程序中没有其他副作用 — 如果你下降一个 iOS 版本，很容易测试 radar 是否有效。
+现在请不要停下。我们通常需要使用文档内的方法来解决问题，相当重要的是，写一个 radar 给 Apple，额外的好处是，这样你能够真正理解错误，并且在你的程序中没有其他副作用 — 如果你下降一个 iOS 版本，很容易测试 radar 是否有效。
 
 ```
 // The UIPopoverController is the default delegate for the UIPopoverPresentationController

@@ -1,6 +1,6 @@
 Nobody writes perfect code, and debugging is something every one of us should be able to do well. Instead of providing a random list of tips about the topic, I'll walk you through a bug that turned out to be a regression in UIKit, and show you the workflow I used to understand, isolate, and ultimately work around the issue.
 
-没人写的代码是完美的，而调试我们都应该做好的。相对于提供一个关于本话题的随机小建议，我选择带你亲身经历一个 bug 修复的过程，回归到 UIKit 之中， 展示我用来理解，隔离最终解决这个问题的流程。
+没人写的代码是完美的，而调试代码我们却都应该做到。相对于提供一个关于本话题的随机小建议，我选择带你亲身经历一个 bug 修复的过程，回归到 UIKit 之中， 展示我用来理解，隔离最终解决这个问题的流程。
 
 ## The Issue
 ## 问题
@@ -19,7 +19,7 @@ My first guess was that we might have code that dismisses the view controller, a
 
 Apple added the [Debug View Hierarchy](https://developer.apple.com/library/ios/recipes/xcode_help-debugger/using_view_debugger/using_view_debugger.html) feature in Xcode 6, and it's likely that this move was inspired by the popular [Reveal](http://revealapp.com/) and [Spark Inspector](http://sparkinspector.com/) apps, which, in many ways, are still better and more feature rich than the Xcode feature.
 
-苹果在 Xcode 6 中添加了 [调试视图层次结构](https://developer.apple.com/library/ios/recipes/xcode_help-debugger/using_view_debugger/using_view_debugger.html)的功能，这一举动很可能是受到非常受欢迎的应用  [Reveal](http://revealapp.com/) 和 [Spark Inspector](http://sparkinspector.com/) 的启发。相对于 Xcode 它们在许多方面表现更好，功能更多。
+苹果在 Xcode 6 中添加了[调试视图层次结构](https://developer.apple.com/library/ios/recipes/xcode_help-debugger/using_view_debugger/using_view_debugger.html)的功能，这一举动很可能是受到非常受欢迎的应用  [Reveal](http://revealapp.com/) 和 [Spark Inspector](http://sparkinspector.com/) 的启发。相对于 Xcode 它们在许多方面表现更好，功能更多。
 
 ## Using LLDB
 ## 使用 LLDB
@@ -214,7 +214,7 @@ Some basics in assembly are quite useful when reading through the code. However,
 
 Reading the pseudo-code is quite eye-opening. There are two code paths — one if the delegate implements `popoverPresentationControllerShouldDismissPopover:`, and one if it doesn't — and the code paths are actually quite different. While the one reacting to the delegate basically has an `if (controller.presented && !controller.dismissing)`, the other code path (that we currently fall into) doesn't, and always dismisses. With that inside knowledge, we can attempt to work around this bug by implementing our own `UIPopoverPresentationControllerDelegate`:
 
-阅读伪代码结果是令人膛目结舌。有两个代码路径 — 其中一个是代理方法实现`popoverPresentationControllerShouldDismissPopover:`，如果不进入 — 代码路径实际上相当不同。而一个反应基本代表代理方法包含 `if (controller.presented && !controller.dismissing)`，另一个代码路径（我们实际进入），总是被 dismiss。通过内部信息，我们可以尝试通过实现我们自己的 `UIPopoverPresentationControllerDelegate` 来解决这个 bug：
+阅读伪代码结果是令人膛目结舌。有两个代码路径 — 其中一个是代理方法实现`popoverPresentationControllerShouldDismissPopover:`，如果没实现 — 代码路径实际上相当不同。其中一个委托包含 `if (controller.presented && !controller.dismissing)`，另一个代码路径（我们实际进入），总是被 dismiss。通过内部信息，我们可以尝试通过实现我们自己的 `UIPopoverPresentationControllerDelegate` 来解决这个 bug：
 
 ```
 - (BOOL)popoverPresentationControllerShouldDismissPopover:(UIPopoverPresentationController *)popoverPresentationController {
@@ -224,7 +224,7 @@ Reading the pseudo-code is quite eye-opening. There are two code paths — one i
 
 My first attempt was to set this to the main view controller that creates the popover. However, that broke `UIPopoverController`. While not documented, the popover controller sets itself as the delegate in `_setupPresentationController`, and taking the delegate away will break things. Instead, I used a `UIPopoverController` subclass and added the above method directly. The connection between these two classes is not documented, and our fix relies on this undocumented behavior; however, the implementation matches the default and exists purely to work around this issue, so it's future-proof code.
 
-我的第一次尝试是主要视图控制器创建 popover。然而它破坏了  `UIPopoverController` 。没有文档显示，popover 控制器在 `_setupPresentationController` 中设置代理，并且拿走委托将打破东西。相反，我使用 `UIPopoverController` 子类来直接添加上面的方法。这两个类之间的联系没有文档化，和我们确定依赖于这种非法行为法行为w；然而，执行结果匹配默认和存在纯粹是为了解决此问题，所以它是经得起未来考验的代码。
+我的第一次尝试是主要视图控制器创建 popover。然而它破坏了  `UIPopoverController` 。没有文档显示，popover 控制器在 `_setupPresentationController` 中设置代理，并且移走委托将造成破坏。相反，我使用 `UIPopoverController` 子类来直接添加上面的方法。这两个类之间的联系没有文档化，而我们解决方案依赖于此；然而，实现匹配的默认值，纯粹是为了解决此问题，所以它是经得起未来考验的代码。
 
 ## Reporting a Radar
 ## 反馈 Radar

@@ -1,4 +1,4 @@
-!()[https://avatars3.githubusercontent.com/u/6971540?v=3&s=200]
+![](https://avatars3.githubusercontent.com/u/6971540?v=3&s=200)
 
 ObjC 中国 (objccn.io)
 ========

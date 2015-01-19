@@ -312,7 +312,7 @@ Xcode 提供了一系列工具来创建和管理断点。我们会一个个看�
 	(lldb) b +[NSSet setWithObject:]
 	Breakpoint 8: where = CoreFoundation`+[NSSet setWithObject:], address = 0x000000010abd3820
 
-如果想在 xcode 的UI上创建符号断点，你可以点击断点栏左侧的 `+` 按钮。
+如果想在 Xcode 的UI上创建符号断点，你可以点击断点栏左侧的 `+` 按钮。
 
 <img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_11.52.50_AM.png" width="300" />
 
@@ -407,7 +407,7 @@ Xcode 提供了一系列工具来创建和管理断点。我们会一个个看�
 
 ### 完全在调试器内运行
 
-带开始舞蹈之前，还有一件事要看一看。实际上你可以在调试器中执行任何 C/Objective-C/C++/Swift 的命令。唯一的缺点就是不能创建新函数... 这意味着不能创建新的类，block，函数，有虚拟函数的 C++ 类等等。除此之外，它都可以做。
+在开始舞蹈之前，还有一件事要看一看。实际上你可以在调试器中执行任何 C/Objective-C/C++/Swift 的命令。唯一的缺点就是不能创建新函数... 这意味着不能创建新的类，block，函数，有虚拟函数的 C++ 类等等。除此之外，它都可以做。
 	
 我们可以申请分配一些字节：
 

@@ -18,13 +18,14 @@ OS X 和 iOS 提供了几种不同的 API 来支持并发编程。每一个 API 
 
 多线程可以在单核 CPU 上同时（或者至少看作同时）运行。操作系统将小的时间片分配给每一个线程，这样就能够让用户感觉到有多个任务在同时进行。如果 CPU 是多核的，那么线程就可以真正的以并发方式被执行，从而减少了完成某项操作所需要的总时间。
 
-你可以通过 Instrument 中的 [CPU strategy view][11] 来观察你的代码或者你所使用的框架的代码被执行时，它们在多核 CPU 中的被调度的情况。
+你可以使用 Instruments 中的 [CPU strategy view][11] 来得知你的代码或者你在使用的框架代码是如何在多核 CPU 中调度执行的。
 
 需要重点关注的是，你无法控制你的代码在什么地方以及什么时候被调度，以及无法控制执行多长时间后将被暂停，以便轮换执行别的任务。这种线程调度是非常强大的一种技术，但是也非常复杂，我们稍后研究。
 
 先把线程调度的复杂情况放一边，开发者可以使用 [POSIX 线程][12] API，或者 Objective-C 中提供的对该 API 的封装 `NSThread`，来创建自己的线程。下面这个小示例利用 `pthread` 来在一百万个数字中查找最小值和最大值。其中并发执行了 4 个线程。从该示例复杂的代码中，应该可以看出为什么你不会希望直接使用 pthread 。
 
-
+    #import <pthread.h>
+    
     struct threadInfo {
         uint32_t * inputValues;
         size_t count;
@@ -129,7 +130,7 @@ OS X 和 iOS 提供了几种不同的 API 来支持并发编程。每一个 API 
 要想启动一个新的线程，需要创建一个线程对象，然后调用它的 `start` 方法：
 
 
-    NSSet *threads = [NSMutableSet set];
+    NSMutableSet *threads = [NSMutableSet set];
     NSUInteger numberCount = self.numbers.count;
     NSUInteger threadCount = 4;
     for (NSUInteger i = 0; i < threadCount; i++) {

@@ -679,7 +679,7 @@ GCD 事件源是以极其资源高效的方式实现的。
 
 `OSAtomicEnqueue()` 和 `OSAtomicDequeue()` 可以让你以线程安全，无锁的方式实现一个LIFO队列(常见的就是栈)。对有潜在精确要求的代码来说，这会是强大的代码。
 
-还有  `OSAtomicFifoEnqueue()` 和 `OSAtomicFifoDequeue()` 函数是为了操作FIFO队列，但这些只有在头文件中才有文档 —— 使用他们的时候要小心。
+还有  `OSAtomicFifoEnqueue()` 和 `OSAtomicFifoDequeue()` 函数是为了操作FIFO队列，但这些只有在头文件中才有文档 —— 阅读他们的时候要小心。
 
 
 ###自旋锁

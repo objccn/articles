@@ -18,7 +18,7 @@
 
 其实只要你遵循那些规则，并使用这篇文章里所描述的方法的话，处理 Core Data 的并行编程还是比较容易的。
 
-Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程中的一个存储调度 (persistent store coordinator)和一个托管对象上下文 (managed object context) 的方式。在很多情况下，这种模式可以运行良好。创建新的对象和修改已存在的对象开销都非常小，也都能在主线程中没有困难滴完成。然后，如果你想要做大量的处理，那么把它放到一个后台上下文来做会比较好。一个典型的应用场景是将大量数据导入到 Core Data 中。
+Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程中的一个存储调度 (persistent store coordinator)和一个托管对象上下文 (managed object context) 的方式。在很多情况下，这种模式可以运行良好。创建新的对象和修改已存在的对象开销都非常小，也都能在主线程中没有困难地完成。然后，如果你想要做大量的处理，那么把它放到一个后台上下文来做会比较好。一个典型的应用场景是将大量数据导入到 Core Data 中。
 
 我们的方式非常简单，并且可以被很好地描述：
 
@@ -93,7 +93,7 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
 
 在 app 中的 table view 是由一个在主线程上获取了结果的 controller 所驱动的。在导入数据的过程中和导入数据完成后，我们要在 table view 中展示我们的结果。
 
-在让一切运转起来之前之前，还有一件事情要做。现在在后台 context 中导入的数据还不能传送到主 context中，除非我们显式地让它这么去做。我们在 `Store` 类的设置 Core Data stack 的 `init` 方法中加入下面的代码：
+在让一切运转起来之前之前，还有一件事情要做。现在在后台 context 中导入的数据还不能传送到主 context 中，除非我们显式地让它这么去做。我们在 `Store` 类的设置 Core Data stack 的 `init` 方法中加入下面的代码：
 
     [[NSNotificationCenter defaultCenter]
         addObserverForName:NSManagedObjectContextDidSaveNotification
@@ -120,7 +120,7 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
 
 在导入操作时，我们将整个文件都读入到一个字符串中，然后将其分割成行。这种处理方式对于相对小的文件来说没有问题，但是对于大文件，最好采用惰性读取 (lazily read) 的方式逐行读入。本文最后的示例将使用输入流的方式来实现这个特性，在 [StackOverflow][14] 上 Dave DeLong 也提供了一段非常好的示例代码来说明这个问题。
 
-在 app 第一次运行时，除开将大量数据导入 Core Data 这一选择以外，你也可以在你的 app bundle 中直接放一个 sqlite 文件，或者从一个可以动态生成数据的服务器下载。如果使用这些方式的话，可以节省不少在设备上的处理事件。
+在 app 第一次运行时，除开将大量数据导入 Core Data 这一选择以外，你也可以在你的 app bundle 中直接放一个 sqlite 文件，或者从一个可以动态生成数据的服务器下载。如果使用这些方式的话，可以节省不少在设备上的处理时间。
 
 最后，最近对于 child contexts 有很多争议。我们的建议是不要在后台操作中使用它。如果你以主 context 的 child 的方式创建了一个后台 context 的话，保存这个后台 context 将[阻塞主线程][15]。而要是将主 context 作为后台 context 的 child 的话，实际上和与创建两个传统的独立 contexts 来说是没有区别的。因为你仍然需要手动将后台的改变合并回主 context 中去。
 

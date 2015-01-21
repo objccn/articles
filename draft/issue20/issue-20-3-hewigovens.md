@@ -1,5 +1,7 @@
 ## 学无止境
 
+> 被访者简介：Natasha Murashev 作为一个俄国妹子在美国学了三年心理学后成功混入 FBI 担任行动计划专家，之后辗转 Google 等知名企业后，现在在 Captial One 从事 iOS 开发。作为一个 iOS 开发的一年级生，Natasha 已经取得了非常多的成就，并且维护了一个 Swift 周报。
+
 **Natasha，感谢你抽出宝贵的时间！你能简单介绍一下最近你的工作和开发者社区中做的事情吗？**
 
 我是 [Captial One](https://www.capitalone.com/)(第一资本金融公司，是美国一家金融控股公司，专营信用卡、房屋贷款、汽车贷款、银行等金融产品，名列财星500大之一。) 的一名 iOS 工程师，我们正在财政领域做一些令人激动的原生应用 。工作之余，我一般会起的很早，写写博客，学习或者创造点什么，可以说早上是我成长的时间。
@@ -90,4 +92,4 @@
 
 [话题 #20 下的更多文章](http://objccn.io/issue-20)
 
-原文 [Infinite Things to Learn #20](www.objc.io/issue-20/natasha-murashev.html)
+原文 [Infinite Things to Learn](www.objc.io/issue-20/natasha-murashev.html)

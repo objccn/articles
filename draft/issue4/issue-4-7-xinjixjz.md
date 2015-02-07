@@ -79,6 +79,12 @@
 
 这段代码主要来源于 [Marcus Zarra](https://twitter.com/mzarra)，他写了一本很棒的关于 Core Data 的书，[查看这里](http://pragprog.com/book/mzcd2/core-data)。
 
+自 iOS 7 和 OS Mavericks以来，Apple 将 SQLite 的日志模式改写为预写式日志 (Write-Ahead Logging)， 这意味着数据库事务都被依附到一个 -wal 文件中。这有可能导致数据丢失和异常。为了数据的安全，我们会将日志模式改写为回溯模式。而如果我们想要迁移数据（或者为了以后备份），我们可以将一个字典传递给 `-addPersistentStoreWithType:configuration:URL:options:error:` 来完成改写。
+
+    @{ NSSQLitePragmasOption: @{ @"journal_mode": @"DELETE” } }
+    
+与 `NSPersistentStoreCoordinator` 相关的代码可以在[这里](https://github.com/objcio/issue-4-core-data-migration/blob/master/BookMigration/MHWCoreDataController.m#L73-L84)找到。
+
 ## 迁移策略
 
 `NSEntityMigrationPolicy` 是自定义迁移过程的核心。 [苹果的文档](https://developer.apple.com/library/ios/documentation/cocoa/Reference/NSEntityMigrationPolicy_class/NSEntityMigrationPolicy.html)中有这么一句话: 

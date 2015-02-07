@@ -175,7 +175,7 @@ xctool 用法非常简单，它使用的参数跟 `xcodebuild` 相同：
 
 至此，已经导入了所有的证书和配置文件，我们可以开始给应用程序签名了。注意，在给程序签名之前必须对程序进行编译。由于我们需要知道编译结果存储在磁盘的具体位置，我建议在编译命令中使用 `OBJROOT` 和 `SYMROOT` 来指定输出目录。另外，为了创建 release 版本，还需要把 SDK 设置为 `iphoneos`，以及将 configuration 修改为 `Release`：
 
-	xctool -workspace TravisExample.xcworkspace -scheme TravisExample -sdk iphoneos -configuration Release OBJROOT=$PWD/build SYMROOT=$PWD/build ONLY_ACTIVE_ARCH=NO
+	xctool -workspace TravisExample.xcworkspace -scheme TravisExample -sdk iphoneos -configuration Release OBJROOT=$PWD/build SYMROOT=$PWD/build ONLY_ACTIVE_ARCH=NO 'CODE_SIGN_RESOURCE_RULES_PATH=$(SDKROOT)/ResourceRules.plist'
 
 如果运行了上面的命令，那么编译完成之后，可以在 `build/Release-iphoneos` 目录找到应用程序的二进制文件。接下来，就可以对其签名，并创建 `IPA` 文件了。为此，我们创建一个新的脚本：
 

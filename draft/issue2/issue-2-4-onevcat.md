@@ -196,7 +196,9 @@ Apple 有一个[针对 iOS 和 Mac 的很好的总览性文档](https://develope
     }
     
     - (void)removeAllDelegates {
-        self.delegates = nil;
+        @synchronized(self) {
+            self.delegates = nil;
+        }
     }
     
     - (void)callDelegateForX {
@@ -206,7 +208,7 @@ Apple 有一个[针对 iOS 和 Mac 的很好的总览性文档](https://develope
     }
 
 
-当然啦，这个例子有点过于人为编造，其实我们很容易可以把变化限制在主线程中来避免问题。但是对于很多数据结构来说，可以在进行变更操作的方法中创建不可变的拷贝，这样 app 的整体逻辑就不需要处理很多锁的情况。请注意我们还是需要给 `addDelegate:` 加上锁，否则在其他线程进行异步调用的时候可能遭遇委托对象丢失的问题。
+当然啦，这个例子有点过于人为编造，其实我们很容易可以把变化限制在主线程中来避免问题。但是对于很多数据结构来说，可以在进行变更操作的方法中创建不可变的拷贝，这样 app 的整体逻辑就不需要处理很多锁的情况。
 
 ## GCD 的陷阱
 

@@ -12,7 +12,6 @@ In this article, we'll see how image capture with AVFoundation works, how to con
 ## 概述
 
 ### AVFoundation vs. `UIImagePickerController`
-
 ### AVFoundation vs. `UIImagePickerController`
 
 `UIImagePickerController` provides a very simple way to take a picture. It supports all the basic features, such as switching to the front-facing camera, toggling the flash, tapping on an area to lock focus and exposure, and, on iOS8, adjusting the exposure just as in the system camera app.
@@ -24,7 +23,7 @@ However, when direct access to the camera is necessary, the AVFoundation framewo
 然而，当直接访问相机变得必要，便可选择AVFoundation框架。它支持全面的操作，例如，以编程方式更改硬件参数，或者操纵实时预览图。
 
 ### AVFoundation's Building Blocks
-### AVFoundation's 编译代码块
+### AVFoundation的相关类名
 
 An image capture implemented with the AVFoundation framework is based on a few classes. These classes give access to the raw data coming from the camera device and can control its components.
 
@@ -46,7 +45,7 @@ An image capture implemented with the AVFoundation framework is based on a few c
   - `AVCaptureMetadataOutput` 用于识别脸部和二维码
   - `AVCaptureVideoOutput` 为实施预览图提供原始帧
 - `AVCaptureSession` 管理输入与输出之间的数据流，以及生成运行时错误以防出现问题。
-- `AVCaptureVideoPreviewLayer` 是 `CALayer` 的子类，可被用于自动显示相机产生的实时图像。它还有几个实用的功能，可将layer上的坐标转化到那些设备上。看起来像输出，但其实不是。另外，它*拥有* session（outputs 被 session *所拥有*）。
+- `AVCaptureVideoPreviewLayer` 是 `CALayer` 的子类，可被用于自动显示相机产生的实时图像。它还有几个实用的功能，可将layer上的坐标转化到那些设备上。看起来像输出，但其实不是。另外，它*拥有* 一个 session（outputs 被一个 session *所拥有*）。
 
 ## Setup
 ## 建立
@@ -63,7 +62,7 @@ Now we need a camera device input. On most iPhones and iPads, we can choose betw
 
 现在我们需要一个相机设备输入。在大多数iPhone和iPad中，我们可以选择后置摄像头或前置摄像头--又称自拍相机（selfie camera）。那么我们必须先遍历所有能提供视频数据的 devices（麦克风也属于`AVCaptureDevice`，因此略过不谈），并检查 `position` 属性：
 
-```
+```swift
 let availableCameraDevices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo)
 for device in availableCameraDevices as [AVCaptureDevice] {
   if device.position == .Back {
@@ -79,7 +78,7 @@ Then, once we found the proper camera device, we can get the corresponding `AVCa
 
 然后，一旦我们发现合适的相机设备，我们就能获得相关的`AVCaptureDeviceInput` 对象。我们将会设置这个作为session的输出：
 
-```
+```swift
 var error:NSError?
 let possibleCameraInput: AnyObject? = AVCaptureDeviceInput.deviceInputWithDevice(backCameraDevice, error: &error)
 if let backCameraInput = possibleCameraInput as? AVCaptureDeviceInput {
@@ -91,13 +90,13 @@ if let backCameraInput = possibleCameraInput as? AVCaptureDeviceInput {
 
 Note that the first time the app is executed, the first call to  `AVCaptureDeviceInput.deviceInputWithDevice()` triggers a system dialog, asking the user to allow usage of the camera. This was introduced in some countries with iOS 7, and was extended to all regions with iOS 8. Until the user accepts the dialog, the camera input will send a stream of black frames.
 
-注意当这个app第一次运行，第一次调用`AVCaptureDeviceInput.deviceInputWithDevice()`会触发系统提示，向用户请求访问相机。这在iOS7的时候只有部分国家会有，到了iOS8才拓展到了所有地区。直到用户同意请求，相机输入才发送一个黑色画面的数据流。
+注意当这个app第一次运行，第一次调用 `AVCaptureDeviceInput.deviceInputWithDevice()` 会触发系统提示，向用户请求访问相机。这在iOS7的时候只有部分国家会有，到了iOS8才拓展到了所有地区。直到用户同意请求，相机输入才发送一个黑色画面的数据流。
 
 A more appropriate way to handle the camera permissions is to first check the current status of the authorization, and in case it's still not determined, i.e. the user hasn't seen the dialog, to explicitly request it:
 
 确认当前的授权状态是一个更合适的处理相机许可的方法，以防它一直处于不确定状态，也就是说，用户没有看过弹出的授权对话，便不能明确地发起请求。
 
-```
+```swift
 let authorizationStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo)
 switch authorizationStatus {
 case .NotDetermined:
@@ -127,7 +126,7 @@ At this point, we have two ways to display the video stream that comes from the 
 
 这时候，我们有两种方式来显示来自相机的图像流。最简单的就是，生成一个带有 `AVCaptureVideoPreviewLayer` 的view，并使用 capture session 作为初始化参数。
 
-```
+```swift
 previewLayer = AVCaptureVideoPreviewLayer.layerWithSession(session) as AVCaptureVideoPreviewLayer
 previewLayer.frame = view.bounds
 view.layer.addSublayer(previewLayer)
@@ -142,7 +141,7 @@ To get the data stream, we just create an `AVCaptureVideoDataOutput`, so when th
 
 第二个方法是从输出数据流捕捉的单个图像帧，使用OpenGL手动地显示在view上。这个有点复杂但是必要，以防我们想要对实时预览图进行操作或使用滤镜。为获得数据流，我们仅创建了一个 `AVCaptureVideoDataOutput` ，因此当相机在运行，我们通过代理方法`captureOutput(_:didOutputSampleBuffer:fromConnection:)`获得所有图像帧（除了掉帧，如果进程太慢的话），然后将他们绘制在`GLKView`。在没有太理解OpenGL框架情况下，我们可以像这样创建`GLKView`：
 
-```
+```swift
 glContext = EAGLContext(API: .OpenGLES2)
 glView = GLKView(frame: viewFrame, context: glContext)
 ciContext = CIContext(EAGLContext: glContext)
@@ -151,7 +150,7 @@ ciContext = CIContext(EAGLContext: glContext)
 Now the `AVCaptureVideoOutput`:
 现在轮到 `AVCaptureVideoOutput`
 
-```
+```swift
 videoOutput = AVCaptureVideoDataOutput()
 videoOutput.setSampleBufferDelegate(self, queue: dispatch_queue_create("sample buffer delegate", DISPATCH_QUEUE_SERIAL))
 if session.canAddOutput(self.videoOutput) {
@@ -162,7 +161,7 @@ if session.canAddOutput(self.videoOutput) {
 And the delegate method:
 代理方法：
 
-```
+```swift
 func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
   let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
   let image = CIImage(CVPixelBuffer: pixelBuffer)
@@ -183,7 +182,7 @@ We're almost done. The last component — the `AVCaptureStillImageOutput` — is
 
 我们完成了大部分。最后一个组件-- `AVCaptureStillImageOutput` --实际上是最重要的，因为它允许我们捕捉静态图片。这里创建了一个实例，并添加到session：
 
-```
+```swift
 stillCameraOutput = AVCaptureStillImageOutput()
 if self.session.canAddOutput(self.stillCameraOutput) {
   self.session.addOutput(self.stillCameraOutput)
@@ -199,7 +198,7 @@ The simplest — and the most recommended — is to use a session preset:
 
 现在我们有了所有必需的对象，应该为我们的需求寻找最合适的配置。这里又有两种方法可以实现。最简单且最推荐是使用 session preset： 
 
-```
+```swift
 session.sessionPreset = AVCaptureSessionPresetPhoto
 ```
 
@@ -222,7 +221,7 @@ iPhone和ipad中内置的相机或多或少跟其他相机有相同的操作，�
 
 我们之后会看到细节，是时候先启动相机：
 
-```
+```swift
 sessionQueue = dispatch_queue_create("com.example.camera.capture\_session", DISPATCH_QUEUE_SERIAL)
 dispatch_async(sessionQueue) { () -> Void in
   self.session.startRunning()
@@ -233,7 +232,7 @@ All the actions and configurations done on the session or the camera device are 
 
 在session和相机设备中完成的所有操作和配置都是 block 调用。因此，建议分配到后台的串行队列中。此外，相机设备必须在改变任何一个参数前锁定，然后解锁，例如：
 
-```
+```swift
 var error:NSError?
 if currentDevice.lockForConfiguration(&error) {
   // locked successfully, go on with configuration
@@ -275,14 +274,14 @@ Setting the desired focus mode must be done after acquiring a lock:
 
 设置想要的对焦模式必须在锁定之后实施：
 
-```
+```swift
 let focusMode:AVCaptureFocusMode = ...
 if currentCameraDevice.isFocusModeSupported(focusMode) {
   ... // lock for configuration
-      // 锁定配置
+  ... // 锁定配置
   currentCameraDevice.focusMode = focusMode
   ... // unlock
-      // 解锁
+  ... // 解锁
   }
 }
 ```
@@ -292,11 +291,11 @@ Usually this can be implemented with a tap gesture recognizer on the video previ
 
 通常情况下，`AutoFocus` 模式会试图寻找屏幕中心最清晰，对比明显的区域，但是也可以通过变换“感兴趣的点（point of interest）”来设定另一个区域。这个点是一个 CGPoint，它的值从左上角{0，0}到右下角{1，1}，{0.5，0.5}为画面的中心点。通常这可以用视频预览图上的点击手势识别实现，并协助将view上的坐标转化到设备上规范化的坐标，我们可以使用`AVVideoCaptureVideoPreviewLayer.captureDevicePointOfInterestForPoint()`:
 
-```
+```swift
 var pointInPreview = focusTapGR.locationInView(focusTapGR.view)
 var pointInCamera = previewLayer.captureDevicePointOfInterestForPoint(pointInPreview)
 ... // lock for configuration
-    // 锁定配置
+... // 锁定配置
 
 // set the new point of interest:
 currentCameraDevice.focusPointOfInterest = pointInCamera
@@ -304,16 +303,16 @@ currentCameraDevice.focusPointOfInterest = pointInCamera
 currentCameraDevice.focusMode = .AutoFocus
 
 ... // unlock
-    // 解锁
+... // 解锁
 ```
 
 New in iOS 8 is the option to move the lens to a position from `0.0`, focusing near objects, to `1.0`, focusing far objects (although that doesn't mean "infinity"):
 
 在iOS8，有个新选项可以移动镜片的位置，从0.0到1.0，越靠近1.0，离物体越远（不是指无限远）。
 
-```
+```swift
 ... // lock for configuration
-    // 锁住配置
+... // 锁住配置
 var lensPosition:Float = ... // 0.0 and 1.0的float
 currentCameraDevice.setFocusModeLockedWithLensPosition(lensPosition) {
   (timestamp:CMTime) -> Void in
@@ -321,7 +320,7 @@ currentCameraDevice.setFocusModeLockedWithLensPosition(lensPosition) {
   // 第一张图像缓存区的 timestamp ，应用了镜片位置
 }
 ... // unlock
-    // 解锁
+... // 解锁
 ```
 
 This means that the focus can be set with a `UISlider`, for example, which would be the equivalent of rotating the focusing ring on a DSLR. When focusing manually with these kinds of cameras, there is usually a visual aid that indicates the sharp areas. There is no such built-in mechanism in AVFoundation, but it could be interesting to display, for instance, a sort of ["focus peaking"](https://en.wikipedia.org/wiki/Focus_peaking). We won't go into details here, but focus peaking could be easily implemented by applying a threshold edge detect filter (with a custom `CIFilter` or [`GPUImageThresholdEdgeDetectionFilter`](https://github.com/BradLarson/GPUImage/blob/master/framework/Source/GPUImageThresholdEdgeDetectionFilter.h)), and overlaying it onto the live preview in the `captureOutput(_:didOutputSampleBuffer:fromConnection:)` method of `AVCaptureAudioDataOutputSampleBufferDelegate` seen above.
@@ -337,33 +336,33 @@ On iOS devices, the aperture of the lens is fixed (at f/2.2 for iPhones after 5s
 在iOS设备上，镜头上的光圈是固定的（在iPhone 5s以及其之后的光圈值是f/2.2，之前的是f/2.4），因此只有曝光时间和传感器的灵敏度才能对图片的亮度进行微调，从而达到合适的效果。至于对焦，我们可以选择连续自动曝光，手动曝光，或者在“感兴趣的点”一次性自动曝光。除了指定“感兴趣的点”，我们可以通过设置 compensation（曝光补偿）修改自动曝光，也就是 *target bias*。target bias 在[*f-stops*](/issue-21/how-your-camera-works.html#stops)有讲到，它的范围在`minExposureTargetBias` 与 `maxExposureTargetBias`之间，0为默认值（没有补光）。
 
 
-```
+```swift
 var exposureBias:Float = ... // a value between minExposureTargetBias and maxExposureTargetBias
-    // 在 minExposureTargetBias 和 maxExposureTargetBias 之间的值
+                         ...// 在 minExposureTargetBias 和 maxExposureTargetBias 之间的值
 ... // lock for configuration
-    // 锁定配置
+... // 锁定配置
 currentDevice.setExposureTargetBias(exposureBias) { (time:CMTime) -> Void in
 }
 ... // unlock
-    // 解锁
+... // 解锁
 ```
 
 To use manual exposure, instead we can set the ISO and the duration. Both values must be in the ranges specified in the device's active format:
 
 使用手动曝光，我们可以设置 ISO 和曝光时间，两者的值都必须是设备支持的格式并在指定范围内。
 
-```
+```swift
 var activeFormat = currentDevice.activeFormat
 var duration:CTime = ... // a value between activeFormat.minExposureDuration and activeFormat.maxExposureDuration or AVCaptureExposureDurationCurrent for no change
-//在activeFormat.minExposureDuration 和 activeFormat.maxExposureDuration 之间的值，或者 AVCaptureExposureDurationCurrent 不变
+                     ... //在activeFormat.minExposureDuration 和 activeFormat.maxExposureDuration 之间的值，或者 AVCaptureExposureDurationCurrent 不变
 var iso:Float = ... // a value between activeFormat.minISO and activeFormat.maxISO or AVCaptureISOCurrent for no change
-// 在 activeFormat.minISO 和 activeFormat.maxISO 之间的值 或 AVCaptureISOCurrent 不变
+                ... // 在 activeFormat.minISO 和 activeFormat.maxISO 之间的值或者 AVCaptureISOCurrent 不变
 ... // lock for configuration
-    // 锁住配置
+... // 锁住配置
 currentDevice.setExposureModeCustomWithDuration(duration, ISO: iso) { (time:CMTime) -> Void in
 }
 ... // unlock
-    // 解锁
+... // 解锁
 ```
 
 How do we know that the picture is correctly exposed? We can observe the `exposureTargetOffset` property of the `AVCaptureDevice` object and check that it's around zero.
@@ -388,7 +387,7 @@ This is the whole process:
 
 以下是全部过程：
 
-```
+```swift
 var incandescentLightCompensation = 3_000
 var tint = 0 // no shift
 let temperatureAndTintValues = AVCaptureWhiteBalanceTemperatureAndTintValues(temperature: incandescentLightCompensation, tint: tint)
@@ -402,10 +401,11 @@ currentCameraDevice.setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains(deviceG
 ```
 
 ### Real-Time Face Detection
+### 实时脸部识别
 
 The `AVCaptureMetadataOutput` has the ability to detect two types of objects: faces and QR codes. Apparently [no one uses QR codes](http://picturesofpeoplescanningqrcodes.tumblr.com), so let's see how we can detect faces. We just need to catch the metadata objects the `AVCaptureMetadataOutput` is providing to its delegate:
 
-`AVCaptureMetadataOutput` 可以用于脸部识别和二维码识别这两种。显然[没什么人用二维码](http://picturesofpeoplescanningqrcodes.tumblr.com)，因此我们就来看看如何实现脸部识别。我们只需通过 `AVCaptureMetadataOutput` 的代理方法捕获的元对象（metadata objects）：
+`AVCaptureMetadataOutput` 可以用于脸部识别和二维码识别这两种。显然[没人用二维码](http://picturesofpeoplescanningqrcodes.tumblr.com)，因此我们就来看看如何实现脸部识别。我们只需通过 `AVCaptureMetadataOutput` 的代理方法捕获的元对象（metadata objects）：
 
 ```swift
 var metadataOutput = AVCaptureMetadataOutput()
@@ -441,12 +441,13 @@ If the still image output was set up to use the JPEG codec, either via the sessi
 如果静态图片输出被设置成使用JPEG编码，要么通过 session `.Photo` 预设，要么通过设备输出设置，`sampleBuffer` 返回值包含图像元数据，也就是EXIF数据，也能识别脸部，如果在`AVCaptureMetadataOutput`下可用的话：
 
 
-```
+```swift
 dispatch_async(sessionQueue) { () -> Void in
 
   let connection = self.stillCameraOutput.connectionWithMediaType(AVMediaTypeVideo)
 
   // update the video orientation to the device one
+  // 将视频的旋转方向与设备同步
   connection.videoOrientation = AVCaptureVideoOrientation(rawValue: UIDevice.currentDevice().orientation.rawValue)!
 
   self.stillCameraOutput.captureStillImageAsynchronouslyFromConnection(connection) {
@@ -468,7 +469,7 @@ dispatch_async(sessionQueue) { () -> Void in
 
       if let image = UIImage(data: imageData) {
         // save the image or do something interesting with it
-        // 保存图片，或者做些其他有趣的
+        // 保存图片，或者做些其他的
         ...
       }
     }
@@ -516,8 +517,9 @@ dispatch_async(sessionQueue) { () -> Void in
     // 保存 sampleBuffer(s)
 
     // when the counter reaches 0 the capture is complete
-    counter--
     // 当计数为0，捕捉完成
+    counter--
+    
 
   }
 }

@@ -47,7 +47,7 @@ An image capture implemented with the AVFoundation framework is based on a few c
   - `AVCaptureVideoOutput` 为实施预览图提供原始帧
 - `AVCaptureSession` 管理输入与输出之间的数据流，以及生成运行时错误以防出现问题。
 - `AVCaptureVideoPreviewLayer` 是 `CALayer` 的子类，可被用于自动显示相机产生的实时图像。它还有几个实用的功能，可将layer上的坐标转化到那些设备上。看起来像输出，但其实不是。另外，它*拥有* session（outputs 被 session *所拥有*）。
-- 
+
 ## Setup
 ## 建立
 
@@ -107,16 +107,16 @@ case .NotDetermined:
     completionHandler: { (granted:Bool) -> Void in
     if granted {
       // go ahead
-      // 
+      // 继续
     }
     else {
       // user denied, nothing much to do
-      // 被用户拒绝，无法继续
+      // 用户拒绝，无法继续
     }
   })
 case .Authorized:
   // go ahead
-  // 
+  // 继续
 case .Denied, .Restricted:
   // the user explicitly denied camera usage or is not allowed to access the camera devices
   // 用户明确地拒绝授权，或者无法访问相机设备

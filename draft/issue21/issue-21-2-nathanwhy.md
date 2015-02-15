@@ -119,7 +119,7 @@ case .Authorized:
   // 继续
 case .Denied, .Restricted:
   // the user explicitly denied camera usage or is not allowed to access the camera devices
-  // 用户明确地拒绝授权，或者无法访问相机设备
+  // 用户明确地拒绝授权，或者相机设备无法访问
 }
 ```
 
@@ -141,7 +141,7 @@ The second method is to capture the single frames from the output data stream an
 To get the data stream, we just create an `AVCaptureVideoDataOutput`, so when the camera is running, we get all the frames (except the ones that will be dropped if our processing is too slow) via the delegate method, `captureOutput(_:didOutputSampleBuffer:fromConnection:)`, and draw them in a `GLKView`. Without going too deep into the OpenGL framework, we could setup the `GLKView` like this:
 
 第二个方法是从输出数据流捕捉单一的图像帧，并使用OpenGL手动地显示在view上。这个有点复杂但是必要，比如我们想要对实时预览图进行操作或使用滤镜。
-为获得数据流，我们仅创建了一个 `AVCaptureVideoDataOutput` ，因此当相机在运行，我们通过代理方法 `captureOutput(_:didOutputSampleBuffer:fromConnection:)` 获得所有图像帧（除了掉帧，如果进程太慢的话），然后将他们绘制在一个   `GLKView` 中。在没有太理解 OpenGL 框架情况下，我们可以像这样创建 `GLKView`：
+为获得数据流，我们仅创建了一个 `AVCaptureVideoDataOutput` ，因此当相机在运行，我们通过代理方法 `captureOutput(_:didOutputSampleBuffer:fromConnection:)` 获得所有图像帧（如果我们处理太慢的话会掉帧），然后将他们绘制在一个   `GLKView` 中。在没有太理解 OpenGL 框架情况下，我们可以像这样创建 `GLKView`：
 
 ```swift
 glContext = EAGLContext(API: .OpenGLES2)
@@ -245,7 +245,7 @@ if currentDevice.lockForConfiguration(&error) {
 else {
   // something went wrong, the device was probably 
  already locked
-  // 出错，可能相机已经被锁
+  // 出错，相机可能已经被锁
 }
 ```
 
@@ -259,7 +259,7 @@ Autofocus is implemented with phase detection or contrast detection. The latter,
 
 在 iOS 相机上，对焦是通过移动镜片到传感器之间的距离实现的。
 
-自动对焦是通过阶段检测和对比检测实现。然而，对比检测只适用于低分辨率和高 FPS 视频捕捉（缓慢运动）。
+自动对焦是通过阶段检测和对比检测实现。然而，对比检测只适用于低分辨率和高 FPS 视频捕捉（慢镜头）。
 
 The enum `AVCaptureFocusMode` describes the available focus modes:
 

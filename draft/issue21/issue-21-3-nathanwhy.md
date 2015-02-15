@@ -461,7 +461,7 @@ dispatch_async(sessionQueue) { () -> Void in
       // if the session preset .Photo is used, or if explicitly set in the device's outputSettings
       // 如果使用 session preset .Photo，或者在设备输出设置中明确设置
       // we get the data already compressed as JPEG
-      // 我们获得已经压缩为JPEG的数据
+      // 我们就获得已经压缩为JPEG的数据
 
       let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer)
 
@@ -520,7 +520,7 @@ dispatch_async(sessionQueue) { () -> Void in
     // 保存 sampleBuffer(s)
 
     // when the counter reaches 0 the capture is complete
-    // 当计数位0，捕捉完成
+    // 当计数为0，捕捉完成
     counter--
 
   }

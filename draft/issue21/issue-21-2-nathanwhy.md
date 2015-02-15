@@ -6,7 +6,7 @@ The iPhone has shipped with a camera since its first model. In the first SDKs, t
 
 In this article, we'll see how image capture with AVFoundation works, how to control the camera, and the new features recently introduced in iOS 8.
 
-在这篇文章，我们将会看到如何使用 AVFoundation 捕捉图像，如何控制相机，以及它在 iOS 8 的新特性。
+在这篇文章，我们将会看到如何使用 AVFoundation 捕捉图像，如何操控相机，以及它在 iOS 8 的新特性。
 
 ## Overview
 ## 概述

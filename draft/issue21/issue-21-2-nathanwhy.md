@@ -2,7 +2,7 @@
 
 The iPhone has shipped with a camera since its first model. In the first SDKs, the only way to integrate the camera within an app was by using `UIImagePickerController`, but iOS 4 introduced the AVFoundation framework, which allowed more flexibility.
 
-第一台 iPhone 问世就装有相机。第一个 SKDs 版本中，在 app 里面整合相机的唯一方法就是使用 `UIImagePickerController`，但到了 iOS 4，发布了更灵活的 AVFoundation 框架。
+第一台 iPhone 问世就装有相机。在第一个 SKDs 版本中，在 app 里面整合相机的唯一方法就是使用 `UIImagePickerController`，但到了 iOS 4，发布了更灵活的 AVFoundation 框架。
 
 In this article, we'll see how image capture with AVFoundation works, how to control the camera, and the new features recently introduced in iOS 8.
 

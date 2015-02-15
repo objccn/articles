@@ -41,7 +41,7 @@ AVFoundation 框架基于以下几个类实现图像捕捉 ，通过这些类可
 
 - `AVCaptureDevice` 是关于相机硬件的接口。它被用于控制硬件特性，诸如镜头的位置、曝光、闪光灯等。
 - `AVCaptureDeviceInput` 提供来自设备的数据。
-- `AVCaptureOutput` 是一个抽象类，描述捕捉 session 的结果。以下是三种关于静态图片捕捉的具体子类：
+- `AVCaptureOutput` 是一个抽象类，描述 capture session 的结果。以下是三种关于静态图片捕捉的具体子类：
   - `AVCaptureStillImageOutput` 用于捕捉静态图片
   - `AVCaptureMetadataOutput` 用于检测人脸和二维码
   - `AVCaptureVideoOutput` 为实施预览图提供原始帧
@@ -55,7 +55,7 @@ Let's start building the capture. First we need an `AVCaptureSession` object:
 
 让我们看看如何捕获图像。首先我们需要一个 `AVCaptureSession` 对象:
 
-```
+```swift
 let session = AVCaptureSession()
 ```
 
@@ -95,7 +95,7 @@ Note that the first time the app is executed, the first call to  `AVCaptureDevic
 
 A more appropriate way to handle the camera permissions is to first check the current status of the authorization, and in case it's still not determined, i.e. the user hasn't seen the dialog, to explicitly request it:
 
-对于处理相机的权限，是更合适的方法是先确认当前的授权状态，以避免不确定的情况。也就是说，用户没有看过弹出的授权对话，便不能明确地发起请求。
+对于处理相机的权限，更合适的方法是先确认当前的授权状态，以避免不确定的情况。也就是说，用户没有看过弹出的授权对话，便不能明确地发起请求。
 
 ```swift
 let authorizationStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo)
@@ -141,7 +141,7 @@ The second method is to capture the single frames from the output data stream an
 To get the data stream, we just create an `AVCaptureVideoDataOutput`, so when the camera is running, we get all the frames (except the ones that will be dropped if our processing is too slow) via the delegate method, `captureOutput(_:didOutputSampleBuffer:fromConnection:)`, and draw them in a `GLKView`. Without going too deep into the OpenGL framework, we could setup the `GLKView` like this:
 
 第二个方法是从输出数据流捕捉单一的图像帧，并使用OpenGL手动地显示在view上。这个有点复杂但是必要，比如我们想要对实时预览图进行操作或使用滤镜。
-为获得数据流，我们仅创建了一个 `AVCaptureVideoDataOutput` ，因此当相机在运行，我们通过代理方法 `captureOutput(_:didOutputSampleBuffer:fromConnection:)` 获得所有图像帧（如果我们处理太慢的话会掉帧），然后将他们绘制在一个   `GLKView` 中。在没有太理解 OpenGL 框架情况下，我们可以像这样创建 `GLKView`：
+为获得数据流，我们仅创建了一个 `AVCaptureVideoDataOutput` ，因此当相机在运行，我们通过代理方法 `captureOutput(_:didOutputSampleBuffer:fromConnection:)` 获得所有图像帧（如果我们处理太慢的话会掉帧），然后将他们绘制在一个 `GLKView` 中。在没有太理解 OpenGL 框架情况下，我们可以像这样创建 `GLKView`：
 
 ```swift
 glContext = EAGLContext(API: .OpenGLES2)
@@ -210,7 +210,7 @@ The `AVCaptureSessionPresetPhoto` selects the best configuration for the capture
 
 However, if you need more control, the `AVCaptureDeviceFormat` class describes the parameters applicable to the device, such as still image resolution, video preview resolution, the type of autofocus system, ISO, and exposure duration limits. Every device supports a set of formats, listed in the `AVCaptureDevice.formats` property, and the proper format can be set as the  `activeFormat` of the `AVCaptureDevice` (note that you cannot modify a format).
 
-然而，如果你需要更多的操作，这个 `AVCaptureDeviceFormat` 类描述了设备适用的一些参数，比如静态图片解决方案，视频预览解决方案，自动对焦类型，感光度（ISO），和曝光时间限制。每个设备支持的格式都列在 `AVCaptureDevice.formats` 属性中，然后可以赋值给 `AVCaptureDevice` 的 `activeFormat` (注意你不能修改格式)。
+然而，如果你需要更多的操控，可以使用 `AVCaptureDeviceFormat` 这个类，它描述了一些设备使用的参数，比如静态图片解决方案，视频预览解决方案，自动对焦类型，感光度（ISO），和曝光时间限制。每个设备支持的格式都列在 `AVCaptureDevice.formats` 属性中，并可以赋值给 `AVCaptureDevice` 的 `activeFormat` (注意你不能修改格式)。
 
 ## Controlling the Camera
 ## 操作相机
@@ -232,7 +232,7 @@ dispatch_async(sessionQueue) { () -> Void in
 
 All the actions and configurations done on the session or the camera device are blocking calls. For this reason, it's recommended to dispatch them to a background serial queue. Furthermore, the camera device must be locked before changing any of its parameters, and unlocked afterwards For example:
 
-在 session 和相机设备中完成的所有操作和配置是利用 block 调用的。因此，建议将这些操作分配到后台的串行队列中。此外，相机设备在改变某些参数前会被锁定，直到改变结束才会被解锁，例如：
+在 session 和相机设备中完成的所有操作和配置是利用 block 调用的。因此，建议将这些操作分配到后台的串行队列中。此外，相机设备在改变某些参数前必须先锁定，直到改变结束才能解锁，例如：
 
 
 ```swift
@@ -259,7 +259,7 @@ Autofocus is implemented with phase detection or contrast detection. The latter,
 
 在 iOS 相机上，对焦是通过移动镜片到传感器之间的距离实现的。
 
-自动对焦是通过阶段检测和对比检测实现。然而，对比检测只适用于低分辨率和高 FPS 视频捕捉（慢镜头）。
+自动对焦是通过阶段检测和对比检测实现。然而，对比检测只适用于低分辨率和高 FPS 视频捕捉（即慢镜头）。
 
 The enum `AVCaptureFocusMode` describes the available focus modes:
 
@@ -328,14 +328,14 @@ currentCameraDevice.setFocusModeLockedWithLensPosition(lensPosition) {
 
 This means that the focus can be set with a `UISlider`, for example, which would be the equivalent of rotating the focusing ring on a DSLR. When focusing manually with these kinds of cameras, there is usually a visual aid that indicates the sharp areas. There is no such built-in mechanism in AVFoundation, but it could be interesting to display, for instance, a sort of ["focus peaking"](https://en.wikipedia.org/wiki/Focus_peaking). We won't go into details here, but focus peaking could be easily implemented by applying a threshold edge detect filter (with a custom `CIFilter` or [`GPUImageThresholdEdgeDetectionFilter`](https://github.com/BradLarson/GPUImage/blob/master/framework/Source/GPUImageThresholdEdgeDetectionFilter.h)), and overlaying it onto the live preview in the `captureOutput(_:didOutputSampleBuffer:fromConnection:)` method of `AVCaptureAudioDataOutputSampleBufferDelegate` seen above.
 
-这意味着对焦可以使用 `UISlider` 设置，这有点类似于单反上的旋转对焦环。当用这种相机手动对焦时，通常有一个可见的辅助标识指向清晰的区域。AVFoundation 里面没有内置这种机制，但是可以有意思地显示，比如 ["峰值对焦（focus peaking）"](https://en.wikipedia.org/wiki/Focus_peaking)。我们在这里不会讨论细节，不过 focus peaking 可以很容易地实现，通过应用临界值（threshold edge）检测滤镜（用自定义 `CIFilter` 或 [`GPUImageThresholdEdgeDetectionFilter`](https://github.com/BradLarson/GPUImage/blob/master/framework/Source/GPUImageThresholdEdgeDetectionFilter.h))，并通过使用 `AVCaptureAudioDataOutputSampleBufferDelegate`  下的 `captureOutput(_:didOutputSampleBuffer:fromConnection:)` 方法将它覆盖到实时预览图上。
+这意味着对焦可以使用 `UISlider` 设置，这有点类似于单反上的旋转对焦环。当用这种相机手动对焦时，通常有一个可见的辅助标识指向清晰的区域。AVFoundation 里面没有内置这种机制，但是可以有意思地显示，比如 ["峰值对焦（focus peaking）"](https://en.wikipedia.org/wiki/Focus_peaking)。我们在这里不会讨论细节，不过 focus peaking 可以很容易地实现，通过使用检测物体边缘（threshold edge）的滤镜（用自定义 `CIFilter` 或 [`GPUImageThresholdEdgeDetectionFilter`](https://github.com/BradLarson/GPUImage/blob/master/framework/Source/GPUImageThresholdEdgeDetectionFilter.h))，并调用 `AVCaptureAudioDataOutputSampleBufferDelegate`  下的 `captureOutput(_:didOutputSampleBuffer:fromConnection:)` 方法将它覆盖到实时预览图上。
 ### Exposure
 ### 曝光
 
 
 On iOS devices, the aperture of the lens is fixed (at f/2.2 for iPhones after 5s, and at f/2.4 for previous models), so only the exposure duration and the sensor sensibility can be tweaked to accomplish the most appropriate image brightness. As for the focus, we can have continuous auto exposure, one-time auto exposure on the point of interest, or manual exposure. In addition to specifying a point of interest, we can modify the auto exposure by setting a compensation, known as *target bias*. The target bias is expressed in [*f-stops*](/issue-21/how-your-camera-works.html#stops), and its values range between `minExposureTargetBias` and `maxExposureTargetBias`, with 0 being the default (no compensation):
 
-在 iOS 设备上，镜头上的光圈是固定的（在 iPhone 5s 以及其之后的光圈值是 f/2.2，之前的是 f/2.4），因此只有改变曝光时间和传感器的灵敏度才能对图片的亮度进行微调，从而达到合适的效果。至于对焦，我们可以选择连续自动曝光，手动曝光，或者在“感兴趣的点”一次性自动曝光。除了指定“感兴趣的点”，我们可以通过设置 compensation（曝光补偿）修改自动曝光，也就是 *target bias*。target bias 在[*f-stops*](http://objccn.io/issue-21-1/)有讲到，它的范围在 `minExposureTargetBias` 与 `maxExposureTargetBias` 之间，0为默认值（即没有补光）。
+在 iOS 设备上，镜头上的光圈是固定的（在 iPhone 5s 以及其之后的光圈值是 f/2.2，之前的是 f/2.4），因此只有改变曝光时间和传感器的灵敏度才能对图片的亮度进行微调，从而达到合适的效果。至于对焦，我们可以选择连续自动曝光，手动曝光，或者在“感兴趣的点”一次性自动曝光。除了指定“感兴趣的点”，我们可以通过设置 compensation（曝光补偿）修改自动曝光，也就是 *target bias*。target bias 在[*f-stops*](http://objccn.io/issue-21-1/)有讲到，它的范围在 `minExposureTargetBias` 与 `maxExposureTargetBias` 之间，0为默认值（即没有“补偿”）。
 
 
 ```swift
@@ -391,15 +391,17 @@ This is the whole process:
 
 ```
 var incandescentLightCompensation = 3_000
-var tint = 0 // no shift
+var tint = 0 // no shift 不调节
 let temperatureAndTintValues = AVCaptureWhiteBalanceTemperatureAndTintValues(temperature: incandescentLightCompensation, tint: tint)
 var deviceGains = currentCameraDevice.deviceWhiteBalanceGainsForTemperatureAndTintValues(temperatureAndTintValues)
 ... // lock for configuration
+... // 锁定配置
 currentCameraDevice.setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains(deviceGains) {
         (timestamp:CMTime) -> Void in
     }
   }
 ... // unlock
+... // 解锁
 ```
 
 ### Real-Time Face Detection
@@ -440,7 +442,7 @@ Finally, we want to capture the high-resolution image, so we call the `captureSt
 
 If the still image output was set up to use the JPEG codec, either via the session `.Photo` preset or via the device's output settings, the `sampleBuffer` returned contains the image's metadata, i.e. EXIF data and also the detected faces — if enabled in the `AVCaptureMetadataOutput`:
 
-如果设置使用 JPEG 编码作为静态图片输出，可能是通过 session `.Photo` 预设，又或是通过设备输出设置，`sampleBuffer` 会返回包含图像的元数据。比如 EXIF 数据，或是被识别的脸部，前提是在 `AVCaptureMetadataOutput` 中可用：
+如果设置使用 JPEG 编码作为静态图片输出，可能是通过 session `.Photo` 预设，又或是通过设备输出设置，`sampleBuffer` 会返回包含图像的元数据。比如 EXIF 数据，或是被识别的人脸，前提是在 `AVCaptureMetadataOutput` 中可用：
 
 ```swift
 dispatch_async(sessionQueue) { () -> Void in
@@ -518,8 +520,8 @@ dispatch_async(sessionQueue) { () -> Void in
     // 保存 sampleBuffer(s)
 
     // when the counter reaches 0 the capture is complete
+    // 当计数位0，捕捉完成
     counter--
-    // 当计数为0，捕捉完成
 
   }
 }

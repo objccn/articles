@@ -21,7 +21,7 @@ In this article, we'll see how image capture with AVFoundation works, how to con
 
 However, when direct access to the camera is necessary, the AVFoundation framework allows full control, for example, for changing the hardware parameters programmatically, or manipulating the live preview.
 
-然而，当有直接访问相机的需求时，也可以选择 AVFoundation 框架。它提供了完全的控制权，例如，以编程方式更改硬件参数，或者操纵实时预览图。
+然而，当有直接访问相机的需求时，也可以选择 AVFoundation 框架。它提供了完全的操作权，例如，以编程方式更改硬件参数，或者操纵实时预览图。
 
 ### AVFoundation's Building Blocks
 ### AVFoundation 相关类
@@ -43,7 +43,7 @@ AVFoundation 框架基于以下几个类实现图像捕捉 ，通过这些类可
 - `AVCaptureDeviceInput` 提供来自设备的数据。
 - `AVCaptureOutput` 是一个抽象类，描述捕捉 session 的结果。以下是三种关于静态图片捕捉的具体子类：
   - `AVCaptureStillImageOutput` 用于捕捉静态图片
-  - `AVCaptureMetadataOutput` 用于识别脸部和二维码
+  - `AVCaptureMetadataOutput` 用于检测人脸和二维码
   - `AVCaptureVideoOutput` 为实施预览图提供原始帧
 - `AVCaptureSession` 管理输入与输出之间的数据流，以及生成运行时错误以防出现问题。
 - `AVCaptureVideoPreviewLayer` 是 `CALayer` 的子类，可被用于自动显示相机产生的实时图像。它还有几个实用的功能，可将layer上的坐标转化到那些设备上。看起来像输出，但其实不是。另外，它*拥有* session（outputs 被 session *所拥有*）。

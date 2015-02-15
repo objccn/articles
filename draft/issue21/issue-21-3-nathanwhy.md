@@ -77,7 +77,7 @@ for device in availableCameraDevices as [AVCaptureDevice] {
 
 Then, once we found the proper camera device, we can get the corresponding `AVCaptureDeviceInput` object. We'll set this as the session's input:
 
-然后，一旦我们发现合适的相机设备，我们就能获得相关的 `AVCaptureDeviceInput` 对象。我们会将它设置为 session 的输出：
+然后，一旦我们发现合适的相机设备，我们就能获得相关的 `AVCaptureDeviceInput` 对象。我们会将它设置为 session 的输入：
 
 ```swift
 var error:NSError?
@@ -141,6 +141,7 @@ The second method is to capture the single frames from the output data stream an
 To get the data stream, we just create an `AVCaptureVideoDataOutput`, so when the camera is running, we get all the frames (except the ones that will be dropped if our processing is too slow) via the delegate method, `captureOutput(_:didOutputSampleBuffer:fromConnection:)`, and draw them in a `GLKView`. Without going too deep into the OpenGL framework, we could setup the `GLKView` like this:
 
 第二个方法是从输出数据流捕捉单一的图像帧，并使用OpenGL手动地显示在view上。这个有点复杂但是必要，比如我们想要对实时预览图进行操作或使用滤镜。
+
 为获得数据流，我们仅创建了一个 `AVCaptureVideoDataOutput` ，因此当相机在运行，我们通过代理方法 `captureOutput(_:didOutputSampleBuffer:fromConnection:)` 获得所有图像帧（如果我们处理太慢的话会掉帧），然后将他们绘制在一个 `GLKView` 中。在没有太理解 OpenGL 框架情况下，我们可以像这样创建 `GLKView`：
 
 ```swift
@@ -210,7 +211,7 @@ The `AVCaptureSessionPresetPhoto` selects the best configuration for the capture
 
 However, if you need more control, the `AVCaptureDeviceFormat` class describes the parameters applicable to the device, such as still image resolution, video preview resolution, the type of autofocus system, ISO, and exposure duration limits. Every device supports a set of formats, listed in the `AVCaptureDevice.formats` property, and the proper format can be set as the  `activeFormat` of the `AVCaptureDevice` (note that you cannot modify a format).
 
-然而，如果你需要更多的操控，可以使用 `AVCaptureDeviceFormat` 这个类，它描述了一些设备使用的参数，比如静态图片解决方案，视频预览解决方案，自动对焦类型，感光度（ISO），和曝光时间限制。每个设备支持的格式都列在 `AVCaptureDevice.formats` 属性中，并可以赋值给 `AVCaptureDevice` 的 `activeFormat` (注意你不能修改格式)。
+然而，如果你需要更多的操控，可以使用 `AVCaptureDeviceFormat` 这个类，它描述了一些设备使用的参数，比如静态图片解决方案，视频预览解决方案，自动对焦类型，感光度（ISO）和曝光时间限制。每个设备支持的格式都列在 `AVCaptureDevice.formats` 属性中，并可以赋值给 `AVCaptureDevice` 的 `activeFormat` (注意你不能修改格式)。
 
 ## Controlling the Camera
 ## 操作相机
@@ -259,7 +260,7 @@ Autofocus is implemented with phase detection or contrast detection. The latter,
 
 在 iOS 相机上，对焦是通过移动镜片到传感器之间的距离实现的。
 
-自动对焦是通过阶段检测和对比检测实现。然而，对比检测只适用于低分辨率和高 FPS 视频捕捉（即慢镜头）。
+自动对焦是通过阶段检测和对比检测实现。然而，对比检测只适用于低分辨率和高 FPS 视频捕捉（慢镜头）。
 
 The enum `AVCaptureFocusMode` describes the available focus modes:
 
@@ -281,7 +282,7 @@ Setting the desired focus mode must be done after acquiring a lock:
 let focusMode:AVCaptureFocusMode = ...
 if currentCameraDevice.isFocusModeSupported(focusMode) {
   ... // lock for configuration
-      // 锁定配置
+      // 锁定，配置
   currentCameraDevice.focusMode = focusMode
   ... // unlock
       // 解锁
@@ -298,11 +299,13 @@ Usually this can be implemented with a tap gesture recognizer on the video previ
 var pointInPreview = focusTapGR.locationInView(focusTapGR.view)
 var pointInCamera = previewLayer.captureDevicePointOfInterestForPoint(pointInPreview)
 ... // lock for configuration
-    // 锁定配置
+    // 锁定，配置
 
 // set the new point of interest:
+// 设置感兴趣的点
 currentCameraDevice.focusPointOfInterest = pointInCamera
 // trigger auto-focus on the new point of interest
+// 在设置的点上切换成自动对焦
 currentCameraDevice.focusMode = .AutoFocus
 
 ... // unlock
@@ -315,7 +318,7 @@ New in iOS 8 is the option to move the lens to a position from `0.0`, focusing n
 
 ```swift
 ... // lock for configuration
-... // 锁住配置
+... // 锁定，配置
 var lensPosition:Float = ... // 0.0 到 1.0的float
 currentCameraDevice.setFocusModeLockedWithLensPosition(lensPosition) {
   (timestamp:CMTime) -> Void in
@@ -329,9 +332,9 @@ currentCameraDevice.setFocusModeLockedWithLensPosition(lensPosition) {
 This means that the focus can be set with a `UISlider`, for example, which would be the equivalent of rotating the focusing ring on a DSLR. When focusing manually with these kinds of cameras, there is usually a visual aid that indicates the sharp areas. There is no such built-in mechanism in AVFoundation, but it could be interesting to display, for instance, a sort of ["focus peaking"](https://en.wikipedia.org/wiki/Focus_peaking). We won't go into details here, but focus peaking could be easily implemented by applying a threshold edge detect filter (with a custom `CIFilter` or [`GPUImageThresholdEdgeDetectionFilter`](https://github.com/BradLarson/GPUImage/blob/master/framework/Source/GPUImageThresholdEdgeDetectionFilter.h)), and overlaying it onto the live preview in the `captureOutput(_:didOutputSampleBuffer:fromConnection:)` method of `AVCaptureAudioDataOutputSampleBufferDelegate` seen above.
 
 这意味着对焦可以使用 `UISlider` 设置，这有点类似于单反上的旋转对焦环。当用这种相机手动对焦时，通常有一个可见的辅助标识指向清晰的区域。AVFoundation 里面没有内置这种机制，但是可以有意思地显示，比如 ["峰值对焦（focus peaking）"](https://en.wikipedia.org/wiki/Focus_peaking)。我们在这里不会讨论细节，不过 focus peaking 可以很容易地实现，通过使用检测物体边缘（threshold edge）的滤镜（用自定义 `CIFilter` 或 [`GPUImageThresholdEdgeDetectionFilter`](https://github.com/BradLarson/GPUImage/blob/master/framework/Source/GPUImageThresholdEdgeDetectionFilter.h))，并调用 `AVCaptureAudioDataOutputSampleBufferDelegate`  下的 `captureOutput(_:didOutputSampleBuffer:fromConnection:)` 方法将它覆盖到实时预览图上。
+
 ### Exposure
 ### 曝光
-
 
 On iOS devices, the aperture of the lens is fixed (at f/2.2 for iPhones after 5s, and at f/2.4 for previous models), so only the exposure duration and the sensor sensibility can be tweaked to accomplish the most appropriate image brightness. As for the focus, we can have continuous auto exposure, one-time auto exposure on the point of interest, or manual exposure. In addition to specifying a point of interest, we can modify the auto exposure by setting a compensation, known as *target bias*. The target bias is expressed in [*f-stops*](/issue-21/how-your-camera-works.html#stops), and its values range between `minExposureTargetBias` and `maxExposureTargetBias`, with 0 being the default (no compensation):
 
@@ -342,7 +345,7 @@ On iOS devices, the aperture of the lens is fixed (at f/2.2 for iPhones after 5s
 var exposureBias:Float = ... // a value between minExposureTargetBias and maxExposureTargetBias
                          ... // 在 minExposureTargetBias 和 maxExposureTargetBias 之间的值
 ... // lock for configuration
-... // 锁定配置
+... // 锁定，配置
 currentDevice.setExposureTargetBias(exposureBias) { (time:CMTime) -> Void in
 }
 ... // unlock
@@ -360,7 +363,7 @@ var duration:CTime = ... // a value between activeFormat.minExposureDuration and
 var iso:Float = ... // a value between activeFormat.minISO and activeFormat.maxISO or AVCaptureISOCurrent for no change
                 ... // 在 activeFormat.minISO 和 activeFormat.maxISO 之间的值 或 AVCaptureISOCurrent 不变
 ... // lock for configuration
-... // 锁住配置
+... // 锁定，配置
 currentDevice.setExposureModeCustomWithDuration(duration, ISO: iso) { (time:CMTime) -> Void in
 }
 ... // unlock
@@ -395,7 +398,7 @@ var tint = 0 // no shift 不调节
 let temperatureAndTintValues = AVCaptureWhiteBalanceTemperatureAndTintValues(temperature: incandescentLightCompensation, tint: tint)
 var deviceGains = currentCameraDevice.deviceWhiteBalanceGainsForTemperatureAndTintValues(temperatureAndTintValues)
 ... // lock for configuration
-... // 锁定配置
+... // 锁定，配置
 currentCameraDevice.setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains(deviceGains) {
         (timestamp:CMTime) -> Void in
     }

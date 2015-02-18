@@ -304,7 +304,7 @@ func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects met
     }
 ```
 
-更多关于脸部识别的内容请查看 [Engin 的文章](http://objccn.io/issue-21-9)。
+更多关于人脸检测与识别的内容请查看 [Engin 的文章](http://objccn.io/issue-21-9)。
 
 ### 捕捉静态图片
 

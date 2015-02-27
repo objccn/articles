@@ -291,7 +291,7 @@ The Khronos Group, which is responsible for maintaining OpenGL and OpenGL ES, ha
 
 These cards contain a quick and easy way to look over the language for the function or data type information you need to write an OpenGL application.
 
-这些卡片包含查看写 OpenGL 应用需要的着色语言函数和数据类型的快速简单的方法。
+这个卡片可以快速简单的查看写 OpenGL 应用需要的着色语言函数和数据类型。
 
 Use these early. Use them often.
 
@@ -980,4 +980,4 @@ Learning how to effectively implement shaders in your code can give you a huge p
 
 Learning shaders takes some tenacity and some curiosity, but they aren't impossible. If a 33-year-old recovering journalism major could confront her math fear to tackle shaders, so can you.
 
-学习着色器需要一些坚持和好奇心，但是并不是不可能的。如果一个 33 岁的恢复新闻专业的人能够克服她对数学的恐惧来处理着色器，那么你也可以。
+学习着色器需要一些坚持和好奇心，但是并不是不可能的。如果一个 33 岁的恢复中的新闻专业的人能够克服她对数学的恐惧来处理着色器，那么你也可以。

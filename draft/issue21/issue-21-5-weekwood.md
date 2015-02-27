@@ -4,13 +4,13 @@ available. These offer unprecedented access to the operating system, with the
 Photo Editing extension allowing developers to build functionality into the
 system Photos app.
 
-在 iOS 8 发布时，苹果把扩展介绍给全世界，[目前支持六种扩展](https://developer.apple.com/library/prerelease/ios/documentation/General/Conceptual/ExtensibilityPG/index.html#//apple_ref/doc/uid/TP40014214-CH20-SW2)。它们史无前例的提供了访问操作系统的可行性，开发者可以利用照片扩展来为系统相机应用增加功能。
+在 iOS 8 发布时，苹果把[六种全新扩展](https://developer.apple.com/library/prerelease/ios/documentation/General/Conceptual/ExtensibilityPG/index.html#//apple_ref/doc/uid/TP40014214-CH20-SW2)功能介绍给全世界。它们史无前例的提供了访问操作系统的可行性，开发者可以利用照片扩展来为系统相机应用增加功能。
 
 The user workflow for Photo Editing extensions is not entirely simple. From
 selecting the photo you want to edit, it takes three taps to launch the
 extension, one of which is on a tiny, unintuitive button:
 
-用户使用照片编辑扩展的工作流程并不那么简单。从选择希望编辑的照片，需要三次点击才能启动，其中一步骤是点击非常小一个按钮：
+用户使用照片编辑扩展的流程并不简单。从选择编辑的照片开始，需要点击三次才能启动，其中一步骤是非常小一个按钮：
 
 ![照片编辑扩展用户流程](http://img.objccn.io/issue-21/user_workflow.png)
 
@@ -25,7 +25,7 @@ lifecycle, before moving on to look at the editing workflow in more
 details. It will conclude by looking at some common concerns and scenarios
 associated with creating Photo Editing extensions.
 
-在了解更详细的编辑工作流之前，将简单讨论如何创建扩展以扩展的生命周期，我们会通过相关的一些常见问题和场景创建照片编辑扩展得出结论。
+在了解更详细的编辑工作流之前，将简单讨论如何创建扩展以扩展的生命周期，我们会通过常见的相关问题和场景来创建照片编辑扩展从而得出结论。
 
 
 The _Filtster_ project, which accompanies this article, demonstrates how you
@@ -33,7 +33,7 @@ can set up your own image editing extension. It represents a really simple image
 filtering process using a couple of Core Image filters. You can access the
 [complete _Filtster_ project on GitHub](https://github.com/objcio/issue-21-photo-extensions-Filtster).
 
-本文的示例项目 _Filtster_ ，演示了如何创建自己的图片编辑扩展。它诠释使用了数个 Core Image 滤镜完成简单的图像过滤效果。[完整 _Filtster_ 项目代码](https://github.com/objcio/issue-21-photo-extensions-Filtster)。
+本文的示例项目 _Filtster_，演示了如何创建自己的图片编辑扩展。它诠释使用了数个 Core Image 滤镜完成简单的图像过滤效果。[完整 _Filtster_ 项目代码](https://github.com/objcio/issue-21-photo-extensions-Filtster)。
 
 ## Creating an Extension
 ## 创建扩展
@@ -45,12 +45,12 @@ some users. It remains to be seen how strict Apple is on this, since most apps
 in the App Store with custom image editing extensions existed before the
 introduction of iOS 8.
 
-所有 iOS 扩展必须包含在一个功能齐全的 iOS 应用程序之内，其中也包括照片编辑扩展。这可能意味着必须做很多令人吃惊的自定义 Core Image 滤镜的工作才能让他到达用户手中。苹果如何严格审查还有待观察，因为在 iOS 8 引入之前，苹果商店内的大多数应用已经使用自定义了图像编辑扩展。
+所有扩展必须包含在一个功能齐全的 iOS 应用程序之内，其中也包括照片编辑扩展。这可能意味着你必须做很多令人吃惊的自定义 Core Image 滤镜的才能让它到达用户手中。苹果如何严格审查还有待观察，因为在 iOS 8 引入之前，苹果商店内的大多数应用已经使用自定义了图像编辑扩展。
 
 To create a new image editing extension, add a new target to an existing iOS
 app project. There is a template target for the extension:
 
-为了创建新的图片编辑扩展，需要添加新的 target 到已有的 iOS 项目，扩展 target 模板如下：
+为了创建新的图片编辑扩展，需要为已有 iOS 添加新的 target，扩展 target 模板如下：
 
 ![图片编辑扩展模板](http://img.objccn.io/issue-21/xcode-target-template-photo-extension.png)
 
@@ -60,12 +60,13 @@ This template consists of three components:
 1. __Storyboard.__ Image editing extensions can have an almost completely custom UI. The system provides only a toolbar across the top, containing _Cancel_ and
 _Done_ buttons:
 
-1. __Storyboard.__ 图片编辑扩展除了系统在顶部提供一个 toolbar 包含 _Cancel_ 以及 _Done_ 按钮之外，界面几乎完全可以自定义。
+1. __Storyboard.__ 图片编辑扩展除了系统在顶部提供的 toolbar 包含 _Cancel_ 以及 _Done_ 按钮之外，界面几乎完全可以自定义。
 
-	![Cancel/Done Buttons](http://img.objccn.io/issue-21/cancel_done.png)
+	![Cancel/Done 按钮](http://img.objccn.io/issue-21/cancel_done.png)
 
 	Although the storyboard doesn't have size classes enabled by default, the system will respect them should you choose to activate them. Apple highly recommends using Auto Layout for building Photo Editing extensions, although there is no obvious reason why you couldn't perform manual layout. Still, you're flying in the face of danger if you decide to ignore Apple's advice.
-虽然 storyboard 默认不包含 size classes，系统将允许你选择并激活该功能，苹果强烈建议使用 Auto Layout  来创建照片编辑扩展，虽然没有明显的原因来阻止你使用手动布局。不过如果你忽略苹果的建议你将不得不面对很多潜在风险。
+
+虽然 storyboard 默认不包含 size classes，系统将允许你选择并激活该功能，苹果强烈建议使用 Auto Layout 来创建照片编辑扩展，虽然没有明显的原因来阻止你使用手动布局。不过如果你忽略苹果的建议你将不得不面对很多潜在风险。
 
 2. __Info.plist.__ This specifies the extension type and accepted media types,
 and is common to all extension types. The `NSExtension` key has a
@@ -76,7 +77,7 @@ dictionary containing all the extension-related configurations:
 
 	The  `NSExtensionPointIdentifier` entry informs the system that this is a Photo Editing extension with a value of `com.apple.photo-editing`. The only key that is specific to photo editing is `PHSupportedMediaTypes`, and this is related to what types of media the extension can operate on. By default, this is an array with a single entry of `Image`, but you have the option of adding `Video`.
 	
-`NSExtensionPointIdentifier` 实体告诉系统这是一个使用  `com.apple.photo-editing` 值的照片编辑扩展。唯一特殊的 key 是 `PHSupportedMediaTypes`，并且说明了可以被操作的相关媒体类型。在默认情况下，这是一个数组包含 `Image` 实体，当然你也可添加 `Video` 选项。
+`NSExtensionPointIdentifier` 实体告诉系统这是一个使用  `com.apple.photo-editing` 值的照片编辑扩展。唯一特殊的 key 是 `PHSupportedMediaTypes`，指明可以被操作的媒体类型。在默认情况下，这是一个数组包含 `Image` 实体，当然你也可添加 `Video` 选项。
 
 3. __View Controller.__ This adopts the `PHContentEditingController` protocol,
 which contains methods that form the lifecycle of an image editing extension.
@@ -87,7 +88,7 @@ See the next section for further detail.
 Notably missing from this list is the ability to provide the imagery for the
 icon that appears in the extension selection menu:
 
-值得注意的是缺少这个列表是能够提供扩展选项菜单的图标：
+值得注意的是不要忘记提供菜单内的扩展的图标：
 
 ![扩展图标](http://img.objccn.io/issue-21/extension_icon.png)
 
@@ -98,7 +99,7 @@ extension will not honor the selection. This point is somewhat moot, as Apple
 specifies that the icon associated with an extension should be identical to that
 of the container app.
 
-图标通过苹果内置的资源目录内的 App Icon 提供。这里文档有些疑惑，因为这意味着你必须提供扩展本身的图标。然而，尽管这是有可能的，扩展将不会使用选择，这一点有些争议，因为苹果指定与扩展相关的图标应该与容器应用程序相同。
+图标通过苹果内置的资源目录内的 App Icon 提供。这里文档有些疑惑，因为这意味着你必须提供扩展本身的图标。然而，尽管这是有可能的，扩展将不会使用选择，这一点有些争议，因为苹果指定与扩展相关的图标必须与容器应用程序的相同。
 
 ## Extension Lifecycle
 ## 扩展的生命周期
@@ -143,7 +144,7 @@ same image data, but is scaled appropriately for the screen. This means that the
 interactive editing phase can operate at a lower resolution, ensuring that your
 extension remains responsive and energy efficient.
 
-一旦系统决定提供原始图片还是渲染被编辑过的图片，接下来将要调用 `startContentEditingWithInput(_:, placeholderImage:)`。输入对象的类型是 `PHContentEditingInput`，其中包含了地理位置，创建时间以及媒体类型等来自于原始资源的元数据，以及你需要编辑的资源细节。除了原始尺寸的输入图片，输入对象还包含一个 `displaySizedImage` 表示相同的图片数据，但是适当根据屏幕尺寸进行缩放。意思是说交互编辑可以在较低分辨率下进行，确保你的扩展依然可以在低功耗下使用。
+一旦系统决定提供原始图片还是渲染被编辑过的图片，接下来将要调用 `startContentEditingWithInput(_:, placeholderImage:)`。输入对象的类型是 `PHContentEditingInput`，其中包含了地理位置，创建时间以及媒体类型等来自于原始资源的元数据，以及你需要编辑的资源细节。除了原始尺寸的输入图片，输入对象还包含一个 `displaySizedImage` 表示相同的图片数据，但是适当根据屏幕尺寸进行缩放。意思是说交互编辑可以在较低分辨率下进行，确保扩展依然可以在低功耗下使用。
 
 The following shows an implementation of this method:
 
@@ -194,7 +195,7 @@ provided by the Photos UI. If the user decides to cancel with unsaved edits,
 then the `shouldShowCancelConfirmation` property should be overridden to return
 `true`:
 
-在完成编辑时，用户可以选择照片界面提供的 _Cancel_ 或者 _Done_ 按钮。如果用户决定取消编辑后的操作，`shouldShowCancelConfirmation` 需要重写为 `true`：
+在完成编辑时，用户可以选择照片界面提供的 _Cancel_ 或者 _Done_ 按钮。如果用户决定取消编辑内容，`shouldShowCancelConfirmation` 需要重写为 `true`：
 
 ![确认取消](http://img.objccn.io/issue-21/confirm_cancel.png)
 
@@ -277,7 +278,7 @@ There are a few areas associated with creating an image editing extension that
 can be a little complicated. The topics in this section address the most
 important of these.
 
-有一些与创建图片编辑扩展相关的内容可能有些复杂，本节内容将解决最重要的几个。
+与创建图片编辑扩展相关的内容其中一些可能有些复杂，本节内容将介绍最重要的几个。
 
 ### Adjustment Data
 ### 调整数据
@@ -287,7 +288,7 @@ the best use from it, discipline is required. Apple suggests using reverse-DNS
 notation to specify the `formatIdentifier`, but then you are left to decide how
 to use the `formatVersion` and `data` properties yourself.
 
-`PHAdjustmentData` 是一个包含三个属性的简单类，但是要获取最佳实践一些纪律依然需要遵循。苹果建议使用反向域名解析格式来指定 `formatIdentifier`，但是 `formatVersion` 和 `data` 如何使用将有你自己决定。
+`PHAdjustmentData` 是一个包含三个属性的简单类，但是要获取最佳实践一些规则依然需要遵循。苹果建议使用反向域名解析格式来指定 `formatIdentifier`，但是 `formatVersion` 和 `data` 如何使用将有你自己决定。
 
 It's important that you can determine compatibility between different versions
 of your image editing framework, so an approach such as [semantic versioning](http://semver.org/)
@@ -296,7 +297,7 @@ could implement your own parser, or look to a third-party framework such as
 [SemverKit](https://github.com/nomothetis/SemverKit) to provide this
 functionality.
 
-重要的时要确保你不同版本图片编辑扩展的兼容性，[语义化版本](http://semver.org/)提供了灵活的方式来管理产品的生命周期。你可以实现你自己的解析，或者依赖于第三方框架比如 [SemverKit](https://github.com/nomothetis/SemverKit) 提供的功能。
+重要的是要确保你不同版本图片编辑扩展的兼容性，[语义化版本](http://semver.org/)提供了灵活的方式来管理产品的生命周期。你可以实现你自己的解析，或者依赖于第三方框架比如 [SemverKit](https://github.com/nomothetis/SemverKit) 提供的功能。
 
 The final aspect of the adjustment data is the `data` property itself,
 which is just an `NSData` blob. The only advice that Apple offers here is that
@@ -304,7 +305,7 @@ it should represent the settings to recreate the edit, rather than the edit
 itself, since the size of the `PHAdjustmentData` object is limited by the Photos
 framework.
 
-调整数据的最后要提及的是 `data` 本身，它是一个 `NSData` blob 类型。苹果提供的唯一忠告是利用设置来重新创建编辑数据，替代编辑本身，因为 `PHAdjustmentData` 对象受照片框架所限。
+调整数据的最后要提及的是 `data` 本身，它是一个 `NSData` 二进制类型。苹果提供的唯一忠告是利用设置来重新创建编辑数据，替代原编辑数据本身，因为 `PHAdjustmentData` 对象受照片框架所限。
 
 For non-complex extensions (such as _Filtster_), this can be as simple as an
 archived dictionary, which can be written as follows:
@@ -321,7 +322,7 @@ public func encodeFilterParameters() -> NSData {
 ```
 
 This is then reinterpreted with the following:
-下面是解析方式：
+接着提供解析方式：
 
 ```swift
 public func importFilterParameters(data: NSData?) {
@@ -339,7 +340,7 @@ responsible for determining compatibility of the adjustment data:
 
 这里，有两个方法被 `FiltsterFilter` 类共享，负责确定调整数据的兼容性：
 
-```
+```swift
 public func supportsFilterIdentifier(identifier: String, version: String) -> Bool 
   return identifier == filterIdentifier && version == filterVersion
 }
@@ -349,7 +350,7 @@ If you have more complex requirements, you could create a custom settings
 class, which adopts the `NSCoding` protocol to allow it to be archived in a
 similar manner.
 
-如果你有更复杂的需求，你可以创建一个自定义的类，支持 `NSCoding` 协议来允许用类似的方式归档。
+如果你有更复杂的需求，你可以创建一个自定义的类，支持 `NSCoding` 协议允许用类似的方式归档。
 
 A user can chain incompatible photo edits together — if the adjustment
 data is not understood by the current extension, the pre-rendered image will be
@@ -361,7 +362,7 @@ in your output adjustment data, allowing you to implement a revert function for
 just your phase of the filter chain. The revert function provided by the Photos
 app will remove all the edits, returning the photo to its original state:
 
-用户可以链式调用不同的照片编辑扩展 - 如果调整数据没有被正确解析，预加载图片将作为输入渲染，比如你用系统剪切工具在用照片编辑扩展之前剪切了一张图片。一旦你保存编辑后的图片，数据相关的调整将只包含最新编辑的详细信息。你应该存储之前的不兼容调整数据输出，允许你实现还原功能来跳过你的滤镜链。提供在照片应用的换用功能将移除所有编辑，返回照片原始状态：
+用户可以链式调用不同的照片编辑扩展 - 如果调整数据没有被正确解析，预加载图片将作为输入渲染，比如你用系统剪切工具在用照片编辑扩展之前剪切了一张图片。一旦你保存编辑后的图片，数据相关的调整将只包含最新编辑的详细信息。你应该存储之前的不兼容调整数据输出，允许你实现还原功能来跳过你的滤镜链。提供在照片应用的还原功能将移除所有编辑，返回照片原始状态：
 
 ![还原编辑](http://img.objccn.io/issue-21/revert.png)
 
@@ -387,7 +388,7 @@ the extension.
 Note that since the framework will be used from an app extension, you must
 restrict the APIs it can use on the Target Settings page:
 
-值得注意的因为用于创建扩展，你必须在 Target 设置界面限制 API：
+值得注意的是因为用于创建扩展，你必须在 Target 设置界面限制 API：
 
 ![限制框架 API](http://img.objccn.io/issue-21/app_extension_api.png)
 
@@ -398,7 +399,7 @@ your developer profile. The shared container represents a shared space on disk
 that you can use in any way you wish, e.g. `NSUserDefaults`, `SQLite`, or file
 writing.
 
-共享数据的需求明显要少很多，在许多情况下并不存在。然而如果需要，你需要创建共享，通过将应用程序和扩展添加到与开发人员配置文件关联的应用程序组。通过共享硬盘空间方式，你可以使用任何你喜欢的方式实现，比如 `NSUserDefaults`，`SQLite` 或者写文件。
+共享数据的需求明显要少很多，在许多情况下并不存在。然而如果需要，你创建的共享将通过应用程序和扩展添加到与开发人员配置文件关联的应用程序组。通过共享硬盘空间方式，你可以使用任何你喜欢的方式实现，比如 `NSUserDefaults`，`SQLite` 或者写文件。
 
 ### Debugging and Profiling
 ### 调试与分析
@@ -424,7 +425,7 @@ process of attaching the debugger to the extension can take quite a long time,
 so when you activate the extension, it can appear to hang. Running in release mode
 will allow you to evaluate the extension startup time.
 
-Xcode 然后等待你开始照片编辑扩展前附加它。在这一点上，你可以用标准 iOS 方式来调试。调试附加到扩展可能需要一些时间，当你激活扩展，它可能挂起，在 release 模式下运行将允许你评估启动时间。
+Xcode 然后等待你开始照片编辑扩展前附加它。在这一点上，你可以用标准 iOS 方式来调试。调试附加到扩展可能需要一些时间，当你激活扩展，它可能挂起，在 release 模式下运行你可以评估启动时间。
 
 Profiling is similarly supported, with the profiler attaching as the extension
 begins to run. You might once again need to update the scheme associated with
@@ -462,7 +463,6 @@ to work with images, a Core Graphics context is essentially just a big chunk of 
 - __Use the GPU:__ Whether it be through Core Image or a third-party framework such
 as GPUImage, you can keep memory down by chaining filters together and
 eliminating the requirement for intermediate buffers.
-
 - __GPU 使用:__ 无论通过 Core Image 或者第三方框架类似 GPUImage，你可以通过链式调用滤镜来降低内存并且消除中间缓存区需求。
 
 Since image editing is expected to have high memory requirements, it seems that
@@ -484,7 +484,7 @@ to put your code right into the heart of the Photos app. Despite the slightly
 convoluted multi-tap workflow, the Photo Editing extension uses the power of the
 Photos framework to provide a coherent and integrated user experience.
 
-iOS 8 之前，第三方开发者无法提供他自己应用程序之外的功能给用户。扩展的出现彻底改变这一状况，特别是照片编辑扩展允许你把代码运行于照片应用核心中。尽管转换工作流略显复杂，但照片编辑扩展提供了连贯和集成的用户体验。
+iOS 8 之前，第三方开发者无法提供他自己应用程序之外的功能给用户。扩展的出现彻底改变这一状况，特别是照片编辑扩展允许你把代码运行于照片应用核心中。尽管转换、流略显复杂，但照片编辑扩展提供了连贯和集成的用户体验。
 
 Resumable editing has traditionally been reserved for use in desktop photo
 collection applications such as Aperture or Lightroom. Creating a common
@@ -497,7 +497,7 @@ further.
 There are some complexities associated with creating Photo Editing extensions,
 but few of these are unique. Creating an intuitive interface and designing image processing algorithms are both as challenging for image editing extensions as they are for complete image editing apps.
 
-这里有一些复杂性与创建照片编辑相关，但有一些是独一无二的。创建一个直观界面并且设计图片处理算法在创建图片编辑扩展时有相似于完整图片应用的挑战性。
+这里有一些复杂性与创建照片编辑相关，但有一些是独一无二的。创建一个直观界面并且设计图片处理算法在创建图片编辑扩展时有不亚于创建完整图片应用的挑战性。
 
 It remains to be seen how many users are aware of these third-party image editing
 extensions, but they have the potential to increase your app's exposure.

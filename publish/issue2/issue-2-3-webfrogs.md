@@ -458,7 +458,7 @@ GCD 事件源是以极其资源高效的方式实现的。
     dispatch_source_set_event_handler(source, ^(){
         NSLog(@"Time flies.");
     });
-    dispatch_time_t start
+
     dispatch_source_set_timer(source, DISPATCH_TIME_NOW, 5ull * NSEC_PER_SEC, 
       100ull * NSEC_PER_MSEC);
     self.source = source;

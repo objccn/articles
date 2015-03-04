@@ -509,7 +509,7 @@ GCD 事件源是以极其资源高效的方式实现的。
 
 数据对象 c 并不会将 a 和 b 拷贝到一个单独的，更大的内存区域里去。相反，它只是简单地 retain 了 a 和 b。你可以使用 `dispatch_data_apply` 来遍历对象 c 持有的内存区域：
 
-    dispatch_data_apply(c, ^(dispatch_data_t region, size_t offset, const void *buffer, size_t size) {
+    dispatch_data_apply(c, ^bool(dispatch_data_t region, size_t offset, const void *buffer, size_t size) {
         fprintf(stderr, "region with offset %zu, size %zu\n", offset, size);
         return true;
     });

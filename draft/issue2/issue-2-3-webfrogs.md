@@ -393,16 +393,21 @@ GCD 事件源是以极其资源高效的方式实现的。
 
 如果一些进程正在运行而你想知道他们什么时候存在，GCD 能够做到这些。你也可以使用 GCD 来检测进程什么时候分叉，也就是产生子进程或者传送给了进程的一个信号（比如 `SIGTERM`）。
 
-    NSRunningApplication *mail = [NSRunningApplication 
+    @import AppKit;
+    // ...
+    NSArray *array = [NSRunningApplication 
       runningApplicationsWithBundleIdentifier:@"com.apple.mail"];
-    if (mail == nil) {
+    if (array == nil || [array count] == 0) {
         return;
     }
-    pid_t const pid = mail.processIdentifier;
+    pid_t const pid = [[array firstObject] processIdentifier];
     self.source = dispatch_source_create(DISPATCH_SOURCE_TYPE_PROC, pid, 
       DISPATCH_PROC_EXIT, DISPATCH_TARGET_QUEUE_DEFAULT);
     dispatch_source_set_event_handler(self.source, ^(){
         NSLog(@"Mail quit.");
+        // 如果你持续观察应用退出，
+        // 你应该用 dispatch_source_cancel 取消事件源并且重新创建一个
+        // 下次程序运行将采用另一个进程标示符。
     });
     dispatch_resume(self.source);
 
@@ -458,7 +463,7 @@ GCD 事件源是以极其资源高效的方式实现的。
     dispatch_source_set_event_handler(source, ^(){
         NSLog(@"Time flies.");
     });
-    dispatch_time_t start
+
     dispatch_source_set_timer(source, DISPATCH_TIME_NOW, 5ull * NSEC_PER_SEC, 
       100ull * NSEC_PER_MSEC);
     self.source = source;

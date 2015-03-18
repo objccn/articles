@@ -333,17 +333,6 @@ Components库在所有的显示大量信息的页面都会用到（新鲜事，�
 我们非常想和社区分享Components背后的代码，而且我们马上要着手去做。如果你有想法要分享，[随时都可以联系我](mailto:adamjernst@fb.com) - 尤其是关于动画的想法！
 
 
-[^1]: Interface Builder makes Auto Layout easier, but since XIBs are impractical to merge, you can't use them with large teams.
-
-[^2]: There is no shortage of [articles](http://www.informit.com/articles/article.aspx?p=2041295) and [blog posts](https://medium.com/@NSomar/auto-layout-best-practices-for-minimum-pain-c130b2b1a0f6) about debugging Auto Layout.
-
-[^3]: We prototyped a very simplified version of News Feed that was powered by Auto Layout and it was challenging to get it to 60fps.
-
-[^4]: objc.io has [covered this topic before](http://www.objc.io/issue-13/subclassing.html), and the [Wikipedia article](http://en.wikipedia.org/wiki/Composition_over_inheritance) also does a good job of covering it.
-
-[^5]: Similarly, in React, not every component results in the creation of a DOM element.
-
-
 [^1]: 界面创造器简化了自动布局，但是因为XIBs文件难以融合，你很难在大的团队里面使用它们。
 
 [^2]: 有很多关于如何调试自动布局的[文章](http://www.informit.com/articles/article.aspx?p=2041295)和 [博客](https://medium.com/@NSomar/auto-layout-best-practices-for-minimum-pain-c130b2b1a0f6
@@ -352,4 +341,4 @@ Components库在所有的显示大量信息的页面都会用到（新鲜事，�
 
 [^4]: objc.io在以前[介绍过这个主题](http://www.objc.io/issue-13/subclassing.html)，[这篇维基百科文章](http://en.wikipedia.org/wiki/Composition_over_inheritance) also does a good job of covering it.也做了很好地介绍。
 
-[^5]:相同的，在React中，并非每一个组件都会创造一个相应的DOM元素。
+[^5]: 相同的，在React中，并非每一个组件都会创造一个相应的DOM元素。

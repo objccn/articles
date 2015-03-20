@@ -83,7 +83,7 @@ View controllers 通常是 iOS 项目中最大的文件，并且它们包含了�
 
     - (void)loadPriorities {
         NSDate* now = [NSDate date];
-        NSString* formatString = @"startDate = %@";
+        NSString* formatString = @"startDate <= %@ AND endDate >= %@";
         NSPredicate* predicate = [NSPredicate predicateWithFormat:formatString, now, now];
         NSSet* priorities = [self.user.priorities filteredSetUsingPredicate:predicate];
         self.priorities = [priorities allObjects];
@@ -103,7 +103,7 @@ View controllers 通常是 iOS 项目中最大的文件，并且它们包含了�
 
     - (NSArray*)currentPriorities {
         NSDate* now = [NSDate date];
-        NSString* formatString = @"startDate = %@";
+        NSString* formatString = @"startDate <= %@ AND endDate >= %@";
         NSPredicate* predicate = [NSPredicate predicateWithFormat:formatString, now, now];
         return [[self.priorities filteredSetUsingPredicate:predicate] allObjects];
     }

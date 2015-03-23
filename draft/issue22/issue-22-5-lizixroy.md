@@ -160,7 +160,7 @@ Components 永远都是被混合的，从来不会被继承。将它们想象成
 
 AsyncDisplayKit 能够进行复杂的手势驱动的动画，这一点正是 Components 的弱项所在。这样一来做选择就很容易了：如果你在设计一个复杂的手势驱动的界面，AsyncDisplayKit 应该是正确的选择。如果你的界面看起来和 Facebook 的新鲜事页面更类似，那么 Components 是恰当的选择。
 
-### Components的未来
+### Components 的未来
 
 Components 库在所有的显示大量信息的页面都会用到 (新鲜事，时间轴，群，事件，页面和搜索等等) 并且正在快速地在 Facebook 应用的其他部分被应用起来。用简洁，宣言性，可混合的组件是非常有趣的。
 

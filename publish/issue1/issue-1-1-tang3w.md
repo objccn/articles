@@ -186,4 +186,6 @@ View controllers 通常是 iOS 项目中最大的文件，并且它们包含了�
    [15]: https://speakerdeck.com/trianglecocoa/unburdened-viewcontrollers-by-jay-thrash
    [16]: http://programmers.stackexchange.com/questions/177668/how-to-avoid-big-and-clumsy-uitableviewcontroller-on-ios
    
-原文链接 [更轻量的 View Controllers - 言无不尽](http://tang3w.com/translate/objective-c/objc.io/2013/10/22/更轻量的-view-controllers.html)
+原文 [Lighter View Controllers](http://www.objc.io/issue-1/lighter-view-controllers.html)
+
+译文 [更轻量的 View Controllers - 言无不尽](http://tang3w.com/translate/objective-c/objc.io/2013/10/22/更轻量的-view-controllers.html)

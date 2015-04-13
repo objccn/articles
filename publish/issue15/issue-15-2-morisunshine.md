@@ -131,7 +131,7 @@
 
 我们也有跟踪对象之间的依赖关系。当 **A** 和 **B** 有依赖关系，并且 **B** 有本地变化，那么我们在发送 **A** 的本地变化之前，需要先等待 **B** 的本地变化发送完毕。
 
-我们有一个 `UserSyncStrategy` 类，它有一个 `-nextRequest` 方法可以生成下一次请求。这个请求会将本地改变发送到到服务器。虽然这个类本身是无状态的。更确切地说，所有它的状态都被封装在一个叫 `UpstreamObjcetSync` 的类中，这个类负责跟踪那些有本地变化的用户对象，还有那些我们正在运行的请求。除了这个类之外其他东西都是没有状态的。
+我们有一个 `UserSyncStrategy` 类，它有一个 `-nextRequest` 方法可以生成下一次请求。这个请求会将本地改变发送到服务器。虽然这个类本身是无状态的。更确切地说，所有它的状态都被封装在一个叫 `UpstreamObjcetSync` 的类中，这个类负责跟踪那些有本地变化的用户对象，还有那些我们正在运行的请求。除了这个类之外其他东西都是没有状态的。
 
 通过这个方式，我们可以很容易得到测试 `UpstremObjectSync` 的集合。它们检查这个类是否正确地管理状态。对于 `UserSyncStrategy` 来说，当我们在 mock `UpstremObjectSync` 的时候，就不用再担心 `UserSyncStrategy` 本身的状态了。这大大减少了测试的复杂度，更进一步，因为我们正在同步很多不同类型的对象，我们那些不同的类都是无状态的，并且可以重用 `UpstreamObjectSync` 类，这使代码简单了很多。
 
@@ -199,7 +199,7 @@
         [s1 appendString:@"Bar" resultHandler:^(NSString *result){
             [expectation fulfill];
             XCTAssertEqualObjects(result, @"FooBar");
-        }]
+        }];
         [self waitForExpectationsWithTimeout:0.1 handler::nil];
     }
 

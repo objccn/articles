@@ -78,21 +78,21 @@ source = CaptureBufferSource(position: AVCaptureDevicePosition.Front) {
 
 display link 是每帧需要绘制的时候给我们发消息的对象，并按照显示器的刷新频率发送出去。这通常用于 [自定义动画](http://objccn.io/issue-12-6/)，但也可以用来播放和操作视频。我们要做的第一件事就是创建一个 `AVPlayer` 和一个视频输出：
 
-```
+```swift
 player = AVPlayer(URL: url)
 videoOutput = AVPlayerItemVideoOutput(pixelBufferAttributes: pixelBufferDict)
 player.currentItem.addOutput(videoOutput)
 ```
 这样，我们就创建了 display link。这样做很简单，只要创建一个 `CADisplayLink` 对象，并将其添加到 run loop。
 
-```
+```swift
 let displayLink = CADisplayLink(target: self, selector: "displayLinkDidRefresh:")
 displayLink.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
 ```
 
 现在，唯一要做的就是获取视频每一帧的 `displayLinkDidRefresh:` 调用。首先，我们获取当前的时间，并且转换成当前播放项目的一个时间表。然后我们轮询 `videoOutput`，如果当前时间有一个可用的新的像素缓存区，我们把它复制一下并且调用回调方法：
 
-```
+```swift
 func displayLinkDidRefresh(link: CADisplayLink) {
     let itemTime = videoOutput.itemTimeForHostTime(CACurrentMediaTime())
     if videoOutput.hasNewPixelBufferForItemTime(itemTime) {

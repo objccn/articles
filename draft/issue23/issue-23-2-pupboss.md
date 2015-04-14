@@ -66,30 +66,126 @@ source = CaptureBufferSource(position: AVCaptureDevicePosition.Front) {
 
 当你运行它，你可能会因为 CPU 的低使用率吃惊。这其中的奥秘是 GPU 做了几乎所有的工作。尽管我们创建了一个 `CIImage`，应用了一个滤镜，并输出一个 `CIImage`，最终输出的结果是一个 *promise*：不呈现就不去计算。一个 `CIImage` 对象可以是黑箱里的很多东西，它可以是 GPU 算出来的像素数据，也可以是如何创建像素数据的一个说明（例如在使用一个滤镜），或者他也可以直接从 OpenGL 创建纹理。
 
-# 下面是演示视频
+下面是演示视频
 
-
+<video style="display:block;max-width:100%;height:auto;border:0;" controls="1">
+  <source src="http://img.objccn.io/issue-23/camera.m4v"></source>
+</video>
 
 ## 从影片中获取像素数据
 
+我们可以做的另一件事是通过 Core Image 把这个滤镜加到一个视频中。和实时拍摄不同，我们现在生成每一帧的像素缓冲区，在这里我们将来用略有不同的方法。当相机推送每一帧给我们的时候，我们用一个 pull-drive 的方式，通过 display link，可以让每一帧停止在特定时间。
+
+display link 是每帧需要绘制的时候给我们发消息的对象，并按照显示器的刷新频率发送出去。这通常用于 [自定义动画](http://objccn.io/issue-12-6/)，但也可以用来播放和操作视频。我们要做的第一件事就是创建一个 `AVPlayer` 和一个视频输出：
+
+```
+player = AVPlayer(URL: url)
+videoOutput = AVPlayerItemVideoOutput(pixelBufferAttributes: pixelBufferDict)
+player.currentItem.addOutput(videoOutput)
+```
+这样，我们就创建了 display link。这样做很简单，只要创建一个 `CADisplayLink` 对象，并将其添加到 run loop。
+
+```
+let displayLink = CADisplayLink(target: self, selector: "displayLinkDidRefresh:")
+displayLink.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
+```
+
+现在，唯一要做的就是获取视频每一帧的 `displayLinkDidRefresh:` 调用。首先，我们获取当前的时间，并且转换成当前播放项目的一个时间表。然后我们轮询 `videoOutput`，如果当前时间有一个可用的新的像素缓存区，我们把它复制一下并且调用回调方法：
+
+```
+func displayLinkDidRefresh(link: CADisplayLink) {
+    let itemTime = videoOutput.itemTimeForHostTime(CACurrentMediaTime())
+    if videoOutput.hasNewPixelBufferForItemTime(itemTime) {
+        let pixelBuffer = videoOutput.copyPixelBufferForItemTime(itemTime, itemTimeForDisplay: nil)
+        consumer(pixelBuffer)
+    }
+}
+```
+
+我们从一个视频输出获得的像素缓冲器是一个 `CVPixelBuffer`，我们可以直接转换成 `CIImage`。正如上面的例子，我们会加上一个滤镜。在这种情况下，我们将结合多个滤镜：我们使用一个万花筒的效果，然后用渐变遮罩把原始图像和过滤图像相结合，这个操作是非常轻量级的。
+
+<video style="display:block;max-width:100%;height:auto;border:0;" controls="1">
+  <source src="http://img.objccn.io/issue-23/video.m4v"></source>
+</video>
+
+## 创意的使用滤镜
+
+大家都知道流行的照片效果。虽然我们可以将这些应用到视频，Core Image 还可以做更多。
+
+Core Image 调用的滤镜有不同的类别。其中一些是传统的类型，输入一张图片并且输出一张新的图片。但有些需要两个（或者更多）的输入图像并且混合生成一张新的图像。甚至是不输入图片就可以输出一张基于参数的图像。
+
+通过混合这些不同的类型，我们可以创建意想不到的效果。
+
+### 混合图片
+
+在这个例子中，我们使用这些东西：
+
+    image --------------------------->background|
+           \---> [kaleidoscope] ----->foreground| ----> resulting image
+              [generate circle] ----->mask      |
+
+上面的例子可以像素填充一个圆形区域。
+
+它也可以创建交互，我们可以使用触摸事件来改变所产生的圆的位置。
+
+[Core Image Filter Reference](https://developer.apple.com/library/mac/documentation/GraphicsImaging/Reference/CoreImageFilterReference/index.html)按类别列出了所有可用的滤镜。请注意，有一部分只能用在 OS X。
+
+有些滤镜不需要输入就可以输出图形，他们很少可以自己单独使用，但是作为蒙版的时候会非常强大，就像我们例子中的 `CIBlendWithMask`。
+
+混合操作和 `CIBlendWithAlphaMask` 还有 `CIBlendWithMask` 允许两个图像合并成一个。
+
+<a name="cpuvsgpu"></a>
+## CPU vs. GPU
+
+我们在 issue #3 的文章，[绘制像素到屏幕上](http://objccn.io/issue-3-1/)，介绍了 iOS 和 OS X 的图形上下文栈。需要注意的是 CPU 和 GPU 的概念，以及两者之间数据的移动方式。
+
+视频播放的时候，我们面临着性能的挑战。
+
+首先，我们需要能在每一帧的时间内处理完所有的图像数据。我们的样本中采用 24 帧每秒的视频，这意味着我们有 41 毫秒（1/24秒）的时间来解码，处理，渲染每一帧中的百万像素。
+
+其次，我们需要能够从 CPU 或者 GPU 上面得到这些数据。我们从视频文件读取的字节数最终会经过 CPU。但是这个数据还需要移动到 GPU 上，以便在显示器上可见。
+
+### 避免转移
+
+一个非常致命的问题很容易在数据从 CPU 到 GPU 转移的过程中发生，确保像素数据仅在一个方向移动是很重要的，最好是数据完全在 GPU 上。
+
+如果我们想渲染 24 fps 的视频，我们有 41 毫秒；如果我们渲染 60 fps 的视频，我们只有 16 毫秒，如果我们不小心从 GPU 下载一个像素数据，然后再上传到 GPU，对于一部 iPhone 6，我们在每个方向将要移动 3.8 MB 的数据，这将打破我们的帧速率。
+
+当我们使用 `CVPixelBuffer`，我们希望这样的流程：
+
+<img src="http://img.objccn.io/issue-23/flow.svg" alt="Flow of image data" width="620px" height="232px">
 
 
+`CVPixelBuffer` 是基于 CPU 的（见下文），我们用它包装`CIImage`。使我们的滤镜链不移走任何数据；他只是建立了一个流程。一旦我们绘制图像，我们使用了基于 EAGL 上下文的 Core Image 图形上下文，作为 GLKView 显示的图像。EAGL 上下文是基于 GPU 的。请注意，我们如何只穿越 GPU-CPU 边界一次，这是至关重要的组成部分。
+
+### 工作和目标
+
+Core Image 的图形上下文可以通过两种方式创建：使用 `EAGLContext` 的 GPU 上下文，或者是基于 CPU 的上下文。
+
+这个定义了 Core Image 工作的地方——像素数据将被处理的地方。除去这些，基于 GPU 和基于 CPU 的图形上下文都可以让 CPU 执行 `createCGImage(…)`，`render(_, toBitmap, …)` 和 `render(_, toCVPixelBuffer, …)` ，以及相关的命令。
+
+重要的是要理解移动 CPU 和 GPU 之间的像素数据，或者是让数据保持在 CPU 或者 GPU，越过这个边界是需要很大的代价的。
+
+### 缓冲器和图像
+
+在我们的例子中，我们使用了几个不同的*缓冲区*和*图像*。这可能有点混乱。这样做的原因很简单，不同的框架对于这些‘图像’有不同的用途。下面有一个快速预览，以显示哪些是以基于 CPU 或者基于 GPU 为主：
 
 
+| 类          | 描述    |
+|----------------|----------------|
+| CIImage        | These can represent two things: image data or a recipe to generate image data. |
+|                | The output of a CIFilter is very lightweight. It's just a description of how it is generated and does not contain any actual pixel data.
+|                | If the output is image data, it can be either raw pixel `NSData`, a `CGImage`, a `CVPixelBuffer`, or an OpenGL texture. |
+| CVImageBuffer  | This is an abstract superclass of `CVPixelBuffer` (CPU) and `CVOpenGLESTexture` (GPU). |
+| CVPixelBuffer  | A Core Video pixel buffer is CPU based. |
+| CMSampleBuffer | A Core Media sample buffer wraps either a `CMBlockBuffer` or a `CVImageBuffer`, in addition to metadata.
+| CMBlockBuffer  | A Core Media block buffer is CPU based. |
 
+需要注意的是 `CIImage` 有很多方便的方法，例如，加载一个 JPEG 图像或者直接加载一个 `UIImage` 对象。在后台，这些将会使用一个基于 `CGImage` 的 `CIImage`。
 
+## 结论
 
-
-
-
-
-
-
-
-
-
-
-
+Core Image 是操纵实时视频的一大利器。只要你适当的配置下，性能将会是强劲的——只要确保 CPU 和 GPU 之间没有数据的转移。创意地使用滤镜，你可以实现一个灰常炫酷的效果，神马简单色调，褐色滤镜都弱爆啦。所有的这些代码都很容易抽象出来，深入了解下各个类的工作原理会帮助你提高代码的性能。
 
 ---
 

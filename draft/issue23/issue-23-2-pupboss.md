@@ -2,11 +2,11 @@
 
 ---
 
-在这篇文章中，我们将研究 Core Image 对视频播放的影响。我们来看两个例子：首先，我们把这个影响作用于相机拍摄的照片。其次，我们再将这个影响作用于拍摄好的视频文件。它也可以做到离线渲染，它会把渲染结果返回给视频，而不是直接显示在屏幕上。两个例子的完整源代码，请点击 [这里](https://github.com/objcio/core-image-video)。
+在这篇文章中，我们将研究 Core Image 对视频播放的影响。我们来看两个例子：首先，我们来看他对照片处理的影响。其次，我们再来看看对视频处理的影响。它也可以做到离线渲染，它会把渲染结果返回给视频，而不是直接显示在屏幕上。两个例子的完整源代码，请点击 [这里](https://github.com/objcio/core-image-video)。
 
 ## 总览
 
-当涉及到处理视频的时候，性能就会变得非常重要。而且重要的是了解黑箱下的原理 —— 也就是 Core Image 如何工作 —— 如何提供足够的性能。在 GPU 上面做尽可能多的工作非常有必要，并且最大限度的减少 GPU 和 CPU 之间的数据传送。之后的例子中，我们将看看这个细节。
+当涉及到处理视频的时候，性能就会变得非常重要。但是更重要的是了解黑箱下的原理 —— 也就是 Core Image 如何工作 —— 如何提供更棒的性能。在 GPU 上面做尽可能多的工作非常有必要，并且最大限度的减少 GPU 和 CPU 之间的数据传送。之后的例子中，我们将看看这个细节。
 
 想对 Core Image 有个初步认识的话，可以读读 Warren 的这篇文章 [Core Image 介绍](http://objccn.io/issue-21-6/)。我们将使用 [Swift 的函数式 API](http://objccn.io/issue-16-4/) 中介绍的基于 `CIFilter` 的 API 封装。想要了解更多关于 AVFoundation，看看本 issue 中的 [Adriaan 的文章](http://objccn.io/issue-23-1/)，还有 issue #21 中的 [iOS 上的相机捕捉](http://objccn.io/issue-21-3/)。
 
@@ -14,7 +14,7 @@
 
 CPU 和 GPU 都可以运行 Core Image，我们将会在 [下面](#cpuvsgpu) 详细介绍这两个的细节。在这个例子中，我们要使用 GPU，我们做如下几样事情。
 
-我们首先创建一个自定义的 `UIView`，他允许我们把 Core Image 的结果直接渲染成 OpenGL。我们可以新建一个 `GLKView` 并且用一个 `EAGL 上下文` 来初始化。我们需要指定 OpenGL ES 2 作为渲染 API，在这两个例子中，我们要自己触发 drawing 事件（而不是在 `-drawRect:` 中触发，所以在初始化 GLKView 的时候，我们需要设置 `enableSetNeedsDisplay` 为 false。然后我们再创建完新的图层，就需要主动触发 `-display` 了。
+我们首先创建一个自定义的 `UIView`，因为 UIView 允许我们把 Core Image 的结果直接渲染成 OpenGL。我们可以新建一个名为 `GLKView` 的 UIView 并且用一个 `EAGL 上下文` 来初始化。我们需要指定 OpenGL ES 2 作为渲染 API，在这两个例子中，我们要自己主动触发 drawing 事件（而不是在 `-drawRect:` 中触发，所以在初始化 GLKView 的时候，我们需要设置 `enableSetNeedsDisplay` 为 false。然后我们再创建完新的图层，就需要主动触发 `-display` 了。
 
 这样一来，我们可以不断地引用 `CIContext`，它提供一个桥梁来连接 Core Image 对象和 OpenGL 上下文。我们创建一次就可以一直使用它。这个上下文允许 Core Image 在后台做优化，比如缓存和重用资源，像纹理等等。重要的是这个上下文我们一直在重复使用。
 
@@ -24,7 +24,7 @@ CPU 和 GPU 都可以运行 Core Image，我们将会在 [下面](#cpuvsgpu) 详
 
 ## 从相机获取像素数据
 
-对于 AVFoundation 如何工作的概述，请看 [Adriaan 的文章](http://objccn.io/issue-23-1/) 和 Matteo 的文章 [iOS 上的相机捕捉](http://objccn.io/issue-21-3/)。对于我们而言，我们想从镜头获得 raw 格式的数据。这里有一个摄像头，我们通过创建一个 `AVCaptureDeviceInput` 对象。使用 `AVCaptureSession `，我们可以把它连接到一个 `AVCaptureVideoDataOutput`。这个 data output 有一个符合 `AVCaptureVideoDataOutputSampleBufferDelegate` 协议的代理对象。这个代理将用来接受每一帧的消息：
+对于 AVFoundation 如何工作的概述，请看 [Adriaan 的文章](http://objccn.io/issue-23-1/) 和 Matteo 的文章 [iOS 上的相机捕捉](http://objccn.io/issue-21-3/)。对于我们而言，我们想从镜头获得 raw 格式的数据。这里有一个摄像头，我们通过创建一个 `AVCaptureDeviceInput` 对象来完成这个工作。使用 `AVCaptureSession `，我们可以把它连接到一个 `AVCaptureVideoDataOutput`。这个 data output 有一个符合 `AVCaptureVideoDataOutputSampleBufferDelegate` 协议的代理对象。这个代理将用来接受每一帧的消息：
 
 ```swift
 func captureOutput(captureOutput: AVCaptureOutput!,
@@ -41,9 +41,9 @@ source = CaptureBufferSource(position: AVCaptureDevicePosition.Front) {
 }
 ```
 
-我们需要对从相机返回的数据进行转码，无论你如何转动 iPhone，像素数据总是在相同的方向。在我们的例子中，我们锁定 UI 在正方向，我们希望屏幕上显示的图像符合照相机拍出来的方向，为此我们需要后置摄像头的照片旋转 -π/2。前置摄像头需要旋转两个 -π/2 并且加一个镜像效果。我们把这个称作为一个 `CGAffineTransform`。请注意如果 UI 是不同的方向，我们的变换将是不同的。还要注意，这种转换的代价是非常小的，因为他在 Core Image 渲染过程中完成。
+我们需要对相机返回的数据进行转码，无论你如何转动 iPhone，像素数据总是朝着相同的方向。在我们的例子中，我们把 UI 锁定在正方向，我们都希望屏幕上显示的图像方向符合我们拍摄时看到的样子，为此我们需要后置摄像头的照片旋转 -π/2 角度。前置摄像头需要旋转两个 -π/2 角度，并且加一个镜像效果。我们把这个称作为一个 `CGAffineTransform`。请注意如果 UI 是不同的方向，我们的变换将是不同的。还要注意，这种转换的代价是非常小的，因为他在 Core Image 渲染过程中完成。
 
-接着，要把 `CMSampleBuffer` 转换成 `CIImage`，我们首先需要先转换成一个 `CVPixelBuffer`。我们可以写一个方便的初始化方法为我们做这些事：
+接着，要把 `CMSampleBuffer` 转换成 `CIImage`，我们首先需要先转换成一个 `CVPixelBuffer`。我们可以扩展一个方便的初始化方法为我们做这些事：
 
 ```swift
 extension CIImage {
@@ -53,7 +53,7 @@ extension CIImage {
 }
 ```
 
-现在我们用三个步骤来可以处理我们的图像。首先把我们的 `CMSampleBuffer` 转换成 `CIImage`，并且应用一个形变，使图像旋转到正确的方向。接下来，我们应用一个 `CIFilter` 滤镜得到一个新的 `CIImage` 输出。我们使用 [Florian 的文章](http://objccn.io/issue-16-4/) 提到的创建滤镜的方式。在这个例子中，我们使用色调调整滤镜，并且依赖时间通过一个角度(*PS: 不够优雅，原文是 pass in an angle that depends on time*)。最终，我们把事先定义的 View 用 `CIContext` 转换成 `CIImage`。这个流程非常简单，看起来是这样的：
+现在我们用三个步骤来可以处理我们的图像。首先把我们的 `CMSampleBuffer` 转换成 `CIImage`，并且应用一个 Transform，使图像旋转到正确的方向。接下来，我们应用一个 `CIFilter` 滤镜得到一个新的 `CIImage` 输出。我们使用 [Florian 的文章](http://objccn.io/issue-16-4/) 提到的创建滤镜的方式。在这个例子中，我们使用色调调整滤镜，并且依赖时间通过一个角度(*PS: 不够优雅，原文是 pass in an angle that depends on time*)。最终，我们把事先定义的 View 用 `CIContext` 转换成 `CIImage`。这个流程非常简单，看起来是这样的：
 
 ```swift
 source = CaptureBufferSource(position: AVCaptureDevicePosition.Front) {
@@ -64,7 +64,7 @@ source = CaptureBufferSource(position: AVCaptureDevicePosition.Front) {
 }
 ```
 
-当你运行它，你可能会因为 CPU 的低使用率吃惊。这其中的奥秘是 GPU 做了几乎所有的工作。尽管我们创建了一个 `CIImage`，应用了一个滤镜，并输出一个 `CIImage`，最终输出的结果是一个 *promise*：不呈现就不去计算。一个 `CIImage` 对象可以是黑箱里的很多东西，它可以是 GPU 算出来的像素数据，也可以是如何创建像素数据的一个说明（例如在使用一个滤镜），或者他也可以直接从 OpenGL 创建纹理。
+当你运行它的时候，你可能会因为 CPU 的低使用率吃惊。这其中的奥秘是 GPU 做了几乎所有的工作。尽管我们创建了一个 `CIImage`，应用了一个滤镜，并输出一个 `CIImage`，无论如何，最终渲染出来的结果都遵守一个*约定*：不呈现就不去计算。一个 `CIImage` 对象可以是黑箱里的很多东西，它可以是 GPU 算出来的像素数据，也可以是如何创建像素数据的一个说明（例如在使用一个滤镜），或者他也可以直接从 OpenGL 创建纹理。
 
 下面是演示视频
 
@@ -74,7 +74,7 @@ source = CaptureBufferSource(position: AVCaptureDevicePosition.Front) {
 
 ## 从影片中获取像素数据
 
-我们可以做的另一件事是通过 Core Image 把这个滤镜加到一个视频中。和实时拍摄不同，我们现在生成每一帧的像素缓冲区，在这里我们将来用略有不同的方法。当相机推送每一帧给我们的时候，我们用一个 pull-drive 的方式，通过 display link，可以让每一帧停止在特定时间。
+我们同样可以通过 Core Image 把这个滤镜加到一个视频中。和实时拍摄不同，我们现在生成每一帧的像素缓冲区，在这里我们将采用略有不同的方法。当相机推送每一帧给我们的时候，我们用一个 pull-drive 的方式：通过 display link，可以让每一帧停止在特定时间。
 
 display link 是每帧需要绘制的时候给我们发消息的对象，并按照显示器的刷新频率发送出去。这通常用于 [自定义动画](http://objccn.io/issue-12-6/)，但也可以用来播放和操作视频。我们要做的第一件事就是创建一个 `AVPlayer` 和一个视频输出：
 
@@ -90,7 +90,7 @@ let displayLink = CADisplayLink(target: self, selector: "displayLinkDidRefresh:"
 displayLink.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
 ```
 
-现在，唯一要做的就是获取视频每一帧的 `displayLinkDidRefresh:` 调用。首先，我们获取当前的时间，并且转换成当前播放项目的一个时间表。然后我们轮询 `videoOutput`，如果当前时间有一个可用的新的像素缓存区，我们把它复制一下并且调用回调方法：
+现在，唯一要做的就是获取视频每一帧的 `displayLinkDidRefresh:` 调用。首先，我们获取当前的时间，并且转换成当前播放项目的一个时间表。然后我们轮询 `videoOutput`，如果当前时间有一个可用的新的像素缓存区，我们把它复制过来并且调用回调方法：
 
 ```swift
 func displayLinkDidRefresh(link: CADisplayLink) {
@@ -102,7 +102,7 @@ func displayLinkDidRefresh(link: CADisplayLink) {
 }
 ```
 
-我们从一个视频输出获得的像素缓冲器是一个 `CVPixelBuffer`，我们可以直接转换成 `CIImage`。正如上面的例子，我们会加上一个滤镜。在这种情况下，我们将结合多个滤镜：我们使用一个万花筒的效果，然后用渐变遮罩把原始图像和过滤图像相结合，这个操作是非常轻量级的。
+我们从视频输出获得的像素缓冲器是一个 `CVPixelBuffer` 对象，可以直接转换成 `CIImage` 对象。正如上面的例子，我们会加上一个滤镜。在这种情况下，我们将结合多个滤镜：我们使用一个万花筒的效果，然后用渐变遮罩把原始图像和过滤图像相结合，这个操作是非常轻量级的。
 
 <video style="display:block;max-width:100%;height:auto;border:0;" controls="1">
   <source src="http://img.objccn.io/issue-23/video.m4v"></source>
@@ -147,16 +147,16 @@ Core Image 调用的滤镜有不同的类别。其中一些是传统的类型，
 
 ### 避免转移
 
-一个非常致命的问题很容易在数据从 CPU 到 GPU 转移的过程中发生，确保像素数据仅在一个方向移动是很重要的，最好是数据完全在 GPU 上。
+数据从 CPU 到 GPU 转移的过程中，会存在一个致命的问题，确保像素数据仅在一个方向移动是很重要的，最好是数据完全在 GPU 上。
 
-如果我们想渲染 24 fps 的视频，我们有 41 毫秒；如果我们渲染 60 fps 的视频，我们只有 16 毫秒，如果我们不小心从 GPU 下载一个像素数据，然后再上传到 GPU，对于一部 iPhone 6，我们在每个方向将要移动 3.8 MB 的数据，这将打破我们的帧速率。
+如果我们想渲染 24 fps 的视频，我们有 41 毫秒；如果我们渲染 60 fps 的视频，我们只有 16 毫秒，如果我们不小心从 GPU 下载一个像素数据，然后再上传到 GPU，对于一部 iPhone 6 的屏幕分辨率，我们将要在每个方向移动 3.8 MB 的数据，这会打破我们的帧速率。
 
 当我们使用 `CVPixelBuffer`，我们希望这样的流程：
 
 <img src="http://img.objccn.io/issue-23/flow.svg" alt="Flow of image data" width="620px" height="232px">
 
 
-`CVPixelBuffer` 是基于 CPU 的（见下文），我们用它包装`CIImage`。使我们的滤镜链不移走任何数据；他只是建立了一个流程。一旦我们绘制图像，我们使用了基于 EAGL 上下文的 Core Image 图形上下文，作为 GLKView 显示的图像。EAGL 上下文是基于 GPU 的。请注意，我们如何只穿越 GPU-CPU 边界一次，这是至关重要的组成部分。
+`CVPixelBuffer` 是基于 CPU 的（见下文），我们用它包装`CIImage`。形成我们的滤镜链，不移走任何数据；他只是建立了一个流程。一旦我们绘制图像，我们使用了基于 EAGL 上下文的 Core Image 图形上下文，作为 GLKView 显示的图像。EAGL 上下文是基于 GPU 的。请注意，我们如何只穿越 GPU-CPU 边界一次，这是至关重要的组成部分。
 
 ### 工作和目标
 
@@ -164,7 +164,7 @@ Core Image 的图形上下文可以通过两种方式创建：使用 `EAGLContex
 
 这个定义了 Core Image 工作的地方——像素数据将被处理的地方。除去这些，基于 GPU 和基于 CPU 的图形上下文都可以让 CPU 执行 `createCGImage(…)`，`render(_, toBitmap, …)` 和 `render(_, toCVPixelBuffer, …)` ，以及相关的命令。
 
-重要的是要理解移动 CPU 和 GPU 之间的像素数据，或者是让数据保持在 CPU 或者 GPU，越过这个边界是需要很大的代价的。
+重要的是要理解移动 CPU 和 GPU 之间的像素数据，或者是让数据保持在 CPU 或者 GPU 上，越过这个边界是需要很大的代价的。
 
 ### 缓冲器和图像
 

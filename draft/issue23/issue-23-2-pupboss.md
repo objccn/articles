@@ -2,7 +2,7 @@
 
 ---
 
-在这篇文章中，我们将研究 Core Image 对视频播放的影响。我们来看两个例子：首先，我们来看他对照片处理的影响。其次，我们再来看看对视频处理的影响。它也可以做到离线渲染，它会把渲染结果返回给视频，而不是直接显示在屏幕上。两个例子的完整源代码，请点击 [这里](https://github.com/objcio/core-image-video)。
+在这篇文章中，我们将研究 Core Image 对视频播放的影响。我们来看两个例子：首先，我们来看他对照片处理的影响，然后再来看看对视频处理的影响。它也可以做到离线渲染，它会把渲染结果返回给视频，而不是直接显示在屏幕上。两个例子的完整源代码，请点击 [这里](https://github.com/objcio/core-image-video)。
 
 ## 总览
 
@@ -10,7 +10,7 @@
 
 想对 Core Image 有个初步认识的话，可以读读 Warren 的这篇文章 [Core Image 介绍](http://objccn.io/issue-21-6/)。我们将使用 [Swift 的函数式 API](http://objccn.io/issue-16-4/) 中介绍的基于 `CIFilter` 的 API 封装。想要了解更多关于 AVFoundation，看看本 issue 中的 [Adriaan 的文章](http://objccn.io/issue-23-1/)，还有 issue #21 中的 [iOS 上的相机捕捉](http://objccn.io/issue-21-3/)。
 
-## 优化资源的 OpenGL ES
+## 能优化资源的 OpenGL ES
 
 CPU 和 GPU 都可以运行 Core Image，我们将会在 [下面](#cpuvsgpu) 详细介绍这两个的细节。在这个例子中，我们要使用 GPU，我们做如下几样事情。
 
@@ -64,7 +64,7 @@ source = CaptureBufferSource(position: AVCaptureDevicePosition.Front) {
 }
 ```
 
-当你运行它的时候，你可能会因为 CPU 的低使用率吃惊。这其中的奥秘是 GPU 做了几乎所有的工作。尽管我们创建了一个 `CIImage`，应用了一个滤镜，并输出一个 `CIImage`，无论如何，最终渲染出来的结果都遵守一个*约定*：不呈现就不去计算。一个 `CIImage` 对象可以是黑箱里的很多东西，它可以是 GPU 算出来的像素数据，也可以是如何创建像素数据的一个说明（例如在使用一个滤镜），或者他也可以直接从 OpenGL 创建纹理。
+当你运行它的时候，你可能会因为 CPU 的低使用率吃惊。这其中的奥秘是 GPU 做了几乎所有的工作。尽管我们创建了一个 `CIImage`，应用了一个滤镜，并输出一个新的 `CIImage`，但无论如何，最终渲染出来的结果都遵守一个*约定*：不呈现就不去渲染。一个 `CIImage` 对象可以是黑箱里的很多东西，它可以是 GPU 算出来的像素数据，也可以是如何创建像素数据的一个流程（例如使用一个滤镜），或者他也可以直接从 OpenGL 创建纹理。
 
 下面是演示视频
 
@@ -74,9 +74,9 @@ source = CaptureBufferSource(position: AVCaptureDevicePosition.Front) {
 
 ## 从影片中获取像素数据
 
-我们同样可以通过 Core Image 把这个滤镜加到一个视频中。和实时拍摄不同，我们现在生成每一帧的像素缓冲区，在这里我们将采用略有不同的方法。当相机推送每一帧给我们的时候，我们用一个 pull-drive 的方式：通过 display link，可以让每一帧停止在特定时间。
+我们同样可以通过 Core Image 把这个滤镜加到一个视频中。和实时拍摄不同，我们为影片的每一帧都生成像素缓冲区，在这里将采用略有不同的方法。相机会推送每一帧给我们，在影片处理中，我们要用一个 pull-drive 的方式：通过 display link，可以让每一帧停止在特定时间。
 
-display link 是每帧需要绘制的时候给我们发消息的对象，并按照显示器的刷新频率发送出去。这通常用于 [自定义动画](http://objccn.io/issue-12-6/)，但也可以用来播放和操作视频。我们要做的第一件事就是创建一个 `AVPlayer` 和一个视频输出：
+display link 是每帧需要绘制的时候给我们发消息的对象，并按照显示器的刷新频率同步发送出去。这通常用于 [自定义动画](http://objccn.io/issue-12-6/)，但也可以用来播放和操作视频。我们要做的第一件事就是创建一个 `AVPlayer` 和一个视频输出：
 
 ```swift
 player = AVPlayer(URL: url)
@@ -108,7 +108,7 @@ func displayLinkDidRefresh(link: CADisplayLink) {
   <source src="http://img.objccn.io/issue-23/video.m4v"></source>
 </video>
 
-## 创意的使用滤镜
+## 创意地使用滤镜
 
 大家都知道流行的照片效果。虽然我们可以将这些应用到视频，Core Image 还可以做更多。
 
@@ -185,7 +185,7 @@ Core Image 的图形上下文可以通过两种方式创建：使用 `EAGLContex
 
 ## 结论
 
-Core Image 是操纵实时视频的一大利器。只要你适当的配置下，性能将会是强劲的——只要确保 CPU 和 GPU 之间没有数据的转移。创意地使用滤镜，你可以实现一个灰常炫酷的效果，神马简单色调，褐色滤镜都弱爆啦。所有的这些代码都很容易抽象出来，深入了解下各个类的工作原理会帮助你提高代码的性能。
+Core Image 是操纵实时视频的一大利器。只要你适当的配置下，性能将会是强劲的——只要确保 CPU 和 GPU 之间没有数据的转移。创意地使用滤镜，你可以实现一个灰常炫酷的效果，神马简单色调，褐色滤镜都弱爆啦。所有的这些代码都很容易分离出来，深入了解下各个类的工作原理会帮助你提高代码的性能。
 
 ---
 

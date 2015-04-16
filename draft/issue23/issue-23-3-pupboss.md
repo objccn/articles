@@ -60,39 +60,69 @@ Based on tests conducted on OS X 10.10, a Mac typically supports H.264/AVC/MPEG-
 
 On iOS devices with an [A4 up to A6 SoC](http://en.wikipedia.org/wiki/Apple_system_on_a_chip), there is support for H.264/AVC/MPEG-4 Part 10 (until profile 100 and up to level 5.1), MPEG-4 Part 2, and H.263.
 
+在 iOS 设备上 [A4 到 A6](http://en.wikipedia.org/wiki/Apple_system_on_a_chip)，支持 H.264/AVC/MPEG-4 Part 10 （until profile 100 and up to level 5.1），MPEG-4 Part 2 和 H.263。
+
 The A7 SoC added support for H.264’s profile 110, which allows the individual color channels to be encoded with 10 bits instead of 8 bits, allowing a greater level of color detail. This feature is typically used in the broadcasting and content creation industries.
+
+A7 的 Soc 加入了对 H.264’s profile 110 的支持，它允许各个颜色通道从 8 位增加到 10位，允许更高级别的色彩细节。这个功能通常用于电视台或者媒体编辑行业。
 
 While the A8 seems to include basic support for the fifth-generation codec HEVC / H.265, as documented in the FaceTime specifications for the equipped devices, it is not exposed to third-party applications. This is expected to change in subsequent iOS releases,[^5] but might be limited to future devices.
 
-##Video Toolbox
+A8 似乎是包含第五代解码器 HEVC / H.265 的支持，作为支持 FaceTime 记录规格的设备，它不暴露给第三方应用程序。预计这个特性会在以后的 iOS 版本中有改变，[^5] 但是似乎仅限于新的设备。
 
-###When Do You Need Direct Access to Video Toolbox?
+## Video Toolbox
+## 视频工具箱
+
+### When Do You Need Direct Access to Video Toolbox?
+### 什么时候需要直接访问视频工具箱？
 
 Out of the box, Apple’s SDKs provide a media player that can deal with any file that was playable by the QuickTime Player. The only exception is for contents purchased from the iTunes Store which are protected by FairPlay2, the deployed Digital Rights Management. In addition, Apple's SDKs include support for Apple’s scaleable HTTP streaming protocol [HTTP Live Streaming (HLS)](http://en.wikipedia.org/wiki/HTTP_Live_Streaming) on iOS and OS X 10.7 and above. HLS typically consists of small chunks of H.264/AAC video stored in the [MPEG-TS container format](http://en.wikipedia.org/wiki/MPEG_transport_stream), and playlists that allow the client application to switch dynamically between different versions, depending on the available hardware.
 
+开箱即用，苹果的 SDK 提供一个媒体播放器，可以播放任何 QuickTime 兼容的格式视频。唯一的区别是需要为 iTunes 商店中受 FairPlay2 保护的内容付费，FaiPlay2 是一个数字版权管理的机构。此外，苹果的 SDK 包括苹果公司的可扩展的 HTTP 流媒体协议支持 [HTTP Live Streaming (HLS)](http://en.wikipedia.org/wiki/HTTP_Live_Streaming)，这项协议被用在 iOS 以及 OS X 10.7 以上。HLS 通常包括一小块 [MPEG-TS 格式](http://en.wikipedia.org/wiki/MPEG_transport_stream) 的 H.264/AAC 视频，并且允许客户端根据可用的硬件，在不同的版本之间动态选择。
+
 If you have control over the encoding and production of the content that is going to be displayed on iOS or OS X devices, then you can use the default playback widgets. Depending on the deployed device and operating system version, the default player will behave correctly, enable hardware accelerated decoding, or transparently fall back on a software solution in case of an error. This is also true for the high-level frameworks AVKit and AVFoundation. Of course, all of them are backed by Video Toolbox, but this is nothing that need concern the average developer.
+
+如果你曾经做过视频编解码，并且播放在 iOS 或者 OS X 设备上的项目，你可以使用默认的播放控件。根据部署的设备型号和操作系统版本，默认的播放器都可以正常运行，启动硬件加速解码，或者突然回落到软件解码，有可能会出现错误。这也适用于高层框架 AVKit 和 AVFoundation。当然，他们都是基于视频工具箱的支持的，不过这些开发者不需要知道。
 
 However, there are more container formats than just MP4 — for example, MKV. There are also further scaleable HTTP streaming protocols developed by Adobe and Microsoft, like DASH or Smooth Streaming, which also deploy a similar set of video codecs, but different container formats and intrinsically different protocols. Supporting custom container formats or protocols is a breeze with Video Toolbox. It accepts raw video streams as input and also allows on-device encoding of raw or already encoded video. The result is then made accessible for further processing, be it storage in a file or active streaming to the network. Video Toolbox is an elegant way to achieve performance on par with Apple’s native solutions, and its usage is described in [WWDC 2014 Session #513, "Direct Access to Video Encoding and Decoding](https://developer.apple.com/videos/wwdc/2014/#513)," as well as the very basic [VideoTimeLine sample code project](https://developer.apple.com/devcenter/download.action?path=/wwdc_2014/wwdc_2014_sample_code/usingVideoToolboxtodecodecompressedsamplebuffers.zip).
 
+然而除去 MP4 之外，还有更多的编码格式，例如 MKV。也有 Adobe 和微软开发的进一步可扩展的 HTTP 流媒体协议，比如 DASH 或者 Smooth Streaming （瀑布流），他们也部署了一套类似的视频编解码器，但他们是不同的格式，不同的协议。视频工具箱支持自定义格式或协议是轻而易举的事情。他接受原始的视频流作为输入，而且允许设备对原始编码或者已经编码的视频进行编码。生成的结果将随后访问，以便进一步处理，无论储存在文件也好，上传到网络也罢。视频工具箱是一个优雅的方式来达到原生解决方案的性能。而且它的用法在 [WWDC 2014 Session #513, "Direct Access to Video Encoding and Decoding](https://developer.apple.com/videos/wwdc/2014/#513) 有描述，还有很基本的 [代码](https://developer.apple.com/devcenter/download.action?path=/wwdc_2014/wwdc_2014_sample_code/usingVideoToolboxtodecodecompressedsamplebuffers.zip)
+
 A final word on Video Toolbox deployment on iOS devices. It was introduced as a private framework in iOS 4 and was recently made public in iOS 8. When building applications with a deployment target less than 8.0, including Video Toolbox won't lead to any problems, since the actual symbols stayed the same and the API is virtually unchanged. However, any worker session creation will be terminated with the undocumented error -12913, as the framework is not available for sandboxed applications on previous OS releases due to security concerns.
 
-###Basic Concepts of Video Toolbox Usage
+最后再补充一点关于视频工具箱。它在 iOS 4 上作为一个私有的框架，在最近的 iOS 8 开放给开发者。建立 target 低于 8.0 的项目时，includ 视频工具箱不会有任何问题，因为实际的 API 大部分是不变的。然而，任何新建会话的请求将会以 error -12913 被终止，因为出于安全考虑，这个框架不适用于旧版本 OS 的沙盒程序。
+
+### Basic Concepts of Video Toolbox Usage
+### 视频工具箱用法的基本概念
 
 Video Toolbox is a C API depending on the CoreMedia, CoreVideo, and CoreFoundation frameworks and based on sessions with three different types available: compression, decompression, and pixel transfer. It derives various types from the CoreMedia and CoreVideo frameworks for time and frame management, such as CMTime or CVPixelBuffer.
 
+视频工具箱是一个基于 CoreMedia，CoreVideo，CoreFoundation  框架的 C 语言 API，并且基于三种可用类型的会话：压缩，解压缩，像素移动。它从 CoreMedia 和 CoreVideo 框架时间和帧管理推导不同数据的类型，例如 CMTime 或 CVPixelBuffer。
+
 To illustrate the basic concepts of Video Toolbox, the following paragraphs will describe the creation of a decompression session along with the needed structures and types. A compression session is essentially very similar to a decompression session, while in practice, a pixel transfer session should be rarely needed.
+
+为了说明视频工具箱的基本概念，一下段落将描述创建一个解压会话，只包含必要的结构和类型。压缩会话和解压缩会话是非常相似的，而在实践中，一个像素的传送会话应该尽可能的少。
 
 To initialize a decompression session, Video Toolbox needs to know about the input format as part of a `CMVideoFormatDescriptionRef` structure, and — unless you want to use the undocumented default — your specified output format as plain CFDictionary reference. A video format description can be obtained from an AVAssetTrack instance or created manually with `CMVideoFormatDescriptionCreate` if you are using a custom demuxer. Finally, decoded data is provided through an asynchronous callback mechanism. The callback reference and the video format description are required by `VTDecompressionSessionCreate`, while setting the output format is optional.
 
-###What Is a Video Format Description?
+初始化解压会话的时候，视频工具箱需要知道输入的格式作为 `CMVideoFormatDescriptionRef` 构造的一部分，—— 除非你想使用默认的无参数 —— 你指定的输入格式为 CFDictionary 类型。视频格式的描述可以从 AVAssetTrack 实例来获取或者手动创建 `CMVideoFormatDescriptionCreate`。最后，解码数据是通过异步回调机制提供的。回调和视频格式的描述都需要 `VTDecompressionSessionCreate`，同时设置输出格式是可选的。
+
+### What Is a Video Format Description?
+### 什么是视频格式说明
 
 It is an opaque structure describing the encoded video. It includes a [FourCC](http://en.wikipedia.org/wiki/FourCC) indicating the used codec, the video dimensions, and a dictionary documented as `extensions`. What are those? On OS X, hardware accelerated decoding is optional and disabled by default. To enable it, the `kVTVideoDecoderSpecification_EnableHardwareAcceleratedVideoDecoder` key must be set, optionally combined with `kVTVideoDecoderSpecification_RequireHardwareAcceleratedVideoDecoder` set to fail if hardware accelerated playback is not available. This is not needed on iOS, as accelerated decoding is the only available option. Furthermore, `extensions` allows you to forward metadata required by modern video codecs such as MPEG-4 Part 2 or H.264 to the decoder.[^6] Additionally, it may contain metadata to handle support for non-square pixels with the `CVPixelAspectRatio` key.
 
-###The Video Output Format
+它是描述视频文件编码的构造的。它包含一个 [FourCC](http://en.wikipedia.org/wiki/FourCC) 描述编解码器，视频尺寸，并记录成一个字典作为文件扩展描述。这些是什么？在 OS X 上，硬件加速解码是可选的，默认情况下禁用。要启用它，在 `kVTVideoDecoderSpecification_EnableHardwareAcceleratedVideoDecoder` 中必须设置，或者如果没有生效的话，在 `kVTVideoDecoderSpecification_RequireHardwareAcceleratedVideoDecoder` 中也要设置。在 iOS 上这些是没有必要的，硬件加速解码是唯一的选择，此外，`extensions` 允许你转发现代视频编解码器所需要的元数据，如 MPEG-4 Part 2 或 H.264。[^6] 此外，它可能包含元数据来通过 `CVPixelAspectRatio` 键来处理非方形像素。
+
+### The Video Output Format
+### 视频输出格式
 
 This is a plain CFDictionary. The result of a decompression session is a raw, uncompressed video image. To optimize for speed, it is preferable to have the hardware decoder output's native [chroma format](http://en.wikipedia.org/wiki/Chroma_subsampling), which appears to be `kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange`. However, a number of further formats are available, and transformation is performed in a rather efficient way using the GPU. It can be set using the `kCVPixelBufferPixelFormatTypeKey` key. We also need to set the dimensions of the output using `kCVPixelBufferWidthKey` and `kCVPixelBufferHeightKey` as plain integers. An optional key worth mentioning is `kCVPixelBufferOpenGLCompatibilityKey`, which allows direct drawing of the decoded image in an OpenGL context without copying the data back and forth between the main bus and the GPU. This is sometimes referenced as a *0-copy pipeline*, as no copy of the decoded image is created for drawing.[^7]
 
-###Data Callback Record
+这是一个纯 CFDictionary。解压会话的结果是一个原始的，未压缩的视频图像。为了高效率的输出，优选为具有硬解码能力的机器输出本机的 [色度格式](http://en.wikipedia.org/wiki/Chroma_subsampling)，这似乎是 `kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange`。然而，有许多更进一步的视频格式提供，并且转码过程中有 GPU 参与，效率非常高。它可以通过设置 `kCVPixelBufferPixelFormatTypeKey` 键来启用，我们还需要设置 `kCVPixelBufferWidthKey` 和 `kCVPixelBufferHeightKey` 作为输出的尺寸。有一个可选的键也值得一提 `kCVPixelBufferOpenGLCompatibilityKey`，它允许在 OpenGL 的上下文直接绘图，而不是从总线和 CPU 之间复制数据。这有时候被称为 *零拷贝通道*，作为一个专门用来零拷贝的解码图像。[^7]
+
+### Data Callback Record
+### 数据回调记录
 
 `VTDecompressionOutputCallbackRecord` is a simple structure with a pointer to the callback function invoked when frame decompression (`decompressionOutputCallback`) is complete. Additionally, you need to provide the instance of where to find the callback function (`decompressionOutputRefCon`). The `VTDecompressionOutputCallback` function consists of seven parameters:
 
@@ -104,24 +134,43 @@ This is a plain CFDictionary. The result of a decompression session is a raw, un
 * the presentation timestamp
 * the presentation duration
 
+`VTDecompressionOutputCallbackRecord` 是一种帧解码 `decompressionOutputCallback` 完成时调用的结构简单的指针函数。此外，在调用这个回调函数 `decompressionOutputRefCon ` 时你需要提供这个实例。该 `VTDecompressionOutputCallback` 函数包括七个函数：
+
+* 回调的相关参数
+* 帧的相关参数
+* 一个状态标识（与不确定的代码）
+* 指示同步异步解码、是否打算丢帧的标识
+* 实际图像缓冲
+* 演示时间戳
+* 演示持续时间
+
 The callback is invoked for any decoded or dropped frame. Therefore, your implementation should be highly optimized and strictly avoid any copying. The reason is that the decoder is blocked until the callback returns, which can lead to decoder congestion and further complications. Additionally, note that the decoder will always return the frames in the decoding order, which is absolutely not guaranteed to be the playback order. Frame reordering is up to the developer.
 
-###Decoding Frames
+所有解码或者丢帧的时候都会调用这个回调。因此，你的实现必须高度优化，严格控制任何复制。原因是解码器会被阻塞直到回调返回，这可能导致译码器堵塞和进一步的阻塞。此外，请注意解码器总是会按解码顺序返回帧，这样绝不可能保证播放顺序。帧是由开发者重新排序的。
+
+### Decoding Frames
+### 解码帧
 
 Once your session is created, feeding frames to the decoder is a walk in the park. It is a matter of calling `VTDecompressionSessionDecodeFrame` repeatedly, with a reference to the session and a sample buffer to decode, and optionally with advanced flags. The sample buffer can be obtained from an `AVAssetReaderTrackOutput`, or alternatively, it can be created manually from a raw memory block, along with timing information, using `CMBlockBufferCreateWithMemoryBlock`, `CMSampleTimingInfo`, and `CMSampleBufferCreate`.
 
-###Conclusion
+一旦会话创建，把帧输入解码器就像在公园里散步。这个过程重复调用 `VTDecompressionSessionDecodeFrame`，具有参考会话和实例缓冲区进行解码，并可选标识。实例缓冲可以从 `AVAssetReaderTrackOutput` 获得，或者可以从原始储存器块创建，连同定时信息，使用 `CMBlockBufferCreateWithMemoryBlock`，`CMSampleTimingInfo` 和 `CMSampleBufferCreate`。
+
+### Conclusion
+### 小结
 
 Video Toolbox is a low-level, highly efficient way to speed up video processing in specific setups. The higher level framework AVFoundation allows decompression of supported media for direct display and compression directly to a file. Video Toolbox is the tool of choice when support of custom file formats, streaming protocols, or direct access to the codec chain is required. On the downside, profound knowledge of the involved video technology is required to master the sparsely documented API. Regardless, it is the way to go to achieve an engaging user experience with better performance, increased efficiency, and extended battery life.
 
-####References
+在特殊配置下，视频工具箱是一个底层的，高效率的方式。上级框架 AVFoundation 允许直接把支持的媒体文件解压并且显示到屏幕上，或者直接压缩到一个文件。当需要支持自定义文件格式，流媒体协议，或直接访问编解码器链的时候，视频工具箱是首选的工具。在缺点方面，所涉及到的视频技术，需要高深的知识，掌握不常见 API 的使用很有必要。无论如何，这都是实现更好的用户体验，更高的效率，延长电池寿命的必经之路。
 
-- [Apple Sample Code](https://developer.apple.com/devcenter/download.action?path=/wwdc_2014/wwdc_2014_sample_code/usingVideoToolboxtodecodecompressedsamplebuffers.zip)
+#### References
+#### 参考
+
+- [苹果示例代码](https://developer.apple.com/devcenter/download.action?path=/wwdc_2014/wwdc_2014_sample_code/usingVideoToolboxtodecodecompressedsamplebuffers.zip)
 - [WWDC 2014 Session #513](https://developer.apple.com/videos/wwdc/2014/#513)
 
-[^2]: DVD Player as we know it was introduced in OS X 10.1. Until then, third-party tools like VLC media player were the only playback option for DVDs on OS X.
+[^2]: 我们都知道 DVD 播放器是在 OS X 10.1 开始引用的。在此之前，第三方软件像 VLC 播放器只能在 OS X 上播放 DVD。
 [^3]: Sorenson Spark, On2 TrueMotion VP6
 [^4]: `kVDADecoderHardwareNotSupportedErr`, `kVDADecoderFormatNotSupportedErr`, `kVDADecoderConfigurationError`, `kVDADecoderDecoderFailedErr`
-[^5]: Apple published a job description for a management position in HEVC development in summer 2013.
-[^6]: Namely the `kCMFormatDescriptionExtension_SampleDescriptionExtensionAtoms` *ESDS* or respectively *avcC*.
-[^7]: Remember, "memcpy is murder." Mans Rullgard, Embedded Linux Conference 2013, [http://free-electrons.com/blog/elc-2013-videos/](http://free-electrons.com/blog/elc-2013-videos/)
+[^5]: 苹果在 2013 年夏天的 HEVC 发布了一个管理职位。
+[^6]: 即 `kCMFormatDescriptionExtension_SampleDescriptionExtensionAtoms` *ESDS* 或 *avcC*。
+[^7]: 请记住, "内存拷贝就是犯罪" Mans Rullgard，2013 Linux 嵌入式会议， [http://free-electrons.com/blog/elc-2013-videos/](http://free-electrons.com/blog/elc-2013-videos/)

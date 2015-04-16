@@ -174,3 +174,9 @@ Video Toolbox is a low-level, highly efficient way to speed up video processing 
 [^5]: 苹果在 2013 年夏天的 HEVC 发布了一个管理职位。
 [^6]: 即 `kCMFormatDescriptionExtension_SampleDescriptionExtensionAtoms` *ESDS* 或 *avcC*。
 [^7]: 请记住, "内存拷贝就是犯罪" Mans Rullgard，2013 Linux 嵌入式会议， [http://free-electrons.com/blog/elc-2013-videos/](http://free-electrons.com/blog/elc-2013-videos/)
+
+---
+
+[话题 #23 下的更多文章](http://www.objccn.io/issue-23)
+
+原文 [Video Toolbox and Hardware Acceleration](http://www.objc.io/issue-23/videotoolbox.html)

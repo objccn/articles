@@ -33,20 +33,30 @@ In the mid 00s, a new kid arrived on the block and remains the dominant video co
 
 在 00 年代中期，一个新生儿出现了，并且保持着光学媒体，数字电视广播，以及在线视频编解码的主导地位：他就是 [H.264/AVC/MPEG-4 Part 10](http://zh.wikipedia.org/wiki/H.264)。MPEG 的第四代编解码技术有效地降低了带宽需求。然而这是有代价的：增加 CPU 和专用解码硬件的需求，特别是在嵌入式设备像 iPhone。不使用所提供的 DSP，电池的寿命会急剧下降，通常会降低 2.5 **（倍/百分比）？** —— 哪怕是最高效的的软件解码技术。
 
-With the introduction of QTKit — a Cocoa Wrapper of the QuickTime API — on OS X 10.5 Leopard, Apple delivered an efficient software decoder. It was highly optimized with handcrafted assembly code, and further improved upon in OS X 10.6 by the deployment of the clang compiler as demonstrated at WWDC 2008. What Apple didn't mention back then is the underlying ability to dynamically switch to hardware accelerated decoding depending on availability and codec profile compatibility. This feature was based on two newly introduced private frameworks: Video Toolbox and Video Decode Acceleration (VDA).
+With the introduction of QTKit — a Cocoa Wrapper of the QuickTime API — on OS X 10.5 Leopard, Apple delivered an efficient software decoder. It was highly optimised with handcrafted assembly code, and further improved upon in OS X 10.6 by the deployment of the clang compiler as demonstrated at WWDC 2008. What Apple didn't mention back then is the underlying ability to dynamically switch to hardware accelerated decoding depending on availability and codec profile compatibility. This feature was based on two newly introduced private frameworks: Video Toolbox and Video Decode Acceleration (VDA).
 
-随着 QTKit 的引入 —— 一个 Cocoa 封装的 QuickTime API —— 最早出现在 OS X 10.5，苹果公开了一个高效率的软件解码器。这是用汇编高度优化的，在 WWDC 2008 大会上，clang 编译器的部署证明了 OS X 10.6 性能的提升。
+随着 QTKit 的引入 —— 一个 Cocoa 封装的 QuickTime API —— 最早出现在 OS X 10.5，苹果公开了一个高效率的软件解码器。这是用汇编语言深度优化的，在 WWDC 2008 大会上，clang 编译器证明了 OS X 10.6 性能的提升。苹果公司当时没有提到一个潜在的能力 —— 根据可用性和兼容性，动态切换到硬解码。这个特性是基于两个私有框架： 视频工具箱和视频解码加速（VDA）。
 
 In 2008, Adobe Flash Video switched from its legacy video codecs[^3] to H.264 and started to integrate hardware accelerated decoding in its cross-platform playback applications. On OS X, Adobe's team discovered that the needed underlying technology was actually there and deployed by Apple within QTKit-based applications, but it was not available to the outside world. This changed in OS X 10.6.3 with a patch against the 10.6 SDK, which added a single header file for VDA.
 
+2008 年，Adobe 从原来的解码器 [^3] 切换到 H.264 上面，并且开始在他的跨平台播放器上整合硬件加速解码。对于 OS X，Adobe 的团队发现需要的底层技术都有，并部署在基于苹果的 QTKit 框架的应用程序上，但是他不对外开放。他在 OS X 10.6.3 上有所改变，苹果发布了一个补丁针对 10.6 的 SDK，里面加了一个单独的 VDA 头文件。
+
 What’s inside VDA? It is a small framework wrapping the H.264 hardware decoder, which may or may not work. This is based on whether or not it can handle the input buffer of the encoded data that is provided. If the decoder can handle the input, it will return the decoded frames. If it can't, the session creation will fail, or no frames will be returned with an undocumented error code. There are four different error states available, none of them being particularly verbose.[^4] There is no official documentation beyond the header file and there is no software fallback either.
+
+VDA 里面有什么？这是一个封装了 H.264 硬件解码器的小框架，他可能工作也可能不工作，这取决于他是否可以处理所提供编码数据的输入缓冲器。如果解码器可以处理上述请求，他将返回解码的帧，否则会话创建失败，或者不返回帧，只返回一个错误码。这里有四种不同的错误状态，哪个都不是特别详细。[^4] 除去仅有的头文件，既没有官方文档，也没有备用的解决方案。
 
 Fast-forward to the present: in iOS 8 and OS X 10.8, Apple published the full Video Toolbox framework. It is a beast!
 It can compress and decompress video at real time or faster. Hardware accelerated video decoding and encoding can be enabled, disabled, or enforced at will. However, documentation isn’t staggering: there are 14 header files, and Xcode’s documentation reads “Please check the header files.”
 
+快进到现在：在 iOS 8 和 OS X 10.8，苹果开放了完整的视频工具箱框架。这就像一头野兽！它可以实时编解码视频甚至更快。硬件加速的视频解码，可以启用，也可以禁用，还可以中途执行。但是文档并不冗余：只有 14 个头文件，Xcode 文档中只写有一句话 “请移步头文件”
+
 Furthermore, without actual testing, there is no way of knowing the supported codec, codec profile, or encoding bitrate set available on any given device. Therefore, a lot of testing and device-specific code is needed. Internally, it appears to be similar to the modularity of the original QuickTime implementation. The external API is the same across different operating systems and platforms, while the actual available feature set varies.
 
+此外，如果没有实际的测试，就没有办法知道所支持的编解码器，编解码信息，或者在任意设备上可用的解码比特率。因此，大量的测试和设备专用的代码是有必要的。它的核心似乎是 QuickTime 的执行模块。外部 API 在不同操作系统和平台上是相同的，实际可用的特性是不一定的。
+
 Based on tests conducted on OS X 10.10, a Mac typically supports H.264/AVC/MPEG-4 Part 10 (until profile 100 and up to level 5.1), MPEG-4 Part 2, H.263, MPEG-1 and MPEG-2 Video and Digital Video (DV) in software, and usually both H.264 and MPEG-4 Part 2 in hardware.
+
+基于 OS X 10.10 进行的测试，Mac 平台上软解码通常支持 H.264/AVC/MPEG-4 Part 10（until profile 100 and up to level 5.1），MPEG-4 Part 2，H.263，MPEG-1 和 MPEG-2 ，DV。硬解码支持 H.264 和 MPEG-4 Part 2。
 
 On iOS devices with an [A4 up to A6 SoC](http://en.wikipedia.org/wiki/Apple_system_on_a_chip), there is support for H.264/AVC/MPEG-4 Part 10 (until profile 100 and up to level 5.1), MPEG-4 Part 2, and H.263.
 

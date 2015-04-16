@@ -86,11 +86,11 @@ If you have control over the encoding and production of the content that is goin
 
 However, there are more container formats than just MP4 — for example, MKV. There are also further scaleable HTTP streaming protocols developed by Adobe and Microsoft, like DASH or Smooth Streaming, which also deploy a similar set of video codecs, but different container formats and intrinsically different protocols. Supporting custom container formats or protocols is a breeze with Video Toolbox. It accepts raw video streams as input and also allows on-device encoding of raw or already encoded video. The result is then made accessible for further processing, be it storage in a file or active streaming to the network. Video Toolbox is an elegant way to achieve performance on par with Apple’s native solutions, and its usage is described in [WWDC 2014 Session #513, "Direct Access to Video Encoding and Decoding](https://developer.apple.com/videos/wwdc/2014/#513)," as well as the very basic [VideoTimeLine sample code project](https://developer.apple.com/devcenter/download.action?path=/wwdc_2014/wwdc_2014_sample_code/usingVideoToolboxtodecodecompressedsamplebuffers.zip).
 
-然而除去 MP4 之外，还有更多的编码格式，例如 MKV。也有 Adobe 和微软开发的进一步可扩展的 HTTP 流媒体协议，比如 DASH 或者 Smooth Streaming （瀑布流），他们也部署了一套类似的视频编解码器，但他们是不同的格式，不同的协议。视频工具箱支持自定义格式或协议是轻而易举的事情。他接受原始的视频流作为输入，而且允许设备对原始编码或者已经编码的视频进行编码。生成的结果将随后访问，以便进一步处理，无论储存在文件也好，上传到网络也罢。视频工具箱是一个优雅的方式来达到原生解决方案的性能。而且它的用法在 [WWDC 2014 Session #513, "Direct Access to Video Encoding and Decoding](https://developer.apple.com/videos/wwdc/2014/#513) 有描述，还有很基本的 [代码](https://developer.apple.com/devcenter/download.action?path=/wwdc_2014/wwdc_2014_sample_code/usingVideoToolboxtodecodecompressedsamplebuffers.zip)
+然而除去 MP4 之外，还有更多的编码格式，例如 MKV。也有 Adobe 和微软开发的进一步可扩展的 HTTP 流媒体协议，比如 DASH 或者 Smooth 流媒体，他们也部署了一套类似的视频编解码器，但他们是不同的格式，不同的协议。视频工具箱支持自定义格式或协议是轻而易举的事情。他接受原始的视频流作为输入，而且允许设备对原始编码或者已经编码的视频进行编码。生成的结果将随后访问，以便进一步处理，无论储存在文件也好，上传到网络也好。视频工具箱是一个优雅的方式来达到原生解决方案的性能。而且它的用法在 [WWDC 2014 Session #513, "Direct Access to Video Encoding and Decoding](https://developer.apple.com/videos/wwdc/2014/#513) 有描述，还有很基本的 [代码](https://developer.apple.com/devcenter/download.action?path=/wwdc_2014/wwdc_2014_sample_code/usingVideoToolboxtodecodecompressedsamplebuffers.zip)
 
 A final word on Video Toolbox deployment on iOS devices. It was introduced as a private framework in iOS 4 and was recently made public in iOS 8. When building applications with a deployment target less than 8.0, including Video Toolbox won't lead to any problems, since the actual symbols stayed the same and the API is virtually unchanged. However, any worker session creation will be terminated with the undocumented error -12913, as the framework is not available for sandboxed applications on previous OS releases due to security concerns.
 
-最后再补充一点关于视频工具箱。它在 iOS 4 上作为一个私有的框架，在最近的 iOS 8 开放给开发者。建立 target 低于 8.0 的项目时，includ 视频工具箱不会有任何问题，因为实际的 API 大部分是不变的。然而，任何新建会话的请求将会以 error -12913 被终止，因为出于安全考虑，这个框架不适用于旧版本 OS 的沙盒程序。
+最后再补充一点关于视频工具箱。它在 iOS 4 上作为一个私有的框架，在最近的 iOS 8 开放给开发者。建立 target 低于 8.0 的项目时，include 视频工具箱不会有任何问题，因为实际的 API 大部分是不变的。然而，任何新建会话的请求将会以 error -12913 被终止，因为出于安全考虑，这个框架不适用于旧版本 OS 的沙盒程序。
 
 ### Basic Concepts of Video Toolbox Usage
 ### 视频工具箱用法的基本概念
@@ -101,7 +101,7 @@ Video Toolbox is a C API depending on the CoreMedia, CoreVideo, and CoreFoundati
 
 To illustrate the basic concepts of Video Toolbox, the following paragraphs will describe the creation of a decompression session along with the needed structures and types. A compression session is essentially very similar to a decompression session, while in practice, a pixel transfer session should be rarely needed.
 
-为了说明视频工具箱的基本概念，一下段落将描述创建一个解压会话，只包含必要的结构和类型。压缩会话和解压缩会话是非常相似的，而在实践中，一个像素的传送会话应该尽可能的少。
+为了说明视频工具箱的基本概念，以下段落将描述如何创建一个只包含必要的结构和类型的解压会话。压缩会话和解压缩会话是非常相似的，而在实践中，一个像素的传送会话应该尽可能的少。
 
 To initialize a decompression session, Video Toolbox needs to know about the input format as part of a `CMVideoFormatDescriptionRef` structure, and — unless you want to use the undocumented default — your specified output format as plain CFDictionary reference. A video format description can be obtained from an AVAssetTrack instance or created manually with `CMVideoFormatDescriptionCreate` if you are using a custom demuxer. Finally, decoded data is provided through an asynchronous callback mechanism. The callback reference and the video format description are required by `VTDecompressionSessionCreate`, while setting the output format is optional.
 
@@ -153,14 +153,14 @@ The callback is invoked for any decoded or dropped frame. Therefore, your implem
 
 Once your session is created, feeding frames to the decoder is a walk in the park. It is a matter of calling `VTDecompressionSessionDecodeFrame` repeatedly, with a reference to the session and a sample buffer to decode, and optionally with advanced flags. The sample buffer can be obtained from an `AVAssetReaderTrackOutput`, or alternatively, it can be created manually from a raw memory block, along with timing information, using `CMBlockBufferCreateWithMemoryBlock`, `CMSampleTimingInfo`, and `CMSampleBufferCreate`.
 
-一旦会话创建，把帧输入解码器就像在公园里散步。这个过程重复调用 `VTDecompressionSessionDecodeFrame`，具有参考会话和实例缓冲区进行解码，并可选标识。实例缓冲可以从 `AVAssetReaderTrackOutput` 获得，或者可以从原始储存器块创建，连同定时信息，使用 `CMBlockBufferCreateWithMemoryBlock`，`CMSampleTimingInfo` 和 `CMSampleBufferCreate`。
+一旦会话创建，把每一帧输入解码器就像在公园里散步。这个过程重复调用 `VTDecompressionSessionDecodeFrame`，参考会话和实例缓冲区进行解码，并可选标识。实例缓冲可以从 `AVAssetReaderTrackOutput` 获得，或者可以从原始储存器块创建，连同定时信息，使用 `CMBlockBufferCreateWithMemoryBlock`，`CMSampleTimingInfo` 和 `CMSampleBufferCreate`。
 
 ### Conclusion
 ### 小结
 
 Video Toolbox is a low-level, highly efficient way to speed up video processing in specific setups. The higher level framework AVFoundation allows decompression of supported media for direct display and compression directly to a file. Video Toolbox is the tool of choice when support of custom file formats, streaming protocols, or direct access to the codec chain is required. On the downside, profound knowledge of the involved video technology is required to master the sparsely documented API. Regardless, it is the way to go to achieve an engaging user experience with better performance, increased efficiency, and extended battery life.
 
-在特殊配置下，视频工具箱是一个底层的，高效率的方式。上级框架 AVFoundation 允许直接把支持的媒体文件解压并且显示到屏幕上，或者直接压缩到一个文件。当需要支持自定义文件格式，流媒体协议，或直接访问编解码器链的时候，视频工具箱是首选的工具。在缺点方面，所涉及到的视频技术，需要高深的知识，掌握不常见 API 的使用很有必要。无论如何，这都是实现更好的用户体验，更高的效率，延长电池寿命的必经之路。
+在特殊配置下，视频工具箱是一个底层的，高效率的方式。上级框架 AVFoundation 允许直接把支持的媒体文件解压并且显示到屏幕上，或者直接压缩到一个文件。当需要支持自定义文件格式，流媒体协议，或直接访问编解码器链的时候，视频工具箱是首选的工具。在缺点方面，所涉及到的视频技术，需要高深的知识，掌握非常规 API 的使用很有必要。无论如何，这都是实现更好的用户体验，更高的效率，延长电池寿命的必经之路。
 
 #### References
 #### 参考

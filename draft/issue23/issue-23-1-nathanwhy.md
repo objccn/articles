@@ -10,7 +10,7 @@ A sample app with implementations of the different pipelines is available on [Gi
 
 By far the easiest way to integrate video capture in your app is by using `UIImagePickerController`. It’s a view controller that wraps a complete video capture pipeline and camera UI.
 
-目前，将视频捕获集成到你的应用中，最简单的方法是使用 UIImagePickerController`。这是一个封装了视频捕获管道和相机 UI 的 view controller。
+目前，将视频捕获集成到你的应用中，最简单的方法是使用 `UIImagePickerController`。这是一个封装了视频捕获管道和相机 UI 的 view controller。
 
 Before instantiating the camera, first check if video recording is supported on the device:
 
@@ -332,7 +332,7 @@ for (AVAudioSessionDataSourceDescription* source in builtInMic.dataSources) {
 
 In addition to setting up a non-default microphone configuration, you can also use the `AVAudioSession` to configure other audio settings, like the audio gain and sample rate.
 
-为了设定非默认的麦克风配置，你也可以使用 `AVAudioSession` 来配置其他音频设置，比如音频增益和采样率。
+为了自定义麦克风配置，你也可以使用 `AVAudioSession` 来配置其他音频设置，比如音频增益和采样率。
 
 [^2]: [Technical Q&A: AVAudioSession - Microphone Selection](https://developer.apple.com/library/ios/qa/qa1799/_index.html)
 
@@ -421,7 +421,7 @@ To make things a bit easier, both the `AVCaptureVideoDataOutput` class and the `
 
 As an alternative, you can also use the `AVOutputSettingsAssistant` class to configure output settings dictionaries, but in my experience, using the above methods is preferable; the output settings they provide are more realistic for things like video bitrates. Additionally, the output assistant appears to have some other shortcomings, e.g. it doesn’t change the video bitrate when you change the expected video frame rate.
 
-或者，你也可以使用 `AVOutputSettingsAssistant` 来配置输出设置的字典，但是从我的经验来看，使用上面的方法会更好，它们会提供更实用的输出设置，比如视频比特率。另外，`AVOutputSettingsAssistant` 似乎存在一些缺点，例如，当你改变视频的帧速率，比特率并不会改变。
+或者，你也可以使用 `AVOutputSettingsAssistant` 来配置输出设置的字典，但是从我的经验来看，使用上面的方法会更好，它们会提供更实用的输出设置，比如视频比特率。另外，`AVOutputSettingsAssistant` 似乎存在一些缺点，例如，当你改变视频的帧速率，视频的比特率并不会改变。
 
 #### Live Preview
 #### 实时预览图
@@ -448,4 +448,4 @@ If you need more control, e.g. to apply filters to the live preview, you will in
 
 There are a number of different ways to configure a pipeline for video capture on iOS — from the straightforward `UIImagePickerController`, to the more elaborate combination of  `AVCaptureSession` and `AVAssetWriter`. The correct option for your project will depend on your requirements, such as the desired video quality and compression, or the camera controls you want to expose to your app’s users.
 
-有许多不同的方法可以给 iOS 上的视频捕获配置管道，从最直接的 `UIImagePickerController` ，到精心结合的 `AVCaptureSession` 与 `AVAssetWriter` 。如何抉择取决于你的项目要求，比如期望的视频质量和压缩率，或者是你想要暴露给用户的相机控件。
+有许多不同的方法可以给 iOS 上的视频捕获配置管道，从最直接的 `UIImagePickerController` ，到精心结合的 `AVCaptureSession` 与 `AVAssetWriter` 。如何抉择取决于你的项目要求，比如期望的视频质量和压缩率，或者是你想要展示给用户的相机控件。

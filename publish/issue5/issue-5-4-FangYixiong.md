@@ -26,8 +26,6 @@ iOS 7 和 Mac OS X 10.9 Mavericks 中一个显著的变化就是对 Foundation U
 
 ## NSURLSessionTask
 
-`NSURLSessionTask` is an abstract subclass, with three concrete subclasses that are used directly: `NSURLSessionDataTask`, `NSURLSessionUploadTask`, and `NSURLSessionDownloadTask`. These three classes encapsulate the three essential networking tasks of modern applications: fetching data, such as JSON or XML, and uploading and downloading files.
-
 `NSURLsessionTask` 是一个抽象类，其下有 3 个实体子类可以直接使用：`NSURLSessionDataTask`、`NSURLSessionUploadTask`、`NSURLSessionDownloadTask`。这 3 个子类封装了现代程序三个最基本的网络任务：获取数据，比如 JSON 或者 XML，上传文件和下载文件。
 
 <img alt="NSURLSessionTask class diagram" src="http://img.objccn.io/issue-5/NSURLSession.png" width="612" height="294">

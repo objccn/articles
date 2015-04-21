@@ -176,7 +176,7 @@ if ([captureSession canAddInput:input]) {
 - HRSI = 高像素静态图片尺寸
 - FOV = 视角
 - VIS = 该格式支持视频防抖
-- Upscales = 加入数字 upscaling　时的放大比例
+- Upscales = 加入数字 upscaling 时的放大比例
 - AF = 自动对焦系统（1 是反差对焦，2 是相位对焦）
 - ISO = 支持感光度范围
 - SS = 支持曝光时间范围

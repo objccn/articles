@@ -20,8 +20,7 @@ Media Player 框架是 iOS 平台上一个用于音频和视频播放的高层�
 
 ### AVAudioRecorder
 
-作为与 `AVAudioPlayer` 相对应的 API，`AVAudioRecorder` 是将音频录制为文件的最简单的方法。除了用一个音量计接受音量的峰值和平均值以外
-，这个 API 简单粗暴，但要是你的使用场景很简单的话，这可能恰恰就是你想要的方法。
+作为与 `AVAudioPlayer` 相对应的 API，`AVAudioRecorder` 是将音频录制为文件的最简单的方法。除了用一个音量计接受音量的峰值和平均值以外，这个 API 简单粗暴，但要是你的使用场景很简单的话，这可能恰恰就是你想要的方法。
 
 ### AVPlayer
 

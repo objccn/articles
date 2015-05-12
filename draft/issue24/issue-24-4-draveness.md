@@ -68,14 +68,14 @@ You may have to use audio units directly or write your own if you need very low 
 你可能需要直接使用音频单元，但是如果你需要低延迟（如 VoIP 或合成乐器）、回声取消、混音或者音调均衡，那么你需要自己写一个音频单元。但是其中的大部分工作可以使用 `AVAudioEngine` 的 API 来完成。如果你不得不写自己的音频单元，你可以将它们与 `AVAudioUnit` 节点一起集成在 `AVAudioEngine` 处理图中。
 
 ### Inter-App Audio
-### 跨应用音频
+### 跨应用程序音频
 
 The Audio Unit API allows for Inter-App Audio on iOS. Audio streams (and MIDI commands) can be sent between apps. For example, an app can provide an audio effect or filter. Another app can then send its audio to the first app to apply the audio effect. The filtered audio is sent back to the originating app in real time. CoreAudioKit provides a simple UI for Inter-App Audio.
 
 Audio Unit 的 API 可以使用在 iOS 中的跨应用音频中。音频流（和 MIDI 命令）可以在应用程序之间发送。比如说：一个应用程序可以提供音频的效果器或者滤波器。另一个应用程序可以将它的音频发送到第一个应用程序中，并使用其中的音频效果器处理音频。被过滤的音频文件又会被实时地发送回原来的应用程序中。 CoreAudioKit 提供了一个简单的跨应用程序的音频界面。
 
 ## Other APIs
-### 其他 APIs
+## 其他 APIs
 
 ### OpenAL
 
@@ -91,7 +91,6 @@ On iOS, Core MIDI and CoreAudioKit can be used to make an app behave as a MIDI i
 在 iOS 上，Core MIDI 和 CoreAudioKit 可以被用来使应用程序表现为 MIDI 设备。在 OS X 上，？？音序器服务提供了播放 MIDI 为基础的控制和访问音乐数据的权限。Core MIDI 服务为服务器和驱动程序提供了支持。
 
 ### Even More
-
 ### 更多
 
 - The most basic of all audio APIs on OS X is the `NSBeep()` function that simply plays the system sound.

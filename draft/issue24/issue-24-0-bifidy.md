@@ -16,3 +16,9 @@ Chirs，Daniel，与 Florian。
 [2]:http://objccn.io/issue-24-2
 [3]:http://objccn.io/issue-24-3
 [4]:http://objccn.io/issue-24-4
+
+---
+
+[话题 #24 下的更多文章](http://objccn.io/issue-24)
+
+原文 [Editorial Issue #23](http://www.objc.io/issue-24/editorial.html)

@@ -144,7 +144,7 @@ NSString *const  AVCaptureSessionPresetInputPriority;
 AVCaptureSession *captureSession = …
 AVCaptureDevice *cameraDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
 NSError *error;
-AVCaptureDeviceInput *cameraDeviceInput = [[AVCaptureDeviceInput alloc] initWithDevice: error:&error];
+AVCaptureDeviceInput *cameraDeviceInput = [[AVCaptureDeviceInput alloc] initWithDevice:cameraDevice error:&error];
 if ([captureSession canAddInput:input]) {
     [captureSession addInput:cameraDeviceInput];
 }

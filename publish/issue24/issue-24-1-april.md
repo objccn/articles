@@ -385,9 +385,9 @@ func dotProduct(signalA: [Float], signalB: [Float]) -> [Float] {
 
 Philip McLeod 的 SNAC 间距检测算法是本文介绍的自相关方法的巧妙改进。McLeod 已经找到了一种方法来解决自相关函数的内在偏差。他的方法是性能卓越而且稳定。如果你想了解更多关于单音间距的检测，我强烈建议你阅读 McLeod 题为[“一种更智能的寻找音高的方法”](http://www.objccn.io/issue-24/miracle.otago.ac.nz/tartini/papers/A_Smarter_Way_to_Find_Pitch.pdf)的论文。这是关于这个问题的最平易近人的论文之一。[这里](http://www.katjaas.nl/helmholtz/helmholtz.html)还有关于 McLeod 的方法超赞的教程和评价。我 **强烈**建议围观这个作者的网站。
 
-YIN 由 Cheveigné 和 Kawahahara 在 21 世纪初开发，并且仍然是基音检测技术的一个经典方法。它经常作为音频信号处理的研究生课程。如果你发现你对音高测量这个话题很有兴趣的话，我当然推荐去读下[原文](audition.ens.fr/adc/pdf/2002_JASA_YIN.pdf)。实现自己版本的 YIN 也是一个有趣的周末任务。
+YIN 由 Cheveigné 和 Kawahahara 在 21 世纪初开发，并且仍然是基音检测技术的一个经典方法。它经常作为音频信号处理的研究生课程。如果你发现你对音高测量这个话题很有兴趣的话，我当然推荐去读下[原文](http://audition.ens.fr/adc/pdf/2002_JASA_YIN.pdf)。实现自己版本的 YIN 也是一个有趣的周末任务。
 
-更近一步，如果你对**和弦**基频测量技术有兴趣，我建议你开始阅读 Anssi Klapuri 的优秀博士论文[自动谱曲](www.cs.tut.fi/sgn/arg/klap/phd/klap_phd.pdf)。在他的论文中，他列出了多基频测量的一些方法，并给出了自动谱曲的一个非常完整的概述。
+更近一步，如果你对**和弦**基频测量技术有兴趣，我建议你开始阅读 Anssi Klapuri 的优秀博士论文[自动谱曲](http://www.cs.tut.fi/sgn/arg/klap/phd/klap_phd.pdf)。在他的论文中，他列出了多基频测量的一些方法，并给出了自动谱曲的一个非常完整的概述。
 
 如果你觉得对开始做自己的狗屋已经有了足够的启发，对这篇文章的内容有任何问题、抱怨或意见，都可以在 Twitter 上随时[与我联系](https://twitter.com/JackSchaedler)。祝你的狗屋建筑顺利！
 

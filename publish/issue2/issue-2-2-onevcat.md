@@ -1,4 +1,4 @@
-本文主要探讨一些常用后台任务的最佳实践。我们将会看看如何并发地使用 Core Data ，如何并行绘制 UI ，如何做异步网络请求等。最后我们将研究如何异步处理大型文件，以保持较低的内存占用。  因为在异步编程中非常容易犯错误，所以，本文中的例子都将使用很简单的方式。因为使用简单的结构可以帮助我们看透代码，抓住问题本质。如果你最后把代码写成了复杂的嵌套回调的话，那么你很可能应该重新考虑自己当初的设计选择了。
+本文主要探讨一些常用后台任务的最佳实践。我们将会看看如何并发地使用 Core Data ，如何并行绘制 UI ，如何做异步网络请求等。最后我们将研究如何异步处理大型文件，以保持较低的内存占用。因为在异步编程中非常容易犯错误，所以，本文中的例子都将使用很简单的方式。因为使用简单的结构可以帮助我们看透代码，抓住问题本质。如果你最后把代码写成了复杂的嵌套回调的话，那么你很可能应该重新考虑自己当初的设计选择了。
 
 
 ## 操作队列 (Operation Queues) 还是 GCD ?
@@ -12,9 +12,11 @@
 * [StackOverflow: NSOperation vs. Grand Central Dispatch](http://stackoverflow.com/questions/10373331/nsoperation-vs-grand-central-dispatch)
 * [Blog: When to use NSOperation vs. GCD](http://eschatologist.net/blog/?p=232)
 
+**March 2015 更新**: 这篇文章是基于已经过时了的 Concurrency with Core Data 来编写的。
+
 ### 后台的 Core Data
 
-在着手 Core Data 的并行处理之前，最好先打一些基础。我们强烈建议通读苹果的官方文档 [Concurrency with Core Data guide][10] 。这个文档中罗列了基本规则，比如绝对不要在线程间传递 managed objects等。这并不单是说你绝不应该在另一个线程中去更改某个其他线程的 managed object ，甚至是读取其中的属性都是不能做的。要想传递这样的对象，正确做法是通过传递它的 object ID ，然后从其他对应线程所绑定的 context 中去获取这个对象。
+在着手 Core Data 的并行处理之前，最好先打一些基础。我们强烈建议通读苹果的官方文档 [Concurrency with Core Data][10] 。这个文档中罗列了基本规则，比如绝对不要在线程间传递 managed objects等。这并不单是说你绝不应该在另一个线程中去更改某个其他线程的 managed object ，甚至是读取其中的属性都是不能做的。要想传递这样的对象，正确做法是通过传递它的 object ID ，然后从其他对应线程所绑定的 context 中去获取这个对象。
 
 其实只要你遵循那些规则，并使用这篇文章里所描述的方法的话，处理 Core Data 的并行编程还是比较容易的。
 

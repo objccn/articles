@@ -504,7 +504,7 @@ navigation Controller 就会立刻就被 push 到你眼前。
 	_handleTap:
 	)
 
-现在你或许想在它发生的时候加一个断点。在 `-[MyEventListener _handleTap:]` 设置一个符号断点就可以了，在 Xcode 和 LLDB 中都可以，然后你就可以点击按钮并停在你所希望的地方了。
+现在你或许想在它发生的时候加一个断点。在 `-[MagicEventListener _handleTap:]` 设置一个符号断点就可以了，在 Xcode 和 LLDB 中都可以，然后你就可以点击按钮并停在你所希望的地方了。
 
 ### 观察实例变量的变化
 

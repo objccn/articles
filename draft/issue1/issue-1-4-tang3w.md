@@ -92,7 +92,7 @@ Apple 已经针对 view controller 容器做了细致的 API，我们可以构�
     }
 
 
-  1. 在开始动画之前，我们把 `toController` 作为一个 child 进行添加，并通知 `fromController` 它将被移除。如果 `fromController` 的 view 是容器 view 层级的一部分，它的 `viewWillDisapear:` 方法就会被调用。
+  1. 在开始动画之前，我们把 `toController` 作为一个 child 进行添加，并通知 `fromController` 它将被移除。如果 `fromController` 的 view 是容器 view 层级的一部分，它的 `viewWillDisappear:` 方法就会被调用。
   2. `toController` 被告知它有一个新的 parent，并且适当的 view 事件方法将被调用。
   3. `fromController` 被移除了。
 

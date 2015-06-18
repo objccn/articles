@@ -15,7 +15,7 @@ Collection View 深入太多了，事实上，[Ole Begeman](http://oleb.net) 和
 
 ### 插入删除元素
 
-一般来说，我们对布局属性从初始状态到结束状态进行线性插值来计算 collection view 的动画参数。然而，新插入或者删除的元素并没有最初或最终状态来进行插值。要计算这样的 cells 的动画，collection view 将通过  `initialLayoutAttributesForAppearingItemAtIndexPath:` 以及 `finalLayoutAttributesForAppearingItemAtIndexPath:` 方法来询问其布局对象，以获取最初的和最后的属性。苹果默认的实现中，对于特定的某个 indexPath，返回的是它的通常的位置，但 `alpha` 值为 0.0，这就产生了一个淡入或淡出动画。如果你想要更漂亮的效果，比如你的新的 cells 从屏幕底部发射并且旋转飞到对应位置，你可以如下实现这样的布局子类：
+一般来说，我们对布局属性从初始状态到结束状态进行线性插值来计算 collection view 的动画参数。然而，新插入或者删除的元素并没有最初或最终状态来进行插值。要计算这样的 cells 的动画，collection view 将通过  `initialLayoutAttributesForAppearingItemAtIndexPath:` 以及 `finalLayoutAttributesForDisappearingItemAtIndexPath:` 方法来询问其布局对象，以获取最初的和最后的属性。苹果默认的实现中，对于特定的某个 indexPath，返回的是它的通常的位置，但 `alpha` 值为 0.0，这就产生了一个淡入或淡出动画。如果你想要更漂亮的效果，比如你的新的 cells 从屏幕底部发射并且旋转飞到对应位置，你可以如下实现这样的布局子类：
 
     - (UICollectionViewLayoutAttributes*)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath *)itemIndexPath
     {
@@ -31,7 +31,7 @@ Collection View 深入太多了，事实上，[Ole Begeman](http://oleb.net) 和
 
 ![Insertion and Deletion](http://img.objccn.io/issue-12/2014-05-01-collectionview-animations-1-insertion.gif)
 
-对应的 `finalLayoutAttributesForAppearingItemAtIndexPath:` 方法中，除了设定了不同的 transform 以外，其他都很相似。
+对应的 `finalLayoutAttributesForDisappearingItemAtIndexPath:` 方法中，除了设定了不同的 transform 以外，其他都很相似。
 
 ### 响应设备旋转
 
@@ -46,7 +46,7 @@ Collection View 深入太多了，事实上，[Ole Begeman](http://oleb.net) 和
         return NO;
     }
 
-在 bounds 变化的动画中，collection view 表现得像当前显示的元素被移除然后又在新的 bounds 中被被重新插入，这会对每个 IndexPath 产生一系列的 `finalLayoutAttributesForAppearingItemAtIndexPath:` 和 `initialLayoutAttributesForAppearingItemAtIndexPath:` 的调用。
+在 bounds 变化的动画中，collection view 表现得像当前显示的元素被移除然后又在新的 bounds 中被被重新插入，这会对每个 IndexPath 产生一系列的 `finalLayoutAttributesForDisappearingItemAtIndexPath:` 和 `initialLayoutAttributesForAppearingItemAtIndexPath:` 的调用。
 
 如果你在插入和删除的时候加入了非常炫的动画，现在你应该看看为何苹果明智的使用简单的淡入淡出动画作为默认效果：
 
@@ -54,7 +54,7 @@ Collection View 深入太多了，事实上，[Ole Begeman](http://oleb.net) 和
 
 啊哦...
 
-为了防止这种不想要的动画，初始化位置 -> 删除动画 -> 插入动画 -> 最终位置的顺序必须完全匹配 collection view 的每一项，以便最终呈现出一个平滑动画。换句话说，`finalLayoutAttributesForAppearingItemAtIndexPath:` 以及 `initialLayoutAttributesForAppearingItemAtIndexPath:` 应该针对元素到底是真的在显示或者消失，还是 collection view 正在经历的边界改变动画的不同情况，做出不同反应，并返回不同的布局属性。
+为了防止这种不想要的动画，初始化位置 -> 删除动画 -> 插入动画 -> 最终位置的顺序必须完全匹配 collection view 的每一项，以便最终呈现出一个平滑动画。换句话说，`finalLayoutAttributesForDisappearingItemAtIndexPath:` 以及 `initialLayoutAttributesForAppearingItemAtIndexPath:` 应该针对元素到底是真的在显示或者消失，还是 collection view 正在经历的边界改变动画的不同情况，做出不同反应，并返回不同的布局属性。
 
 幸运的是，collection view 会告知布局对象哪一种动画将被执行。它分别通过调用 `prepareForAnimatedBoundsChange:` 和 `prepareForCollectionViewUpdates:` 来对应 bounds 变化以及元素更新。出于本实例的说明目的，我们可以使用 `prepareForCollectionViewUpdates:` 来跟踪更新对象：
 
@@ -97,7 +97,7 @@ Collection View 深入太多了，事实上，[Ole Begeman](http://oleb.net) 和
         return attr;
     }
 
-如果这个元素没有正在被插入，那么将通过 `layoutAttributesForItemAtIndexPath` 来返回一个普通的属性，以此取消特殊的外观动画。结合 `finalLayoutAttributesForAppearingItemAtIndexPath:` 中相应的逻辑，最终将会使元素能够在 bounds 变化时，从初始位置到最终位置以很流畅的动画形式实现，从而建立一个简单但很酷的动画效果：
+如果这个元素没有正在被插入，那么将通过 `layoutAttributesForItemAtIndexPath` 来返回一个普通的属性，以此取消特殊的外观动画。结合 `finalLayoutAttributesForDisappearingItemAtIndexPath:` 中相应的逻辑，最终将会使元素能够在 bounds 变化时，从初始位置到最终位置以很流畅的动画形式实现，从而建立一个简单但很酷的动画效果：
 
 ![Wrong reaction to device rotation](http://img.objccn.io/issue-12/2014-05-01-collectionview-animations-3-correct-rotation.gif)
 

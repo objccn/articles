@@ -151,7 +151,7 @@ Apple 正在一步步地抛弃这样的实现方法了，但是你还是会时�
 
 正如上面说的，在 AppKit 中你不应该修改 layer-backed view 中的 layer (看 [Core Animation Programming Guide](https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/CoreAnimation_guide/CreatingBasicAnimations/CreatingBasicAnimations.html#//apple_ref/doc/uid/TP40004514-CH3-SW18) 这篇文档底部 “Rules for Modifying Layers in OS X” 那一节）。这些 layer 由 AppKit 管理，而且和 iOS 相反，view 的几何属性并不仅仅是对应的 layer 的几何属性的映射，但 AppKit 却会把 view 内部的几何属性同步到 layer。
 
-你可以用几种不同的方法对一个 view 进行动画。第一种，你可以使用 [animator proxy](file:///Users/florian/Library/Developer/Shared/Documentation/DocSets/com.apple.adc.documentation.AppleOSX10.9.CoreReference.docset/Contents/Resources/Documents/documentation/Cocoa/Reference/NSAnimatablePropertyContainer_protocol/Introduction/Introduction.html#//apple_ref/occ/intfm/NSAnimatablePropertyContainer/animator)：
+你可以用几种不同的方法对一个 view 进行动画。第一种，你可以使用 [animator proxy](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/NSAnimatablePropertyContainer_protocol/index.html#//apple_ref/occ/intfm/NSAnimatablePropertyContainer/animator)：
 
     view.animator.alphaValue = .5;
 

@@ -97,7 +97,7 @@ Target-Action 是回应 UI 事件时典型的消息传递方式。iOS 上的 `UI
 
 基于上述对不同消息传递机制的特点，我们画了一个流程图来帮助我们在不同情境下做出不同的选择。一句忠告：流程图的建议不代表最终答案。有些时候别的选择依然能达到应有的效果。只不过大多数情况下这张图能引导你做出正确的决定。
 
-<img src="http://img.objccn.io/issue-7/communication-patterns-flow-chart.png" title="Decision flow chart for communication patterns in Cocoa" width="585" height="688">
+<img src="http://www.objc.io/images/issue-7/communication-patterns-flow-chart-56d22932.png" title="Decision flow chart for communication patterns in Cocoa" width="585" height="688">
 
 图中有些细节值得深究：
 

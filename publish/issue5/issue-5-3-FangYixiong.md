@@ -24,7 +24,7 @@ iOS 7 中最让我激动的特性之一就是提供了新的 API 来支持自定
 
 从上面的代码可以看出，我们可以根据不同的 operation（Push 或 Pop）返回不同的 animator。我们可以把 animator 存到一个属性中，从而在多个 operation 之间实现共享，或者我们也可以为每个 operation 都创建一个新的 animator 对象，这里的灵活性很大。
 
-为了让动画运行起来，我们创建一个自定义类，并且实现 `UIViewControllerContextTransitioning` 这个协议：
+为了让动画运行起来，我们创建一个自定义类，并且实现 `UIViewControllerAnimatedTransitioning` 这个协议：
 
     @interface Animator : NSObject <UIViewControllerAnimatedTransitioning>
     

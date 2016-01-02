@@ -95,7 +95,7 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
 
 在 app 中的 table view 是由一个在主线程上获取了结果的 controller 所驱动的。在导入数据的过程中和导入数据完成后，我们要在 table view 中展示我们的结果。
 
-在让一切运转起来之前之前，还有一件事情要做。现在在后台 context 中导入的数据还不能传送到主 context 中，除非我们显式地让它这么去做。我们在 `Store` 类的设置 Core Data stack 的 `init` 方法中加入下面的代码：
+在让一切运转起来之前，还有一件事情要做。现在在后台 context 中导入的数据还不能传送到主 context 中，除非我们显式地让它这么去做。我们在 `Store` 类的设置 Core Data stack 的 `init` 方法中加入下面的代码：
 
     [[NSNotificationCenter defaultCenter]
         addObserverForName:NSManagedObjectContextDidSaveNotification
@@ -322,7 +322,7 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
 数据处理过程中会不断的从buffer中获取已读入的数据。然后把这些新读入的数据按行分开并存储。剩余的数据被再次存储到缓冲区中：
 
 
-    - (void)processDataChunk:(NSMutableData *)buffer;
+    - (void)processDataChunk:(NSMutableData *)buffer
     {
         if (self.remainder != nil) {
             [self.remainder appendData:buffer];

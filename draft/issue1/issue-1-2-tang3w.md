@@ -22,7 +22,7 @@ Table view controllers 的 view 属性永远都是一个 table view。如果你�
 
 在选择这条路之前，其实还有一个更轻松的选择，它可以通过分离我们需要关心的功能（关注点分离），让你获得额外的好处：
 
-### 使用Child View Controllers
+### 使用 Child View Controllers
 
 和完全抛弃 table view controller 不同，你还可以将它作为 child view controller 添加到其他 view controller 中（[关于此话题的文章][3]）。这样，parent view controller 在管理其他的你需要的新加的界面元素的同时，table view controller 还可以继续管理它的 table view。
 
@@ -164,7 +164,7 @@ Table view controllers 的 view 属性永远都是一个 table view。如果你�
     @end
 
 
-总的来说，我们在努力把 view 层和 controller 层的实现细节分离开。delegate 肯定得清楚一个 view 该显示什么状态，但是它不应该了解如何修改 view 结构或者给某些 subviews 设置某些属性以获得正确的状态。所有这些逻辑都应该封装到 view 内部，然后给外部提供一个简单地 API。
+总的来说，我们在努力把 view 层和 controller 层的实现细节分离开。delegate 肯定得清楚一个 view 该显示什么状态，但是它不应该了解如何修改 view 结构或者给某些 subviews 设置某些属性以获得正确的状态。所有这些逻辑都应该封装到 view 内部，然后给外部提供一个简单的 API。
 
 ### 控制多个 Cell 类型
 
@@ -206,9 +206,9 @@ Table view 提供了易于使用的编辑特性，允许你对 cell 进行删除
 
 ## 总结
 
-Table view controllers（以及其他的 controller 对象！）应该在 model 和 view 对象之间扮演[协调者和调解者的角色][10]。它不应该关心明显属于 view 层或 model 层的任务。你应该始终记住这点，这样 delegate 和 data source 方法会变得更小巧，最多包含一些简单地样板代码。
+Table view controllers（以及其他的 controller 对象！）应该在 model 和 view 对象之间扮演[协调者和调解者的角色][10]。它不应该关心明显属于 view 层或 model 层的任务。你应该始终记住这点，这样 delegate 和 data source 方法会变得更小巧，最多包含一些简单的样板代码。
 
-这不仅减少了 table view controllers 那样的大小和复杂性，而且还把业务逻辑和 view 的逻辑放到了更合适的地方。Controller 层的里里外外的实现细节都被封装成了简单地 API，最终，它变得更加容易理解，也更利于团队协作。
+这不仅减少了 table view controllers 那样的大小和复杂性，而且还把业务逻辑和 view 的逻辑放到了更合适的地方。Controller 层的里里外外的实现细节都被封装成了简单的 API，最终，它变得更加容易理解，也更利于团队协作。
 
 ### 扩展阅读
 

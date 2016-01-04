@@ -6,7 +6,7 @@
 
 ### UIResponder
 
-`UIResponder` 是 `UIView` 的父类。`responder` 能够处理触摸、手势、远程控制等事件。之所以它是一个单独的类而没有合并到 `UIView` 中，是因为 `UIResponder` 有更多的子类，最明显的就是 `UIApplication` 和 `UIViewController`。通过重写 `UIResponder` 的方法，可以决定一个类是否可以成为第一响应者 (first responder)，例如当前输入焦点元素。
+`UIResponder` 是 `UIView` 的父类。`responder` 能够处理触摸、手势、远程控制等事件。之所以它是一个单独的类而没有合并到 `UIView` 中，是因为 `UIResponder` 有更多的子类，最明显的就是 `UIApplication` 和 `UIViewController`。通过重写 `UIResponder` 的方法，可以决定一个类是否可以成为第一响应者 (first responder)，即当前输入焦点元素。
 
 当 touches (触摸) 或 motion (指一系列运动传感器) 等交互行为发生时，它们被发送给第一响应者 (通常是一个视图)。如果第一响应者没有处理，则该行为沿着响应链到达视图控制器，如果行为仍然没有被处理，则继续传递给应用。如果想监测晃动手势，可以根据需要在这3层中的任意位置处理。
 
@@ -197,9 +197,9 @@
     - (void)setupPieChart
     {
         [[NSNotificationCenter defaultCenter] addObserver:self 
-                                           selector:@selector(segmentChanged:) 
-                                               name:SelectedSegmentChangedNotification
-                                              object:self.pieChart];
+                                                 selector:@selector(segmentChanged:) 
+                                                     name:SelectedSegmentChangedNotification
+                                                   object:self.pieChart];
 
     }
 

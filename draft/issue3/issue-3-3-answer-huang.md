@@ -8,11 +8,11 @@ UITableView 和 UICollectionView 都是 [data-source 和 delegate 驱动][3]的�
 
 我们可以使用 flow layout 实现一个标准的 grid view，这可能是在 collection view 中最常见的使用案例了。尽管大多数人都这么想，但是 Apple 很聪明，没有明确的命名这个类为 `UICollectionViewGridLayout`，而使用了更为通用的术语 flow layout，更好的描述了该类的功能：它通过一个接一个的放置 cell 来建立自己的布局，当需要的时候，插入横排或竖排的分栏符。通过自定义滚动方向，大小和 cell 之间的间距，flow layout 也可以在单行或单列中布局 cell。实际上，`UITableView` 的布局可以想象成 flow layout 的一种特殊情况。
 
-在你准备自己写一个 `UICollectionViewLayout` 的子类之前，你需要问你自己，你是否能够使用 `UICollectionViewFlowLayout` 实现你心里的布局。这个类是[很容易定制][6]的，并且可以继承本身进行近一步的定制。感兴趣的看[这篇文章][7]。
+在你准备自己写一个 `UICollectionViewLayout` 的子类之前，你需要问你自己，你是否能够使用 `UICollectionViewFlowLayout` 实现你心里的布局。这个类是[很容易定制][6]的，并且可以继承本身进行进一步的定制。感兴趣的看[这篇文章][7]。
 
 ## Cells 和其他 Views
 
-为了适应任意布局，collection view 建立一个了类似、但比 table view 更灵活的视图层级（view hierarchy）。像往常一样，你的主要内容显示在 cell 中，cell 可以被任意分组到 section 中。Collection view 的 cell 必须是 `UICollectionViewCell` 的子类。除了 cell，collection view 额外管理着两种视图：supplementary views 和 decoration views。
+为了适应任意布局，collection view 建立了一个类似、但比 table view 更灵活的视图层级（view hierarchy）。像往常一样，你的主要内容显示在 cell 中，cell 可以被任意分组到 section 中。Collection view 的 cell 必须是 `UICollectionViewCell` 的子类。除了 cell，collection view 额外管理着两种视图：supplementary views 和 decoration views。
 
 collection view 中的 **Supplementary views** 相当于 table view 的 section header 和 footer views。像 cells 一样，他们的内容都由数据源对象驱动。然而和 table view 中用法不一样，supplementary view 并不一定会作为 header 或 footer view；他们的数量和放置的位置完全由布局控制。
 
@@ -100,7 +100,7 @@ Supplementary views 和 decoration views 必须是 [UICollectionReusableView][8]
         for (NSIndexPath *indexPath in dayHeaderViewIndexPaths) {
             UICollectionViewLayoutAttributes *attributes =
             [self layoutAttributesForSupplementaryViewOfKind:@"DayHeaderView"
-    atIndexPath:indexPath];
+                                                 atIndexPath:indexPath];
             [layoutAttributes addObject:attributes];
         }
 
@@ -108,7 +108,7 @@ Supplementary views 和 decoration views 必须是 [UICollectionReusableView][8]
         for (NSIndexPath *indexPath in hourHeaderViewIndexPaths) {
             UICollectionViewLayoutAttributes *attributes =
             [self layoutAttributesForSupplementaryViewOfKind:@"HourHeaderView"
-    atIndexPath:indexPath];
+                                                 atIndexPath:indexPath];
             [layoutAttributes addObject:attributes];
         }
         return layoutAttributes;

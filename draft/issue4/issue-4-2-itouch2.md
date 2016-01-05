@@ -37,7 +37,7 @@
 
 一旦你创建了模型，你就可以增加 Item 实体，这个实体有两个属性：字符串类型的 `title` 和 integer 类型的 `order`。然后，增加两个关系：一个叫做 `parent`，表示这个 item 的父 item；另一个叫 `children`，是一个一对多的关系。设置它们为彼此相反的关系，也就是说，你设置 a 的 parent 为 b，那么 b 就会自动有一个 children 为 a。
 
-通常，你甚至可以完全抛开 order 属性，而去使用排序好的的关系。然而，它们并不能很好的和 fetched results controllers（后面会用到）集成在一起工作。我们要么需要重新实现 fetched results controller 的一部分，要么重新实现排序，通常我们都会选择后者。
+通常，你甚至可以完全抛开 order 属性，而去使用排序好的关系。然而，它们并不能很好的和 fetched results controllers（后面会用到）集成在一起工作。我们要么需要重新实现 fetched results controller 的一部分，要么重新实现排序，通常我们都会选择后者。
 
 现在，从菜单中选择 *Editor > NSManagedObject subclass...*，创建一个绑定到实体的 NSManagedObject 的子类，这将会创建两个文件：`Item.h` 和 `Item.m`。在头文件中，会有一个额外的类别，我们需要将其删除（这是遗留原因导致的）。
 
@@ -222,7 +222,7 @@ fetched results controller 也会在删除、改变和移动时调用一些方�
 
 ### 传递 Model 对象
 
-现在我们可以增加并且列出 itmes 了，现在我们需要确定能够创建 sub-lists。在 Storyboard 中，你可以通过拖拽一个 cell 到 view controller 中来创建一个 segue。最好给 segue 指定一个名字，这样，如果一个 view controller 中有多个 segues 的话，我们就可以将其区分开了。
+现在我们可以增加并且列出 items 了，现在我们需要确定能够创建 sub-lists。在 Storyboard 中，你可以通过拖拽一个 cell 到 view controller 中来创建一个 segue。最好给 segue 指定一个名字，这样，如果一个 view controller 中有多个 segues 的话，我们就可以将其区分开了。
 
 我处理 segues 的模式看起来像这样：首先，你尝试识别出这个 segue，对于每一个 segue，你为它的目标 view controller 单独写一个方法：
 
@@ -363,7 +363,7 @@ Core Data 优点之一就是集成了 undo 支持。我们将为增加*晃动撤
 
 ## 保存
 
-保存非常简单，就是在 managed object context 中调用 `save` 而已。因为我们并不直接访问 managed object context，所以是在 store 中进行保存。唯一的困难的是什么时候去保存。Apple 的示例代码在 `applicationWillTerminate:` 中执行这个操作，但是这取决于你使用情况，这也有可能在 `applicationDidEnterBackground:` 中，甚至当你程序运行时调用。
+保存非常简单，就是在 managed object context 中调用 `save` 而已。因为我们并不直接访问 managed object context，所以是在 store 中进行保存。唯一的困难的是什么时候去保存。Apple 的示例代码在 `applicationWillTerminate:` 中执行这个操作，但是这取决于你的使用情况，这也有可能在 `applicationDidEnterBackground:` 中，甚至当你程序运行时调用。
 
 ## 讨论
 

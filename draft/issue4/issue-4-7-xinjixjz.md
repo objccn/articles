@@ -252,7 +252,7 @@ We’ll add a category on `NSManagedObjectModel` that helps us figure out its fi
         return modelName;
     }
 
-由于 `User` 在前面的例子（没有源关系映射）中被从对象图中隔离，因此迁移 `User` 的过程将省事很多。我们将从第一个映射模型中移除 `UserToUser` 映射，然后创建一个仅有 `UserToUser` 的映射。不要忘记在映射模型列表中返回新的 `User` 映射模型，因为我们正在其它映射中设置新关系
+由于 `User` 在前面的例子（没有源关系映射）中被从对象图中隔离，因此迁移 `User` 的过程将省事很多。我们将从第一个映射模型中移除 `UserToUser` 映射，然后创建一个仅有 `UserToUser` 的映射。不要忘记在映射模型列表中返回新的 `User` 映射模型，因为我们正在其它映射中设置新关系。
 
 ## 单元测试
 

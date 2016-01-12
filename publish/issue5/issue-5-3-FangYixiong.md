@@ -4,7 +4,7 @@ iOS 7 中最让我激动的特性之一就是提供了新的 API 来支持自定
 
 在继续阅读之前，我需要先声明一下：这个 API 是新近才发布的，目前还没有所谓的最佳实践。通常来说，开发者需要探索几个月才能得出关于新 API 的最佳实践。因此请将本文看做对一个新 API 的探索，而非关于这个新 API 的最佳实践介绍。如果您有更好的关于这个 API 的实践，请不吝赐教，我们会把您的实践更新到这篇文章中。
 
-在开始研究新的 API 之间，我们先来看看在 iOS 7 中 navigation controller 之间的默认的行为发生了那些改变：在 navigation controller 中，切换两个 view controller 的动画变得更有交互性。比方说你想要 pop 一个 view controller 出去，你可以用手指从屏幕的左边缘开始拖动，慢慢地把当前的 view controller 向右拖出屏幕去。
+在开始研究新的 API 之前，我们先来看看在 iOS 7 中 navigation controller 之间的默认的行为发生了那些改变：在 navigation controller 中，切换两个 view controller 的动画变得更有交互性。比方说你想要 pop 一个 view controller 出去，你可以用手指从屏幕的左边缘开始拖动，慢慢地把当前的 view controller 向右拖出屏幕去。
 
 接下来，我们来看看这个新 API。很有趣的一个现象是，这部分 API 大量的使用了协议而不是具体的对象。这初看起来有点奇怪，但我个人更喜欢这样的 API 设计，因为这种设计给了我们这些开发者更大的灵活性。下面，让我们来做件简单的事情：在 Navigation Controller 中，实现一个自定义的 push 动画效果（本文中的[示例代码](https://github.com/objcio/issue5-view-controller-transitions)托管在 Github）。为了完成这个任务，需要实现 `UINavigationControllerDelegate` 中的新方法：
 

@@ -1,4 +1,4 @@
-本文我们将会更加深入探讨Core Data 的 `models` 以及 `managed object` 的类 。本文绝不是对 Core Data 的简单概述，而是在实际运用中鲜为人知或不易记忆却可以发挥奇效的那一部分的合集。如果你需要的是更详细的概述，那么我推荐你去看 [“Apple’s Core Data Programming Guid”][1]。
+本文我们将会更加深入探讨Core Data 的 `models` 以及 `managed object` 的类 。本文绝不是对 Core Data 的简单概述，而是在实际运用中鲜为人知或不易记忆却可以发挥奇效的那一部分的合集。如果你需要的是更详细的概述，那么我推荐你去看 [“Apple's Core Data Programming Guide”][1]。
 
 ## 数据模型
 
@@ -27,7 +27,7 @@ Core Data数据模型（储存在 *.xcdatamodel 文件里）中定义了数据�
 
 Core Data 支持包括整形、浮点型、布尔型在内的许多常见数据类型。但是数据模型编辑器默认以 NSNumber 生成这些属性并内置于 `managed object` 子类中。这使得我们经常会在程序代码中用调用 `floatValue`，`boolValue`，`integerValue` 等 `NSNumber` 的方法。
 
-当然，我们同样可以直接设置这些属性为想要的标量类型，如 `int64_t`，`float_t` 或是 `BOOL`，它们一样可以正常运作。XCode甚至在生成 `NSManagedObject`（原始数据类型使用标量属性）对话框内有一个小选择框可以为你进行强类型匹配。
+当然，我们同样可以直接设置这些属性为想要的标量类型，如 `int64_t`，`float_t` 或是 `BOOL`，它们一样可以正常运作。Xcode甚至在生成 `NSManagedObject`（原始数据类型使用标量属性）对话框内有一个小选择框可以为你进行强类型匹配。
 取而代之，不再会是：
 
 	@property (nonatomic, strong) NSNumber *myInteger;
@@ -36,7 +36,7 @@ Core Data 支持包括整形、浮点型、布尔型在内的许多常见数据�
 
 	@property (nonatomic) int64_t myInteger;
 
-这就是我们在 Core Data 中进行获取和保存标量类型所需要做的全部。在文档中，仍然规定 Core Data 将不能自动的为标量生成存取方法，现在看来文档似乎有点过时了了。
+这就是我们在 Core Data 中进行获取和保存标量类型所需要做的全部。在文档中，仍然规定 Core Data 将不能自动的为标量生成存取方法，现在看来文档似乎有点过时了。
 
 #### 存储其他类型对象
 
@@ -54,7 +54,7 @@ Core Data 并没有约束我们只能对预定义类型进行存储。事实上�
 
 在多个持久化存储之间创建关系的时候我们经常会用到 `fetched` 属性。由于使用多个持久化存储本身已经是非常不常见、且高级的案例，因此 `fetched` 属性几乎也不会被使用。
 
-当我们获取一个抓取属性的时候，Core Data 会在后端执行一个抓取请求并且缓存抓取结果。我们可以直接在 Xcode 中数据模型编辑器里通过指定目标实体类型和断言来对抓去请求进行配置。这里的断言是动态的而非静态的，其通过 $FETCH_SOURCE 和 $FETCHED_PROPERTY 两个变量在程序运行态进行配置。更多细节可以参考[苹果官方文档][12]。
+当我们获取一个抓取属性的时候，Core Data 会在后端执行一个抓取请求并且缓存抓取结果。我们可以直接在 Xcode 中数据模型编辑器里通过指定目标实体类型和断言来对抓取请求进行配置。这里的断言是动态的而非静态的，其通过 $FETCH_SOURCE 和 $FETCHED_PROPERTY 两个变量在程序运行态进行配置。更多细节可以参考[苹果官方文档][12]。
 
 ### 关系 (Relationships)
 
@@ -170,9 +170,9 @@ Managed object models 可以允许创建实体层级，即我们可以指定一�
 
 在模型类中可以加入一个类方法来将新的对象插入到 managed object 上下文中，这是在模型类中添加有用辅助方法的一个好例子。Core Data 创建新对象的 API 并不是非常的直观：
 
-	Book *newBook = [NSEntityDescription insertNewObjectForEntityForName:@"Book" 	inManagedObjectContext:context];
+	Book *newBook = [NSEntityDescription insertNewObjectForEntityForName:@"Book" inManagedObjectContext:context];
 
-万幸的是，我们能够轻易的在我们的子类中以一个优雅的方式解决这个问题：
+万幸的是，我们能够轻易地在我们的子类中以一个优雅的方式解决这个问题：
 
 	@implementation Book
 	// ...

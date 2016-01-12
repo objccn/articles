@@ -42,7 +42,7 @@ iOS 7 的发布给开发者的案头带来了很多新工具。其中一个就�
 
 **图像附件**：现在可以向 Text View 中添加图像了。
 
-**断字**：编辑文本时没那么重要，但如果要以好看易读的方式展现文本时，这就相当重要。断字意味着在行边界处分割单词，从而为整体文本创建一个更整齐的排版和外观。_个人经历：_ iOS 7 之前，开发者必须直接使用 CoreText。像这样：首先以句子为基础检测文本语言，然后获取句子中每个单词可能的断字点，然后在每一个可能的断字点上插入定制的连字占位字符。准备好之后，运行 CoreText 的布局方法并手动将连字符插入到断行。如果你想得到好的效果，之后你得检查带有连字符的文本没有超出行边界，如果超出了，在运行一次行的布局方法，这一次不要使用上次使用的断字点。使用 TextKit 的话，就非常简单了，设置 `hyphenationFactor` 属性就可以启用断字。
+**断字**：编辑文本时没那么重要，但如果要以好看易读的方式展现文本时，这就相当重要。断字意味着在行边界处分割单词，从而为整体文本创建一个更整齐的排版和外观。_个人经历：_ iOS 7 之前，开发者必须直接使用 CoreText。像这样：首先以句子为基础检测文本语言，然后获取句子中每个单词可能的断字点，然后在每一个可能的断字点上插入定制的连字占位字符。准备好之后，运行 CoreText 的布局方法并手动将连字符插入到断行。如果你想得到好的效果，之后你得检查带有连字符的文本没有超出行边界，如果超出了，再运行一次行的布局方法，这一次不要使用上次使用的断字点。使用 TextKit 的话，就非常简单了，设置 `hyphenationFactor` 属性就可以启用断字。
 
 ![The text in this view would have looked much more compartmentalized without hyphenation.][3]
 
@@ -87,7 +87,7 @@ iOS 7 的发布给开发者的案头带来了很多新工具。其中一个就�
 
 创建像 TextKit 这样庞大复杂的系统肯定不是件简单快速的事情，而且肯定需要丰富的经验和知识。在 iOS 的前面 6 个主版本中，一直没有提供一个“真正的”文本组件，这也说明了这一点。Apple 把它视为一个大的新特性，当然没啥问题。但是它真的是全新的吗？
 
-这里有个数字：在 [UIKit 的 131 个公共类][14]中，只有 9 个的名字没有使用UI作为前缀。这 9 个类使用的是旧系统的的、旧世界的（跟我读：Mac OS）前缀 NS。而且这九个类里面，有七个是用来处理文本的。巧合？好吧…
+这里有个数字：在 [UIKit 的 131 个公共类][14]中，只有 9 个的名字没有使用UI作为前缀。这 9 个类使用的是旧系统的、旧世界的（跟我读：Mac OS）前缀 NS。而且这九个类里面，有七个是用来处理文本的。巧合？好吧…
 
 这是 Cocoa 文本系统的简图。不妨和上面 TextKit 的那幅图作一下对比。
 
@@ -334,8 +334,8 @@ TextKit 包括了超过 100 个方法，一篇文章根本没办法尽数涉及�
 
     - (void)updateExclusionPaths 
     {
-	CGRect ovalFrame = [self.textView convertRect:self.circleView.bounds 
-               				                           fromView:self.circleView];
+	    CGRect ovalFrame = [self.textView convertRect:self.circleView.bounds 
+               				                 fromView:self.circleView];
 
     	ovalFrame.origin.x -= self.textView.textContainerInset.left;
     	ovalFrame.origin.y -= self.textView.textContainerInset.top;

@@ -140,7 +140,7 @@ xctool 用法非常简单，它使用的参数跟 `xcodebuild` 相同：
 
 	openssl aes-256-cbc -k "foo" -in scripts/profile/TravisExample_Ad_Hoc.mobileprovision -out scripts/profile/TravisExample_Ad_Hoc.mobileprovision.enc -a
 	openssl aes-256-cbc -k "foo" -in scripts/certs/dist.cer -out scripts/certs/dist.cer.enc -a
-	openssl aes-256-cbc -k "foo" -in scripts/certs/dist.p12 -out scripts/certs/dist.cer.p12 -a
+	openssl aes-256-cbc -k "foo" -in scripts/certs/dist.p12 -out scripts/certs/dist.p12.enc -a
 
 通过上面的命令，可以创建出以 `.enc` 结尾的加密文件。之后可以把原始文件忽略或者移除掉。至少不要把原始文件提交到 GitHub 中，否则原始文件会显示在 GitHub 中。如果你不小心把原始文件提交上去了，那么请看这里[如何解决](https://help.github.com/articles/remove-sensitive-data)。
 
@@ -152,7 +152,7 @@ xctool 用法非常简单，它使用的参数跟 `xcodebuild` 相同：
 
 	before_script:
 	- openssl aes-256-cbc -k "$ENCRYPTION_SECRET" -in scripts/profile/TravisExample_Ad_Hoc.mobileprovision.enc -d -a -out scripts/profile/TravisExample_Ad_Hoc.mobileprovision
-	- openssl aes-256-cbc -k "$ENCRYPTION_SECRET" -in scripts/certs/dist.p12.enc -d -a -out scripts/certs/dist.p12
+	- openssl aes-256-cbc -k "$ENCRYPTION_SECRET" -in scripts/certs/dist.cer.enc -d -a -out scripts/certs/dist.cer
 	- openssl aes-256-cbc -k "$ENCRYPTION_SECRET" -in scripts/certs/dist.p12.enc -d -a -out scripts/certs/dist.p12
 
 就这样，在 GitHub 上面的文件就安全了，并且 Travis 依旧能读取并使用这些加密后的文件。但是有一个安全问题你需要知道：在 Travis 的编译日志中可能会显示出解密环境变量。不过对 pull 请求来说不会出现。

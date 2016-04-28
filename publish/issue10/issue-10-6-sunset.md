@@ -12,7 +12,7 @@ HTTP是运行在应用层上的应用协议，而不同的层级上都有相应�
 
 所谓的 [OSI（Open Systems Interconnection，开放式系统互联）](https://en.wikipedia.org/wiki/OSI_model)模型定义了七层结构。本文会关注应用层 (application layer)、传输层 (transport layer) 和网络层 (internet layer)，它们分别代表了典型的 HTTP 的应用的 HTTP，TCP 以及 IP。在 IP 之下的是数据连接和物理层级，比如像 Ethernet 的实现之类的东西（Ethernet 拥有一个数据连接部分以及一个物理部分）。
 
-如上文所述，我们只关注应用层，传输层和互联网层的部分，更确切的说，着重探讨一种特殊的混合模式：基于 IP 的 TCP，以及基于 TCP 实现的 HTTP。这就是我们每天使用的 app 的基本网络配置。
+如上文所述，我们只关注应用层，传输层和网络层的部分，更确切的说，着重探讨一种特殊的混合模式：基于 IP 的 TCP，以及基于 TCP 实现的 HTTP。这就是我们每天使用的 app 的基本网络配置。
 
 通过本文，希望大家能够对HTTP工作原理有一个细致的了解，知道一些常见的 HTTP 问题的产生原因，从而能在实践中尽量避免这些问题的发生。
 
@@ -20,7 +20,7 @@ HTTP是运行在应用层上的应用协议，而不同的层级上都有相应�
 
 接下来我们从最低的一层谈起，说说 IP 网络协议。
 
-## IP网络协议 (IP-Internet Proctocol)
+## IP网络协议 (IP-Internet Protocol)
 
 TCP/IP 中的 IP 是[网络协议 (Internet Protocol)](https://en.wikipedia.org/wiki/Internet_Protocol) 的缩写。从字面意思便知，它是互联网众多协议的基础。
 

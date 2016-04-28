@@ -553,6 +553,6 @@ XCTest 是不是正确的选择呢？你必须根据手头的项目来做判断�
 
 ---
 
-[话题 #15 下的更多文章](http://objcnn.io/issue-15)
+[话题 #15 下的更多文章](http://objccn.io/issue-15)
 
 原文 [Real-World Testing with XCTest](http://www.objc.io/issue-15/xctest.html)

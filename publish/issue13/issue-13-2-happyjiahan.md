@@ -200,31 +200,31 @@
 
 假设我们的 `SPFriendListViewController` 是当前 window 的 root view controller。使用单例时，我们的对象图看起来如下所示：
 
-<img src="http://img.objccn.io/issue-13/Screen%20Shot%202014-06-02%20at%205.21.20%20AM.png" width="412" />
+<img src="/images/issues/issue-13/Screen%20Shot%202014-06-02%20at%205.21.20%20AM.png" width="412" />
 
 view controller 自己，以及自定义的 image view 的列表，都会和 `sharedThumbnailCache` 产生交互。当用户登出后，我们想要清理 root view controller 并且退出到登录页面：
 
-<img src="http://img.objccn.io/issue-13/Screen%20Shot%202014-06-02%20at%205.53.45%20AM.png" width="612" />
+<img src="/images/issues/issue-13/Screen%20Shot%202014-06-02%20at%205.53.45%20AM.png" width="612" />
 
 这里的问题在于这个好友列表的 view controller 可能仍然在执行代码 (由于后台操作的原因)，并且可能因此仍然有一些没有执行的涉及到 `sharedThumbnailCache` 的调用。
 
 和使用依赖注入的解决方案对比一下：
 
-<img src="http://img.objccn.io/issue-13/Screen%20Shot%202014-06-02%20at%205.38.59%20AM.png" width="412" />
+<img src="/images/issues/issue-13/Screen%20Shot%202014-06-02%20at%205.38.59%20AM.png" width="412" />
 
 简单起见，假设 `SPApplicationDelegate` 管理 `SPUser` 的实例 (在实践中，你可能会把这些用户状态的管理工作交给另外一个对象来做，这样可以使你的 application delegate [简化][lighterViewControllers])。当展现好友列表 view controller 时，会传递进去一个 user 的引用。这个引用也会向下传递给 profile image views。现在，当用户登出时，我们的对象图如下所示：
 
-<img src="http://img.objccn.io/issue-13/Screen%20Shot%202014-06-02%20at%205.54.07%20AM.png" width="612" />
+<img src="/images/issues/issue-13/Screen%20Shot%202014-06-02%20at%205.54.07%20AM.png" width="612" />
 
 这个对象图看起来和使用单例时很像。那么，区别是什么呢？
 
 关键问题是作用域。在单例那种情况中，`sharedThumbnailCache` 仍然可以被程序的任意模块访问。假如用户快速的登录了一个新的账号。该用户也想看看他的好友列表，这也就意味着需要再一次的和缩略图 cache 产生交互：
 
-<img src="http://img.objccn.io/issue-13/Screen%20Shot%202014-06-02%20at%205.59.25%20AM.png" width="612" />
+<img src="/images/issues/issue-13/Screen%20Shot%202014-06-02%20at%205.59.25%20AM.png" width="612" />
 
 当用户登录一个新账号，我们应该能够构建并且与全新的 `SPThumbnailCache` 交互，而不需要再在销毁老的缩略图 cache 上花费精力。基于对象管理的典型规则，老的 view controllers 和老的缩略图 cache 应该能够自己在后台延迟被清理掉。简而言之，我们应该隔离用户 A 相关联的状态和用户 B 相关联的状态：
 
-<img src="http://img.objccn.io/issue-13/Screen%20Shot%202014-06-02%20at%206.43.56%20AM.png" width="412" />
+<img src="/images/issues/issue-13/Screen%20Shot%202014-06-02%20at%206.43.56%20AM.png" width="412" />
 
 #结论
 

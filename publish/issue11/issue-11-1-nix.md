@@ -89,7 +89,7 @@ Android 和 iOS 的一大差别是任何 Activity 都可以作为你应用的入
 
 平板是使用 Fragment 的绝好场景：你可以在左边放一个列表 Fragment，右边放一个详细信息 Fragment。[^4]Fragment 能让你将 UI 和控制器逻辑分割到更小、可重用的层面上。但要当心，Fragment 的生命周期有不少细微差别，我们会在后面详细谈到。
 
-![一个含有两个 fragment 的多面板 activity](http://img.objccn.io/issue-11/multipane_view_tablet.png)
+![一个含有两个 fragment 的多面板 activity](/images/issues/issue-11/multipane_view_tablet.png)
 
 Fragment 是实现 App 的新方式，就像在 iOS 上 `UICollectionView` 是可取代 `UITableView` 的构造列表数据的新方式。[^5] 虽然在一开始避开 Fragment 而使用 Activity 会比较容易，但你之后可能会为之后悔。然而，我们也要抗拒那种想完全放弃 Activity，转而只在单个 Activity 上使用 Fragment 的冲动，因为如果那么做了，那么当你想获得 Intent 的好处且想在同一个 Activity 上使用多个 Fragment 时，你将陷入困境。
 
@@ -100,7 +100,7 @@ Fragment 是实现 App 的新方式，就像在 iOS 上 `UICollectionView` 是�
 
 &nbsp;
 
-<img alt="TripDetailsTableViewController" src="http://img.objccn.io/issue-11/IMG_0095.png" width="50%">
+<img alt="TripDetailsTableViewController" src="/images/issues/issue-11/IMG_0095.png" width="50%">
 
 &nbsp;
 
@@ -183,7 +183,7 @@ Fragment 是实现 App 的新方式，就像在 iOS 上 `UICollectionView` 是�
 
 &nbsp;
 
-<img alt="TripDetailFragment" src="http://img.objccn.io/issue-11/Screenshot_2014-03-25-11-42-16.png" width="50%">
+<img alt="TripDetailFragment" src="/images/issues/issue-11/Screenshot_2014-03-25-11-42-16.png" width="50%">
 
 &nbsp;
 
@@ -289,7 +289,7 @@ Fragment 是实现 App 的新方式，就像在 iOS 上 `UICollectionView` 是�
 
 从 iOS 开发转过来时候，我们需要注意的首要事情之一是安卓的生命周期。让我们从查看 [Activity 生命周期文档](http://developer.android.com/training/basics/activity-lifecycle/index.html) 开始：
 
-![安卓 Activity 生命周期](http://img.objccn.io/issue-11/Android-Activity-Lifecycle.png)
+![安卓 Activity 生命周期](/images/issues/issue-11/Android-Activity-Lifecycle.png)
 
 从本质上看来，Activity 生命周期近似于 UIViewController 生命周期。主要的不同是 Android 系统在销毁 Activity 上比较无情，因此保证数据和 Activity 的状态的保存是非常重要的，因此只有这样它们才能在 `onCreate()` 中从被保存的状态里恢复。做到这个的最好方式是使用绑定数据（bundled data）并从 savedInstanceState 和/或 Intents 中恢复。例如，下面是来自我们示例项目中 `TripListActivity` 的部分代码，它能跟踪当前显示的地铁线路：
 
@@ -319,7 +319,7 @@ Fragment 是实现 App 的新方式，就像在 iOS 上 `UICollectionView` 是�
 
 [Fragment 生命周期](http://developer.android.com/training/basics/fragments/index.html)相似于 Activity 生命周期，但有些附加的东西：
 
-![Android Fragment 生命周期](http://img.objccn.io/issue-11/fragment_lifecycle.png)
+![Android Fragment 生命周期](/images/issues/issue-11/fragment_lifecycle.png)
 
 能让开发者措手不及的问题之一是 Fragment 和 Activity 之间的通信问题。注意 `onAttach()` **先于** `onActivityCreated()` 调用。这就意味着 Activity 不能保证在 Fragment 被创建前存在。`onActivityCreated()` 方法应该在有必要的时候用于将 interface（delegate）设置到父亲 Activity 上。
 
@@ -376,7 +376,7 @@ Fragment 同样被操作系统积极地创建和销毁，为了保存它们的�
 
 ### 地铁列表视图布局
 
-<img alt="Subway ListView" src="http://img.objccn.io/issue-11/Screenshot_2014-03-24-13-12-00.png" width="50%">
+<img alt="Subway ListView" src="/images/issues/issue-11/Screenshot_2014-03-24-13-12-00.png" width="50%">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -406,9 +406,9 @@ Fragment 同样被操作系统积极地创建和销毁，为了保存它们的�
 
 下面是 iOS 上在 Interface Builder 中用`UITableView`和一个通过 Auto Layout 钉在底部的 `UIButton` 实现的同一个视图：
 
-<img alt="iOS Subway Lines UIViewController" src="http://img.objccn.io/issue-11/iOS_Screen1.png" width="50%">
+<img alt="iOS Subway Lines UIViewController" src="/images/issues/issue-11/iOS_Screen1.png" width="50%">
 
-![Interface Builder 约束](http://img.objccn.io/issue-11/iOSConstraints.png)
+![Interface Builder 约束](/images/issues/issue-11/iOSConstraints.png)
 
 你会注意到 Android 布局文件更易**阅读**和理解。Android 中的布局视图有许多不同的部分，但这里我们只会覆盖到少数几个重要的部分。
 

@@ -29,7 +29,7 @@ Collection View 深入太多了，事实上，[Ole Begeman](http://oleb.net) 和
 
 结果如下：
 
-![Insertion and Deletion](http://img.objccn.io/issue-12/2014-05-01-collectionview-animations-1-insertion.gif)
+![Insertion and Deletion](/images/issues/issue-12/2014-05-01-collectionview-animations-1-insertion.gif)
 
 对应的 `finalLayoutAttributesForDisappearingItemAtIndexPath:` 方法中，除了设定了不同的 transform 以外，其他都很相似。
 
@@ -50,7 +50,7 @@ Collection View 深入太多了，事实上，[Ole Begeman](http://oleb.net) 和
 
 如果你在插入和删除的时候加入了非常炫的动画，现在你应该看看为何苹果明智的使用简单的淡入淡出动画作为默认效果：
 
-![设备旋转的错误反应](http://img.objccn.io/issue-12/2014-05-01-collectionview-animations-2-wrong-rotation.gif)
+![设备旋转的错误反应](/images/issues/issue-12/2014-05-01-collectionview-animations-2-wrong-rotation.gif)
 
 啊哦...
 
@@ -99,7 +99,7 @@ Collection View 深入太多了，事实上，[Ole Begeman](http://oleb.net) 和
 
 如果这个元素没有正在被插入，那么将通过 `layoutAttributesForItemAtIndexPath` 来返回一个普通的属性，以此取消特殊的外观动画。结合 `finalLayoutAttributesForDisappearingItemAtIndexPath:` 中相应的逻辑，最终将会使元素能够在 bounds 变化时，从初始位置到最终位置以很流畅的动画形式实现，从而建立一个简单但很酷的动画效果：
 
-![Wrong reaction to device rotation](http://img.objccn.io/issue-12/2014-05-01-collectionview-animations-3-correct-rotation.gif)
+![Wrong reaction to device rotation](/images/issues/issue-12/2014-05-01-collectionview-animations-3-correct-rotation.gif)
 
 ### 交互式布局动画
 
@@ -186,7 +186,7 @@ Collection views 让用户通过手势实现与布局交互这件事变得很容
 
 让我们来看看我们如何能够利用上一节相同的示例项目达到类似的效果：
 
-![Layout to Layout Navigation Transitions](http://img.objccn.io/issue-12/2014-05-01-collectionview-animations-4-layout2layout.gif)
+![Layout to Layout Navigation Transitions](/images/issues/issue-12/2014-05-01-collectionview-animations-4-layout2layout.gif)
 
 为了使布局到布局的转场动画工作，navigation controller 的 root view controller 必须是一个 `useLayoutToLayoutNavigationTransitions` 设置为 `NO` 的 collection view controller。当另一个 `useLayoutToLayoutNavigationTransitions` 设置为 `YES` 的 `UICollectionViewController` 实例被 push 到根视图控制器之上时，navigation controller 会用布局转场动画来代替标准的 push 转场动画。这里要注意一个重要的细节，根视图控制器的 collection view 实例被回收用于在导航栈上 push 进来的 collection 控制器中，如果你试图在 `viewDidLoad` 之类的方法中中设置 collection view 属性， 它们将不会有任何反应，你也不会收到任何警告。
 
@@ -214,7 +214,7 @@ Collection views 让用户通过手势实现与布局交互这件事变得很容
 
 使用了 `useLayoutToLayoutNavigationTransitions` 的布局和布局间导航转换是很有用的，但却局限于仅在 两个 view controller 都是 `UICollectionViewController` 的实例，并且转场的必须发生在顶级 collection views 之间。为了达到在任意视图控制器的任意 collection view 之间都能实现相似的过渡，我们需要自定义一个 view collection 的转场动画。
 
-![Custom Collection View Transition](http://img.objccn.io/issue-12/2014-05-01-collectionview-animations-5-custom-transitions.gif)
+![Custom Collection View Transition](/images/issues/issue-12/2014-05-01-collectionview-animations-5-custom-transitions.gif)
 
 针对此类自定义过渡的动画控制器，需要遵循以下步骤进行设计：
 

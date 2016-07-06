@@ -65,7 +65,7 @@ source = CaptureBufferSource(position: AVCaptureDevicePosition.Front) {
 下面是演示视频
 
 <video style="display:block;max-width:100%;height:auto;border:0;" controls="1">
-  <source src="http://img.objccn.io/issue-23/camera.m4v"></source>
+  <source src="/images/issues/issue-23/camera.m4v"></source>
 </video>
 
 ## 从影片中获取像素数据
@@ -102,7 +102,7 @@ func displayLinkDidRefresh(link: CADisplayLink) {
 我们从一个视频输出获得的像素缓冲是一个 `CVPixelBuffer`，我们可以把它直接转换成 `CIImage`。正如上面的例子，我们会加上一个滤镜。在这个例子里，我们将组合多个滤镜：我们使用一个万花筒的效果，然后用渐变遮罩把原始图像和过滤图像相结合，这个操作是非常轻量级的。
 
 <video style="display:block;max-width:100%;height:auto;border:0;" controls="1">
-  <source src="http://img.objccn.io/issue-23/video.m4v"></source>
+  <source src="/images/issues/issue-23/video.m4v"></source>
 </video>
 
 ## 创意地使用滤镜
@@ -117,7 +117,7 @@ Core Image 里所谓的滤镜有不同的类别。其中一些是传统的类型
 
 在这个例子中，我们使用这些东西：
 
-<img src="http://img.objccn.io/issue-23/combining-filters.svg" alt="Combining filters" width="620px" height="186px">
+<img src="/images/issues/issue-23/combining-filters.svg" alt="Combining filters" width="620px" height="186px">
 
 上面的例子可以将图像的一个圆形区域像素化。
 
@@ -148,7 +148,7 @@ Core Image 里所谓的滤镜有不同的类别。其中一些是传统的类型
 
 当我们使用 `CVPixelBuffer` 时，我们希望这样的流程：
 
-<img src="http://img.objccn.io/issue-23/flow.svg" alt="Flow of image data" width="620px" height="232px">
+<img src="/images/issues/issue-23/flow.svg" alt="Flow of image data" width="620px" height="232px">
 
 `CVPixelBuffer` 是基于 CPU 的 (见下文)，我们用 `CIImage` 来包装它。构建滤镜链不会移动任何数据；它只是建立了一个流程。一旦我们绘制图像，我们使用了基于 EAGL 上下文的 Core Image 上下文，而这个 EAGL 上下文也是 GLKView 进行图像显示所使用的上下文。EAGL 上下文是基于 GPU 的。请注意，我们是如何只穿越 GPU-CPU 边界一次的，这是至关重要的部分。
 

@@ -50,9 +50,9 @@ iOS 绘画系统使用点（points）而不是像素（pixels），因此屏幕�
             android:hint="Login"/>
     </LinearLayout>
 
-<img src="http://img.objccn.io/issue-11/image02.png" width="470"> 
+<img src="/images/issues/issue-11/image02.png" width="470"> 
 
-<img style="margin-top:1em;" src="http://img.objccn.io/issue-11/image01.png">
+<img style="margin-top:1em;" src="/images/issues/issue-11/image01.png">
 
 在上面的布局文件中，`线性布局 LinearLayout` 被用来线性排列 `视图Views`。我们实例化了 `线性布局`中的三个视图: 一个用户名 `EditText`，一个密码 `EditText`，和一个登录按钮。
 
@@ -76,7 +76,7 @@ iOS 绘画系统使用点（points）而不是像素（pixels），因此屏幕�
 
 下面，将介绍一个关于资源选定如何处理图片的例子。在一个安卓项目中，有一个 `res` 文件夹，这里放置 app 所要使用的所有资源。包含图片，以及布局文件，还有一些其他项目资源。
 
-<img src="http://img.objccn.io/issue-11/image00.png" width="187">
+<img src="/images/issues/issue-11/image00.png" width="187">
 
 这里，`ic_launcher.png` 图片重复出现在下面三个文件夹: `drawable-hdpi`，`drawable-mdpi`，和 `drawable-xhdpi`。当请求名为 `ic_launcher` 的图片时，系统运行时会根据设备配置自动选择适应的图片.
 

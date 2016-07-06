@@ -5,7 +5,7 @@
 在这篇文章中，我们介绍了一种称之为 [VIPER](http://mutualmobile.github.io/blog/2013/12/04/viper-introduction/) 的 iOS 应用架构的方式。VIPER 已经在很多大型的项目上成功实践，但是出于本文的目的我们将通过一个待办事项清单 (to-do app) 来介绍 VIPER 。你可以在 [GitHub](https://github.com/objcio/issue-13-viper) 上关注这个项目。
 
 <video style="display:block;max-width:316px;height:auto;border:0;" poster="{{site.images_path}}/issue-13/2014-06-07-viper-screenshot.png" controls="1">
-  <source src="http://img.objccn.io//issue-13/2014-06-07-viper-preview.mp4"></source>
+  <source src="/images/issues//issue-13/2014-06-07-viper-preview.mp4"></source>
 </video>
 
 ## 什么是 VIPER？
@@ -14,7 +14,7 @@
 
 VIPER 是一个创建 iOS 应用[简明构架](http://blog.8thlight.com/uncle-bob/2012/08/13/the-clean-architecture.html)的程序。VIPER 可以是视图 (View)，交互器 (Interactor)，展示器 (Presenter)，实体 (Entity) 以及路由 (Routing) 的首字母缩写。简明架构将一个应用程序的逻辑结构划分为不同的责任层。这使得它更容易隔离依赖项 (如数据库)，也更容易测试各层间的边界处的交互：
 
-<img alt="VIPER stands for View Interactor Presenter Entity Routing." src="http://img.objccn.io/issue-13/2014-06-07-viper-intro.jpg">
+<img alt="VIPER stands for View Interactor Presenter Entity Routing." src="/images/issues/issue-13/2014-06-07-viper-intro.jpg">
 
 大部分 iOS 应用利用 MVC 构建，使用 MVC 应用程序架构可以引导你将每一个类看做模型，视图或控制器中的一个。但由于大部分应用程序的逻辑不会存在于模型或视图中，所以通常最终总是在控制器里实现。这就导致一个称为[重量级视图控制器](https://twitter.com/Colin_Campbell/status/293167951132098560)的问题，在这里，视图控制器做了太多工作。为这些重量级视图控制器[瘦身](http://www.objc.io/issue-1/lighter-view-controllers.html)并不是 iOS 开发者寻求提高代码的质量所要面临的唯一挑战，但至少这是一个很好的开端。
 
@@ -42,7 +42,7 @@ VIPER 的主要部分是：
 
 以下则是不同组件的相关图解，并展示了他们之间是如何关联的：
 
-<img alt="VIPER breaks down an app into different components based around use cases, including components that create the user interface and the logic that powers it." src="http://img.objccn.io/issue-13/2014-06-07-viper-wireframe.png">
+<img alt="VIPER breaks down an app into different components based around use cases, including components that create the user interface and the logic that powers it." src="/images/issues/issue-13/2014-06-07-viper-wireframe.png">
 
 虽然在应用中 VIPER 的组件可以以任意顺序实现，我们在这里选择按照我们推荐的顺序来进行介绍。你会注意到这个顺序与构建整个应用的进程大致符合 -- 首先要讨论的是产品需要做什么，以及用户会如何与之交互。
 

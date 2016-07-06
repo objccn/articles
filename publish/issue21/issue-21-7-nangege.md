@@ -233,7 +233,7 @@ Attributes 仅仅可以在顶点着色器中被访问。Attribute 是在随着�
 
 ### 饱和度调整
 
-![实践中的饱和度滤镜](http://img.objccn.io/issue-21/Saturation.png)
+![实践中的饱和度滤镜](/images/issues/issue-21/Saturation.png)
 
 这是一个做饱和度调节的片段着色器。这个着色器出自 《[图形着色器：理论和实践](http://www.amazon.com/Graphics-Shaders-Theory-Practice-Second/dp/1568814348/ref=sr_1_1?s=books&ie=UTF8&qid=1422557718&sr=1-1&keywords=graphics+shaders+theory+and+practice)》一书，我强烈推荐整本书给所有对着色器感兴趣的人。
 
@@ -309,7 +309,7 @@ gl_FragColor = vec4(mix(greyScaleColor, textureColor.rgb, saturation), textureCo
 
 最后，我们来看一个很漂亮的滤镜，你可以用来向你的朋友炫耀，或者吓唬你的敌人。这个滤镜看起来像是有一个玻璃球在你的图片上。这会比之前的看起来更复杂。但我相信我们可以完成它。
 
-![实践中的球形折射滤镜！](http://img.objccn.io/issue-21/sphereRefraction.png)
+![实践中的球形折射滤镜！](/images/issues/issue-21/sphereRefraction.png)
 
 ```glsl
 varying highp vec2 textureCoordinate;
@@ -355,7 +355,7 @@ highp vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate
 
 图像的纹理坐标是在归一化的 0.0-1.0 的坐标空间内。归一化的坐标空间意味着考虑屏幕是一个单位宽和一个单位长，而不是 320 像素宽，480 像素高。因为手机的高度比宽度要长，我们需要为球形计算一个偏移率，这样球就是圆的而不是椭圆的。
 
-![我们希望正确的宽高比](http://img.objccn.io/issue-21/aspectRatio.png)
+![我们希望正确的宽高比](/images/issues/issue-21/aspectRatio.png)
 
 
 ```glsl
@@ -370,7 +370,7 @@ lowp float checkForPresenceWithinSphere = step(distanceFromCenter, radius);
 
 这里我们计算了片段是否在球体内。我们计算当前点距离球形中心有多远以及球的半径是多少。如果当前距离小于半径，这个片段就在球体内，这个变量被设置为 1.0。否则，如果距离大于半径，这个片段就不在球内，这个变量被设置为 0.0 。
 
-![像素在球内或者球外](http://img.objccn.io/issue-21/distanceFromCenter2.png)
+![像素在球内或者球外](/images/issues/issue-21/distanceFromCenter2.png)
 
 ```glsl
 distanceFromCenter = distanceFromCenter / radius;
@@ -386,7 +386,7 @@ highp float normalizedDepth = radius * sqrt(1.0 - distanceFromCenter * distanceF
 
 因为我们试图模拟一个玻璃球，我们需要计算球的“深度”是多少。这个虚拟的球，不论怎样，在 Z 轴上，将会延伸图片表面到观察者的距离。这将帮助计算机确定如何表示球内的像素。还有，因为球是圆的，距离球心不同的距离，会有不同的深度。由于球表面方向的不同，球心处和边缘处对光的折射会不相同：
 
-![球有多深?](http://img.objccn.io/issue-21/normalizedDepth.png)
+![球有多深?](/images/issues/issue-21/normalizedDepth.png)
 
 ```glsl
 highp vec3 sphereNormal = normalize(vec3(textureCoordinateToUse - center, normalizedDepth));
@@ -396,7 +396,7 @@ highp vec3 sphereNormal = normalize(vec3(textureCoordinateToUse - center, normal
 
 想想当你正在使用 Adobe Illustrator 这样的软件时，你在 Illustrator 中创建一个三角形，但是它太小了。你按住 option 键，放大三角形，但是它现在太大了。你然后把它缩小到你想要的尺寸：
 
-![什么是角?](http://img.objccn.io/issue-21/sphereNormal.png)
+![什么是角?](/images/issues/issue-21/sphereNormal.png)
 
 ```glsl
 highp vec3 refractedVector = refract(vec3(0.0, 0.0, -1.0), sphereNormal, refractiveIndex);

@@ -10,7 +10,7 @@ iCloud 文档存储的核心思想非常简单：每个应用都有至少通往�
 
 写一个简单的基于文档并开启了 iCloud 的 OS X 应用并不需要费多大力气。实际上你并不需要关心任何 iCloud 内部的工作，`NSDocument` 无偿的做了几乎每件事情：协调文档的 iCloud 访问，自动观察外部变化，触发下载，处理冲突。它甚至提供了一个简单的 UI 界面来管理云文档。你需要做的所有事情就是创建一个 `NSDocument` 子类并实现读取和写入文档内容所需要的方法。
 
-![NSDocument 为管理应用的已同步文档所提供的简单界面](http://img.objccn.io/issue-10/Open.png)
+![NSDocument 为管理应用的已同步文档所提供的简单界面](/images/issues/issue-10/Open.png)
 
 然而，一旦脱离预设的路径，你就需要了解的更多。例如，默认打开面板提供的单层文件夹以外的任何操作都需要手动完成。可能你的应用需要管理除了文档内容以外的文档，比如像 Mail，iPhoto 或者 [Ulysses](http://www.ulyssesapp.com/) (我们自己的app) 中做的那样。这种时候，你不能依赖于 `NSDocument`，而需要自己实现它的功能。但为此你需要对 iCloud 提供的锁和通知机制有一个深入的了解。
 
@@ -22,7 +22,7 @@ iCloud 文档存储的核心思想非常简单：每个应用都有至少通往�
 
 `NSFileManager` 通过 [URLForUbiquityContainerIdentifier:](https://developer.apple.com/library/mac/documentation/cocoa/reference/foundation/classes/nsfilemanager_class/reference/reference.html#//apple_ref/occ/instm/NSFileManager/URLForUbiquityContainerIdentifier:) 提供每一个容器的 URL。在 OS X 系统，可以通过打开 `~/Library/Mobile Documents` 目录来查看所有可用的开放性容器。
 
-![”~/Library/Mobile Documents“的内容，它包含了每个应用开放性容器所分别对应的文件夹](http://img.objccn.io/issue-10/Mobile%20Documents.png)
+![”~/Library/Mobile Documents“的内容，它包含了每个应用开放性容器所分别对应的文件夹](/images/issues/issue-10/Mobile%20Documents.png)
 
 通常每个开放性容器有两个并发进程访问。首先，有一个应用呈现和操作容器内的文档。第二，有一个主要通过开放性守护 (Ubiquity Daemon *ubd*) 体现的 iCloud 架构。iCloud 架构等待应用对文档的更改并将其上传至苹果云服务器。同时也等待从 iCloud 上收到的更改并相应修改容器的内容。
 

@@ -54,7 +54,7 @@ iOS 7 自定义视图控制器转场的 API 基本上都是以协议的方式提
 
 我们应用中的核心类是 `ContainerViewController`，它持有一个`UIViewController`实例的数组，每个实例是一个普通的 `ChildViewController`。容器视图控制器设置了一个带有可点击图标，并代表每个子视图控制器的私有的子视图：
 
-![Stage 1: no animation](http://img.objccn.io/issue-12/2014-05-01-custom-container-view-controller-transitions-stage-1.gif)
+![Stage 1: no animation](/images/issues/issue-12/2014-05-01-custom-container-view-controller-transitions-stage-1.gif)
 
 我们通过点击图标在不同的子视图控制器之间切换。在这一阶段，子视图控制器之间切换时是没有转场动画的。
 
@@ -133,7 +133,7 @@ iOS 7 自定义视图控制器转场的 API 基本上都是以协议的方式提
 
 有了上面的代码，转场效果看起来如下图所示:
 
-![Stage 2: third-party animation](http://img.objccn.io/issue-12/2014-05-01-custom-container-view-controller-transitions-stage-2.gif)
+![Stage 2: third-party animation](/images/issues/issue-12/2014-05-01-custom-container-view-controller-transitions-stage-2.gif)
 
 非常酷，我们甚至没有写一行动画相关的代码。
 
@@ -219,7 +219,7 @@ iOS 7 自定义视图控制器转场的 API 基本上都是以协议的方式提
 
 转场动画现在看起来如下所示:
 
-![Stage 3: third-party animation](http://img.objccn.io/issue-12/2014-05-01-custom-container-view-controller-transitions-stage-3.gif)
+![Stage 3: third-party animation](/images/issues/issue-12/2014-05-01-custom-container-view-controller-transitions-stage-3.gif)
 
 在 [阶段-3](https://github.com/objcio/issue-12-custom-container-transitions/tree/stage-3) 的代码中，app delegate 中设置代理的部分被[注释掉了](https://github.com/objcio/issue-12-custom-container-transitions/blob/stage-3/Container%20Transitions/AppDelegate.m#L41)，这样就可以看到默认的动画效果了。你可以将其设置回再使用 `Animator` 类。你可能想查看[同 阶段－2 相比所有的修改](https://github.com/objcio/issue-12-custom-container-transitions/compare/stage-2...stage-3)。
 

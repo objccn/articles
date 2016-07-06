@@ -228,7 +228,7 @@ Mac 支持完全的 color-calibrated 工作流，所有跟颜色相关的任何�
 
 你经常需要在你的应用里使用一个你的设计师给你指定的颜色。要取得正确的颜色，设计模板使用的颜色空间和你以编程方式指定的颜色空间保持一致是非常重要的。系统标准的颜色选择器有一个下拉菜单，你可以在这里选择你想要的颜色空间。我们建议使用 device-independent sRGB 颜色空间，然后在代码里面用 `+[NSColor colorWithSRGBRed:green:blue:alpha:]` 类方法来创建颜色。
 
-![](http://img.objccn.io/issue-14/color-picker.png)
+![](/images/issues/issue-14/color-picker.png)
 
 
 ### 文字系统

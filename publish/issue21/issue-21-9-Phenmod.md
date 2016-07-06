@@ -79,7 +79,7 @@ Objective-C++ 是 Objective-C 和 C++ 的混合物，让你可以在 Objective-C
 
 现在，我们对 OpenCV 及如何把它集成到我们的应用中有了大概认识，那让我们来做一个小 demo 应用：从 iPhone 的摄像头获取视频流，对它持续进行人脸检测，并在屏幕上标出来。当用户点击一个脸孔时，应用会尝试识别这个人。如果识别结果正确，用户必须点击 “Correct”。如果识别错误，用户必须选择正确的人名来纠正错误。我们的人脸识别器就会从错误中学习，变得越来越好。
 
-![demo 应用中人脸检测与识别系统线框图](http://img.objccn.io/issue-21/blocks-face-recognition-objcio.jpg)
+![demo 应用中人脸检测与识别系统线框图](/images/issues/issue-21/blocks-face-recognition-objcio.jpg)
 
 本 demo 应用的源码可从 [GitHub](https://github.com/objcio/issue-21-OpenCV-FaceRec) 获得。
 

@@ -111,7 +111,7 @@
     
 结果看起来像这样：
 
-<img src="http://img.objccn.io/issue-12/clock.gif" width="320px">
+<img src="/images/issues/issue-12/clock.gif" width="320px">
 
 你可以 [从 GitHub 上](https://github.com/objcio/issue-12-custom-layer-property-animations) 下载这个项目看看。
 
@@ -310,7 +310,7 @@
 
 结果看起来如下：
 
-<img src="http://img.objccn.io/issue-12/clock2.gif" width="320px">
+<img src="/images/issues/issue-12/clock2.gif" width="320px">
 
 如你所见，不同于第一个时钟动画，随着时针的变化，分针实际上对每一个小时都会转上满满一圈（就像一个真正的时钟那样），而不仅仅只是通过最短的路径移动到它的最终位置；因为我们正在动画的是 `time` 值本身而不仅仅是时针或分针的位置，所以上下文信息被保留了。
 

@@ -28,7 +28,7 @@ iOS 7 和 Mac OS X 10.9 Mavericks 中一个显著的变化就是对 Foundation U
 
 `NSURLsessionTask` 是一个抽象类，其下有 3 个实体子类可以直接使用：`NSURLSessionDataTask`、`NSURLSessionUploadTask`、`NSURLSessionDownloadTask`。这 3 个子类封装了现代程序三个最基本的网络任务：获取数据，比如 JSON 或者 XML，上传文件和下载文件。
 
-<img alt="NSURLSessionTask class diagram" src="http://img.objccn.io/issue-5/NSURLSession.png" width="612" height="294">
+<img alt="NSURLSessionTask class diagram" src="/images/issues/issue-5/NSURLSession.png" width="612" height="294">
 
 当一个 `NSURLSessionDataTask` 完成时，它会带有相关联的数据，而一个 `NSURLSessionDownloadTask` 任务结束时，它会带回已下载文件的一个临时的文件路径。因为一般来说，服务端对于一个上传任务的响应也会有相关数据返回，所以 `NSURLSessionUploadTask` 继承自 `NSURLSessionDataTask`。
 

@@ -166,7 +166,7 @@ layer 通过向它的 delegate 发送 `actionForLayer:forKey:` 消息来询问�
 
 当我们完成后，效果是这个样子的 (对四个不同的 view 为位置，尺寸，颜色和旋转进行动画)：
 
-<img alt="The custom block animation API, used to animate the position, size, color, and rotation of four different views" src="http://img.objccn.io/issue-12/2014-05-01-view-layer-synergy-custom-block-animations.gif" width="238">
+<img alt="The custom block animation API, used to animate the position, size, color, and rotation of four different views" src="/images/issues/issue-12/2014-05-01-view-layer-synergy-custom-block-animations.gif" width="238">
 
 要开始实现它，我们首先要做的是当一个 layer 属性变化时获取 delegate 的回调。因为我们无法事先预测 layer 要改变什么，所以我选择在一个 UIView 的 category 中 swizzle `actionForLayer:forKey:` 方法：
 

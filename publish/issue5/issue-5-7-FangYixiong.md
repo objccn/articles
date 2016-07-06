@@ -13,7 +13,7 @@
  
 在 *Grocery List* 中，我们在显示一个 modal view controller 时使用了轻度定制的转场动画。但是大部分的动画和转场效果都是使用系统默认的。我们本可以使用新的 API 来给 *Grocery List 2* 添加更多自定义的动画，但其实苹果提供的默认转场动画对于大多数情况来说已经是个不错的解决方案了，这也是为什么我们 app 中的不同 view controller 之间的转场效果和苹果官方的 app 是一样的。正如前边提到的那样，我们 app 的部分操作流程已经明显地发生了改变。所以，我们将会使用自定义动画从而更好地保持用户的关注焦点。
 
-<img alt="Comparison of the Grocery List and the default view controller push" src="http://img.objccn.io/issue-5/redesign-animations.gif">
+<img alt="Comparison of the Grocery List and the default view controller push" src="/images/issues/issue-5/redesign-animations.gif">
 
 大多数用户对于 iOS 7 上默认的动画的感觉，是既新鲜又自然，你不需要做很多工作就可以使用这些动画来取悦用户。但是在合适的地方添加一些自定义动画将会提高整个 app 的用户体验。只是请小心不要使用过度。
 
@@ -23,7 +23,7 @@
 
 在 *Grocery List* 中，我们并没有使用任何自定义手势，但是为了在下个版本中改进用户的操作流程，我们支持在 cell 上进行左右两个方向的滑动来分别展示产品的不同选项。你可以简单地从屏幕的右边缘向左滑动来快速访问菜单以进行列表或者模版的相关设置，而不用在导航栏一层层地返回。
 
-<img alt="Grocery List 2 gestures" src="http://img.objccn.io/issue-5/redesign-gestures.png">
+<img alt="Grocery List 2 gestures" src="/images/issues/issue-5/redesign-gestures.png">
 
 按钮和链接对于用户来说是可见的，也是可识别的，但手势不是。如果你打算用手势来实现某个功能，很好！但是如果 app 中那些依赖手势的功能没有一个等效的可见的控件，那要为用户提供一个好的方法来发现这些手势。一个好的用户界面通常应当是不言自明的。如果你需要一个类似使用说明一样的界面或者视频来描述 app 中的基本功能，那这里面很可能就有问题了。
 
@@ -35,7 +35,7 @@
  
 *Grocery List* 在设计上非常依赖于真实世界的物品。比如以黑板为背景，类似纸张上的单元格，所有框架都是有光泽的木质效果。这种设计看起来很好看，但是在这个狭小的空间内如何放置用户交互的控件也会是个不小的挑战，增加新功能时也同样要考虑这个问题。在 iOS 7 这种更轻量的设计中，我们不必像之前那样关注如何更逼真地拟物化，而是可以把关注点放在如何提升交互，以便用户达成自己的目标。*Grocery List 2* 一定会使用这个新的设计语言，同时也会保持自己的风格。
 
-<img alt="Comparison of the Grocery List and Grocery List 2 interface" src="http://img.objccn.io/issue-5/redesign-interface.png">
+<img alt="Comparison of the Grocery List and Grocery List 2 interface" src="/images/issues/issue-5/redesign-interface.png">
 
 在 iOS 7 的设备上使用几周后，明显感觉到现在的交互变得比之前版本更方便。新的动画、手势以及减少对拟物化元素的使用让用户更好地关注内容。
 
@@ -45,7 +45,7 @@ iOS 6 和 iOS 7 的主要区别之一是色彩整体给人的感觉。外观的�
 
 考虑到 *Grocery List* 对拟物化设计的依赖，所以不可能过分调整用色。颜色是由我们想要模仿的材质所决定的。尽管我们喜欢 iOS 7 中更加友好的外观，像大多数内置的 app 一样大体上是白色，但是 *Grocery List 2* 这个 app 的外观将主要由符合「采购（Grocery）」这一主题的配色方案来决定。我们不希望我们的 app 看起来就仅仅是另外一个 iOS 7 风格的 app，而是希望创造独一无二的外观。
 
-<img alt="Comparison of colors in a build-in iOS 7 app and Grocery List 2" src="http://img.objccn.io/issue-5/redesign-colors.png">
+<img alt="Comparison of colors in a build-in iOS 7 app and Grocery List 2" src="/images/issues/issue-5/redesign-colors.png">
 
 色彩可以影响用户对 app 的感觉。不要让你的 app 像内置的应用一样满是白色。相反要创造你自己独一无二的个性颜色。得益于 iOS 7 全新的设计风格刚和对拟物化使用的节制，你可以用各种出挑的色彩来表达你的 app 希望传递给用户的讯息。
 
@@ -57,7 +57,7 @@ iOS 6 和 iOS 7 的主要区别之一是色彩整体给人的感觉。外观的�
 
 在 *Grocery List* 中，我们使用 slab-serif 字体以配合拟物化风格。当 app 运行在 iOS 7 的设备上时，我们发现这个字体不是一个最佳选择。所以我们决定使用定制的 sans-serif 字体，这款字体可以更好地契合 app 整体的外观。
 
-<img alt="Comparison of the Grocery List and Grocery List 2 fonts" src="http://img.objccn.io/issue-5/redesign-fonts.png">
+<img alt="Comparison of the Grocery List and Grocery List 2 fonts" src="/images/issues/issue-5/redesign-fonts.png">
 
 内容是 app 的基础，提升文字的可读性非常重要，而可读性的关键在于字体。虽然苹果默认的 *Helvetica Neue* 字体适合大部分情景，但自定义字体也是值得考虑的——尤其是当你的 app 需要呈现大量文本的时候。
 
@@ -67,7 +67,7 @@ iOS 6 和 iOS 7 的主要区别之一是色彩整体给人的感觉。外观的�
 
 从一个有着黑板背景和木质纹理的拟物化的 app icon，转变为一个更加简洁的多彩的有着清晰符号的 icon，*Grocery List* 并不是真的完全适合新的主屏幕。下个版本中，我们把 icon 简化为一个购物篮符号，并选择一个背景色，这个背景色同样可以用作 app 的主色。这样的多种方法组合使用可以让 icon 更时尚和流行。
 
-<img alt="Comparison of the Grocery List and Grocery List 2 app icons" src="http://img.objccn.io/issue-5/redesign-app-icon.png">
+<img alt="Comparison of the Grocery List and Grocery List 2 app icons" src="/images/issues/issue-5/redesign-app-icon.png">
 
 在 iOS 7 中，icon 会自动会缩放到新的尺寸，导致图像变模糊。由于 iOS 7 中使用了弧度超级大的圆角来遮盖你的 icon，阴影和高光效果看起来会非常奇怪。如果你不打算让你的 app 适配 iOS 7 的风格，那么至少更新一下你的 icon 的尺寸。
 

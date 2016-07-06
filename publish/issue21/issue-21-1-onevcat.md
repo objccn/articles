@@ -28,12 +28,12 @@
 </tr>
 </thead><tbody>
 <tr>
-<td><img src="http://img.objccn.io/issue-21/underexposed.jpg" alt="underexposed" width="631px" height="489px"></td>
-<td><img src="http://img.objccn.io/issue-21/underexposed_adjusted.jpg" alt="underexposed" width="631px" height="489px"></td>
+<td><img src="/images/issues/issue-21/underexposed.jpg" alt="underexposed" width="631px" height="489px"></td>
+<td><img src="/images/issues/issue-21/underexposed_adjusted.jpg" alt="underexposed" width="631px" height="489px"></td>
 </tr>
 <tr>
-<td><img src="http://img.objccn.io/issue-21/overexposed.jpg" alt="overexposed" width="631px" height="489px"></td>
-<td><img src="http://img.objccn.io/issue-21/overexposed_adjusted.jpg" alt="overexposed" width="631px" height="489px"></td>
+<td><img src="/images/issues/issue-21/overexposed.jpg" alt="overexposed" width="631px" height="489px"></td>
+<td><img src="/images/issues/issue-21/overexposed_adjusted.jpg" alt="overexposed" width="631px" height="489px"></td>
 </tr>
 </tbody></table>
 
@@ -78,8 +78,8 @@ iPhone 6 可以将相机在 ISO 32 至 ISO 1600 之间调整 ISO 值。**一档*
 </tr>
 </thead><tbody>
 <tr>
-<td><a href="http://img.objccn.io/issue-21/1-3s_ISO_32.jpg"><img src="http://img.objccn.io/issue-21/1-3s_ISO_32.jpg" alt="ISO 32, 1/3 s" width="631px" height="489px"></a></td>
-<td><a href="http://img.objccn.io/issue-21/1-180s_ISO_1600.jpg"><img src="http://img.objccn.io/issue-21/1-180s_ISO_1600.jpg" alt="ISO 1600, 1/180 s" width="631px" height="489px"></a></td>
+<td><a href="/images/issues/issue-21/1-3s_ISO_32.jpg"><img src="/images/issues/issue-21/1-3s_ISO_32.jpg" alt="ISO 32, 1/3 s" width="631px" height="489px"></a></td>
+<td><a href="/images/issues/issue-21/1-180s_ISO_1600.jpg"><img src="/images/issues/issue-21/1-180s_ISO_1600.jpg" alt="ISO 1600, 1/180 s" width="631px" height="489px"></a></td>
 </tr>
 </tbody></table>
 
@@ -185,7 +185,7 @@ iPhone 6 可以将相机在 ISO 32 至 ISO 1600 之间调整 ISO 值。**一档*
 
 人类的眼睛是拥有光子探测器的，其中一些被称为视锥细胞。我们有三种不同**类型**的视锥：S，M 和 L。每一种类型对不同波长的光会做出不同的响应。这些视锥细胞有时候被称为红色，绿色和蓝色的光感受器。其实这种说法有失偏颇，更精确的叫法应该是赤色，稍微不那么赤的赤色，以及青色。如图所示，其实它们响应曲线有相当大一部分是重叠的：
 
-<a title="Vanessaezekowitz at en.wikipedia [GFDL (http://www.gnu.org/copyleft/fdl.html), CC BY 3.0-2.5-2.0-1.0 (http://creativecommons.org/licenses/by/3.0-2.5-2.0-1.0) or CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons" href="http://commons.wikimedia.org/wiki/File%3ACones_SMJ2_E.svg"><img src="http://img.objccn.io/issue-21/Cones_SMJ2_E.svg" alt="Simplified human cone response curves" width="287px" height="217px"></a>
+<a title="Vanessaezekowitz at en.wikipedia [GFDL (http://www.gnu.org/copyleft/fdl.html), CC BY 3.0-2.5-2.0-1.0 (http://creativecommons.org/licenses/by/3.0-2.5-2.0-1.0) or CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons" href="http://commons.wikimedia.org/wiki/File%3ACones_SMJ2_E.svg"><img src="/images/issues/issue-21/Cones_SMJ2_E.svg" alt="Simplified human cone response curves" width="287px" height="217px"></a>
 
 像灯泡这样的光源拥有着特定的光谱 - 也就是每个波长的光都有特定的强度。相对应的，一个物体，比如自行车的框架，会按照不同的强度来反射或者吸收特定波长的光。对每一种情况，我们可以将光源光谱和物体的反射光谱以及视锥的响应曲线相乘 (其实是沿波长做积分)。对每一个视锥细胞来说，这样做会得到一个计算结果，S，M 和 L 视锥的三个**光刺激**值就是感知到的颜色。我们的大脑会将青色，赤色和弱赤色的视锥的值组合起来，形成对颜色的感知。事实上，颜色感知并不只依赖于这三个值的，还和空间和时间的信息有所关联。
 
@@ -205,7 +205,7 @@ iPhone 6 可以将相机在 ISO 32 至 ISO 1600 之间调整 ISO 值。**一档*
 
 值得指出的是，大部分的色彩空间只能对应可见颜色的一个子集。可以看看 [sRGB](https://zh.wikipedia.org/wiki/SRGB色彩空间) 色彩空间的图表：
 
-<a title="By CIExy1931.svg: Sakurambo derivative work: GrandDrake (CIExy1931.svg) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0), CC BY-SA 2.5-2.0-1.0 (http://creativecommons.org/licenses/by-sa/2.5-2.0-1.0) or GFDL (http://www.gnu.org/copyleft/fdl.html)], via Wikimedia Commons" href="http://commons.wikimedia.org/wiki/File%3ACIExy1931_Rec_709.svg"><img src="http://img.objccn.io/issue-21/CIExy1931_Rec_709.svg" alt="The CIE 1931 color space" width="476px" height="540px"></a>
+<a title="By CIExy1931.svg: Sakurambo derivative work: GrandDrake (CIExy1931.svg) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0), CC BY-SA 2.5-2.0-1.0 (http://creativecommons.org/licenses/by-sa/2.5-2.0-1.0) or GFDL (http://www.gnu.org/copyleft/fdl.html)], via Wikimedia Commons" href="http://commons.wikimedia.org/wiki/File%3ACIExy1931_Rec_709.svg"><img src="/images/issues/issue-21/CIExy1931_Rec_709.svg" alt="The CIE 1931 color space" width="476px" height="540px"></a>
 
 马鞍形的图形区域代表了人眼可见的所有颜色。黑色三角形内的区域表示能被 [sRGB](https://zh.wikipedia.org/wiki/SRGB色彩空间) 色彩空间表达的颜色。三个顶点是这个色彩空间的基准值 - 也就是只有其中一个基准光源全开的情况。三角形区域之外的颜色可以被人眼感知，但却不能被 sRGB 色彩空间表达。还有一点需要特别说明的是：这张图里在三角形之外的颜色看起来好像和三角形边缘的颜色非常相似。这是因为这张图片本身是用 sRGB 色彩空间来表示的，三角形外的**真实的**颜色在图片文件中是显示不出来的，因此只能回滚到和这个真实颜色最接近的能表达的颜色去。
 
@@ -235,13 +235,13 @@ RGB 色彩空间和 sRGB 相比有更大的全色域，也就是所能表达更�
 
 如果我们使用绿色，红色以及蓝色的颜色滤镜，那么有些像素传感器将只接收绿光，有些只接收红光，而有些只接收蓝光 (在现实中，它们将拥有和我们眼睛的视锥细胞相似的响应曲线)。当今的相机几乎无一例外地使用了一种称为[拜尔滤镜 (Bayer filter)](https://en.wikipedia.org/wiki/Bayer_filter) 的装置。如果使用这种滤镜的话，绿色的像素传感器的数量将会是红色或者蓝色的两倍。它看上去是这样的：
 
-<a title="By en:User:Cburnett [GFDL (http://www.gnu.org/copyleft/fdl.html), CC-BY-SA-3.0 (http://creativecommons.org/licenses/by-sa/3.0/) or GPL (http://www.gnu.org/licenses/gpl.html)], via Wikimedia Commons" href="http://commons.wikimedia.org/wiki/File%3ABayer_pattern_on_sensor.svg"><img src="http://img.objccn.io/issue-21/Bayer_pattern_on_sensor.svg" alt="A bayer pattern on a sensor in isometric perspective/projection" width="700px" height="455px"></a>
+<a title="By en:User:Cburnett [GFDL (http://www.gnu.org/copyleft/fdl.html), CC-BY-SA-3.0 (http://creativecommons.org/licenses/by-sa/3.0/) or GPL (http://www.gnu.org/licenses/gpl.html)], via Wikimedia Commons" href="http://commons.wikimedia.org/wiki/File%3ABayer_pattern_on_sensor.svg"><img src="/images/issues/issue-21/Bayer_pattern_on_sensor.svg" alt="A bayer pattern on a sensor in isometric perspective/projection" width="700px" height="455px"></a>
 
 现在数码相机有颜色信息了，但是同时它也丢失了很多信息。我们只知道所有像素中的 1/4 的部分的红色的值。蓝色也类似。而对于绿色，我们知道 1/2 的像素的值。换句话说，66% 的数据丢失了。将所有像素的全部的颜色信息进行还原的过程叫做逆拜尔化 (debayering)。与之相伴的高级算法将将通过为已存在的信息进行插值，来得到一张全分辨率的彩色图像。
 
 即使是一个简单的插值算法也可能要花上很多努力来得到，而随着时间流逝，越来越多的逆拜尔化方法被开发出来解决这个问题。但是也存在一些问题问题，来举例说明：大部分的逆拜尔化算法非常依赖绿色像素的流明数 (光强度)。这样导致的结果是几乎所有这些逆拜尔化算法在几乎全红色的区域表现不佳。这里截取了一张 iPhone 6 拍摄的照片：
 
-<a href="http://img.objccn.io/issue-21/red_debayer.jpg"><img src="http://img.objccn.io/issue-21/red_debayer.jpg" alt"iPad cover and booklet" width="1262px" height="489px"></a>
+<a href="/images/issues/issue-21/red_debayer.jpg"><img src="/images/issues/issue-21/red_debayer.jpg" alt"iPad cover and booklet" width="1262px" height="489px"></a>
 
 注意相比起小册子上的黑色文字来说，iPad 保护壳上写的 “PRODUCT” 的大字中的 C 和 T 字母是非常不清楚的。这是由于图像在 iPad 保护壳的部分缺少绿色信息而导致逆拜尔化的去噪部分无法得到准确信息，从而图像模糊。
 

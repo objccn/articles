@@ -340,7 +340,7 @@ _注意：_ [Scriptinator](https://github.com/chockenberry/Scriptinator) 的示�
 
 当你查看 "application" 的话，你会看到两个东西：元素 (elements) 和属性 (properties)。元素是被所选对象管理的一组对象集合。属性列出了备选对象所维护的数据。
 
-<img src="http://img.objccn.io/issue-14/Scripting_Dictionary.png" />
+<img src="/images/issues/issue-14/Scripting_Dictionary.png" />
 
 applicaiton 里含有 panes，听起来就是它。在一个新的脚本编辑器窗口中，创建一个简单的脚本来显示所有的面板对象：
 

@@ -86,7 +86,7 @@ inputBrightness = {
 
 用 Quartz Composer，来做 Core Image 滤镜图表的原型非常有用，可以[从苹果开发者网站下载](https://developer.apple.com/downloads/index.action?name=Graphics)。下面，我们整理了所需的照片滤镜，把黑白滤镜和暗角滤镜串在一起：
 
-![A filter graph built with Quartz Composer, showing intermediate filtered images](http://img.objccn.io/issue-21/quartz.png)
+![A filter graph built with Quartz Composer, showing intermediate filtered images](/images/issues/issue-21/quartz.png)
 
 一旦达到了我们满意的效果，我们可以重新在代码里创建滤镜图表：
 
@@ -184,7 +184,7 @@ ciContext.drawImage(filter.outputImage, inRect: outputBounds, fromRect: inputBou
 
 为了尽可能多的演示各种滤镜，示例应用程序利用了 Core Image 的内省特点生成了一个界面，用于控制它支持的滤镜参数：
 
-![Image being tweaked with the Color Controls filter](http://img.objccn.io/issue-21/color-controls.png)
+![Image being tweaked with the Color Controls filter](/images/issues/issue-21/color-controls.png)
 
 示例应用程序只限于单一的图像输入以及零个或多个数值输入的滤镜。也有一些有趣的滤镜不属于这一类（特别是那些合成和转换滤镜）。即便如此，该应用程序仍然很好的概述了 Core Image 支持的功能。
 
@@ -194,7 +194,7 @@ ciContext.drawImage(filter.outputImage, inRect: outputBounds, fromRect: inputBou
 
 除了许多其他的内置滤镜，示例应用程序还展示了 iOS 7 中引入的照片滤镜。这些滤镜没有我们可以调整的参数，但它们值得被囊括进来，因为它们展示了如何在 iOS 中模拟照片应用程序的效果：
 
-![Image processed with the Transfer photo filter](http://img.objccn.io/issue-21/photo-filters.png)
+![Image processed with the Transfer photo filter](/images/issues/issue-21/photo-filters.png)
 
 ## 结论
 

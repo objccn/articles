@@ -20,7 +20,7 @@ Core Data 有相当多可用的组件。这是一个非常灵活的技术。在�
 
 在两个部分之间，即堆栈中间，是持久化存储协调器（persistent store coordinator），也被称为*中间审查者*。它将对象图管理部分和持久化部分捆绑在一起，当它们两者中的任何一部分需要和另一部分交流时，这便需要持久化存储协调器来调节了。
 
-<img name="复杂的 Core Data 堆栈" src="http://img.objccn.io/issue-4/stack-complex.png" width="624" height="652">
+<img name="复杂的 Core Data 堆栈" src="/images/issues/issue-4/stack-complex.png" width="624" height="652">
 
 *对象图管理*是你程序模型层的逻辑存在的地方。模型层的对象存在于一个 context 内。在大多数的设置中，存在一个 context ，并且所有的对象存在于那个 context 中。Core Data 支持多个 contexts，不过对于更高级的使用情况才用。注意每个 context 和其他 context 都是完全独立的，一会儿我们将会谈到。需要记住的是，对象和它们的 context 是相关联的。每个*被管理*的对象都知道自己属于哪个 context，并且每个 context 都知道自己管理着哪些对象。
 
@@ -28,7 +28,7 @@ Core Data 有相当多可用的组件。这是一个非常灵活的技术。在�
 
 最常见的解决方案如下图所示：
 
-<img name="简单的 Core Data 堆栈" src="http://img.objccn.io/issue-4/stack-simple.png" width="550" height="293">
+<img name="简单的 Core Data 堆栈" src="/images/issues/issue-4/stack-simple.png" width="550" height="293">
 
 ## 组件如何一起工作
 

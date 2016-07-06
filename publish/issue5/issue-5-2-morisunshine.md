@@ -196,7 +196,7 @@ Collection view layout 将会为 collection view 中的每个 `UICollectionViewL
 
 就是这么一回事。以我的经验，这个方法对多达几百个物体的 collection view 来说也是是适用的。超过这个数量的话，一次性加载所有物体到内存中就会变成很大的负担，并且在滑动的时候就会开始卡顿了。
 
-![Springy Collection View](http://img.objccn.io/issue-5/springyCollectionView.gif)
+![Springy Collection View](/images/issues/issue-5/springyCollectionView.gif)
 
 ## 平铺（Tiling）你的 Dynamic Behaviors 来优化性能
 
@@ -346,7 +346,7 @@ Collection view layout 将会为 collection view 中的每个 `UICollectionViewL
         }];
     }
 
-![Demo](http://img.objccn.io/issue-5/newtonianCollectionView.gif)
+![Demo](/images/issues/issue-5/newtonianCollectionView.gif)
 
 删除就有点复杂了。我们希望这些物体有“掉落”的效果而不是简单的消失。这就不仅仅是从 collection view 中删除个 cell 这么简单了，因为我们希望在它离开了屏幕之前还是保留它。我已经在代码中实现了这样的效果，但是做法有点取巧。
 

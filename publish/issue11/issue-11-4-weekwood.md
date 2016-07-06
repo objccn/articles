@@ -11,11 +11,11 @@ Android 从最开始就可以接收通知这一点已经被吹捧了很长一段
 
 Android 1.6 中的通知 (Donut): 
 
-![Notifications in Android 1.6](http://img.objccn.io/issue-11/android-g1-50.jpg) 
+![Notifications in Android 1.6](/images/issues/issue-11/android-g1-50.jpg) 
 
 Android 4.4 的通知 (KitKat):
 
-![Notifications in Android 4.4](http://img.objccn.io/issue-11/modern_notes.png)
+![Notifications in Android 4.4](/images/issues/issue-11/modern_notes.png)
 
 
 ## 简史
@@ -52,11 +52,11 @@ Android 4.4 的通知 (KitKat):
 
 Android 1.6 中的运行的结果:
 
-![Notifications in Donut 1.6](http://img.objccn.io/issue-11/donut.png) 
+![Notifications in Donut 1.6](/images/issues/issue-11/donut.png) 
 
 Android 2.3 中的运行结果:
 
-![Notifications in Gingerbread 2.3](http://img.objccn.io/issue-11/gingerbread_resized.png)
+![Notifications in Gingerbread 2.3](/images/issues/issue-11/gingerbread_resized.png)
 
 
 ### Android 3.0 - 3.2
@@ -86,16 +86,16 @@ Android 2.3 中的运行结果:
 
 通知在 Android 3.2（蜂巢）接后的初始状态：
 
-![Honeycomb notifications ticket text](http://img.objccn.io/issue-11/initially-received-hc.png)
+![Honeycomb notifications ticket text](/images/issues/issue-11/initially-received-hc.png)
 
 
 当你在导航栏点击它时候的样式:
 
-![Honeycomb notifications tapping notification](http://img.objccn.io/issue-11/selecting_notification_hc.png)
+![Honeycomb notifications tapping notification](/images/issues/issue-11/selecting_notification_hc.png)
 
 当你点击时钟看到的通知的样式:
 
-![Honeycomb notifications tapping clock](http://img.objccn.io/issue-11/selecting_clock_hc.png)
+![Honeycomb notifications tapping clock](/images/issues/issue-11/selecting_clock_hc.png)
 
 各种冗余的通知让用户感到困惑不知道它们代表什么，这就对开发人员提出设计挑战，如何在恰当的时间返回恰当的信息给用户。
 
@@ -116,11 +116,11 @@ Android 2.3 中的运行结果:
 
 大文本通知折叠:
 
-![Notifications in Cupcake 1.5](http://img.objccn.io/issue-11/shrunk_text.png)
+![Notifications in Cupcake 1.5](/images/issues/issue-11/shrunk_text.png)
 
 大文本通知展开:
 
-![Notifications in Cupcake 1.5](http://img.objccn.io/issue-11/bigtext.png)
+![Notifications in Cupcake 1.5](/images/issues/issue-11/bigtext.png)
 
 
 #### 大图片通知
@@ -132,7 +132,7 @@ Android 2.3 中的运行结果:
       .setStyle(new Notification.BigPictureStyle().bigPicture(mBitmap))
       .build();
 
-![Big picture notification](http://img.objccn.io/issue-11/big_pic.png)
+![Big picture notification](/images/issues/issue-11/big_pic.png)
 
 
 #### 聚合 (Roll-up) 通知
@@ -148,7 +148,7 @@ Android 2.3 中的运行结果:
          .setSummaryText("+3 more"))
       .build();
 
-![Rollup notification](http://img.objccn.io/issue-11/rollup.png)
+![Rollup notification](/images/issues/issue-11/rollup.png)
 
 
 #### 可操作通知
@@ -161,7 +161,7 @@ Android 2.3 中的运行结果:
       .addAction(R.drawable.ic_follow, "Follow", mPendingFollowIntent)
       .build();
 
-![Action notification](http://img.objccn.io/issue-11/actions.png)
+![Action notification](/images/issues/issue-11/actions.png)
 
 这类交互是一种对用户负责的设计，并且操作简单快速，受限于 Android 的缓慢性能，这种快捷操作的方式非常受欢迎，因为你实际上不需要打开应用就可以使用它。
 
@@ -170,7 +170,7 @@ Android 2.3 中的运行结果:
 
 现在的科技圈对于任何一个人来说都已经不再像之前那么神秘，正因如此 Android 可穿戴设备也成为了科技设备中的一份子。它是否能够成功的成为一类消费品这件事情似乎仍然有待商榷，但是对于那些想要支持 Android 穿戴设备的开发者来说，仍然有很多不容忽视存在着的障碍。没有辜负 Android 系统传承下来的一些优势，其穿戴设备在与你的设备进行同步的时候似乎总可以接受正确的通知。但事实上，你的手机与 Android 穿戴设备连接后，它将会在没有代码修改的情况下对设备推送构造器创建的通知。能够简单使用建造者模式则意味着无论出现什么设备，只要它们能够支持 Android 系统和 Android 可穿戴设备，立即会有大量熟练使用 API 来收发数据的应用开发者出现。
 
-<img style="display:inline;" alt="Action notification" src="http://img.objccn.io/issue-11/picture.png" width="40%"><img style="display:inline;margin-left:1em;" alt="Action notification" src="http://img.objccn.io/issue-11/hunkosis.png" width="40%">
+<img style="display:inline;" alt="Action notification" src="/images/issues/issue-11/picture.png" width="40%"><img style="display:inline;margin-left:1em;" alt="Action notification" src="/images/issues/issue-11/hunkosis.png" width="40%">
 
 NotificationBuilder 提供了 out-of-the-box 的 android 穿戴设备支持，不用写任何额外的代码！
 
@@ -180,15 +180,15 @@ NotificationBuilder 提供了 out-of-the-box 的 android 穿戴设备支持，�
 
 自定义音乐播放器通知:
 
-![Custom music player notification](http://img.objccn.io/issue-11/music_player.png) 
+![Custom music player notification](/images/issues/issue-11/music_player.png) 
 
 自定义天气通知:
 
-![Custom weather notification](http://img.objccn.io/issue-11/weather.jpg) 
+![Custom weather notification](/images/issues/issue-11/weather.jpg) 
 
 自定义电量通知:
 
-![Custom battery notification](http://img.objccn.io/issue-11/battery_widget.png)
+![Custom battery notification](/images/issues/issue-11/battery_widget.png)
 
 自定义通知仅限于视图组件所支持[远程视图](http://developer.android.com/reference/android/widget/RemoteViews.html)的一个子集，这些视图组件本身不能高度延伸或者被覆盖。虽然只能轻度定制，但是你依然可以利用基本组件构造复杂的通知。
 

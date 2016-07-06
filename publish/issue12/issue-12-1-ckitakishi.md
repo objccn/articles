@@ -28,11 +28,11 @@
 
 可能最常见的情况是将一个 view 的属性从一个值改变为另一个值，考虑下面这个例子：
 
-<center><img src="http://img.objccn.io/issue-12/rocket-linear.gif" width="400px"></center>
+<center><img src="/images/issues/issue-12/rocket-linear.gif" width="400px"></center>
 
 在这里，我们让红色小火箭的 x-position 从 `77.0` 变为 `455.0`，刚好超过它的 parent view 的边。为了填充所有路径，我们需要确定我们的火箭在任意时刻所到达的位置。这通常使用线性插值法来完成：
 
-<center><img src="http://img.objccn.io/issue-12/lerp.png" width="135"></center>
+<center><img src="/images/issues/issue-12/lerp.png" width="135"></center>
 
 也就是说，对于动画给定的一个分数 `t`，火箭的 x 坐标就是起始点的 x 坐标 `77`，加上一个到终点的距离 `∆x = 378` 乘以该分数的值。
 
@@ -114,7 +114,7 @@
 
 比方说我们正在制作我们下一个 iPhone 应用程序上的登陆表单，我们希望当用户输入错误的密码时表单会晃动。使用关键帧动画，看起来大概像下面这样：
 
-<center><img src="http://img.objccn.io/issue-12/form.gif" width="320px"></center>
+<center><img src="/images/issues/issue-12/form.gif" width="320px"></center>
 
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animation];
     animation.keyPath = @"position.x";
@@ -140,7 +140,7 @@
 
 举个例子，我们如何让一个 view 做圆周运动：
 
-<center><img src="http://img.objccn.io/issue-12/planets.gif" width="400px"></center>
+<center><img src="/images/issues/issue-12/planets.gif" width="400px"></center>
 
     CGRect boundingRect = CGRectMake(-150, -150, 300, 300);
 
@@ -161,7 +161,7 @@
 
 设置 `rotationMode` 属性为 `kCAAnimationRotateAuto` 确保飞船沿着路径旋转。作为对比，如果我们将该属性设置为 `nil` 那动画会是什么样的呢。
 
-<center><img src="http://img.objccn.io/issue-12/planets-incorrect.gif" width="400px"></center>
+<center><img src="/images/issues/issue-12/planets-incorrect.gif" width="400px"></center>
 
 你可以使用带路径的动画来实现几个有趣的效果；资深 objc.io 作者 [Ole Begemann](https://twitter.com/olebegemann) 写了[一篇文章](http://oleb.net/blog/2010/12/animating-drawing-of-cgpath-with-cashapelayer)，阐述了如何将 `CAShapeLayer` 与基于路径的动画组合起来使用，并只用几行代码来创建酷炫的绘图动画。
 
@@ -169,7 +169,7 @@
 
 让我们再次来看看第一个例子：
 
-<center><img src="http://img.objccn.io/issue-12/rocket-linear.gif" width="400px"></center>
+<center><img src="/images/issues/issue-12/rocket-linear.gif" width="400px"></center>
 
 你会发现我们的火箭的动画有一些看起来非常不自然的地方。那是因为我们在现实世界中看到的大部分运动需要时间来加速或减速。对象瞬间达到最高速度，然后再立即停止往往看起来非常不自然。除非你在让[机器人跳舞](https://www.youtube.com/watch?v=o8HkEprSaAs&t=1m2s)，但这很少是想要的效果。
 
@@ -179,11 +179,11 @@
 
 我们可以通过引入一个 _时间函数 (timing function)_ （有时也被称为 easing 函数）来实现这个目标。该函数通过修改持续时间的分数来控制动画的速度。
 
-<center><img src="http://img.objccn.io/issue-12/lerp-with-easing.png" width="145"></center>
+<center><img src="/images/issues/issue-12/lerp-with-easing.png" width="145"></center>
 
 最简单的 easing 函数是 _linear_。它在整个动画上维持一个恒定的速度。在 Core Animation 中，这个功能由 `CAMediaTimingFunction` 类表示。
 
-<img src="http://img.objccn.io/issue-12/rect-linear.gif" width="540px">
+<img src="/images/issues/issue-12/rect-linear.gif" width="540px">
 
     CABasicAnimation *animation = [CABasicAnimation animation];
     animation.keyPath = @"position.x"; 
@@ -200,19 +200,19 @@
 Core Animation 附带了一些 linear 之外的内置 easing 函数，如：
 
 * Ease in (`kCAMediaTimingFunctionEaseIn`):  
-  <center><img src="http://img.objccn.io/issue-12/rect-easein.gif" width="540px"></center>
+  <center><img src="/images/issues/issue-12/rect-easein.gif" width="540px"></center>
 * Ease out (`kCAMediaTimingFunctionEaseOut`):  
-  <center><img src="http://img.objccn.io/issue-12/rect-easeout.gif" width="540px"></center>
+  <center><img src="/images/issues/issue-12/rect-easeout.gif" width="540px"></center>
 * Ease in ease out (`kCAMediaTimingFunctionEaseInEaseOut`):  
-  <center><img src="http://img.objccn.io/issue-12/rect-easeineaseout.gif" width="540px"></center>
+  <center><img src="/images/issues/issue-12/rect-easeineaseout.gif" width="540px"></center>
 * 默认 (`kCAMediaTimingFunctionDefault`):  
-  <center><img src="http://img.objccn.io/issue-12/rect-default.gif" width="540px"></center>
+  <center><img src="/images/issues/issue-12/rect-default.gif" width="540px"></center>
 
 在一定限度内，你也可以使用 `+functionWithControlPoints::::` 创建自己的 easing 函数。通过传递 cubic Bézier 曲线的两个控制点的 _x_ 和 _y_ 坐标，你可以轻松的创建自定义 easing 函数，比如我为我们的红色小火箭选择的那个。
 
 > 这个方法因为有三个无名参数而声名狼藉，我们并不推荐在你的 API 中使用这种蛋疼的写法。
 
-<center><img src="http://img.objccn.io/issue-12/rocket-custom.gif" width="400px"></center>
+<center><img src="/images/issues/issue-12/rocket-custom.gif" width="400px"></center>
 
     CABasicAnimation *animation = [CABasicAnimation animation];
     animation.keyPath = @"position.x";
@@ -228,7 +228,7 @@ Core Animation 附带了一些 linear 之外的内置 easing 函数，如：
 
 我不打算讲太多关于 Bézier 曲线的细节，在计算机图形学中，它们是创建平滑曲线的常用技术。你可能在基于矢量的绘图工具，比如 Sketch 或 Adobe Illustrator 中见过它们。
 
-<center><img src="http://img.objccn.io/issue-12/bezier.png"></center>
+<center><img src="/images/issues/issue-12/bezier.png"></center>
 
 传递给 `+functionWithControlPoints::::` 的值有效地控制了控制点的位置。所得到的定时函数将基于得到的路径来调整动画的速度。x 轴代表时间的分数，而 y 轴是插值函数的输入值。
 
@@ -236,7 +236,7 @@ Core Animation 附带了一些 linear 之外的内置 easing 函数，如：
 
 我写了一个小型库，叫做 [RBBAnimation](https://github.com/robb/RBBAnimation)，它包含一个允许使用 [更多复杂 easing 函数](https://github.com/robb/RBBAnimation#rbbtweenanimation) 的自定义子类 `CAKeyframeAnimation`，包括反弹和包含负分量的 cubic Bézier 函数：
 
-<center><img src="http://img.objccn.io/issue-12/anticipate.gif" width="140"></center>
+<center><img src="/images/issues/issue-12/anticipate.gif" width="140"></center>
 
     RBBTweenAnimation *animation = [RBBTweenAnimation animation];
     animation.keyPath = @"position.x";
@@ -246,7 +246,7 @@ Core Animation 附带了一些 linear 之外的内置 easing 函数，如：
 
     animation.easing = RBBCubicBezier(0.68, -0.55, 0.735, 1.55);
 
-<center><img src="http://img.objccn.io/issue-12/bounce.gif" width="140"></center>
+<center><img src="/images/issues/issue-12/bounce.gif" width="140"></center>
 
     RBBTweenAnimation *animation = [RBBTweenAnimation animation];
     animation.keyPath = @"position.x";
@@ -260,7 +260,7 @@ Core Animation 附带了一些 linear 之外的内置 easing 函数，如：
 
 对于某些复杂的效果，可能需要同时为多个属性进行动画。想象一下，在一个媒体播放程序中，当切换到到随机曲目时我们让随机动画生效。看起来就像下面这样：
 
-<center><img src="http://img.objccn.io/issue-12/covers.gif" width="440"></center>
+<center><img src="/images/issues/issue-12/covers.gif" width="440"></center>
 
 你可以看到，我们需要同时对上面的封面的 position，rotation 和 z-position 进行动画。使用 `CAAnimationGroup` 来动画其中一个封面的代码大概如下：
 

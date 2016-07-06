@@ -40,7 +40,7 @@
 
 这里有一个简单的小程序，它会打印一个字符串。注意断点已经被加在第 8 行。断点可以通过点击 Xcode 的源码窗口的侧边槽进行创建。
 
-<img src="http://img.objccn.io/issue-19/Image_2014-11-20_at_10.01.46_PM.png" width="400" />
+<img src="/images/issues/issue-19/Image_2014-11-20_at_10.01.46_PM.png" width="400" />
 
 程序会在这一行停止运行，并且控制台会被打开，允许我们和调试器交互。那我们应该打些什么呢？
 
@@ -52,7 +52,7 @@
 
 打印值很简单；只要试试 `print` 命令:
 
-<img src="http://img.objccn.io/issue-19/Image_2014-11-20_at_10.09.38_PM.png" width="600" />
+<img src="/images/issues/issue-19/Image_2014-11-20_at_10.09.38_PM.png" width="600" />
 
 LLDB 实际上会作前缀匹配。所以你也可以使用 `prin`，`pri`，或者 `p`。但你不能使用 `pr`，因为 LLDB 不能消除和 `process` 的歧义 (幸运的是 `p` 并没有歧义)。
 
@@ -62,7 +62,7 @@ LLDB 实际上会作前缀匹配。所以你也可以使用 `prin`，`pri`，或
 
 如果想改变一个值怎么办？你或许会猜 _modify_。其实这时候我们要用到的是 `expression` 这个方便的命令。
 
-<img src="http://img.objccn.io/issue-19/Image_2014-11-20_at_10.15.01_PM.png" width="240" />
+<img src="/images/issues/issue-19/Image_2014-11-20_at_10.15.01_PM.png" width="240" />
 
 这不仅会改变调试器中的值，实际上它改变了程序中的值。这时候继续执行程序，将会打印 `42 red balloons`。神奇吧。
 
@@ -172,7 +172,7 @@ LLDB 实际上会作前缀匹配。所以你也可以使用 `prin`，`pri`，或
 
 调试条上会出现四个你可以用来控制程序的执行流程的按钮。
 
-<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_10.37.45_AM.png" width="200" />
+<img src="/images/issues/issue-19/Image_2014-11-22_at_10.37.45_AM.png" width="200" />
 
 从左到右，四个按钮分别是：continue，step over，step into，step out。
 
@@ -188,7 +188,7 @@ LLDB 实际上会作前缀匹配。所以你也可以使用 `prin`，`pri`，或
 
 考虑下面一段程序：
 
-<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_10.53.52_AM.png" width="320" />
+<img src="/images/issues/issue-19/Image_2014-11-22_at_10.53.52_AM.png" width="320" />
 
 假如我们运行程序，让它停止在断点，然后执行下面一些列命令：
 
@@ -257,7 +257,7 @@ Xcode 提供了一系列工具来创建和管理断点。我们会一个个看�
 
 在 Xcode 的左侧面板，有一组按钮。其中一个看起来像断点。点击它打开断点导航，这是一个可以快速管理所有断点的面板。
 
-<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_11.38.24_AM.png" width="620" />
+<img src="/images/issues/issue-19/Image_2014-11-22_at_11.38.24_AM.png" width="620" />
 	
 在这里你可以看到所有的断点 - 在 LLDB 中通过 `breakpoint list` (或者 `br li`) 命令也做同样的事儿。你也可以点击单个断点来开启或关闭 - 在 LLDB 中使用 `breakpoint enable <breakpointID>` 和 `breakpoint disable <breakpointID>`：
 
@@ -314,17 +314,17 @@ Xcode 提供了一系列工具来创建和管理断点。我们会一个个看�
 
 如果想在 Xcode 的UI上创建符号断点，你可以点击断点栏左侧的 `+` 按钮。
 
-<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_11.52.50_AM.png" width="300" />
+<img src="/images/issues/issue-19/Image_2014-11-22_at_11.52.50_AM.png" width="300" />
 
 然后选择第三个选项：
 
-<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_11.54.44_AM.png" width="430" />
+<img src="/images/issues/issue-19/Image_2014-11-22_at_11.54.44_AM.png" width="430" />
 
 这时会出现一个弹出框，你可以在里面添加例如 `-[NSArray objectAtIndex:]` 这样的符号断点。这样**每次**调用这个函数的时候，程序都会停止，不管是你调用还是苹果调用。
 
 如果你 Xcode 的 UI 上右击**任意**断点，然后选择 "Edit Breakpoint" 的话，会有一些非常诱人的选择。
 
-<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_11.58.06_AM.png" width="570" />
+<img src="/images/issues/issue-19/Image_2014-11-22_at_11.58.06_AM.png" width="570" />
 
 这里，断点已经被修改为**只有**当 `i` 是 `99` 的时候才会停止。你也可以使用 "ignore" 选项来告诉断点最初的 `n` 次调用 (并且条件为真的时候) 的时候不要停止。
 
@@ -334,11 +334,11 @@ Xcode 提供了一系列工具来创建和管理断点。我们会一个个看�
 
 上面的例子中，你或许想知道每一次到达断点的时候 `i` 的值。我们可以使用 `p i` 作为断点行为。这样每次到达断点的时候，都会自动运行这个命令。
 
-<img src="http://img.objccn.io/issue-19/Screen_Shot_2014-11-22_at_12.01.32_PM.png" width="600" />
+<img src="/images/issues/issue-19/Screen_Shot_2014-11-22_at_12.01.32_PM.png" width="600" />
 
 你也可以添加多个行为，可以是调试器命令，shell 命令，也可以是更直接的打印：
 
-<img src="http://img.objccn.io/issue-19/Image_2014-11-22_at_12.06.34_PM.png" width="400" />
+<img src="/images/issues/issue-19/Image_2014-11-22_at_12.06.34_PM.png" width="400" />
 
 可以看到它打印 `i`，然后大声念出那个句子，接着打印了自定义的表达式。
 
@@ -440,7 +440,7 @@ Xcode 提供了一系列工具来创建和管理断点。我们会一个个看�
 
 程序运行时，Xcode 的调试条上会出现暂停按钮，而不是继续按钮：
 
-<img src="http://img.objccn.io/issue-19/Screen_Shot_2014_11_22_at_1_50_56_PM.png" width="300" />
+<img src="/images/issues/issue-19/Screen_Shot_2014_11_22_at_1_50_56_PM.png" width="300" />
 
 点击按钮会暂停 app (这会运行 `process interrupt` 命令，因为 LLDB 总是在背后运行)。这会让你可以访问调试器，但看起来可以做的事情不多，因为在当前作用域没有变量，也没有特定的代码让你看。
 

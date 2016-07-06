@@ -6,7 +6,7 @@
 
 用 CPU 处理视频的代价非常昂贵，而且编解码器也非常复杂。软解码的流行是具有革命意义的。随着 90 年代早期 QuickTime 1.0 和它的基于 C 语言的 API 的出现，你可以播放一个缩略图那么大的视频，每个像素最多有 32,768 种可能的颜色，它们完全由 CPU 进行解码。在当时，只有具有专门的图形硬件的计算机才能播放彩色视频。
 
-![QuickTime 1.0](http://img.objccn.io/issue-23/qt1_1.gif) 
+![QuickTime 1.0](/images/issues/issue-23/qt1_1.gif) 
 [图片来源](http://www.emaculation.com/forum/viewtopic.php?t=5060)
 
 到 20 世纪末，使用了当时最先进的 [MPEG-2 视频解码器](http://zh.wikipedia.org/wiki/MPEG-2) 的 DVD 被引进千家万户。随后，苹果将 DVD 驱动器加到了 PowerBooks (MacBook 的前身，2006 年停产)，但是却发现了一个问题：电脑电池和 G3 PowerPC CPU 的配合不够高效，充一次电居然没办法播放完一整部 DVD 视频。解决方案是在主板上添加一个 [C-Cube](http://zh.wikipedia.org/wiki/C-Cube) 生产的专用解码芯片，来处理这些繁重的事务。这款芯片可以在 Wallstreet，Lombard 和 Pismo 三款 PowerBook 上找到，也可以在它们所对应的专业级的桌面电脑上找到。

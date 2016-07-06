@@ -28,7 +28,7 @@ Xcode 本身就是使用 XPC 的一个很好的例子：当你在 Xcode 中编�
 
 App看起来是这样：
 
-![image](http://img.objccn.io/issue-14/xpc-SuperfamousImages-window.jpg)
+![image](/images/issues/issue-14/xpc-SuperfamousImages-window.jpg)
 
 `NSTableViewDataSource` 会从 `ImageSet` 类加载图片 ，像这样：
 
@@ -94,7 +94,7 @@ App看起来是这样：
 
 架构图如下：
 
-![image](http://img.objccn.io/issue-14/xpc-app-2-services.png)
+![image](/images/issues/issue-14/xpc-app-2-services.png)
 
 XPC 的使用十分灵活，我们还可以这样设计：让 App 直接和两个 service 通信，由 App 来负责 service 之间的数据交互。后面我们会看到 App 是如何[找到 XPC services](#service-lookup)的。
 

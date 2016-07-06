@@ -383,29 +383,29 @@ Run loop 比起操作队列或者 GCD 来说容易使用得多，因为通过 ru
    [11]: http://developer.apple.com/library/mac/#documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/AnalysingCPUUsageinYourOSXApp/AnalysingCPUUsageinYourOSXApp.html
    [12]: http://en.wikipedia.org/wiki/POSIX_Threads
    [13]: http://objccn.io/issue-2-3/
-   [14]: http://img.objccn.io/issue-2/gcd-queues.png
+   [14]: /images/issues/issue-2/gcd-queues.png
    [15]: http://objccn.io/issue-2-2/
    [16]: http://octopress.org
    [17]: http://shashankmehta.in/archive/2012/greyshade.html
    [18]: http://objccn.io/issue-2
-   [19]: http://img.objccn.io/issue-2/race-condition.png
+   [19]: /images/issues/issue-2/race-condition.png
    [20]: http://en.wikipedia.org/wiki/Race_conditions#Software
    [21]: http://en.wikipedia.org/wiki/Out-of-order_execution
    [22]: http://en.wikipedia.org/wiki/Mutex
    [23]: http://en.wikipedia.org/wiki/Lock_%28computer_science%29
-   [24]: http://img.objccn.io/issue-2/locking.png
+   [24]: /images/issues/issue-2/locking.png
    [25]: http://en.wikipedia.org/wiki/Memory_barrier
    [26]: http://en.wikipedia.org/wiki/Lock_%28computer_science%29#Granularity
    [27]: http://en.wikipedia.org/wiki/Critical_section
    [28]: http://en.wikipedia.org/wiki/Lock_%28computer_science%29#The_problems_with_locks
    [29]: http://en.wikipedia.org/wiki/Deadlock
-   [30]: http://img.objccn.io/issue-2/dead-lock.png
+   [30]: /images/issues/issue-2/dead-lock.png
    [32]: http://en.wikipedia.org/wiki/Readers-writers_problem
    [33]: http://en.wikipedia.org/wiki/Readers%E2%80%93writer_lock
    [34]: http://en.wikipedia.org/wiki/Read-copy-update
    [35]: http://objccn.io/issue-2-3/#multiple-readers-single-writer
    [36]: http://en.wikipedia.org/wiki/Priority_inversion
-   [37]: http://img.objccn.io/issue-2/priority-inversion.png
+   [37]: /images/issues/issue-2/priority-inversion.png
    [38]: http://research.microsoft.com/en-us/um/people/mbj/Mars_Pathfinder/Mars_Pathfinder.html
    [39]: http://en.wikipedia.org/wiki/Resource_starvation
 

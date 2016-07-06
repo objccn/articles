@@ -70,7 +70,7 @@ GIF 和 PNG 对于具有大面积相同颜色的图像是最好的选择，因�
 
 在画布上排布好图像并添加了两个实心圆后，我们就可以调用一个方法把之前绘制好的图形环境转换成一个 `UIImage`。该方法的输出如下所示：
 
-![Stereogram output](http://img.objccn.io/issue-21/stereogram-output.jpg)
+![Stereogram output](/images/issues/issue-21/stereogram-output.jpg)
 
 这张图片由两台位置稍有不同的相机拍摄的两张照片，以及一条具有两个中心白点的用来辅助观察的黑色条带合成而来。
 

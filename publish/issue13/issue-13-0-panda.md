@@ -8,7 +8,7 @@
 
 上个月，我们有幸在柏林和一支非常棒开发者的团队 [UIKonf][1] 坐在起为这次话题进行头脑风暴：
 
-![](http://img.objccn.io/issue-13/uikonf-meeting.jpg)
+![](/images/issues/issue-13/uikonf-meeting.jpg)
 
 最终的确定的这五篇文章针对了截然不同的架构问题：[Ash Furrow][31] 撰写的 [MVVM 介绍][3]，由 [Stephen Poletto][41] 创作的[避免滥用单例][4]，[Chris Eidhof][51] 为大家带来的[子类][5]，还有 [Krzystof Zablłocki][61] 的大作 [iOS 中的行为][6]，最后，由 [Conrad Stoll][71] 和 [Jeff Gilbert][72] 为大家介绍 [使用 VIPER 构建 iOS 应用][7] 。
 

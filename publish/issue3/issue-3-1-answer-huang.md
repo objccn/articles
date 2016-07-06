@@ -441,8 +441,8 @@ CALayer 有一个叫做 drawsAsynchronously 的属性，这似乎是一个解决
 
  
 
-   [1]: http://img.objccn.io/issue-3/pixels-software-stack.png
-   [2]: http://img.objccn.io/issue-3/pixels%2C%20hardware.png
+   [1]: /images/issues/issue-3/pixels-software-stack.png
+   [2]: /images/issues/issue-3/pixels%2C%20hardware.png
    [3]: https://developer.apple.com/library/ios/qa/qa1681/_index.html
    [4]: https://zh.wikipedia.org/wiki/PNG
    [5]: https://zh.wikipedia.org/wiki/%E9%9C%8D%E5%A4%AB%E6%9B%BC%E7%BC%96%E7%A0%81

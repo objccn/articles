@@ -494,7 +494,7 @@
   [28]: https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/exerciseAmbiguityInLayout
   [29]: http://stackoverflow.com/questions/11721656/how-to-set-nsconstraintbasedlayoutvisualizemutuallyexclusiveconstraints/13044693#13044693
   [30]: http://stackoverflow.com/questions/11721656/how-to-set-nsconstraintbasedlayoutvisualizemutuallyexclusiveconstraints/13138933#13138933
-  [31]: http://img.objccn.io/issue-3/NSDoubleLocalizedStrings.png
+  [31]: /images/issues/issue-3/NSDoubleLocalizedStrings.png
   [32]: http://developer.apple.com/library/ios/documentation/UIKit/Reference/UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/translatesAutoresizingMaskIntoConstraints
   [33]: http://developer.apple.com/library/ios/documentation/UIKit/Reference/UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/translatesAutoresizingMaskIntoConstraints
   [34]: http://floriankugler.com/blog/2013/4/21/auto-layout-performance-on-ios

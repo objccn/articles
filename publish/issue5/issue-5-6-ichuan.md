@@ -122,7 +122,7 @@ iOS 7 中，我有很多代码路径（主要是 `UITableViewCells`）需要额�
     }
 
 
-<img src="http://img.objccn.io/issue-5/responder-chain.png" name="工作中的响应者链" width="472" height="548">
+<img src="/images/issues/issue-5/responder-chain.png" name="工作中的响应者链" width="472" height="548">
 
 现在可别太激动，需要注意的是，这个方法只在键盘可见时有效（比如有类似 `UITextView` 这样的对象作为第一响应者时）。对于全局热键，你仍然需要用上面提到的 hack 方法。除去那些，这个解决途径还是很优雅的。不要覆盖类似 cmd-V 这种系统的快捷键，它会被自动映射到 `paste:` 方法。
 
@@ -192,7 +192,7 @@ Core Foundation 中出现了一个新的辅助方法，它被用于私有调用�
 
 刚发现这一点时我很很兴奋，但不要高兴得太早。在我的测试中，开启即时缓存后性能实际上有所 *降低*。要么这个方法最终是在主线程中被调用的（好像不太可能），要么感官上的性能下降是因为其在方法 `copyImageBlockSetJPEG` 中锁住了，因为这个方法也被用在主线程显示非加密的图片时。在我的 app 中，我在主线程中加载小的预览图，在后台线程中加载大型图，使用了 `kCGImageSourceShouldCacheImmediately` 后小小的解压缩阻塞了主线程，同时在后台处理大量开销昂贵的操作。	
 
-<img src="http://img.objccn.io/issue-5/image-decompression.png" name="Image Decompression Stack Trace" width="662" height="1008">
+<img src="/images/issues/issue-5/image-decompression.png" name="Image Decompression Stack Trace" width="662" height="1008">
 
 
 还有更多关于图片解压缩的却不是 iOS 7 中的新东西，像 `kCGImageSourceShouldCache`，它用来控制系统自动卸载解压缩图片数据的能力。确保你将它设置为 YES，否则所有的工作都将没有意义。有趣的是，苹果在 64-bit 运行时的系统中将 `kCGImageSourceShouldCache` 的 *默认值* 从 NO 改为了 YES。
@@ -218,7 +218,7 @@ Core Foundation 中出现了一个新的辅助方法，它被用于私有调用�
 
 承认吧，你是怀念 Comic Sans MS 的。在 iOS 7 中，Comic Sans MS 终于回来了。iOS 6 中添加了可下载字体，但那时的字体列表很少也不见得有趣。在 iOS 7 中苹果添加了不少字体，包括 “famous”，它和 [PT Sans](http://www.fontsquirrel.com/fonts/PT-Sans) 或 [Comic Sans MS](http://sixrevisions.com/graphics-design/comic-sans-the-font-everyone-loves-to-hate/) 有些类似。`kCTFontDownloadableAttribute` 并没有在 iOS 6 中声明，所以 iOS 7 之前它并不真正可用，但苹果确是在 iOS 6 的时候就已经做了私有声明了。
 
-<img src="http://img.objccn.io/issue-5/comic-sans-ms.png" name="Who doesn't love Comic Sans MS" width="414" height="559">
+<img src="/images/issues/issue-5/comic-sans-ms.png" name="Who doesn't love Comic Sans MS" width="414" height="559">
 
 字体列表是[动态变化](http://mesu.apple.com/assets/com_apple_MobileAsset_Font/com_apple_MobileAsset_Font.xml)的，以后可能就会发生变动。苹果在 [Tech Note HT5484](http://support.apple.com/kb/HT5484) 中罗列了一些可用的字体，但这个文档已经过时了，并不能反映 iOS 7 的变化。
 

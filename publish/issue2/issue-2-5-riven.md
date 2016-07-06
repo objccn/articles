@@ -47,7 +47,7 @@
 
 XCode4 所使用的测试框架是基于 [OCUnit][4]。为了理解之前所提到的异步测试问题，我们需要了解一下测试包中的各个部分之间的执行顺序。下图展示了一个简化的流程。
 
-<img src="http://img.objccn.io/issue-2/SenTestingKit-call-stack.png" style="width:698px" alt="SenTestingKit call stack"/>
+<img src="/images/issues/issue-2/SenTestingKit-call-stack.png" style="width:698px" alt="SenTestingKit call stack"/>
 
 在测试框架在主 run loop 开始运行之后，主要执行了以下几个步骤：
 
@@ -66,7 +66,7 @@ XCode4 所使用的测试框架是基于 [OCUnit][4]。为了理解之前所提�
 
 我们对这个问题的解决方案是对 SenTestingKit 添加一个[扩展][2]，它在栈上使用同步执行，并把每个部分加入到主队列上。正如下图所见，在验证整个测试框架结果之前，报告异步测试成功或者失败的 Block 就被加入到队列。这种执行顺序允许我们开启一个测试并等待它的测试结果。
 
-<img src="http://img.objccn.io/issue-2/SenTestingKitAsync-call-stack.png" style="width:531px" alt="SenTestingKitAsync call stack"/>
+<img src="/images/issues/issue-2/SenTestingKitAsync-call-stack.png" style="width:531px" alt="SenTestingKitAsync call stack"/>
 
 如果测试方法以 __Async__ 结尾，框架就会认为该方法是异步测试。此外，在异步测试中，我们必须手动地报告测试成功，同时为了防止 Block 永远不会被调用，我们还需添加了一个超时方法。之前的错误的测试方法修改后如下所示：
 
@@ -90,7 +90,7 @@ XCode4 所使用的测试框架是基于 [OCUnit][4]。为了理解之前所提�
 
 虽然这个示例框架只是为了演示，但在我们自己开发的许多应用中也使用了这种模式。
 
-<img src="http://img.objccn.io/issue-2/PinacotecaCore.png" style="width:699px" alt="PinacotecaCore architecture"/>
+<img src="/images/issues/issue-2/PinacotecaCore.png" style="width:699px" alt="PinacotecaCore architecture"/>
 
 从上图我们可以知道，示例框架有三个组件我们需要测试：
 

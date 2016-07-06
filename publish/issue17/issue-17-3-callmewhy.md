@@ -39,7 +39,7 @@
 
 让我们从技术的角度来看一下收据文件。文件结构大概是这样的：
 
-![](http://img.objccn.io/issue-17/ReceiptStructure.png)
+![](/images/issues/issue-17/ReceiptStructure.png)
 
 收据文件由一个经过签名的 [PKCS #7](https://www.ietf.org/rfc/rfc2315.txt) 容器组成，这个容器内嵌 [DER](http://en.wikipedia.org/wiki/X.690#DER_encoding) 编码的 [ASN.1](http://www.itu.int/ITU-T/recommendations/rec.aspx?id=9608) 负载区 (payload)，一个证书链，和一个数字签名。
 
@@ -88,7 +88,7 @@ ASN.1 负载区的结构如下：
 - 接下来的三个字节对集合内容的长度进行编码。
 - 集合的内容就是收据的属性。
 
-![](http://img.objccn.io/issue-17/ASN.1-DER-Receipt.png)
+![](/images/issues/issue-17/ASN.1-DER-Receipt.png)
 
 接下来的一张图展示了收据的属性是如何进行编码的：
 
@@ -100,17 +100,17 @@ ASN.1 负载区的结构如下：
     - 属性的版本也被编码成了一个 ASN.1 INTEGER (第一个字节用来标记一个 ASN.1 INTEGER 类型，第二个字节编码长度，第三个字节存放值) 。
     - 属性的值被编码成了一个 ASN.1 OCTET-STRING (第一个字节用来标记一个 ASN.1 OCTET-STRING 类型，第二个字节编码长度，剩下来的字节用来保存数据) 。
 
-![](http://img.objccn.io/issue-17/ASN.1-DER-Attribute-OCTETSTRING.png)
+![](/images/issues/issue-17/ASN.1-DER-Attribute-OCTETSTRING.png)
 
 通过使用 ASN.1 OCTET-STRING 来存储属性值，我们很容易嵌入各种各样的值，比如 UTF-8 、 ASCII 或者数字。在内购中，属性值也可以包含收据模块。下面的是一些图例：
 
-![](http://img.objccn.io/issue-17/ASN.1-DER-Attribute-INTEGER.png)
+![](/images/issues/issue-17/ASN.1-DER-Attribute-INTEGER.png)
 
-![](http://img.objccn.io/issue-17/ASN.1-DER-Attribute-IA5STRING.png)
+![](/images/issues/issue-17/ASN.1-DER-Attribute-IA5STRING.png)
 
-![](http://img.objccn.io/issue-17/ASN.1-DER-Attribute-UTF8STRING.png)
+![](/images/issues/issue-17/ASN.1-DER-Attribute-UTF8STRING.png)
 
-![](http://img.objccn.io/issue-17/ASN.1-DER-Attribute-SET.png)
+![](/images/issues/issue-17/ASN.1-DER-Attribute-SET.png)
 
 
 ## 验证收据
@@ -130,7 +130,7 @@ ASN.1 负载区的结构如下：
 
 在 OS X 和 iOS 中，收据的位置并不一样，如下图所示：
 
-![](http://img.objccn.io/issue-17/ReceiptLocation.png)
+![](/images/issues/issue-17/ReceiptLocation.png)
 
 在 OS X 中，收据文件在应用程序的 bundle 里，路径是 Contents/_MASReceipt 。而在 iOS 里，收据文件在应用的数据沙盒中，在 StoreKit 文件夹下。
 
@@ -370,7 +370,7 @@ ASN.1 负载区的结构如下：
 
 在验证的时候将会采用相同的计算方案，如果计算的哈希值一致，那么这个收据是有效的，下图描述了整个计算的流程：
 
-![](http://img.objccn.io/issue-17/GUIDComputation.png)
+![](/images/issues/issue-17/GUIDComputation.png)
 
 为了计算这个哈希值，你需要获取设备的 GUID。
 

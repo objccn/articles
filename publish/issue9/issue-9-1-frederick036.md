@@ -24,7 +24,7 @@
 
 > <span class="secondary radius label">编者注</span> 原文中的这个快捷键已经过时了，在最新的 OS X Mavericks 系统中，字符显示程序的快捷键应该是 <kbd>Control</kbd> + <kbd>Cmd</kbd> + 空格键。
 
-![The Character Viewer in OS X showing a table of Emoji and Unicode character information](http://img.objccn.io/issue-9/os-x-character-viewer-emoji.png)
+![The Character Viewer in OS X showing a table of Emoji and Unicode character information](/images/issues/issue-9/os-x-character-viewer-emoji.png)
 
 就像上文提到的其它编码一样，Unicode 以抽象的方式代表一个字符，而不规定这个字符应该如何**呈现（render）**。如此一来，Unicode 对中文、日文和韩文（CJK）里使用的汉字（也就是所谓的[统一汉字](http://en.wikipedia.org/wiki/Han_unification)）都使用完全相同的码点（这一决定颇具争议），尽管在这些书写系统里，每个汉字都发展出了独特的**字形（glyph）**变体。
 

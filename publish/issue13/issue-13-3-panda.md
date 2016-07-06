@@ -44,12 +44,12 @@
 
 运行时属性是 Interface Builder 使用中最关键的特性之一。它们为你提供了一个构建自定义类甚至设置 iOS 内置类的属性的途径。举个例子，你是否曾为你的层设置圆角呢？你其实可以直接在 IB 中进行简单的运行时属性配置来实现这一点。
 
-<img src="http://img.objccn.io/issue-13/cornerRadius.png" width="260">
+<img src="/images/issues/issue-13/cornerRadius.png" width="260">
 
 
 当在 Interface Builder 中创建行为时，你将重度依赖运行时属性去设置行为选项。最终将会带来更多的典型运行时属性：
 
-<img src="http://img.objccn.io/issue-13/runtimeAttributes.png" width="253">
+<img src="/images/issues/issue-13/runtimeAttributes.png" width="253">
 
 
 ###行为的生命周期
@@ -118,13 +118,13 @@
 这里我们将展示在一个 UIViewController 类（不是自定义的类）中添加一个视差动画是一件多么容易的事情：
 
 <video controls="1" style="display:block;max-width:100%;height:auto;border:0;">
-  <source src="http://img.objccn.io/issue-13/parallaxAnimationBehaviour.mp4">
+  <source src="/images/issues/issue-13/parallaxAnimationBehaviour.mp4">
 </video>
 
 或者需要从你的相册或者相机中获取一张图片？
 
 <video controls="1" style="display:block;max-width:100%;height:auto;border:0;">
-  <source src="http://img.objccn.io/issue-13/imagePickerBehaviour.mp4">
+  <source src="/images/issues/issue-13/imagePickerBehaviour.mp4">
 </video>
 
 ##进阶特性

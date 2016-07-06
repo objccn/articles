@@ -16,12 +16,12 @@ GPU 是一种理想的处理图片和视频的设备，因为它是专门为并�
 
 下面是一个例子，我们来看看同一张图片在进行索贝尔边界探测之前和之后：
 
-<img src="http://img.objccn.io/issue-21/MV-Chair.png" style="display: inline-block; width:240px" alt="Original image"/>
-<img src="http://img.objccn.io/issue-21/MV-Sobel.png" style="display: inline-block; width:240px" alt="Sobel edge detection image"/>
+<img src="/images/issues/issue-21/MV-Chair.png" style="display: inline-block; width:240px" alt="Original image"/>
+<img src="/images/issues/issue-21/MV-Sobel.png" style="display: inline-block; width:240px" alt="Sobel edge detection image"/>
 
 正如我上面提到的，这项技术通常用来实现一些视觉效果。如果在上面的图片中将颜色进行反转，最明显的边界用黑色代表而不是白色，那么我们就得到了一张类似铅笔素描效果的图片。
 
-<img src="http://img.objccn.io/issue-21/MV-Sketch.png" style="width:240px" alt="Sketch filtered image"/>
+<img src="/images/issues/issue-21/MV-Sketch.png" style="width:240px" alt="Sketch filtered image"/>
 
 那么这些边界是如何被探测出来的？第一步这张彩色图片需要减薄成一张亮度 (灰阶) 图。Janie Clayton 在[她的文章](http://objccn.io/issue-21-7/)中解释了这一步是如何在一个[片断着色器](http://zh.wikipedia.org/w/index.php?title=%E7%89%87%E6%96%AD%E7%9D%80%E8%89%B2%E5%99%A8&redirect=no) ([fragment shader](https://www.opengl.org/wiki/Fragment_Shader)) 中完成的。简单地说这个过程就是将每个像素的红绿蓝部分加权合为一个代表这个像素亮度的值。
 
@@ -125,7 +125,7 @@ void main()
 
 这里你更需要一种叫做坎尼边界探测[3]的边界探测方法。坎尼边界探测可以在一张图片中探测出连贯的只有一像素宽的边界：
 
-<img src="http://img.objccn.io/issue-21/MV-Canny.png" style="width:240px" alt="Canny edge detection image"/>
+<img src="/images/issues/issue-21/MV-Canny.png" style="width:240px" alt="Canny edge detection image"/>
 
 坎尼边界探测包含了几个步骤。和索贝尔边界探测以及其他我们接下来将要讨论的方法一样，在进行边界探测之前首先图片需要转化成亮度图。一旦转化为灰阶亮度图紧接着进行一点点的[高斯模糊](http://www.sunsetlakesoftware.com/2013/10/21/optimizing-gaussian-blurs-mobile-gpu)，这么做是为了降低传感器噪音对边界探测的影响。
 
@@ -213,17 +213,17 @@ R = I<sub>x</sub><sup>2</sup> × I<sub>y</sub><sup>2</sup> − I<sub>xy</sub> ×
 
 我们从 Stack Exchange 信号处理分站中的[一个问题](http://dsp.stackexchange.com/questions/401/how-to-detect-corners-in-a-binary-images-with-opengl)中取来一张测试图片：
 
-<img src="http://img.objccn.io/issue-21/MV-HarrisSquares.png" alt="Harris corner detector test image"/>
+<img src="/images/issues/issue-21/MV-HarrisSquares.png" alt="Harris corner detector test image"/>
 
 经过前面的计算过程得到的结果如下图：
 
-<img src="http://img.objccn.io/issue-21/MV-HarrisCornerness.png" alt="Harris cornerness intermediate image"/>
+<img src="/images/issues/issue-21/MV-HarrisCornerness.png" alt="Harris cornerness intermediate image"/>
 
 为了找出边角准确的位置，我们需要选出极点 (一个区域内亮度最高的地方)。这里需要使用一个非最大值转化。和我们在坎尼边界探测中所做的一样，我们要考察一个中心像素周围的临近像素 (从一个像素半径开始，半径可以扩大)，只有当中心像素的亮度高于它所有临近像素时才保留他，否则就将这个像素变为黑色。这样一来最后留下的就应该是一片区域中亮度最高的像素，也就是最可能是边角的地方。
 
 通过这个过程，我们现在可以从图片中看到任意不是黑色的像素都是一个边角所在的位置：
 
-<img src="http://img.objccn.io/issue-21/MV-HarrisCorners.png" alt="Harris corners"/>
+<img src="/images/issues/issue-21/MV-HarrisCorners.png" alt="Harris corners"/>
 
 目前我是使用 CPU 来进行点的提取，这可能会是边角探测的一个瓶颈，不过在 GPU 上使用柱状图金字塔[8]可能会加速这个过程。
 
@@ -239,13 +239,13 @@ R = I<sub>x</sub><sup>2</sup> × I<sub>y</sub><sup>2</sup> − I<sub>xy</sub> ×
 
 我们首先选择一条线段和线段上的三个点：
 
-<img src="http://img.objccn.io/issue-21/MV-ParallelCoordinateSpace.png" alt="An example line"/>
+<img src="/images/issues/issue-21/MV-ParallelCoordinateSpace.png" alt="An example line"/>
 
 要将这条线段转化到平行坐标空间去，我们需要画出三个平行的垂直轴。在中间的轴上，我们选取三个点在 X 轴上的值，也就是 1，2，3 处画一个点。在左边的轴上，我们选取三个点在 Y 轴上的值，在 3，5，7 处画一个点。在右边的轴上我们做同样的事情，但是取 Y 轴的负值。
 
 接下来我们将代表 Y 轴值的点和它对应的 X 轴值连接起来。连接后的效果像下图：
 
-<img src="http://img.objccn.io/issue-21/MV-ParallelCoordinateTransform.png" alt="Points transformed into parallel coordinate space"/>
+<img src="/images/issues/issue-21/MV-ParallelCoordinateTransform.png" alt="Points transformed into parallel coordinate space"/>
 
 你会注意到在右边的三条线会相交于一点。这个点的坐标值代表了在真实空间中线段的斜率和截距。如果我们用一个向下斜的线段，那么相交会发生在图的左半边。
 
@@ -264,15 +264,15 @@ R = I<sub>x</sub><sup>2</sup> × I<sub>y</sub><sup>2</sup> − I<sub>xy</sub> ×
 
 举例来说，我们可以从这张测试图片开始：
 
-<img src="http://img.objccn.io/issue-21/MV-HoughSampleImage.png" alt="Sample image for line detection"/>
+<img src="/images/issues/issue-21/MV-HoughSampleImage.png" alt="Sample image for line detection"/>
 
 下面是我们在平行坐标空间中得到的 (我已经将负值对称过来使图片高度减半)
 
-<img src="http://img.objccn.io/issue-21/MV-HoughParallel.png" alt="Hough parallel coordinate space"/>
+<img src="/images/issues/issue-21/MV-HoughParallel.png" alt="Hough parallel coordinate space"/>
 
 图中的亮点就是我们探测到线段的地方。进行一个非最大值转化来找到区域最值并将其他地方变为黑色。然后，点被转化回线段的斜率和截距，得到下面的结果：
 
-<img src="http://img.objccn.io/issue-21/MV-HoughLines.png" alt="Hough transform line detection"/>
+<img src="/images/issues/issue-21/MV-HoughLines.png" alt="Hough transform line detection"/>
 
 我必须指出在 GPUImage 中这个非最大值转换过程是一个薄弱的环节。它可能会导致错误的探测出线段，或者在有噪点的地方将一条线段探测为多条线段。
 

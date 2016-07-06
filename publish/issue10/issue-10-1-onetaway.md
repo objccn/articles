@@ -68,24 +68,24 @@
 
 同步对等网络 (Synchronous Peer-to-Peer, S-P2P) 是实际上第一个被广泛接收的方式，并被用于像 iPod 和 PDA 这样的外围设备。S-P2P 实现简单并且本地网络速度快。由于 iTunes 需要传输大量的媒体介质，所以 iTunes 仍然使用这种方式。
 
-![Synchronous Peer-to-Peer](http://img.objccn.io/issue-10/sp2p.png)<br />
+![Synchronous Peer-to-Peer](/images/issues/issue-10/sp2p.png)<br />
 *Synchronous Peer-to-Peer (S-P2P)*
 
 同步客户端服务器 (Synchronous Client-Server, S-CS) 方式随着网络的发展以及像[亚马逊云服务](http://aws.amazon.com) (AWS) 这样的云服务的流行而变得流行起来。S-CS 可能是当今最常用的同步方式。站在实现的立场上，它和开发任何其他的 web 服务非常相似。典型地，一个自定义的云应用程序使用某种语言开发，该全栈式开发框架可能和客户端程序无关，比如 [Ruby on Rails](http://rubyonrails.org), [Django](https://www.djangoproject.com)，或者 [Node.js](http://nodejs.org)。与云通讯的速度要比本地网络慢，但是 S-CS 有一个优势叫做“始终在线”，因此，只要网络保持连接，客户端可以在任何位置同步数据。
 
-![Synchronous Client-Server](http://img.objccn.io/issue-10/scs.png)<br />
+![Synchronous Client-Server](/images/issues/issue-10/scs.png)<br />
 *Synchronous Client-Server (S-CS)*
 
 对于异步客户端服务器 (Asynchronous Client-Server, A-CS) 方式，开发者使用数据存储的 API，存取本地备份的数据。同步数据的过程透明地发生在后台，应用程序代码通过回调机制被告知是否发生变化。采用这种方式的的例子包括 [Dropbox Datastore API](https://www.dropbox.com/developers/datastore)，以及对 Core Data 开发者来说的 [Wasabi Sync](http://www.wasabisync.com) 服务。
 
 异步 _冗余同步_ 方式的一个优点是当网络不可用的时候，应用程序可以继续工作并能够存取用户数据。另一个优点是开发者不用再关注通讯和同步的细节，可以集中精力在应用程序的其他方面，数据存储看上去就好像是在设备本地进行的。
 
-![Asynchronous Client-Server](http://img.objccn.io/issue-10/acs.png)<br />
+![Asynchronous Client-Server](/images/issues/issue-10/acs.png)<br />
 *Asynchronous Client-Server (A-CS)*
 
 异步对等方式 (Asynchronous Peer-to-Peer, A-P2P) 目前尚在初期，并且没有被广泛地使用。A-P2P 将所有的负载分发到客户端程序上，并且不使用直接通讯。开发一个 A-P2P 框架是比较复杂的，并且导致了一些众所周知的问题，包括苹果早期想让 iCloud 支持 Core Data (现在已经支持的很好了)。和 S-CS 一样，每一个设备都有一份数据存储的完整副本。通过交换不同设备之间的文件的变化来实现数据同步，这些文件通常被称为 _事务日志_ 。事务日志被上传到云端，然后从云端通过一个基本的文件处理服务器 (比如 iCloud, Dropbox) 分发给其他设备，这一过程不需要知道日志的具体内容。
 
-![Asynchronous Peer-to-Peer](http://img.objccn.io/issue-10/ap2p.png)<br />
+![Asynchronous Peer-to-Peer](/images/issues/issue-10/ap2p.png)<br />
 *Asynchronous Peer-to-Peer (A-P2P)*
 
 鉴于开发 A-P2P 系统的复杂性，你也许会问为什么我们还要自找麻烦地去开发。A-P2P 框架的一个主要优势是它抽离了对智能服务器的需求。开发者能够不用考虑服务端的开发，并可以利用多种可用的文件传输服务的优势，他们其中的大多数是免费的。而且，由于 A-P2P 系统不连接到一个特定的服务，也就没有了供应商被锁定的危险。
@@ -131,7 +131,7 @@ _变化追踪_ 用来描述同步算法如何确定自上一次同步后，数�
 
 关系可能是非常麻烦的 (这可不是对人际交往的评价)。拿一个实体 `A` 和实体 `B` 之间简单的一对一的关系举例。假设 `设备1` 和 `设备2` 都拥有对象 `A[1]`，和与之相关的对象 `B[1]`。`设备1` 创建了一个对象 `B[2]`，并将 `A[1]` 和 `B[2]` 相关联，然后删除 `B[1]`。同时，`设备2` 也删除 `B[1]`，但是创建了 `B[3]`，并将 `B[3]` 和 `A[1]` 关联。
 
-![Orphaned object](http://img.objccn.io/issue-10/orphan.png)<br />
+![Orphaned object](/images/issues/issue-10/orphan.png)<br />
 *Orphaned object arising from conflicting changes to a one-to-one relationship.*
 
 同步之后，将会出现一个额外的，孤立的，不和任何对象 A 相关联的对象 B。如果关系需要一个验证规则，那么你就得到了一个无效对象图。而这仅仅是你能想到的最简单的一种关系。当涉及到更复杂的关系时，还可能会出现更多的问题。

@@ -12,7 +12,7 @@ iOS 7 添加了两个新的 API 以便你的程序可以在后台更新界面以
 
 开启后台获取的第一步是在 info plist 文件中对 [UIBackgroundModes](https://developer.apple.com/library/ios/documentation/general/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW22) 键指定特定的值。最简单的途径是在 Xcode 5 的 project editor 中新的 Capabilities 标签页中设置，这个标签页包含了后台模式部分，可以方便配置多任务选项。
 
-<img alt="A screenshot showing Xcode 5’s new Capabilities tab" src="http://img.objccn.io/issue-5/capabilities-on-bgfetch.jpg">
+<img alt="A screenshot showing Xcode 5’s new Capabilities tab" src="/images/issues/issue-5/capabilities-on-bgfetch.jpg">
 
 或者，你可以手动编辑这个值
 
@@ -88,7 +88,7 @@ iOS 默认不进行后台获取，所以你需要设置一个时间间隔，否�
 
 第二种方法，使用 scheme 更改 Xcode 运行程序的方式。在 Xcode 菜单的 Product 选项，选择 Scheme 然后选择 Manage Schemes。在这里，你可以编辑或者添加一个新的 scheme，然后选中 _Launch due to a background fetch event_ 。如下图：
 
-<img alt="A screenshot showing Xcode 5’s scheme editor" src="http://img.objccn.io/issue-5/edit-scheme-simulate-background-fetch.png">
+<img alt="A screenshot showing Xcode 5’s scheme editor" src="/images/issues/issue-5/edit-scheme-simulate-background-fetch.png">
 
 ## 远程通知
 

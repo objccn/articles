@@ -28,11 +28,11 @@ Core Animation 是通过分离 layer 的模型属性和你在屏幕上看到的�
 
 `CAAnimation` 动画的更大的问题是它们是直接在 layer 上对属性进行操作的。这意味着什么呢？比如我们想指定一个 layer 从坐标为 (100, 100) 的位置运动到 (300, 300) 的位置，但是在它运动到中间的时候，我们想它停下来并且让它回到它原来的位置，事情就变得非常复杂了。如果你只是简单地删除当前的动画然后再添加一个新的，那么这个 layer 的速率就会不连续。
 
-<img src="http://img.objccn.io/issue-12/abrupt.png" width="600" />
+<img src="/images/issues/issue-12/abrupt.png" width="600" />
 
 然而，我们想要的是一个漂亮的，流畅地减速和加速的动画。
 
-<img src="http://img.objccn.io/issue-12/smooth.png" width="600" />
+<img src="/images/issues/issue-12/smooth.png" width="600" />
 
 只有通过*间接*操作动画才能达到上面的效果，比如通过模拟力在界面上的表现。新的动画需要用 layer 的当前*速度矢量*作为参数传入来达到流畅的效果。
 

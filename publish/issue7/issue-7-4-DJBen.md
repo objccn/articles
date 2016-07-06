@@ -97,7 +97,7 @@ Target-Action 是回应 UI 事件时典型的消息传递方式。iOS 上的 `UI
 
 基于上述对不同消息传递机制的特点，我们画了一个流程图来帮助我们在不同情境下做出不同的选择。一句忠告：流程图的建议不代表最终答案。有些时候别的选择依然能达到应有的效果。只不过大多数情况下这张图能引导你做出正确的决定。
 
-<img src="http://img.objccn.io/issue-7/communication-patterns-flow-chart.png" title="Decision flow chart for communication patterns in Cocoa" width="585" height="688">
+<img src="/images/issues/issue-7/communication-patterns-flow-chart.png" title="Decision flow chart for communication patterns in Cocoa" width="585" height="688">
 
 图中有些细节值得深究：
 
@@ -117,7 +117,7 @@ Target-Action 是回应 UI 事件时典型的消息传递方式。iOS 上的 `UI
 
 消息的接收者（operation 队列）知道消息的发送者（operation），并 retain 它并控制后者的生命周期。另外，在这种情况下只需要单向的消息传递机制。当然如果考虑到 oepration 队列只关心那些改变 operation 的值的改变情况的话，就还不足以说服大家使用 KVO 了。但我们可以这么理解：被传递的消息可以被当成值的改变来处理。因为 state 属性在 operation 队列以外也是有用的，所以这里适合用 KVO。
 
-<img src="http://img.objccn.io/issue-7/kvo-flow-chart.png" title="Decision flow chart for communication patterns in Cocoa" width="585" height="678">
+<img src="/images/issues/issue-7/kvo-flow-chart.png" title="Decision flow chart for communication patterns in Cocoa" width="585" height="678">
 
 当然 KVO 不是唯一的选择。我们也可以将 operation 队列作为 operation 的 delegate 来使用，operation 会调用类似 `operationDidFinish:` 或者 `operationDidBeginExecuting:` 等方法把它的 state 传递给 queue。这样就不太方便了，因为 operation 要保存 state 属性，以便于调用这些 delegate 方法。另外，由于 queue 不能主动获取 state 信息，所以 queue 也必须保存所有 operation 的 state。
 
@@ -127,7 +127,7 @@ Core Data 使用 notification 传递事件（例如一个 managed object context
 
 发生改变时触发的 notification 是由 managed object contexts 发出的，所以我们不能假定消息的接收者知道消息的发送者。因为消息的源头不是一个 UI 事件，很多接收者可能在关注着此消息，并且消息传递是单向的，所以 notification 是唯一可行的选择。
 
-<img src="http://img.objccn.io/issue-7/notification-flow-chart.png" title="Decision flow chart for communication patterns in Cocoa" width="585" height="687">
+<img src="/images/issues/issue-7/notification-flow-chart.png" title="Decision flow chart for communication patterns in Cocoa" width="585" height="687">
 
 ### Delegation
 
@@ -135,7 +135,7 @@ Table view 的 delegate 有多重功能，它可以从管理 accessory view，�
 
 正如我们在上述流程图中看到的，用 target-action 时，不能传递自定义的数据。而选中 table view 的某个 cell 时，collection view 不仅需要告诉我们一个 cell 被选中了，也要通过 index path 告诉我们哪个 cell 被选中了。如果我们照着这个思路，流程图会引导我们使用 delegation 机制。
 
-<img src="http://img.objccn.io/issue-7/delegation-flow-chart.png" title="Decision flow chart for communication patterns in Cocoa" width="585" height="687">
+<img src="/images/issues/issue-7/delegation-flow-chart.png" title="Decision flow chart for communication patterns in Cocoa" width="585" height="687">
 
 如果不在消息传递中包含选中 cell 的 index path，而是让选中项改变时我们像 table view 主动询问并获取选中 cell 的相关信息，会怎样呢？这会非常不方便，因为我们必须记住当前选中项的数据，这样才能在多选择中知道哪些 cell 是被新选中的。
 
@@ -145,7 +145,7 @@ Table view 的 delegate 有多重功能，它可以从管理 accessory view，�
 
 我们用 `-[NSURLSession dataTaskWithURL:completionHandler:]` 来作为一个 block API 的介绍。那么从 URL 加载部分返回给调用者是怎么传递消息的呢？首先，作为 API 的调用者，我们知道消息的发送者，但是我们并没有 retain 它。另外，这是个单向的消息传递————它直接调用 `dataTaskWithURL:` 的方法。如果我们对照流程图，会发现这属于 block 消息传递机制。
 
-<img src="http://img.objccn.io/issue-7/block-flow-chart.png" title="Decision flow chart for communication patterns in Cocoa" width="585" height="688">
+<img src="/images/issues/issue-7/block-flow-chart.png" title="Decision flow chart for communication patterns in Cocoa" width="585" height="688">
 
 有其他的选项吗？当然，苹果自己的 `NSURLConnection` 就是最好的例子。`NSURLConnection`在 block 问世之前就存在了，所以它并没有用 block 来实现消息传递，而是使用 delegation 来完成。当 block 出现以后，苹果就在 OS X 10.7 和 iOS 5 平台上的 `NSURLConnection` 中加了 `sendAsynchronousRequest:queue:completionHandler:`，所以我们不再在简单的任务中使用 delegate 了。
 
@@ -155,7 +155,7 @@ Table view 的 delegate 有多重功能，它可以从管理 accessory view，�
 
 一个明显的 target-action 用例是按钮。按钮在不被按下的时候不需要发送任何的信息。为了这个目的，target-action 是 UI 中消息传递的最佳选择。
 
-<img src="http://img.objccn.io/issue-7/target-action-flow-chart.png" title="Decision flow chart for communication patterns in Cocoa" width="585" height="678">
+<img src="/images/issues/issue-7/target-action-flow-chart.png" title="Decision flow chart for communication patterns in Cocoa" width="585" height="678">
 
 如果 target 是明确指定的，那么 action 消息会发送给指定的对象。如果 target 是 `nil`， action 消息会一直在响应链中被传递下去，直到找到一个能处理它的对象。在这种情况下，我们有一个完全解耦的消息传递机制：发送者不需要知道接收者，反之亦然。
 

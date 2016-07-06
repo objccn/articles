@@ -8,7 +8,7 @@
 
 首先，我们需要一些理论知识。效率通常用[大 O 符号](https://en.wikipedia.org/wiki/Big_O_notation)描述。它定义了一个函数的*极限特征*，通常被用于描绘其算法效率。O 定义了函数增长率的上限。不同量级的差异非常巨大，可以看看通常使用的 O 符号的量级以及它们所对应需要的操作数的关系。
 
-![](http://img.objccn.io/issue-7/big-o-notation.png)
+![](/images/issues/issue-7/big-o-notation.png)
 
 例如，如果用算法复杂度为 O(n^2)的算法对一个有 50 个元素的数组排序，需要 2,500 步的操作。而且，还有内部的系统开销和方法调用 — 所以是 250 0个操作的时间常量。 O(1)是理想的复杂度，代表着恒定的时间。[好的排序算法通常需要 O(n\*log n) 的时间](http://en.wikipedia.org/wiki/Sorting_algorithm#Comparison_of_algorithms)。
 
@@ -340,7 +340,7 @@
 
 `NSMutableSet` 有几个很强大的方法，例如 `intersectSet:`，`minusSet:` 和 `unionSet:`。
 
-![img](http://img.objccn.io/issue-7/set.png)
+![img](/images/issues/issue-7/set.png)
 
 ### 应该用setWithCapacity:吗?
 

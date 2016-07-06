@@ -17,7 +17,7 @@ OS X 上代码签名技术和相应的 API 是在 Mac OS X Leopard 10.5 上首�
 
 在 OS X 上，X.509 的基本组成部分（译者注：例如证书等）都是由一个叫**钥匙串访问**的工具来进行管理。打开你开发机器上的**钥匙串访问**应用，选择类别选项下的“我的证书（My Certificates）”，你可以看到所有你持有的私钥相对应的证书。要用一个证书设置代码签名，你必须拥有私钥，所以所有你拥有私钥的证书都会被列在这里。如果你拥有一个证书的私钥，你可以展开证书并将它的私钥显示出来：
 
-![iOS Developer Certificate in the OS X keychain](http://img.objccn.io/issue-17/iphone-developer-keychain.png)
+![iOS Developer Certificate in the OS X keychain](/images/issues/issue-17/iphone-developer-keychain.png)
 
 如果你要导出证书，例如为了备份（强烈建议进行），一定要记得展开证书那一条显示出私钥并将两行都选中。
 
@@ -30,7 +30,7 @@ $ security find-identity -v -p codesigning
 
 概括的讲，一个证书是一个公钥加上许多附加信息，这些附加信息都是被某个认证机构（Certificate Authority 简称 CA）进行签名认证过的，认证这个证书中的信息是准确无误的。对于 iOS 开发来说这个认证机构就是苹果的认证部门 Apple Worldwide Developer Relations CA。认证的签名有固定的有效期，这就意味着当前系统时间需要被正确设置，因为证书是基于当前时间进行核对。这也是为什么将系统时间设定到过去会对 iOS 造成多方面破坏的原因之一。
 
-![iOS Developer Certificate in detail](http://img.objccn.io/issue-17/ios-dev-certificate.png)
+![iOS Developer Certificate in detail](/images/issues/issue-17/ios-dev-certificate.png)
 
 对于 iOS 开发来说，一般会有两个证书：一个带有前缀 `iPhone Developer`，另一个带有前缀 `iPhone Distribution`。前者用于使应用可以在你的测试设备上运行，后者是在提交应用到 APP store 时用到。一个证书的用途取决于它所包含的内部信息，在钥匙串访问中双击打开一个证书文件，你可以看到许多详细条目，拖动到最下面有一条标记着 `Apple Developer Certificate (Submission)`， 或者 `Apple Developer Certificate (Development)`，具体你会看到哪一种，取决于你所打开的证书是哪一种类型，iOS 系统会利用这个信息来判断你的应用是运行在开发模式下还是发布模式，并据此判断以切换应用运行规则。
 
@@ -38,7 +38,7 @@ $ security find-identity -v -p codesigning
 
 签名过程本身是由命令行工具 `codesign` 来完成的。如果你在 Xcode 中编译一个应用，这个应用构建完成之后会自动调用 `codesign` 命令进行签名，`codesign` 也正是给你提供了许多格式友好并且有用错误信息的那一个工具。你可以在 Xcode 的 project settings 中设置代码签名信息。
 
-![Set up of the code signing identity in Xcode project settings](http://img.objccn.io/issue-17/xcode-code-signing-idenity.png)
+![Set up of the code signing identity in Xcode project settings](/images/issues/issue-17/xcode-code-signing-idenity.png)
 
 需要注意的是 Xcode 只允许你在有限的选项中进行选择，这些选项都是你既拥有公钥也拥有私钥的证书。所以如果在选项中没有出现你想要的那一个，那么你需要检查的第一件事情就是你是否拥有这个证书的私钥。在这里你需要区分开用于开发测试还是用于发布，如果你想要在机器上测试你的应用，你需要用用于开发测试的那一对密匙来进行签名，如果你是要发布应用，无论是给测试人员还是发布到 APP Store，你需要用用于发布的那一对密匙来进行签名。
 
@@ -170,7 +170,7 @@ Example.app: main executable failed strict validation
 
 一个配置文件是一组信息的集合，这组信息决定了某一个应用是否能够在某一个特定的设备上运行。配置文件可以用于让应用在你的开发设备上可以被运行和调试，也可以用于内部测试 (ad-hoc) 或者企业级应用的发布。Xcode 会将你在 project setting 中选择的配置文件打包进应用。前面提到了，选择配置文件是 Xcode 6 才提供的功能，在 Xcode 5 或更早版本中，配置文件是 Xcode 根据你选择的签名证书来选择的。事实上同一个证书可以拥有多个不同的配置文件，因此让 Xcode 自行选择可能存在一些不确定性，最好的方式是你自主去选择，在 Xcode 6 中终于提供了这个功能。
 
-![Project settings for selecting the provisioning profile](http://img.objccn.io/issue-17/xcode-provisioning-profile.png)
+![Project settings for selecting the provisioning profile](/images/issues/issue-17/xcode-provisioning-profile.png)
 
 我们下面来仔细研究一下配置文件。如果你要在自己的机器上找到配置文件，在这个目录下 `~/Library/MobileDevice/Provisioning Profiles`。Xcode 将从开发者中心下载的全部配置文件都放在了这里。
 

@@ -12,7 +12,7 @@
 
 这是一个失败的测试的例子，原因是我们的一个 View Controller 中 gird 元素比预期的要少：
 
-<img src="http://img.objccn.io/issue-15/snapshots-reference.png" style="width:100%" alt="Snapshots examples"/>
+<img src="/images/issues/issue-15/snapshots-reference.png" style="width:100%" alt="Snapshots examples"/>
 
 它通过将 view 或者 layer 以及已经存在的截图渲染到两个 `CGContextRefs`，并且用 C 函数 `memcmp()` 来进行内存比较。这样的比较会非常快，我在一台 MacBook Air 上生成 iPad 或者 iPhone 的全屏截图并进行测试，每张图耗时在 0.013 到 0.086 秒之间。
 

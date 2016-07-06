@@ -8,19 +8,19 @@
 
 所以，MVVM 到底是什么？与其专注于说明 MVVM 的来历，不如让我们看一个典型的 iOS 是如何构建的，并从那里了解 MVVM：
 
-![Typical Model-View-Controller setup](http://img.objccn.io/issue-13/mvvm1.png)
+![Typical Model-View-Controller setup](/images/issues/issue-13/mvvm1.png)
 
 我们看到的是一个典型的 MVC 设置。Model 呈现数据，View 呈现用户界面，而 View Controller 调节它两者之间的交互。Cool！
 
 稍微考虑一下，虽然 View 和 View Controller 是技术上不同的组件，但它们几乎总是手牵手在一起，成对的。你什么时候看到一个 View 能够与不同 View Controller 配对？或者反过来？所以，为什么不正规化它们的连接呢？
 
-![Intermediate](http://img.objccn.io//issue-13/intermediate.png)
+![Intermediate](/images/issues//issue-13/intermediate.png)
 
 这更准确地描述了你可能已经编写的 MVC 代码。但它并没有做太多事情来解决 iOS 应用中日益增长的重量级视图控制器的问题。在典型的 MVC 应用里，*许多*逻辑被放在 View Controller 里。它们中的一些确实属于 View Controller，但更多的是所谓的“表示逻辑（presentation logic）”，以 MVVM 属术语来说，就是那些将 Model 数据转换为 View 可以呈现的东西的事情，例如将一个 `NSDate` 转换为一个格式化过的 `NSString`。
 
 我们的图解里缺少某些东西，那些使我们可以把所有表示逻辑放进去的东西。我们打算将其称为 “View Model” —— 它位于 View/Controller 与 Model 之间：
 
-![Model-View-ViewModel](http://img.objccn.io//issue-13/mvvm.png)
+![Model-View-ViewModel](/images/issues//issue-13/mvvm.png)
 
 看起好多了！这个图解准确地描述了什么是 MVVM：一个 MVC 的增强版，我们正式连接了视图和控制器，并将表示逻辑从 Controller 移出放到一个新的对象里，即 View Model。MVVM 听起来很复杂，但它本质上就是一个精心优化的 MVC 架构，而 MVC 你早已熟悉。
 

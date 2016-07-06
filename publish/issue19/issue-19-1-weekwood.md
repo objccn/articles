@@ -4,11 +4,11 @@
 
 我收到了一个 bug 反馈报告，当快速点击一个按钮来弹出一个 popover 并 dismiss 它的同时，**父**视图控制器也会被 dismiss。谢天谢地，还附上了一个截图示意，所以第一步 -- 重现 bug -- 已经被做到了：
 
-![](http://img.objccn.io/issue-19/dismiss-issue-animated.gif)
+![](/images/issues/issue-19/dismiss-issue-animated.gif)
 
 我的第一个猜测是，我们可能包含了 dismiss 视图控制器的代码，我们错误地 dismiss 了父视图控制器。然而，当使用 Xcode 集成的视图调试功能时，很明显有一个全局 `UIDimmingView` 作为 first responder 来响应点击事件：
 
-![](http://img.objccn.io/issue-19/xcode-view-debugging.png)
+![](/images/issues/issue-19/xcode-view-debugging.png)
 
 苹果在 Xcode 6 中添加了[调试视图层次结构](https://developer.apple.com/library/ios/recipes/xcode_help-debugger/using_view_debugger/using_view_debugger.html)的功能，这一举动很可能是受到非常受欢迎的应用 [Reveal](http://revealapp.com/) 和 [Spark Inspector](http://sparkinspector.com/) 的启发。相对于 Xcode，它们在许多方面表现更好，功能更多。
 
@@ -150,11 +150,11 @@ PSPDFCatalog[84049:1079574] <UIPopoverPresentationController: 0x7fd09f91c530> di
 
 现在我们知道发生了什么事情 — 接下来我们可以进入**为何发生**的环节。UIKit 是闭源代码，但是我们使用像 [Hopper](http://www.hopperapp.com/) 这样的反汇编工具来解读 UIKit 程序集并且仔细看看 `UIPopoverPresentationController` 里发生了什么事情。你可以在 `/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk/System/Library/Frameworks/UIKit.framework` 里找到二进制文件。然后在 Hopper 里使用 File -> Read Executable to Disassemble...，这将遍历整个二进制文件并且将代码符号化。32-bit 反汇编是最成熟的一个。所以你选择 32-bit 文件可以拿到最好的结果。[Hex-Rays 出品的 IDA](https://www.hex-rays.com/products/ida/) 是另一个很强大很昂贵的反汇编程序，通常可以提供[更好的结果](https://twitter.com/steipete/status/537565877332639744):
 
-![](http://img.objccn.io/issue-19/hopper-dimmingView.png)
+![](/images/issues/issue-19/hopper-dimmingView.png)
 
 一些汇编语言的基础知识对阅读代码会非常有用。不过，你也可以使用伪代码视图来得到类似于 C 代码的结果：
 
-![](http://img.objccn.io/issue-19/pseudo-code.png)
+![](/images/issues/issue-19/pseudo-code.png)
 
 阅读伪代码结果让人大开眼界。这里有两个代码路径 — 其中一个是如果 delegate 实现了 `popoverPresentationControllerShouldDismissPopover:` 时调用，另一个在没有实现时调用 — 两个代码路径实际上相当不同。delegate 实现了委托方法的那个路径中，包含了 `if (controller.presented && !controller.dismissing)`，而另一个代码路径 (我们现在实际进入的) 却没有，并总是调用 dismiss。通过内部信息，我们可以尝试通过实现我们自己的 `UIPopoverPresentationControllerDelegate` 来绕开这个 bug：
 

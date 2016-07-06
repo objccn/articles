@@ -8,11 +8,11 @@
 
 我最喜欢 Travis 的一点就是它与 GitHub 的 Web UI 集成的非常好。例如 pull 请求。Travis 会为每次请求都执行编译操作。如果一切正常，pull 请求在 GitHub 上看起来就像这样：
 
-<img src="http://img.objccn.io/issue-6/github_ready_to_merge.jpg">
+<img src="/images/issues/issue-6/github_ready_to_merge.jpg">
 
 万一编译不成功，GitHub 页面会修改相应的颜色，给予提醒：
 
-<img src="http://img.objccn.io/issue-6/github_merge_with_caution.jpg">
+<img src="/images/issues/issue-6/github_merge_with_caution.jpg">
 
 ## 链接 Travis 和 GitHub
 
@@ -21,7 +21,7 @@
 
 登录成功后，需要为项目开启 Travis 支持。导航到[属性页面](https://travis-ci.org/profile)，该页面列出了所有 GitHub 项目。不过要注意，如果你此后创建了一个新的仓库，要使用 `Sync now` 按钮进行同步。Travis 只会偶尔更新你的项目列表。
 
-<img src="http://img.objccn.io/issue-6/objc_travis_flick.jpg">
+<img src="/images/issues/issue-6/objc_travis_flick.jpg">
 
 现在只需要打开这个开关就可以为你的项目添加 Travis 服务。之后你会看到 Travis 会和 GitHub 项目设置相关联。下一步就是告诉 Travis， 当它收到项目改动通知之后该做什么。
 
@@ -57,7 +57,7 @@ Travis 使用命令行对项目进行编译。因此，第一步就是使项目�
 
 schemes 是由 Xcode 自动生成的，但这在服务器上不会发生。确保所有的 scheme 都被设为 `shared` 并加入到仓库中。否则它只会在本地工作而不会被 Travis CI 识别。
 
-<img src="http://img.objccn.io/issue-6/objc_shared_schemes.jpg">
+<img src="/images/issues/issue-6/objc_shared_schemes.jpg">
 
 我们示例项目下的 `.travis.yml` 文件现在看起来应该像这样：
 
@@ -108,7 +108,7 @@ xctool 用法非常简单，它使用的参数跟 `xcodebuild` 相同：
 
 如果还没有发布证书的话，先创建一个。登录[苹果开发者账号](https://developer.apple.com/account/overview.action)，按照步骤，创建一个新的生产环境证书 (`Certificates` > `Production` > `Add` > `App Store and Ad Hoc`)。然后下载并安装证书。之后，可以在钥匙串中找到它。打开 Mac 中的 `钥匙串` 应用程序：
 
-<img src="http://img.objccn.io/issue-6/dist_cert_keychain.jpg">
+<img src="/images/issues/issue-6/dist_cert_keychain.jpg">
 
 右键单击证书，选择 `Export...` 将证书导出至 `scripts/certs/dist.cer`。然后导出私钥并保存至 `scripts/certs/dist.p12`。记得输入私钥的密码。
 

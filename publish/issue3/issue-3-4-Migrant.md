@@ -32,7 +32,7 @@
 
 通常最快速的渲染方法是使用图片视图。例如，假设你想画一个带有边框的圆形头像，像下面图片中这样:
 
-<img src="http://img.objccn.io/issue-3/issue-3-rounded-corners@2x.png" style="width:396px" alt="Rounded image view"/>
+<img src="/images/issues/issue-3/issue-3-rounded-corners@2x.png" style="width:396px" alt="Rounded image view"/>
 
 为了实现这个，我们用以下的代码创建了一个图片视图的子类:
 
@@ -231,7 +231,7 @@
 
 [1]: https://developer.apple.com/library/ios/#documentation/UIKit/Reference/UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/frame
 [2]: http://www.objccn.io/issue-3-1/
-[3]: http://img.objccn.io/issue-3/issue-3-rounded-corners.png
+[3]: /images/issues/issue-3/issue-3-rounded-corners.png
 [4]: http://robots.thoughtbot.com/post/33427366406/designing-for-ios-taming-uibutton
 [5]: https://news.ycombinator.com/item?id=4645585
 [6]: https://github.com/ReactiveCocoa/ReactiveCocoa

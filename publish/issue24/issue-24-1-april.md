@@ -63,7 +63,7 @@
 
 我不知道这种观念是不是普遍的，但在北美，一个年轻而有抱负的木匠典型的项目是建立一个狗屋；当孩子对建筑变得好奇，想要反复折腾锤子，水平尺，锯子时，他们的父母会指导他们做一个狗屋。在很多方面，狗屋对热情的新手来说是理想的项目。项目大小足以鼓舞人心，但也足够简单以避免孩子恰好搞砸了或中途就失去兴趣造成惨败的结果。狗屋作为一个入门项目是很有吸引力的，因为它是一个微型“全集”。它需要设计，规划，工程和手工制造。很容易知道什么时候该项目已经完成。当汪星人可以整夜整夜待在狗屋而没有变冷或变湿，那这个项目就是成功的。
 
-<img src="http://img.objccn.io/issue-24/pic1.png"></img>
+<img src="/images/issues/issue-24/pic1.png"></img>
 
 我敢肯定，最认真，最好奇的开发者 - 那些用他们晚上和周末的宝贵时间来阅读一些像 objccn.io 这样期刊的人 - 常常会发现他们在一个缺乏激发灵感的或有意义的实在的应用程序项目的情况下，去试图评估一些工具和了解一些新的难懂的概念。如果你像我一样，你可能已经经历了完成 “Hello World!” 教程时的那种特殊的恐惧感。在经历了愉快地配置编辑器和设置项目的潇洒阶段后，你会意识到你对你真正想要用你的新工具**做**什么这件事一无所知，这让你会跌到沮丧的谷底。以前那种学习 Haskell，Swift，或 C++ 的不屈不挠的精神在没有一个强制的项目的激励下变的可有可无。
 
@@ -79,7 +79,7 @@
 
 在游戏 “Rock Band” 中，肯定有一个用于分析和评估歌手声音表现的算法。该算法必须从麦克风设备中得到数据并自动的计算歌手实时的歌唱频率。假设你身边有一个丰满的歌剧演唱者，我们希望该项目最终将看起来像是这样的：
 
-<img src="http://img.objccn.io/issue-24/pic2.png"></img>
+<img src="/images/issues/issue-24/pic2.png"></img>
 
 > 单音音高跟踪在你的信号处理工具集里是一种有用的技术。它是很多产品的核心，比如像 [Auto-Tune](http://en.wikipedia.org/wiki/Auto-Tune) 这样的应用，“Rock Band” 这样的游戏，吉他和乐器调音器，音乐转录程序，音频到 MIDI 的转换软件，或者哼歌识曲的应用程序等。
 
@@ -95,7 +95,7 @@
 
 ## 声音，信号和频率
 
-<img src="http://img.objccn.io/issue-24/pic3.png"></img>
+<img src="/images/issues/issue-24/pic3.png"></img>
 
 乐器通过快速振动产生声音。当一个物体振动的时候，它会生成一个 [纵向压力波](http://jackschaedler.github.io/circles-sines-signals/sound.html)，并辐射到周围的空气中。当这种压力波到达你的耳朵，你的听觉系统会把波动压力解释成声音。规律振动并周期性生成声音的物体，我们称之为音调或音符。非规则或以随机方式振动的物体产生无调或噪音。最简单的音调是正弦波。
 
@@ -232,7 +232,7 @@ func dotProduct(signalA: [Float], signalB: [Float]) -> [Float] {
 <script>
     var SQUARE_CORRELATION_OFFSET = 0.0;
     function updateSquareCorrelationOffset(value) {
-        SQUARE_CORRELATION_OFFSET = Math.PI * 2 * (value / 100);
+        SQUARE_CORRELATION_OFFSET = (Math.PI + Math.PI) * (value / 100);
     }
 
     var SQUARE_CORRELATION_FREQ = 1.0;
@@ -253,7 +253,7 @@ func dotProduct(signalA: [Float], signalB: [Float]) -> [Float] {
 
 ## 自相关
 
-<img src="http://img.objccn.io/issue-24/pic5.png"></img>
+<img src="/images/issues/issue-24/pic5.png"></img>
 
 自相关就像是一副自画像，或一本自传。这是一个信号与其**自身**的相关度。我们通过计算在各种位移或时间**滞后**的情况下，一个信号与自身的副本的点积来测算自相关性。假设我们有看起来像下面的图中所示的复合波形信号。
 
@@ -315,7 +315,7 @@ func dotProduct(signalA: [Float], signalB: [Float]) -> [Float] {
 
 ## 延迟和等待游戏
 
-<img src="http://img.objccn.io/issue-24/pic4.png"></img>
+<img src="/images/issues/issue-24/pic4.png"></img>
 
 实时音频应用会把时间分成块或**缓存区**。在 iOS 和 OS X 的开发中，Core Audio 将从麦克风或音频输入插孔输入的音频导入到应用程序的缓冲区，并希望你能定期在渲染回调方法里提供音频的缓冲区。它可能看起来微不足道，但它对于帮助你理解你的应用程序的音频缓冲区大小与你的分析算法里需要考虑的音频材料的关系是非常重要的。
 
@@ -391,7 +391,7 @@ YIN 由 Cheveigné 和 Kawahahara 在 21 世纪初开发，并且仍然是基音
 
 如果你觉得对开始做自己的狗屋已经有了足够的启发，对这篇文章的内容有任何问题、抱怨或意见，都可以在 Twitter 上随时[与我联系](https://twitter.com/JackSchaedler)。祝你的狗屋建筑顺利！
 
-<img src="http://img.objccn.io/issue-24/pic6.png"></img>
+<img src="/images/issues/issue-24/pic6.png"></img>
 
 ---
 

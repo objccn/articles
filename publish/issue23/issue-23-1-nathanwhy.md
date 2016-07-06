@@ -78,7 +78,7 @@ picker.cameraOverlayView = cameraOverlay;
 
 AVFoundation 中关于视频捕获的主要的类是 `AVCaptureSession`。它负责调配影音输入与输出之间的数据流：
 
-<img src="http://img.objccn.io/issue-23/AVCaptureSession.svg" alt="AVCaptureSession setup" width="620px" height="376px">
+<img src="/images/issues/issue-23/AVCaptureSession.svg" alt="AVCaptureSession setup" width="620px" height="376px">
 
 使用一个 capture session，你需要先实例化，添加输入与输出，接着启动从输入到输出之间的数据流：
 
@@ -300,7 +300,7 @@ NSURL *outputURL = …
 
 这些输出将会各自捕获视频和音频的样本缓存，接着发送到它们的代理。代理要么对采样缓冲进行处理 (比如给视频加滤镜)，要么保持原样传送。使用 `AVAssetWriter` 对象可以将样本缓存写入文件：
 
-<img src="http://img.objccn.io/issue-23/AVAssetWriter.svg" alt="Using an AVAssetWriter" width="620px" height="507px">
+<img src="/images/issues/issue-23/AVAssetWriter.svg" alt="Using an AVAssetWriter" width="620px" height="507px">
 
 配置一个 asset writer 需要定义一个输出 URL 和文件格式，并添加一个或多个输入来接收采样的缓冲。我们还需要将输入的 `expectsMediaInRealTime` 属性设置为 YES，因为它们需要从 capture session 实时获得数据。
 

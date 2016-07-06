@@ -73,7 +73,7 @@ PhotoKit 定义了与系统的 Photos 应用内展现给用户的模型对象相
 
 用户可以在连拍的照片中做标记；此外，系统也会自动用各种试探来标记用户可能会选择的潜在代表照片。这个元数据是可以通过 `PHAsset` 的 `burstSelectionTypes` 属性来访问。这个属性是用三个常量组成的位掩码：`.UserPick ` 表示用户手动标记的资源，`.AutoPick` 表示用户可能标记的潜在资源，`.None ` 表示没有标记的资源。
 
-<img src="http://img.objccn.io/issue-21/photos-burst-example.jpg" width="478" alt=".AutoPick Example">
+<img src="/images/issues/issue-21/photos-burst-example.jpg" width="478" alt=".AutoPick Example">
 
 这个屏幕快照显示了，照片应用是如何在连拍的照片中自动标记用户可能标记的潜在资源。
 

@@ -136,8 +136,8 @@ Child view controller 应该包含管理它们自己的 view 树的必要逻辑�
 
 译文 [View Controller 容器 - 言无不尽](http://tang3w.com/translate/objective-c/objc.io/2013/10/28/view-controller-容器.html)
 
-   [2]: http://img.objccn.io/issue-1/view-insertion.png
+   [2]: /images/issues/issue-1/view-insertion.png
    [3]: https://github.com/RickiG/view-controller-containment
-   [4]: http://img.objccn.io/issue-1/tunnel-screenshot.png
+   [4]: /images/issues/issue-1/tunnel-screenshot.png
    [5]: http://en.wikipedia.org/wiki/Antipodes
    [16]: http://objccn.io/issue-1

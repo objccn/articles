@@ -2,7 +2,7 @@
 
 用户使用照片编辑扩展的流程并不简单。从选择编辑的照片开始，需要点击三次才能启动，其中一步骤是非常小一个按钮：
 
-![照片编辑扩展用户流程](http://img.objccn.io/issue-21/user_workflow.png)
+![照片编辑扩展用户流程](/images/issues/issue-21/user_workflow.png)
 
 然而，这类扩展给开发者提供了为用户创造无缝体验，创建一致的方法来管理照片的绝佳的机会。
 
@@ -16,19 +16,19 @@
 
 为了创建新的图片编辑扩展，需要为已有的 iOS 项目添加新的 target，扩展 target 模板如下：
 
-![图片编辑扩展模板](http://img.objccn.io/issue-21/xcode-target-template-photo-extension.png)
+![图片编辑扩展模板](/images/issues/issue-21/xcode-target-template-photo-extension.png)
 
 模板由三部分组成：
 
 1. **Storyboard** 图片编辑扩展除了系统在顶部提供的 toolbar 包含**取消**以及**完成**按钮之外，界面几乎完全可以自定义。
 
-    ![Cancel/Done 按钮](http://img.objccn.io/issue-21/cancel_done.png)
+    ![Cancel/Done 按钮](/images/issues/issue-21/cancel_done.png)
 
     虽然 storyboard 默认不包含 size classes，系统将允许你选择并激活该功能，虽然没有明显的原因来阻止你使用手动布局，但苹果还是强烈建议使用 Auto Layout 来创建照片编辑扩展。如果你忽略苹果的建议你将不得不面对很多潜在风险。
 
 2. **Info.plist** 设定扩展的类型和可被接受媒体的类型，以及扩展的通用配置。`NSExtension` 键值是一个字典，它包含扩展所需要的配置：
 
-    ![扩展 plist](http://img.objccn.io/issue-21/extension_plist.png)
+    ![扩展 plist](/images/issues/issue-21/extension_plist.png)
 	
     `NSExtensionPointIdentifier` 实体告诉系统这是一个使用 `com.apple.photo-editing` 作为值的照片编辑扩展。唯一特殊的 key 是 `PHSupportedMediaTypes`，它指明可以被操作的媒体类型。在默认情况下，这是一个包含 `Image` 实体的数组，当然你也可添加 `Video` 选项。
 
@@ -36,7 +36,7 @@
 
 值得注意的是不要忘记提供菜单内的扩展的图标：
 
-![扩展图标](http://img.objccn.io/issue-21/extension_icon.png)
+![扩展图标](/images/issues/issue-21/extension_icon.png)
 
 图标通过宿主 app 的资源目录内的 App Icon 提供。这里文档有些让人迷惑，它暗示你必须在扩展本身里来提供图标。然而，尽管我们可以提供一个这样的图标，但扩展将不会使用选择它。这一点有些争议，因为苹果指定与扩展相关的图标必须与容器应用程序的相同。
 
@@ -78,7 +78,7 @@ func startContentEditingWithInput(contentEditingInput: PHContentEditingInput?,
 
 在完成编辑时，用户可以选择照片界面提供的**取消**或者**完成**按钮。如果想让用户确定是否取消尚未保存的编辑内容，`shouldShowCancelConfirmation` 属性需要重写并返回 `true`：
 
-![确认取消](http://img.objccn.io/issue-21/confirm_cancel.png)
+![确认取消](/images/issues/issue-21/confirm_cancel.png)
 
 如果需要取消操作，`cancelContentEditing` 方法将被调用来允许你清空所有临时数据。
 
@@ -175,7 +175,7 @@ public func supportsFilterIdentifier(identifier: String, version: String) -> Boo
 
 用户需要可以将互不兼容的照片编辑串联起来 -- 如果当前扩展无法理解调整数据的话，一张预先渲染好的图像将被作为输入。比如你可以使用系统的裁剪工具先对图片进行裁剪，然后再在你的自定义照片编辑扩展中使用。在你存储编辑后的图像时，与之绑定的编辑数据只会包含最近的编辑的细节。你可以将之前的不兼容的编辑的调整数据保存到你的输出调整数据中，这样你就可以为滤镜链中你的阶段实现还原功能。Photo 框架提供的还原功能将移除所有编辑，并把照片恢复到原始状态：
 
-![还原编辑](http://img.objccn.io/issue-21/revert.png)
+![还原编辑](/images/issues/issue-21/revert.png)
 
 ### 代码/数据共享
 
@@ -185,7 +185,7 @@ public func supportsFilterIdentifier(identifier: String, version: String) -> Boo
 
 值得注意的是因为用于创建扩展，你必须在 Target 设置界面将 API 兼容性限制为仅扩展可用：
 
-![限制框架 API](http://img.objccn.io/issue-21/app_extension_api.png)
+![限制框架 API](/images/issues/issue-21/app_extension_api.png)
 
 共享数据的需求明显要少很多，在许多情况下并不存在。然而如果需要，你可以通过把应用和扩展都添加到一个关联到你的开发者账号的 app group 中的方式，来创建一个共享容器 (shared container)。共享容器代表的是磁盘上的一块共享的空间，你可以使用任何你喜欢的方式使用它，比如 `NSUserDefaults`，`SQLite` 或者写文件。
 
@@ -193,7 +193,7 @@ public func supportsFilterIdentifier(identifier: String, version: String) -> Boo
 
 Xcode 调试虽然有一些潜在症结，但已经相当友好了。选择扩展的 scheme 并编译运行，接着会询问你希望启动哪一个应用，因为图片编辑扩展只能在系统照片应用中实现，所以你应该选择照片应用：
 
-![选择应用](http://img.objccn.io/issue-21/select_app.png)
+![选择应用](/images/issues/issue-21/select_app.png)
 
 如果这么做启动的是你的容器应用的话，你可以编辑扩展 scheme 设置 executable 为 **Ask on Launch** 来解决。
 

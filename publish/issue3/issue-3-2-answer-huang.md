@@ -117,21 +117,21 @@ content offset 的最大值是 content size 和 scroll view size 的差(不同�
    [1]: http://developer.apple.com/library/ios/#documentation/uikit/reference/UIScrollView_Class/Reference/UIScrollView.html
    [2]: https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIView_Class/UIView/UIView.html
    [3]: http://objccn.io/issue-3-1/
-   [4]: http://img.objccn.io/issue-3/SV2.png
-   [5]: http://img.objccn.io/issue-3/SV1.png
-   [6]: http://img.objccn.io/issue-3/SV3.png
-   [7]: http://img.objccn.io/issue-3/SV4.png
+   [4]: /images/issues/issue-3/SV2.png
+   [5]: /images/issues/issue-3/SV1.png
+   [6]: /images/issues/issue-3/SV3.png
+   [7]: /images/issues/issue-3/SV4.png
    [8]: https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/bounds
    [9]: https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/frame
    [10]: https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/drawRect:
    [11]: https://developer.apple.com/library/ios/documentation/uikit/reference/UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/contentOffset
    [12]: https://developer.apple.com/library/ios/documentation/uikit/reference/UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/contentSize
-   [13]: http://img.objccn.io/issue-3/SV5.png
+   [13]: /images/issues/issue-3/SV5.png
    [14]: https://developer.apple.com/library/ios/documentation/uikit/reference/UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/contentInset
    [15]: https://developer.apple.com/library/ios/documentation/uikit/reference/UIKitDataTypesReference/Reference/reference.html#//apple_ref/doc/c_ref/UIEdgeInsets
-   [16]: http://img.objccn.io/issue-3/SV6.png  
+   [16]: /images/issues/issue-3/SV6.png  
    [17]: https://developer.apple.com/library/ios/documentation/uikit/reference/UIRefreshControl_class/Reference/Reference.html
-   [18]: http://img.objccn.io/issue-3/SV7.png
+   [18]: /images/issues/issue-3/SV7.png
    [19]: https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/transform
    [20]: http://developer.apple.com/library/ios/#documentation/uikit/reference/UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/doc/uid/TP40006923-CH3-SW7
    [21]: http://bbs.weiphone.com/read-htm-tid-6880069.html

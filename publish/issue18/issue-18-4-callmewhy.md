@@ -32,7 +32,7 @@ MPC 的关键用途在于创建临时网络中的点对点连接，而不需要�
     let serviceType = "io-objc-mpc" // 最多 15 ASCII 字符
     window!.rootViewController = MCBrowserViewController(serviceType: serviceType, session: session)
 
-![](http://img.objccn.io/issue-18/browser.png)
+![](/images/issues/issue-18/browser.png)
 
 不过，我们无法轻易地对 `MCBrowserViewController` 进行自定义，而你有可能想设置自己的匹配原则，那么请移步下面的章节。
 
@@ -40,7 +40,7 @@ MPC 的关键用途在于创建临时网络中的点对点连接，而不需要�
 
 如果你的游戏的匹配机制是先选取一个主节点来协调游戏逻辑，然后其他次节点和主节点进行连接，那么你应该充分利用这些信息，只需要从主节点进行公示，然后次节点进行浏览即可：
 
-![](http://img.objccn.io/issue-18/dedicated.gif)
+![](/images/issues/issue-18/dedicated.gif)
 
     // 主节点公示
     advertiser = MCNearbyServiceAdvertiser(peer: myPeerID, discoveryInfo: discoveryInfo, serviceType: serviceType)
@@ -58,7 +58,7 @@ MPC 的关键用途在于创建临时网络中的点对点连接，而不需要�
 
 MPC 能够极大地减少用户体验的阻力。当你以正确的方式把它整合到应用中时，你的用户可以在安装应用之后立即开始通信，而不用任何配置。这会是一件大快所有人心的大好事。
 
-![](http://img.objccn.io/issue-18/zero-config.gif)
+![](/images/issues/issue-18/zero-config.gif)
 
 为了实现这个功能，我们需要同时对会话进行公示和查看，我们把这种行为称之为 收发 (transceiving = transmitting and receiving)。
 

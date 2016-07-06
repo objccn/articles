@@ -32,7 +32,7 @@ Scene Kit 内建了几种简单的几何模型，如盒子、球体、平面、�
 
 这是一个对导入文件原始节点的引用，其中包含了任一和每一个子节点，也包括了模型对象 (包括其材质)，光照，以及绑定在这些节点上的摄像机。只要传入的名字一样，不论调用多少次，返回的都是对同一个对象的引用。
 
-![Node > Geometry > Material > Textures](http://img.objccn.io/issue-18/textures.png)
+![Node > Geometry > Material > Textures](/images/issues/issue-18/textures.png)
 
 若需要在场景中拥有一个节点的多个拷贝，如在一个国际象棋棋盘上显示两个马，你可以对马这个节点进行 `copy` 或 `clone` (递归的copy)。这将会拷贝一份节点的引用，但两份引用所指向的材质对象和模型对象仍然是原来那个。所以，想要单独改变副本材质的话，需要再copy一份模型对象，并对这个新的模型对象设置新材质。copy一个模型对象的速度仍然很快，开销也不高，因为副本引用的顶点数据还是同一份。
 
@@ -55,7 +55,7 @@ Scene Kit 中完全都是动态光照，使用起来一般会很简单，但也�
 	let lookAt = SCNLookAtConstraint(target: knight)
 	spotNode.constraints = [lookAt]
 	
-![Rotating Knight with dynamic shadow](http://img.objccn.io/issue-18/spinning.gif)
+![Rotating Knight with dynamic shadow](/images/issues/issue-18/spinning.gif)
 
 ## 动画
 
@@ -80,7 +80,7 @@ Scene Kit 也提供了像 Sprite Kit 那样的 action 形式的动画 API，你�
 4. 应用约束
 5. 渲染
 
-![Game Loop](http://img.objccn.io/issue-18/gameloop.png)
+![Game Loop](/images/issues/issue-18/gameloop.png)
 
 这些回调在每帧被调用，并用来执行游戏相关的逻辑，如用户输入，AI (人工智能) 和游戏脚本。
 
@@ -136,7 +136,7 @@ Scene Kit 与普通 Cocoa 或 Cocoa Touch 应用使用一样的机制来处理�
 	
 	torus.addAnimation(twist, forKey: "Twist the torus")
 
-![Animated twisting torus](http://img.objccn.io/issue-18/twist.gif)
+![Animated twisting torus](/images/issues/issue-18/twist.gif)
 
 ## 延时着色
 
@@ -146,7 +146,7 @@ Scene Kit 与普通 Cocoa 或 Cocoa Touch 应用使用一样的机制来处理�
 
 比如，从 Scene Kit 渲染流程的第一个 pass 获取景深，第二个获取法线，第三个对其执行边界检测，你即可以沿轮廓也可以沿边缘画粗线：
 
-![Bishop with strong contours](http://img.objccn.io/issue-18/bishop.png)
+![Bishop with strong contours](/images/issues/issue-18/bishop.png)
 
 ---
 

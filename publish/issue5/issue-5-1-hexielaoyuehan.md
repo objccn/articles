@@ -362,17 +362,17 @@ TextKit 包括了超过 100 个方法，一篇文章根本没办法尽数涉及�
 
  
 
-   [1]: http://img.objccn.io/issue-5/kerning.png
-   [2]: http://img.objccn.io/issue-5/ligature.png
-   [3]: http://img.objccn.io/issue-5/Screen%20Shot%202013-09-29%20at%2022.19.58.png
+   [1]: /images/issues/issue-5/kerning.png
+   [2]: /images/issues/issue-5/ligature.png
+   [3]: /images/issues/issue-5/Screen%20Shot%202013-09-29%20at%2022.19.58.png
    [4]: http://en.wikipedia.org/wiki/Skeuomorph
-   [5]: http://img.objccn.io/issue-5/TextKit.png
-   [6]: http://img.objccn.io/issue-5/CocoaTextSystem.png
+   [5]: /images/issues/issue-5/TextKit.png
+   [6]: /images/issues/issue-5/CocoaTextSystem.png
    [7]: https://github.com/objcio/issue-5-textkit
-   [8]: http://img.objccn.io/issue-5/SyntaxHighlighting.png
+   [8]: /images/issues/issue-5/SyntaxHighlighting.png
    [9]: http://stackoverflow.com/questions/3760924/set-line-height-in-uitextview/3914228
-   [10]: http://img.objccn.io/issue-5/LineBreaking.png
-   [11]:  http://img.objccn.io/issue-5/ReflowingTextAndClippy.png
+   [10]: /images/issues/issue-5/LineBreaking.png
+   [11]:  /images/issues/issue-5/ReflowingTextAndClippy.png
    [12]: http://en.wikipedia.org/wiki/Glyph
    [13]: https://developer.apple.com/library/ios/documentation/general/conceptual/CocoaEncyclopedia/ClassClusters/ClassClusters.html 
    [14]: https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/_index.html

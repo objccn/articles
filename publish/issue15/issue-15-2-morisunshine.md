@@ -499,15 +499,15 @@ XCTest 最好的优点就是它可以和 [Xcode IDE](https://developer.apple.com
 
 当运行一个单一的测试用例或者在一个测试类中运行一系列测试用例时，点击左边栏上、靠近行数的小菱形按钮，使我们可以运行特定的一个或者一系列测试用例：
 
-![Diamond in Xcode Gutter](http://img.objccn.io/issue-15/xctest-diamond-in-gutter.png)
+![Diamond in Xcode Gutter](/images/issues/issue-15/xctest-diamond-in-gutter.png)
 
 如果测试失败，它会变成红色：
 
-![Failing Test](http://img.objccn.io/issue-15/xctest-red-diamon-in-gutter.png)
+![Failing Test](/images/issues/issue-15/xctest-red-diamon-in-gutter.png)
 
 如果测试通过，它会变成绿色：
 
-![Passing Test](http://img.objccn.io/issue-15/xctest-green-diamon-in-gutter.png)
+![Passing Test](/images/issues/issue-15/xctest-green-diamon-in-gutter.png)
 
 我们最喜欢的一个键盘快捷键是 ^⌥⌘G，它可以再一次的运行之前运行的最后一个或者最后一系列测试用例。当点击了边栏上的小菱形按钮后，我们可以改变测试代码，并且简单的再去运行它们而不需要我们的手离开键盘。当调试测试用例时，这是非常有用的。
 
@@ -515,11 +515,11 @@ XCTest 最好的优点就是它可以和 [Xcode IDE](https://developer.apple.com
 
 在 Xcode 左侧的导航栏中有一列**测试导航**，这里是按照所属类分组展示的测试用例：
 
-![Test Navigator](http://img.objccn.io/issue-15/xctest-test-navigator.png)
+![Test Navigator](/images/issues/issue-15/xctest-test-navigator.png)
 
 也可以从这里开始运行某一个单一的测试用例或者是某一组测试用例。更有用的是，我们可以使用导航栏底部的第三个小图标来过滤所有失败的测试用例。
 
-![Test Navigator with failing tests](http://img.objccn.io/issue-15/xctest-test-navigator-failing.png)
+![Test Navigator with failing tests](/images/issues/issue-15/xctest-test-navigator-failing.png)
 
 <a name="integration-with-xcode"> </a>
 

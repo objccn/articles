@@ -76,7 +76,7 @@ Swift 提供了一个机会，通过方法重载或为 Accelerate 框架进行�
 
 我们可以看到如下所示的图表：
 
-<img src="http://img.objccn.io/issue-16/Sine1.png" style="width:563px"/>
+<img src="/images/issues/issue-16/Sine1.png" style="width:563px"/>
 
 这是一个频率为 4.0、振幅为 2.0、相位为 0 的正弦波。为了变得更有趣一些，我们创建了第二个正弦波，它的频率为 1.0、振幅为 1.0、相位为 π/2，然后把它叠加到第一个正弦波上：
 
@@ -87,7 +87,7 @@ Swift 提供了一个机会，通过方法重载或为 Accelerate 框架进行�
         amplitude2 * sin(2.0 * M_PI / Double(sineArraySize) * Double($0) * frequency2 + phase2)
     }
 
-<img src="http://img.objccn.io/issue-16/Sine2.png" style="width:563px"/>
+<img src="/images/issues/issue-16/Sine2.png" style="width:563px"/>
 
 现在我们要将两个波叠加。从这里开始 Accelerate 将帮助我们完成工作。将两个个独立地浮点数数组相加非常适进行合并行处理。这里我们要使用到 Accelerate 的 vDSP 库，它正好有这类功能的方法。为了让这一切更有趣，我们将重载一个 Swift 操作符用于向量叠加。不巧的是 `+` 这个操作符已经用于数组连接 (其实挺容易混淆的)，而 `++` 更适合作为递增运算符，因此我们将定义 `+++` 作为相加的运算符。
 
@@ -114,7 +114,7 @@ Swift 提供了一个机会，通过方法重载或为 Accelerate 框架进行�
     plotArrayInPlayground(combinedSineWave, "Combined wave (loop addition)")
     plotArrayInPlayground(combinedSineWave2, "Combined wave (Accelerate)")
 
-<img src="http://img.objccn.io/issue-16/SineCombined.png" style="width:563px"/>
+<img src="/images/issues/issue-16/SineCombined.png" style="width:563px"/>
 
 果然，结果是一致的。
 
@@ -162,11 +162,11 @@ Accelerate 的 vecLib 库中有很多等价的数学方法，包括平方根的 
 
 对一个单一的正弦波，以上所有操作的的结果如下：
 
-<img src="http://img.objccn.io/issue-16/FFT12.png" style="width:563px"/>
+<img src="/images/issues/issue-16/FFT12.png" style="width:563px"/>
 
 叠加的正弦波看起来像这样：
 
-<img src="http://img.objccn.io/issue-16/FFTCombined.png" style="width:563px"/>
+<img src="/images/issues/issue-16/FFTCombined.png" style="width:563px"/>
 
 对这些值一个非常简单的解释是：这些结果表示了正弦波频率的集合，从左边开始，集合中的值表示了在该频率下检测到的波的振幅。它们关于中心对称，因此你可以忽略图中右半部分的值。
 

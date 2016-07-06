@@ -54,8 +54,8 @@
  * 不要让 App Store 的评论操纵你的生活！你永远不会让所有人都满意的时候，尤其是声音。
  * 播放、失败、迭代。
 
-[image1]:http://img.objccn.io/issue-24/sum-of-interfaces.svg
-[image2]:http://img.objccn.io/issue-24/size-vs-auditive.svg
+[image1]:/images/issues/issue-24/sum-of-interfaces.svg
+[image2]:/images/issues/issue-24/size-vs-auditive.svg
 
 ---
 

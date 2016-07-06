@@ -99,11 +99,11 @@
 
 一开始我们要做的是基于第一个数据模型增加一个新版模型。在这个例子里，我们添加了一个 `Author` 实体，它与 `Book` 还有多对多的关系。
 
-<img src="http://img.objccn.io/issue-4/cdm-model-2.png" width="416" height="291">
+<img src="/images/issues/issue-4/cdm-model-2.png" width="416" height="291">
 
 现在数据模型已经是我们所需要的，但我们还需要迁移所有已存在的数据，这就该 `NSEntityMigrationPolicy` 出场了。我们创建 `NSEntityMigrationPolicy` 的一个子类---- `MHWBookToBookPolicy` 。在映射模型里，我们选择 `Book` 实体并设置它作为公共部分（Utilities section）中的自定义策略。
 
-<img src="http://img.objccn.io/issue-4/cdm-book-to-book-policy.png" name="Custom NSEntityMigrationPolicy subclass" width="260" height="308">
+<img src="/images/issues/issue-4/cdm-book-to-book-policy.png" name="Custom NSEntityMigrationPolicy subclass" width="260" height="308">
 
 同时我们使用 user info 字典来设置一个 `modelVersion` ，它将在未来的迁移中派上用场。
 
@@ -173,11 +173,11 @@
 
 过了一会，我们又想把 `fileURL` 这个属性从 `Book` 实体里提出来，放入一个叫做 `File` 的新实体里。同时我们还想修改实体之间的关系，以便 `User` 可与 `File` 有一对多的关系，而反过来 `File` 和 `Book` 有多对一的关系。
 
-<img name="Our 3rd model" src="http://img.objccn.io/issue-4/cdm-model-3.png" width="552" height="260">
+<img name="Our 3rd model" src="/images/issues/issue-4/cdm-model-3.png" width="552" height="260">
 
 在之前的迁移中，我们只迁移了一个实体。而现在当我们添加了 `File` 后，事情变得有些复杂了。我们不能简单地在迁移一个 `Book`  时插入一个 `File` 实体并设置它与 `User` 的对应关系，因为此时 `User` 实体还没有被迁移，之间的关系也无从谈起。*我们必须考虑迁移的执行顺序*。在映射模型中，是可以改变实体映射的顺序的。具体到这里的例子，我们想将 `UserToUser` 映射放在 `BookToBook` 映射之上。这保证了 `User` 实体会比 `Book` 实体更早迁移。
 
-<img name="Mapping model orders are important" src="http://img.objccn.io/issue-4/cdm-mapping-order.png">
+<img name="Mapping model orders are important" src="/images/issues/issue-4/cdm-mapping-order.png">
 
 添加一个 `File` 实体的途径和创建 `Author` 的过程相似。我们在 `MHWBookToBookPolicy` 中迁移 `Book` 实体时创建 `File` 对象。我们会查看源实例的 `User` 实体，为每个 `User` 实体创建一个新的 `File` 对象，并建立对应关系：
 

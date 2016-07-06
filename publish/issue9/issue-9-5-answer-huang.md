@@ -58,7 +58,7 @@ Core Text 在任何绘图方面都为你提供了充分的灵活性。然而，C
 
 在我们的示例中，我们将会在 table view 中显示一列语录：
 
-<img alt="Table view with quotes" height="50%" src="http://img.objccn.io/issue-9/uitableview-finished.png" width="50%">
+<img alt="Table view with quotes" height="50%" src="/images/issues/issue-9/uitableview-finished.png" width="50%">
 
 首先，为了实现完全的自定义，我们创建一个 `UITableViewCell` 的子类。在这个子类中，我们需要亲自为我们的 label 布局：
 
@@ -93,7 +93,7 @@ Core Text 在任何绘图方面都为你提供了充分的灵活性。然而，C
 
 还有，通过阅读文档（如下截图），我们发现 iOS 7 发布后，很多方法都被弃用了。如果你通过查找网页或 StackOverflow，你会发现很多测量字符高度的变通方法。因为苹果对文本框架进行了重大检修（在内部实现中，所有的东西都使用 TextKit 进行绘制了，而不是 WebKit），所以请使用新方法。
 
-![Deprecated string measuring methods](http://img.objccn.io/issue-9/deprecated-methods.png)
+![Deprecated string measuring methods](/images/issues/issue-9/deprecated-methods.png)
 
 另一个动态调整 table view cell 大小的选择就是使用 Auto Layout，你可以在[这篇博文](http://blog.amyworrall.com/post/66085151655/using-auto-layout-to-calculate-table-cell-height)中找到更详细的说明。然后你可以利用 contained lables 的 `intrinsicContentSize`。然而，现在自动布局比手动计算要慢很多。可是对于原型开发，这很完美：它允许你快速调整 constraints 并且移动事物（特别当你 cell 中不止一个控件时这显得特别重要）。一旦你完成产品的设计迭代，然后你就可以用手动布局的方式重新编写代码。
 
@@ -107,7 +107,7 @@ Core Text 在任何绘图方面都为你提供了充分的灵活性。然而，C
 ## 经典的文本
 首先，让我们看一些经典的文本。我们将会使用 Jacomy-Régnier 的 [Histoire des nombres et de la numération mécanique](http://www.gutenberg.org/ebooks/27936)，并设为 [Bodoni](http://www.myfonts.com/fonts/itc/bodoni-seventy-two/) 字体。最终截屏效果如下所示:
 
-<img alt="Layout-Example-1" height="50%" src="http://img.objccn.io/issue-9/Layout-Example-1.png" width="50%">
+<img alt="Layout-Example-1" height="50%" src="/images/issues/issue-9/Layout-Example-1.png" width="50%">
 
 这些都是由 Text Kit 完成的。两段文字之间的装饰也是文本，使用的是 [Bodoni Ornaments](http://www.myfonts.com/fonts/itc/bodoni-ornaments/) 字体。
 
@@ -161,7 +161,7 @@ Core Text 在任何绘图方面都为你提供了充分的灵活性。然而，C
 
 接下来是显示数字的 table。我们想要将分数的小数点对齐显示，即英语中的 “.”：
 
-<img alt="Layout-Example-2" height="50%" src="http://img.objccn.io/issue-9/Layout-Example-2.png" width="50%">
+<img alt="Layout-Example-2" height="50%" src="/images/issues/issue-9/Layout-Example-2.png" width="50%">
 
 为了达到这个目的，我们需要指定  table 将中心停在分隔符上。
 
@@ -184,7 +184,7 @@ Core Text 在任何绘图方面都为你提供了充分的灵活性。然而，C
 
 另一个常见的使用情况就像 list 这样：
 
-<img alt="Layout-Example-3" height="50%" src="http://img.objccn.io/issue-9/Layout-Example-3.png" width="50%">
+<img alt="Layout-Example-3" height="50%" src="/images/issues/issue-9/Layout-Example-3.png" width="50%">
 
 （图片来自 [Robert's Rules of Order](http://www.gutenberg.org/ebooks/9097)，作者为 Henry M. Robert）
 

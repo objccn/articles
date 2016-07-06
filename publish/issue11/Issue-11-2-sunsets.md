@@ -280,7 +280,7 @@ Intent 过滤器的本质是系统依照过滤条件检索当前已安装的所�
 
 如果某个 app 刚好匹配且是唯一能够匹配的 app，就会自动打开这个 app。否则的话，可以看到类似这样的一个选择对话框：
 
-![image](http://img.objccn.io/issue-11/android-dialog-choser.jpg)
+![image](/images/issues/issue-11/android-dialog-choser.jpg)
 
 为什么 Youtube 的官方应用会出现在清单上呢？
 
@@ -374,11 +374,11 @@ Android `PackageManager`[^5] 会根据 `Intent` 信息（action，type 和 categ
 
 具体的运行效果（选择列表太长了，得滚动着来看）如下：
 
-![image](http://img.objccn.io/issue-11/android-chooser.gif)
+![image](/images/issues/issue-11/android-chooser.gif)
 
 而后我选择了用 Google Translate 来处理文本，结果如下：
 
-![image](http://img.objccn.io/issue-11/android-translate.jpg)
+![image](/images/issues/issue-11/android-translate.jpg)
 
 Google Translate 将刚刚的文本翻译成了意大利文。
 

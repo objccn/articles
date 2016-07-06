@@ -2,7 +2,7 @@
 
 这个程序最后表现的界面很简单，但却不太漂亮：
 
-![map](http://img.objccn.io/issue-8/client-app.jpg)
+![map](/images/issues/issue-8/client-app.jpg)
 
 ## 多点连接
 

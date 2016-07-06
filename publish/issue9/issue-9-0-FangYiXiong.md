@@ -12,7 +12,7 @@ Chris, Daniel 和 Florian。
 
 ---
 
-[话题 #9 下的更多文章](http://objccn.io/issue-9)
+ 
  
 原文 [Editorial Issue #9](http://www.objc.io/issue-9/editorial.html)
 

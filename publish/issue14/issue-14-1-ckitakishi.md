@@ -301,6 +301,6 @@ Matt Neuburg 的 [AppleScript 权威指南](http://www.amazon.com/AppleScript-De
 
 ---
 
-[话题 #14 下的更多文章](http://www.objc.io/issue-14/)
+ 
  
 原文 [Making Your Mac App’s Data Scriptable](http://www.objc.io/issue-14/scripting-data.html)

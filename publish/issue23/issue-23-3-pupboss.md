@@ -99,6 +99,6 @@ which allows direct drawing of the decoded image in an OpenGL context without co
 
 ---
 
-[话题 #23 下的更多文章](http://www.objccn.io/issue-23)
+ 
 
 原文 [Video Toolbox and Hardware Acceleration](http://www.objc.io/issue-23/videotoolbox.html)

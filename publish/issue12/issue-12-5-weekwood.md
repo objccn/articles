@@ -295,6 +295,6 @@ Collection views 让用户通过手势实现与布局交互这件事变得很容
 
 ---
 
-[话题 #12 下的更多文章](http://objccn.io/issue-12)
+ 
 
 原文 [Animating Collection Views](http://www.objc.io/issue-12/collectionview-animations.html)

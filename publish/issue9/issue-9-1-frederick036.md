@@ -305,7 +305,7 @@ UTF-8 使用一到四个[^5]字节来编码一个码点。从 0 到 127 的这�
 
 ---
 
-[话题 #9 下的更多文章](http://objccn.io/issue-9)
+ 
 
 原文 [NSString and Unicode](http://www.objc.io/issue-9/unicode.html)
 

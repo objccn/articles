@@ -536,7 +536,7 @@ Core Foundation 中没有和 `NSIndexSet` 相当的类，苹果也没有对性�
 
 ---
 
-[话题 #7 下的更多文章](http://objccn.io/issue-7/)
+ 
 
 原文：[The Foundation Collection Classes](http://www.objc.io/issue-7/collections.html)
 

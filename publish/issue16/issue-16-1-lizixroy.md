@@ -260,6 +260,6 @@ Swift 带来了很多有趣的可能性。我尤其喜欢的一点是过去我�
 
 ---
 
-[话题 #16 下的更多文章](http://objccn.io/issue-16)
+ 
 
 原文 [The Power of Swift](http://www.objc.io/issue-16/power-of-swift.html)

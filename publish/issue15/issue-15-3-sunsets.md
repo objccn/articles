@@ -244,6 +244,6 @@
 
 ---
 
-[话题 #15 下的更多文章](http://objccn.io/issue-15)
+ 
 
 原文 [Dependency Injection](http://www.objc.io/issue-15/dependency-injection.html)

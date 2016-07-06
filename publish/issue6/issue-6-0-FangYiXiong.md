@@ -22,7 +22,7 @@ Chris, Daniel 和 Florian，2013年11月。
 
 ---
 
-[话题 #6 下的更多文章](http://objccn.io/issue-6/)
+ 
 
 原文: [Editorial](http://www.objc.io/issue-6/editorial.html)
 

@@ -166,6 +166,6 @@
 
 ---
 
-[语题 #7 下的更多文章](http://objccn.io/issue-7/)
+ 
 
 原文 [Linguistic Tagging](http://www.objc.io/issue-7/linguistic-tagging.html)

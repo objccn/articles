@@ -517,7 +517,7 @@ options 这里传入 `NSStringEnumerationByComposedCharacterSequences` 这个参
 
 ---
 
-[话题 #9 下的更多文章][9]
+ 
 
    [0]: https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/Strings/Articles/stringsClusters.html
    [1]: https://en.wikipedia.org/wiki/Åse

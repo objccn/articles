@@ -240,6 +240,6 @@ view controller 自己，以及自定义的 image view 的列表，都会和 `sh
 [twoDropboxes]: https://www.dropbox.com/business/two-dropboxes
 
 ---
-[话题 #13 下的更多文章](http://objccn.io/issue-13)
+ 
 
 原文 [Avoiding Singleton Abuse](http://www.objc.io/issue-13/singletons.html)

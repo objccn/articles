@@ -72,6 +72,6 @@
 
 ---
 
-[话题 #18 下的更多文章](http://www.objc.io/issue-18)
+ 
 
 原文 [Designing Elegant Mobile Games](http://www.objc.io/issue-18/designing-elegant-mobile-games.html)

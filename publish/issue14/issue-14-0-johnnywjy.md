@@ -15,7 +15,7 @@ Chris，Daniel，与 Florian
 
 ---
 
-[话题 #14 下的更多文章](http://objccn.io/issue-14)
+ 
 
 原文 [Editorial Issue #14](http://www.objc.io/issue-14/editorial.html)
 

@@ -238,6 +238,6 @@ WebSocket 协议 ([RFC 6455](http://tools.ietf.org/html/rfc6455)) 允许服务�
 
 ---
 
-[话题 #18 下的更多文章](http://www.objccn.io/issue-18)
+ 
 
 原文 [Multipeer Connectivity in Games](http://www.objc.io/issue-18/multipeer-connectivity-for-games.html)

@@ -328,6 +328,6 @@ UIImageView 动画是一个完全不同的更高层次的动画 API 的实现方
 动画 APIs 可以以很多不同形式出现，而对于你自己写的动画 API 来说，也是这样的。
 
 ---
-[话题 #12 下的更多文章](http://objccn.io/issue-12)
+ 
  
 原文 [View-Layer Synergy](http://www.objc.io/issue-12/view-layer-synergy.html)

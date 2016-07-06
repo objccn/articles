@@ -79,7 +79,7 @@ iOS 6 和 iOS 7 的主要区别之一是色彩整体给人的感觉。外观的�
 
 ---
 
-[话题 #5 下的更多文章](http://objccn.io/issue-5)
+ 
 
 原文 [Re-Designing an App for iOS 7](http://www.objc.io/issue-5/redesigning-for-ios-7.html)
 

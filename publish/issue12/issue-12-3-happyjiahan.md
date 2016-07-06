@@ -246,6 +246,6 @@ iOS 7 自定义视图控制器转场的 API 基本上都是以协议的方式提
 
 ---
 
-[话题 #12 下的更多文章](http://objccn.io/issue-12)
+ 
  
 原文 [Custom Container View Controller Transitions](http://www.objc.io/issue-12/custom-container-view-controller-transitions.html)

@@ -134,6 +134,6 @@
 
 ---
 
-[话题 #13 下的更多文章](http://objccn.io/issue-13)
+ 
 
 原文 [Subclassing](http://www.objc.io/issue-13/subclassing.html)

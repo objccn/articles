@@ -220,7 +220,6 @@ A-P2P 最大的一个风险是发散 (divergence)。由于没有中央服务器�
 
 ---
 
-[话题 #10 下的更多文章](http://objccn.io/issue-10)
 
 原文 [Data Synchronization](http://www.objc.io/issue-10/data-synchronization.html)
 

@@ -249,7 +249,7 @@ Core Foundation 中出现了一个新的辅助方法，它被用于私有调用�
 
 ---
 
-[话题 #5 下的更多文章](http://objccn.io/issue-5)
+ 
 
 原文 [iOS 7: Hidden Gems and Workarounds](http://www.objc.io/issue-5/iOS7-hidden-gems-and-workarounds.html)
 

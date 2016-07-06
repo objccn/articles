@@ -528,7 +528,7 @@ VIPER 的出现激发了一个关注点的分离，这使得采用 TDD 变得更
 
 ---
 
-[话题 #13 下的更多文章](http://objccn.io/issue-13)
+ 
 
 原文 [Architecting iOS Apps with VIPER](http://www.objc.io/issue-13/viper.html)
 

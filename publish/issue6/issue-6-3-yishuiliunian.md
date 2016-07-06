@@ -583,7 +583,7 @@
 
 ---
 
-[话题 #6 下的更多文章](http://objccn.io/issue-6/)
+ 
 
 原文: [Mach-O Executables](http://www.objc.io/issue-6/mach-o-executables.html)
 

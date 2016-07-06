@@ -132,8 +132,6 @@ Child view controller 应该包含管理它们自己的 view 树的必要逻辑�
 
 ---
 
-[话题 #1 下的更多文章][16]
-
 原文 [Testing View Controllers](http://www.objc.io/issue-1/testing-view-controllers.html)
 
 译文 [View Controller 容器 - 言无不尽](http://tang3w.com/translate/objective-c/objc.io/2013/10/28/view-controller-容器.html)

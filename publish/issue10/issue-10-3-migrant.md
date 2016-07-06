@@ -189,6 +189,6 @@ iCloud 锁定在 iOS 上似乎更经常发生。重启应用或设备都无效�
 
 ---
 
-[话题 #10 下的更多文章](http://objccn.io/issue-10)
+ 
 
 原文 [Mastering the iCloud Document Store](http://www.objc.io/issue-10/icloud-document-store.html)

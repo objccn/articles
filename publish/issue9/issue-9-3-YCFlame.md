@@ -440,7 +440,7 @@ NSString *localizedDate = [formatter stringFromDate:[NSDate date]];
 
 ---
 
-[话题 #9 下的更多文章](http://objccn.io/issue-9)
+ 
  
 原文 [String Localization](http://www.objc.io/issue-9/string-localization.html)
 

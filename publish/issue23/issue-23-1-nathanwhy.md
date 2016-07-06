@@ -347,6 +347,6 @@ previewLayer.frame = cameraView.bounds;
 
 ---
 
-[话题 #23 下的更多文章](http://www.objccn.io/issue-23)
+ 
 
 原文 [Capturing Video on iOS](http://www.objc.io/issue-23/capturing-video.html)

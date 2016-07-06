@@ -143,6 +143,6 @@ if (range.location != NSNotFound) {
 
 ---
 
-[话题 #19 下的更多文章](http://www.objccn.io/issue-19)
+ 
 
 原文 [Debugging Checklist](http://www.objc.io/issue-19/debugging-checklist.html)

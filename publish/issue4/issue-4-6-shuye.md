@@ -283,7 +283,7 @@ SQLite 会为你减轻负担，但它是要付出代价的。虽然它看起来�
 
 ---
 
-[话题 #4 下的更多文章](http://objccn.io/issue-4)
+ 
 
 原文 [Fetch Requests](http://www.objc.io/issue-4/core-data-fetch-requests.html)
 

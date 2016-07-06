@@ -728,7 +728,7 @@ GCD 事件源是以极其资源高效的方式实现的。
 这段代码运行良好的原因是我们不太可能访问到方法最里面的部分。这是很深奥的——除非你真正需要，不然不要在你的 App 中使用它。
 
 ---
-[话题 #2 下的更多文章][1]
+ 
 
    [1]: http://objccn.io/issue-2
    [2]: http://en.wikipedia.org/wiki/Priority_inversion

@@ -158,7 +158,7 @@ Core Data 的优势在于管理关系。让我们着眼于简单的情况：增�
 
 ---
 
-[话题 #4 下的更多文章](http://objccn.io/issue-4)
+ 
 
 原文 [Core Data Overview](http://www.objc.io/issue-4/core-data-overview.html)
    

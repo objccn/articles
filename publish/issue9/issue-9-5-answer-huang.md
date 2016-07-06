@@ -205,7 +205,7 @@ Core Text 在任何绘图方面都为你提供了充分的灵活性。然而，C
 
 ---
 
-[话题 #9 下的更多文章](http://objccn.io/issue-9)
+ 
  
 原文 [String Rendering](http://www.objc.io/issue-9/string-rendering.html)
 

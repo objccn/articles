@@ -205,6 +205,6 @@
 
 ---
 
-[话题 #16 下的更多文章](http://objccn.io/issue-16)
+ 
 
 原文 [Functional APIs with Swift](http://www.objc.io/issue-16/functional-swift-apis.html)

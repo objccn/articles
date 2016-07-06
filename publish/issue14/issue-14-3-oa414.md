@@ -185,6 +185,6 @@ OK，你在 bundle 里面调用的 `principalClass` 方法是什么呢？当你�
 
 ---
 
-[话题 #14 下的更多文章](http://www.objc.io/issue-14)
+ 
 
 原文 [Plugins](http://www.objc.io/issue-14/plugins.html)

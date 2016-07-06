@@ -208,6 +208,6 @@ iOS 7 和 Mac OS X 10.9 Mavericks 中 URL 加载系统的变化，是对 `NSURLC
 
 ---
 
-[话题 #5 下的更多文章](http://objccn.io/issue-5)
+ 
 
 原文 [From NSURLConnection to NSURLSession](http://www.objc.io/issue-5/from-nsurlconnection-to-nsurlsession.html)

@@ -225,6 +225,5 @@ iCloud 守护进程将使用本地网络或使用因特网这两种方式中的�
 
 ---
 
-[话题 #10 下的更多文章](http://objccn.io/issue-10)
 
 原文 [iCloud and Core Data](http://www.objc.io/issue-10/icloud-core-data.html)

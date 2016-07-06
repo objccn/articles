@@ -62,6 +62,6 @@ UNIX 仍然与现代的软件安全讨论息息相关的唯一原因是，我们
 
 ---
 
-[话题 #17 下的更多文章](http://www.objccn.io/issue-17)
+ 
 
 原文 [Why Security Still Matters Today](http://www.objc.io/issue-17/why-security.html)

@@ -510,7 +510,7 @@ gl_FragColor = texture2D(inputImageTexture, (refractedVector.xy + 1.0) * 0.5) * 
 
 ---
 
-[话题 #21 下的更多文章](http://www.objccn.io/issue-21)
+ 
 
 原文 [GPU-Accelerated Image Processing](http://www.objc.io/issue-21/gpu-accelerated-image-processing.html)
 

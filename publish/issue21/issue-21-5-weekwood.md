@@ -224,6 +224,6 @@ iOS 8 之前，第三方开发者无法在他自己应用程序之外向用户�
 目前为止有多少用户留意到这些第三方编辑扩展还有待观察，但总的来说这有助于提高你应用曝光率。
 
 ---
-[话题 #21 下的更多文章](http://objccn.io/issue-21)
+ 
 
 原文 [Photo Extensions](http://www.objc.io/issue-21/photo-extensions.html)

@@ -20,6 +20,6 @@ Chris，Daniel，与 Florian。
 
 ---
 
-[话题 #19 下的更多文章](http://www.objccn.io/issue-19)
+ 
 
 原文 [Editorial](http://www.objc.io/issue-19/editorial.html)

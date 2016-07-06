@@ -86,7 +86,7 @@ Artsy 是一个设计驱动型的公司，我们的设计师在我们开发工�
 
 ---
 
-[话题 #22 下的更多文章](http://objccn.io/issue-22)
+ 
 
 原文 [Artsy](http://www.objc.io/issue-22/artsy.html)
 

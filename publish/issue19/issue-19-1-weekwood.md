@@ -208,6 +208,6 @@ PSPDFCatalog[84049:1079574] <UIPopoverPresentationController: 0x7fd09f91c530> di
 
 ---
 
-[话题 #19 下的更多文章](http://www.objccn.io/issue-19)
+ 
 
 原文 [Debugging: A Case Study](http://www.objc.io/issue-19/debugging-case-study.html)

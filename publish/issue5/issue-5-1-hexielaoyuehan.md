@@ -360,7 +360,7 @@ TextKit 包括了超过 100 个方法，一篇文章根本没办法尽数涉及�
 
 ---
 
-[话题 #5 下的更多文章][15]
+ 
 
    [1]: http://img.objccn.io/issue-5/kerning.png
    [2]: http://img.objccn.io/issue-5/ligature.png

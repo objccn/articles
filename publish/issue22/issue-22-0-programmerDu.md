@@ -10,6 +10,6 @@ Chris，Daniel，Florian 和 Ole。
 
 ---
 
-[话题 #22 下的更多文章](http://objccn.io/issue-22)
+ 
 
 原文 [Editorial Issue #22](http://www.objc.io/issue-22/editorial.html)

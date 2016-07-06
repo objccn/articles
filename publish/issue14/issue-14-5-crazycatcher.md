@@ -259,6 +259,6 @@ Mac 的文件系统是一直对用户开放的，所以如果用户明确表示�
 
 ---
 
-[话题 #14 下的更多文章](http://www.objc.io/issue-14)
+ 
 
 原文 [AppKit for UIKit Developers](http://www.objc.io/issue-14/appkit-for-uikit-developers.html)

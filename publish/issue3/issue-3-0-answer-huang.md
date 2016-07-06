@@ -15,7 +15,7 @@ Chris, Daniel, and Florian.
 
 ---
 
-[话题 #3 下的更多文章][7]
+ 
 
 
 [1]: http://www.objc.io/issue-3/index.html

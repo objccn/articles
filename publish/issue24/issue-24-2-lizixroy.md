@@ -237,6 +237,6 @@ func dtmfTone(digit: Int, sampleRate: Int) -> Block {
 ---
 
 
-[话题 #24 下的更多文章](http://www.objccn.io/issue-24)
+ 
 
 原文 [Functional Signal Processing Using Swift](http://www.objc.io/issue-24/functional-signal-processing.html)

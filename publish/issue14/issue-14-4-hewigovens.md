@@ -400,6 +400,6 @@ QoS 会跨进程传送 (propagates)，在大多数情况下我们都不需要担
 
 ---
 
-[话题 #14 下的更多文章](http://www.objc.io/issue-14)
+ 
 
 原文 [XPC](http://www.objc.io/issue-14/xpc.html)

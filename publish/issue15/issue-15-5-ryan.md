@@ -156,6 +156,6 @@ iOS 和 OS X 开发世界的唯一性导致了事情稍微复杂一些。我们�
 
 ---
 
-[话题 #15 下的更多文章](http://objccn.io/issue-15)
+ 
 
 原文 [Test Doubles: Mocks, Stubs, and More](http://www.objc.io/issue-15/mocking-stubbing.html)

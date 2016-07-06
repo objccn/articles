@@ -461,7 +461,7 @@ clang还有许多其他的用途。比如，可以写编译器插件（例如，
 
 ---
 
-[话题 #6 下的更多文章](http://objccn.io/issue-6/)
+ 
 
 原文: [The Compiler](http://www.objc.io/issue-6/compiler.html)
 

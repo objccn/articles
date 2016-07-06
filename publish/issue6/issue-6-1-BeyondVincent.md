@@ -230,7 +230,7 @@ Build rules 指定了不同的文件类型该如何编译。一般来说，开�
 
 ---
 
-[话题 #6 下的更多文章](http://objccn.io/issue-6/)
+ 
 
 原文: [The Build Process](http://www.objc.io/issue-6/build-process.html)
 

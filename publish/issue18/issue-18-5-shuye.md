@@ -161,6 +161,6 @@ Logic Pro 还包含 20 个音频效果插件，可以按照你所想的为你的
 
 ---
 
-[话题 #18 下的更多文章](http://www.objccn.io/issue-18)
+ 
 
 原文 [Virtual Soundscapes: The Art of Sound Design](http://www.objc.io/issue-18/sound-design.html)

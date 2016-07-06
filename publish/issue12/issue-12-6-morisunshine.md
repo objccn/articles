@@ -367,6 +367,6 @@ Core Animation 是通过分离 layer 的模型属性和你在屏幕上看到的�
 
 ---
 
-[话题12下的更多文章](http://objccn.io/issue-12/)
+ 
 
 原文 [Interactive Animations](http://www.objc.io/issue-12/interactive-animations.html)

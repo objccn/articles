@@ -97,6 +97,6 @@ UI测试其实并不难，只需要清楚你需要测试的内容就行。你需
 
 ---
 
-[话题 #15 下的更多文章](http://objccn.io/issue-15)
+ 
 
 原文 [User Interface Testing](http://www.objc.io/issue-15/user-interface-testing.html)

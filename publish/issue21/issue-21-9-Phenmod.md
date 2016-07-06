@@ -214,7 +214,7 @@ OpenCV 是一个强大而用途广泛的库，覆盖了很多现如今仍在活�
 
 ---
 
-[话题 #21 下的更多文章](http://objccn.io/issue-21)
+ 
 
 原文 [Face Recognition with OpenCV](http://www.objc.io/issue-21/face-recognition-with-opencv.html)
 

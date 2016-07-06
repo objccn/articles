@@ -22,7 +22,7 @@ Chris, Daniel 和 Florian.
 
 ---
 
-[话题 #2 下的更多文章][11]
+ 
 
    [3]: https://twitter.com/steipete
    [4]: https://twitter.com/anagrom_ataf

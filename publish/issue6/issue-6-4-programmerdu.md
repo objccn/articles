@@ -182,7 +182,7 @@ CocoaPods 简化了 Objective-C 的开发流程，我们的目标是让第三方
 
 ---
 
-[话题 #6 下的更多文章](http://objccn.io/issue-6/)
+ 
 
 原文: [CocoaPods Under The Hood](http://www.objc.io/issue-6/cocoapods-under-the-hood.html)
 

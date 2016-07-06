@@ -201,7 +201,7 @@ XCode4 所使用的测试框架是基于 [OCUnit][4]。为了理解之前所提�
 
 ---
 
-[话题 #2 下的更多文章][12]
+ 
 
 [1]: http://nxtbgthng.com  "nxtbgthng"
 [2]: https://github.com/nxtbgthng/SenTestingKitAsync "SenTestingKitAsync"

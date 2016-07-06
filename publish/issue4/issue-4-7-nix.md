@@ -334,7 +334,7 @@ We’ll add a category on `NSManagedObjectModel` that helps us figure out its fi
 
 ---
 
-[话题 #4 下的更多文章](http://objccn.io/issue-4)
+ 
 
 原文 [Custom Core Data Migrations](http://www.objc.io/issue-4/core-data-migration.html)
 

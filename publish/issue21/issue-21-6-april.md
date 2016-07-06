@@ -212,7 +212,7 @@ ciContext.drawImage(filter.outputImage, inRect: outputBounds, fromRect: inputBou
 
 ---
 
-[话题 #21 下的更多文章](http://www.objccn.io/issue-21)
+ 
 
 原文 [An Introduction to Core Image](http://www.objc.io/issue-21/core-image-intro.html)
 

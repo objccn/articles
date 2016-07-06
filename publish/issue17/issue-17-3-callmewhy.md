@@ -565,7 +565,7 @@ ASN.1 负载区的结构如下：
 
 ---
 
-[话题 #17 下的更多文章](http://www.objccn.io/issue-17)
+ 
 
 原文 [Receipt Validation](http://www.objc.io/issue-17/receipt-validation.html)
 

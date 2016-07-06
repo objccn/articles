@@ -358,7 +358,7 @@ Xcode 所提供的 Core Data 标准模版中，所设立的是运行在主线程
 
 ---
 
-[话题 #2 下的更多文章][1]
+ 
 
    [1]: http://objccn.io/issue-2
    [6]: http://developer.apple.com/library/ios/#documentation/Cocoa/Reference/NSOperationQueue_class/Reference/Reference.html

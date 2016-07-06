@@ -111,7 +111,7 @@ content offset 的最大值是 content size 和 scroll view size 的差(不同�
 
 ---
 
-[话题 #3 下的更多文章][22]
+ 
 
 
    [1]: http://developer.apple.com/library/ios/#documentation/uikit/reference/UIScrollView_Class/Reference/UIScrollView.html

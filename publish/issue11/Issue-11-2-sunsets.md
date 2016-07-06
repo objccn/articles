@@ -463,6 +463,6 @@ Google Translate 将刚刚的文本翻译成了意大利文。
 
 ---
 
-[话题 #11 下的更多文章](http://objccn.io/issue-11)
+ 
    
 原文 [Android Intents](http://www.objc.io/issue-11/android-intents.html)

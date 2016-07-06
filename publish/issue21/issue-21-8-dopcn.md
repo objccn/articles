@@ -300,7 +300,7 @@ R = I<sub>x</sub><sup>2</sup> × I<sub>y</sub><sup>2</sup> − I<sub>xy</sub> ×
 
 ---
 
-[话题 #21 下的更多文章](http://www.objccn.io/issue-21)
+ 
 
 原文 [GPU-Accelerated Machine Vision](http://www.objc.io/issue-21/gpu-accelerated-machine-vision.html)
 

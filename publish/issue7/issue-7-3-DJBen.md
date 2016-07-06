@@ -658,6 +658,6 @@ KVC 的苹果官方文档有一个章节 [Collection Operators](https://develope
 
 ---
 
-[话题 #7 下的更多文章](http://objccn.io/issue-7)
+ 
 
 原文 [Key-Value Coding and Observing](http://www.objc.io/issue-7/key-value-coding-and-observing.html)

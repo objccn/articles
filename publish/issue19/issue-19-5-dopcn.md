@@ -214,7 +214,7 @@ void traceLogin(int guid) {
 
 ---
 
-[话题 #19 下的更多文章](http://www.objccn.io/issue-19)
+ 
 
 原文 [Activity Tracing](http://www.objc.io/issue-19/activity-tracing.html)
 

@@ -471,7 +471,7 @@ HTTP 管线化对高网络延迟连接的通讯性能提升尤为显著，在你
 
 ---
 
-[话题 #10 下的更多文章](http://objccn.io/issue-10)
+ 
 
 原文 [IP, TCP, and HTTP](http://www.objc.io/issue-10/ip-tcp-http.html)
 

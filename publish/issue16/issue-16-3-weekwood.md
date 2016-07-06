@@ -739,7 +739,7 @@ Swift 编码快乐！
 
 ---
 
-[话题 #16 下的更多文章](http://objccn.io/issue-16)
+ 
 
 原文 [The Many Faces of Swift Functions](http://www.objc.io/issue-16/swift-functions.html)
 

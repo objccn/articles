@@ -169,7 +169,7 @@ Target-action 机制非常适合响应 UI 的事件。没有其他的消息传�
 
 ---
 
-[语题 #7 下的更多文章](http://objccn.io/issue-7/)
+ 
 
 原文 [Communication Patterns](http://www.objc.io/issue-7/communication-patterns.html)
 

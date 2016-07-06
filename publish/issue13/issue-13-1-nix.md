@@ -148,6 +148,6 @@ Cool！我们已经将 `viewDidLoad` 中的表示逻辑放入我们的 View Mode
 
 ---
 
-[话题 #13 下的更多文章](http://objccn.io/issue-13)
+ 
 
 原文 [Introduction to MVVM](http://www.objc.io/issue-13/mvvm.html)

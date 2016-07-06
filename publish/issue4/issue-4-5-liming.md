@@ -150,6 +150,6 @@ Core Data 框架在 iOS 和 OS X 间是共用的，因此，我们可以创建 O
 
 ---
 
-[话题 #4 下的更多文章](http://objccn.io/issue-4)
+ 
 
 原文 [Core Data Overview](http://www.objc.io/issue-4/importing-large-data-sets-into-core-data.html)

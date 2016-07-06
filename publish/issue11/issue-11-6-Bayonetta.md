@@ -239,6 +239,6 @@ ButterKnife 允许我们只提供很少的代码来描述“在 ID 为 `R.id.ok_
 
 ---
 
-[话题 #11 下的更多文章](http://objccn.io/issue-11)
+ 
  
 原文 [Dependency Injection, Annotations, and why Java is Better Than you Think it is](http://www.objc.io/issue-11/dependency-injection-in-java.html)

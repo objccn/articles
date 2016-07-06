@@ -439,7 +439,7 @@ CALayer 有一个叫做 drawsAsynchronously 的属性，这似乎是一个解决
 
 ---
 
-[话题 #3 下的更多文章][27]
+ 
 
    [1]: http://img.objccn.io/issue-3/pixels-software-stack.png
    [2]: http://img.objccn.io/issue-3/pixels%2C%20hardware.png

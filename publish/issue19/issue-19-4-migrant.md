@@ -750,6 +750,6 @@ D 语言是编译型语言。当运行 `dtrace(1)` 工具时，我们传入的�
 
 ---
 
-[话题 #19 下的更多文章](http://www.objccn.io/issue-19)
+ 
 
 原文 [DTrace](http://www.objc.io/issue-19/dtrace.html)

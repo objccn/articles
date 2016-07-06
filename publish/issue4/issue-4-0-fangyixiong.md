@@ -16,7 +16,7 @@ Chris, Daniel 和 Florian。
 
 ---
 
-[话题 #4 下的更多文章][10]
+ 
 
   [1]: http://objccn.io/issue-4-1/
   [2]: http://objccn.io/issue-4-2/

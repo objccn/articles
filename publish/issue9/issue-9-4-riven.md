@@ -316,7 +316,7 @@ C 语言也提供了具有扫描器功能的函数,例如 `sscanf`（可以用 `
 
 ---
 
-[话题 #9 下的更多文章](http://objccn.io/issue-9)
+ 
  
 原文 [String Parsing](http://www.objc.io/issue-9/string-parsing.html)
 

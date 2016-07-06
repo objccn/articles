@@ -308,6 +308,6 @@ OS X 上支持 Metal 也是迟早的事。API 本身并不局限于 iPhone 和 i
 
 ---
 
-[话题 #18 下的更多文章](http://www.objccn.io/issue-18)
+ 
 
 原文 [Metal](http://www.objc.io/issue-18/metal.html)

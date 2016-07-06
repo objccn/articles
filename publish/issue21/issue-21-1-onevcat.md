@@ -270,7 +270,7 @@ RGB 色彩空间和 sRGB 相比有更大的全色域，也就是所能表达更�
 
 ---
 
-[话题 #21 下的更多文章](http://objccn.io/issue-21)
+ 
 
 原文 [How Your Camera Works](http://www.objc.io/issue-21/how-your-camera-works.html)
 

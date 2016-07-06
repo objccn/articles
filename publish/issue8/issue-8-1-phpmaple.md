@@ -46,7 +46,7 @@
 
 ---
 
-[话题 #8 下的更多文章][4]
+ 
 
    [1]: http://img.objccn.io/issue-8/iphone-above.jpg
    [2]: http://img.objccn.io/issue-8/iphone-below.jpg

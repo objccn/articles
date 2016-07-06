@@ -167,6 +167,6 @@ iOS 7 中最让我激动的特性之一就是提供了新的 API 来支持自定
 
 ---
 
-[话题 #5 下的更多文章](http://objccn.io/issue-5)
+ 
 
 原文 [View Controller Transitions](http://www.objc.io/issue-5/view-controller-transitions.html)

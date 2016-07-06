@@ -38,7 +38,7 @@ Dropbox 的 iOS 应用中的每一行代码，都是开始于被添加到 [Manip
 
 ----
 
-[话题 #22 下的更多文章](http://www.objccn.io/issue-22)
+ 
 
 原文 [The Art of Code Review: A Dropbox Story](http://www.objc.io/issue-22/dropbox.html)
 

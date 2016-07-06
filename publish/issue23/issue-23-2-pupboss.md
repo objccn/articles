@@ -208,6 +208,6 @@ Core Image 是操纵实时视频的一大利器。只要你适当的配置下，
 
 ---
 
-[话题 #23 下的更多文章](http://www.objccn.io/issue-23)
+ 
 
 原文 [Core Image and Video](http://www.objc.io/issue-23/core-image-video.html)

@@ -179,6 +179,6 @@ Scene Kit 与普通 Cocoa 或 Cocoa Touch 应用使用一样的机制来处理�
 
 ---
 
-[话题 #18 下的更多文章](http://www.objccn.io/issue-18)
+ 
 
 原文 [Scene Kit](http://www.objc.io/issue-18/scenekit.html)

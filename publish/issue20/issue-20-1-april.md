@@ -150,6 +150,6 @@ Storyboard 只允许你控制那个四四方方的空间内的离散区域。因
 
 ---
 
-[话题 #20 下的更多文章](http://www.objccn.io/issue-20)
+ 
 
 原文 [A Generation of Lifelong Learners](http://www.objc.io/issue-20/andy-matuschak.html)

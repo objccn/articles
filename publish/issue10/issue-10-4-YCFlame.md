@@ -276,7 +276,7 @@ sqlite> VACUUM;
 
 ---
 
-[话题 #10 下的更多文章](http://objccn.io/issue-10)
+ 
 
 原文 [A Sync Case Study](http://www.objc.io/issue-10/sync-case-study.html)
 

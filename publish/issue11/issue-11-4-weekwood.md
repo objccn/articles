@@ -280,7 +280,7 @@ Android 提供了给用户和开发者不少通知方面的功能。从一开始
 
 ---
 
-[话题 #11 下的更多文章](http://objccn.io/issue-11)
+ 
    
 原文 [Android’s Notification Center](http://www.objc.io/issue-11/android-notifications.html)
 

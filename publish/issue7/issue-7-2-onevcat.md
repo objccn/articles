@@ -277,6 +277,6 @@ table view 将开始执行 `tableView:numberOfRowsInSection:` 之类的方法，
 
 ---
 
-[话题 #7 下的更多文章](http://objccn.io/issue-7/)
+ 
 
 原文: [Value Objects](http://www.objc.io/issue-7/value-objects.html)

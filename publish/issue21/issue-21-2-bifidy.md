@@ -124,6 +124,6 @@ return retval;
 
 ---
 
-[话题 #21 下的更多文章](http://www.objccn.io/issue-21)
+ 
 
 原文 [Image Formats](http://www.objc.io/issue-21/image-formats.html)

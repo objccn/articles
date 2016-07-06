@@ -295,7 +295,7 @@ iOS 7 中强大的多任务和网络 API 为现有应用和新应用开启了一
 
 ---
 
-[话题 #5 下的更多文章](http://objccn.io/issue-5)
+ 
 
 原文 [Multitasking in iOS 7](http://www.objc.io/issue-5/multitasking.html)
 

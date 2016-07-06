@@ -72,6 +72,6 @@ Android 数据库与 iOS 上类似的功能相比，实现更加复杂。但是�
 
 ---
 
-[话题 #11 下的更多文章](http://objccn.io/issue-11)
+ 
    
 原文 [SQLite Database Support in Android](http://www.objc.io/issue-11/sqlite-database-support-in-android.html)

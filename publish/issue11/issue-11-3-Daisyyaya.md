@@ -178,6 +178,6 @@ iOS 绘画系统使用点（points）而不是像素（pixels），因此屏幕�
 
 ---
 
-[话题 #11 下的更多文章](http://objccn.io/issue-11)
+ 
    
 原文 [Responsive Android Applications](http://www.objc.io/issue-11/responsive-android-applications.html)

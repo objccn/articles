@@ -571,7 +571,7 @@ LLDB 可以做的事情很多。大多数人习惯于使用 `p`，`po`，`n`，`
 
 ---
 
-[话题 #19 下的更多文章](http://www.objccn.io/issue-19)
+ 
 
 原文 [Dancing in the Debugger — A Waltz with LLDB](http://www.objc.io/issue-19/lldb-debugging.html)
 

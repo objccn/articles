@@ -368,7 +368,7 @@ SQLite 完全不知道 UTTypes 的事情。但是你可以通过代码块来添�
 
 ---
 
-[话题 #4 下的更多文章](http://objccn.io/issue-4/)
+ 
 
 原文 [On Using SQLite and FMDB Instead of Core Data](http://www.objc.io/issue-4/SQLite-instead-of-core-data.html)
 

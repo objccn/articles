@@ -90,6 +90,6 @@
 
 ---
 
-[话题 #20 下的更多文章](http://objccn.io/issue-20)
+ 
 
 原文 [Infinite Things to Learn](http://www.objc.io/issue-20/natasha-murashev.html)

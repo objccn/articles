@@ -505,7 +505,7 @@
 
 ---
 
-[话题 #3 下的更多文章](http://objccn.io/issue-3)
+ 
 
 原文 [Advanced Auto Layout Toolbox](http://www.objc.io/issue-3/advanced-auto-layout-toolbox.html)
    

@@ -219,8 +219,6 @@ Table view controllers（以及其他的 controller 对象！）应该在 model 
 
 ---
 
-[话题 #1 下的更多文章][8]
-
    [2]: http://stackoverflow.com/questions/12805003/uirefreshcontrol-issues
    [3]: http://objccn.io/issue-1-4
    [4]: http://objccn.io/issue-1-1

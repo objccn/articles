@@ -192,7 +192,7 @@ UITableView 中的 cell 自带了一套非常漂亮的插入和删除动画。�
 
 ---
 
-[话题 #3 下的更多文章][20]
+ 
 
    [1]: http://oleb.net/blog/2012/09/uicollectionview/
    [2]: https://github.com/objcio/issue-3-collection-view-layouts

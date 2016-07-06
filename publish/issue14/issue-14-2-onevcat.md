@@ -390,7 +390,7 @@ applicaiton 里含有 panes，听起来就是它。在一个新的脚本编辑�
 
 ---
 
-[话题 #14 下的更多文章](http://www.objc.io/issue-14)
+ 
 
 原文 [Scripting from a Sandbox](http://www.objc.io/issue-14/sandbox-scripting.html)
 

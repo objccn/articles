@@ -369,7 +369,7 @@ Run loop 比起操作队列或者 GCD 来说容易使用得多，因为通过 ru
 
 ---
 
-[话题 #2 下的更多文章][18]
+ 
 
    [2]: http://objccn.io/issue-2-3/#async
    [3]: #priority_inversion

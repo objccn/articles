@@ -179,6 +179,6 @@ PhotoKit 允许应用对照片进行无损的修改。对编辑过的照片，�
 
 ---
 
-[话题 #21 下的更多文章](http://objccn.io/issue-21)
+ 
 
 原文 [The Photos Framework](http://www.objc.io/issue-21/the-photos-framework.html)

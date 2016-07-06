@@ -341,8 +341,6 @@ Data source 将在传进来的 table view 上调用 `-dequeueReusableCellWithIde
 
 ---
 
-[话题 #1 下的更多文章][16]
-
 原文 [Testing View Controllers](http://www.objc.io/issue-1/testing-view-controllers.html)
 
 译文 [测试 View Controllers - 言无不尽](http://tang3w.com/translate/objective-c/objc.io/2013/10/24/测试-view-controllers.html)

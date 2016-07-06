@@ -474,7 +474,7 @@ Android 上可用的[数据存储选项](http://developer.android.com/guide/topi
 
 ---
 
-[话题 #11 下的更多文章](http://objccn.io/issue-11)
+ 
    
 原文 [Android 101 for iOS Developers](http://www.objc.io/issue-11/android_101_for_ios_developers.html)
 

@@ -14,8 +14,6 @@ Chris，Daniel，和 Florian。
 
 ---
 
-[话题 #1 下的更多文章][11]
-
    [1]: http://www.objc.io/issue-1/introduction.html (Introduction)
    [2]: https://twitter.com/chriseidhof
    [3]: https://twitter.com/danielboedewadt

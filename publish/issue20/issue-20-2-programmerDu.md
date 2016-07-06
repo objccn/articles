@@ -128,6 +128,6 @@
 
 ---
 
-[话题 #20 下的更多文章](http://www.objccn.io/issue-20)
+ 
 
 原文 [Something Slightly Less Terrible](http://www.objc.io/issue-20/loren-brichter.html)

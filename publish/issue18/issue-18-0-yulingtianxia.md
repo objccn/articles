@@ -11,6 +11,6 @@ Mike 以一篇讲述是什么使[手机游戏变得伟大](http://objccn.io/issu
 Chris，Daniel，与 Florian  
 ---
 
-[话题 #18下的更多文章](http://objccn.io/issue-18)
+ 
 
 原文 [Editorial Issue #18](http://www.objc.io/issue-18/editorial.html)

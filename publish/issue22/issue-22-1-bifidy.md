@@ -182,7 +182,7 @@ P.S. Many thanks to the folks at Omni who read drafts of this article and provid
 
 ---
 
-[话题 #22 下的更多文章](http://www.objccn.io/issue-22)
+ 
 
 原文 [Inside Omni](http://www.objc.io/issue-22/omni-group.html)
 

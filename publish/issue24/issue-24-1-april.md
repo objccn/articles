@@ -396,6 +396,6 @@ YIN 由 Cheveigné 和 Kawahahara 在 21 世纪初开发，并且仍然是基音
 ---
 
 
-[话题 #24 下的更多文章](http://www.objccn.io/issue-24)
+ 
 
 原文 [Audio API Overview](http://www.objc.io/issue-24/audio-dog-house.html)

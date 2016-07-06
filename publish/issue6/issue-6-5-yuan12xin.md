@@ -354,7 +354,7 @@ Travis CI 提供了一个功能完整的持续集成环境，以进行应用程�
 
 ---
 
-[话题 #6 下的更多文章](http://objccn.io/issue-6/)
+ 
 
 原文: [Travis CI for iOS](http://www.objc.io/issue-6/travis-ci.html)
 

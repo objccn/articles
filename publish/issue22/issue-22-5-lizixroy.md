@@ -170,6 +170,6 @@ Components 库在所有的显示大量信息的页面都会用到 (新鲜事，�
 
 ---
 
-[话题 #22 下的更多文章](http://www.objccn.io/issue-22)
+ 
 
 原文 [React-Inspired Views](http://www.objc.io/issue-22/facebook.html)

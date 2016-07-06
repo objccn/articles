@@ -388,7 +388,7 @@ dispatch_async(sessionQueue) { () -> Void in
 
 ---
 
-[话题 #21 下的更多文章](http://objccn.io/issue-21)
+ 
 
 原文 [Camera Capture on iOS](http://www.objc.io/issue-21/camera-capture-on-ios.html)
 

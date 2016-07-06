@@ -474,6 +474,6 @@
 
 ---
 
-[话题 #12 下的更多文章](http://objccn.io/issue-12)
+ 
  
 原文 [Animating Custom Layer Properties](http://www.objc.io/issue-12/animating-custom-layer-properties.html)

@@ -269,6 +269,6 @@ C 语言的 API 我们使用了高级研究计划署（发明互联网的地方�
 
 ---
 
-[话题 #8 下的更多文章](http://objccn.io/issue-8)
+ 
    
 原文 [Communicating with the Quadcopter](http://www.objc.io/issue-8/communicating-with-the-quadcopter.html)

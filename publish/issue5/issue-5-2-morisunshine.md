@@ -358,7 +358,7 @@ Collection view layout 将会为 collection view 中的每个 `UICollectionViewL
 
 ---
 
-[话题 #5 下的更多文章](http://objccn.io/issue-5)
+ 
 
 原文 [UICollectionView + UIKit Dynamics](http://www.objc.io/issue-5/collection-views-and-uidynamics.html)
 

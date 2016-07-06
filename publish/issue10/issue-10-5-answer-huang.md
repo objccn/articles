@@ -152,6 +152,6 @@ Apple 在 WWDC 会议以及官方的《Core Data 编程指南》文档的[「Con
 
 ---
 
-[话题 #10 下的更多文章](http://objccn.io/issue-10)
+ 
 
 原文 [A Networked Core Data Application](http://www.objc.io/issue-10/networked-core-data-application.html)

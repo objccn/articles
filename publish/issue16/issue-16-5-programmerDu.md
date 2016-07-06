@@ -184,7 +184,7 @@ Accelerate 的 vecLib 库中有很多等价的数学方法，包括平方根的 
 
 ---
 
-[话题 #16 下的更多文章](http://objccn.io/issue-16)
+ 
 
 原文 [Rapid Prototyping in Swift Playgrounds](http://www.objc.io/issue-16/rapid-prototyping-in-swift-playgrounds.html)
 

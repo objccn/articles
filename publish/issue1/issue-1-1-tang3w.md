@@ -170,8 +170,6 @@ View controllers 通常是 iOS 项目中最大的文件，并且它们包含了�
 
 ---
 
-[话题 #1 下的更多文章][8]
-
    [2]: https://github.com/objcio/issue-1-lighter-view-controllers
    [3]: http://objccn.io/issue-1-3/
    [4]: http://img.objccn.io/issue-1/photocell.png

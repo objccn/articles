@@ -206,6 +206,6 @@ Square 里每一个大的变化，都要经过工程设计审查。如果你以�
 
 ---
 
-[话题 #22 下的更多文章](http://www.objccn.io/issue-22)
+ 
 
 原文 [Scaling Square Register](http://www.objc.io/issue-22/square.html)

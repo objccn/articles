@@ -60,6 +60,6 @@
 ---
 
 
-[话题 #24 下的更多文章](http://www.objccn.io/issue-24)
+ 
 
 原文 [Play, Fail, Iterate: Sound Design for Products](http://www.objc.io/issue-24/sound-design.html)

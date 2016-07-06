@@ -371,7 +371,7 @@ Core Data 优点之一就是集成了 undo 支持。我们将为增加*晃动撤
 
 ---
 
-[话题 #4 下的更多文章](http://objccn.io/issue-4/)
+ 
 
 原文: [A Complete Core Data Application](http://www.objc.io/issue-4/full-core-data-application.html)
 

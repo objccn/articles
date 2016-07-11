@@ -1,7 +1,7 @@
 >"用户会感激代码签名带来的好处"
 > – Apple Developer Library: [Code Signing Guide](https://developer.apple.com/library/mac/documentation/Security/Conceptual/CodeSigningGuide/Introduction/Introduction.html)
 
-在 iOS 或 OS X 平台上进行应用开发时，你所需要使用的 API 大多设计得简洁明了。你可以轻易地实现[酷炫的动画效果](http://www.objccn.io/issue-12/)，便捷地进行[应用发布前测试](http://www.objccn.io/issue-15)，或是用 [Core Data](http://www.objccn.io/issue-4) 将数据安全的存储在本地。但是总有一天，你会碰上代码签名 (code signing) 和配置文件 (provisioning)，大多数情况下，这会是你在心里问候某些人祖宗的开始。
+在 iOS 或 OS X 平台上进行应用开发时，你所需要使用的 API 大多设计得简洁明了。你可以轻易地实现[酷炫的动画效果](http://www.objccn.io/issue-12-0/)，便捷地进行[应用发布前测试](http://www.objccn.io/issue-15-0)，或是用 [Core Data](http://www.objccn.io/issue-4-0) 将数据安全的存储在本地。但是总有一天，你会碰上代码签名 (code signing) 和配置文件 (provisioning)，大多数情况下，这会是你在心里问候某些人祖宗的开始。
 
 如果你已经在 iOS 上开发过应用，那么你多半已经与代码签名或设备配置文件打过交道了。即使是 OS X 开发者，如果你想发布自己的应用到 Mac App Store 上去或者想参与苹果的开发者项目，那么也不得不开始为自己的代码进行签名。
 
@@ -86,7 +86,7 @@ Internal requirements count=1 size=184
 
 ```
 $ codesign --verify Example.app
-$ 
+$
 ```
 
 就像大多数 UNIX 工具一样，没有任何输出代表签名是完好的。那么我下面破坏这个封印，只要修改一下这个二进制文件：
@@ -216,7 +216,6 @@ MIIFnjCCBIagAwIBAgIIE/IgVItTuH4wDQYJKoZIhvcNAQEFBQAwgZYxCzA…
 
 ---
 
- 
+
 
 原文 [Inside Code Signing](http://www.objc.io/issue-17/inside-code-signing.html)
-

@@ -326,7 +326,7 @@
     ((NSMutableDictionary *)immutable)[@5] = @"Adding objects to an immutable collection should throw an exception.";
     NSParameterAssert(immutable.count == 2);
 
-##NSSet
+## NSSet
 
 `NSSet` 和它的可变变体 `NSMutableSet` 是无序对象集合。检查一个对象是否存在通常是一个 O(1) 的操作，使得比 `NSArray` 快很多。`NSSet` 只在被使用的哈希方法平衡的情况下能高效的工作；如果所有的对象都在同一个哈希筐内，`NSSet` 在查找对象是否存在时并不比 `NSArray` 快多少。
 

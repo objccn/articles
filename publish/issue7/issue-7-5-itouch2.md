@@ -1,12 +1,12 @@
 我们希望有一种快速的一次性的解决方案，可以把数据格式化为一种易读的格式。Foundation 框架中的就有 `NSFormatter` 可以很好地胜任这个工作。另外，在 Mac 上，Appkit 已经内建了 `NSFormatter` 的支持。
 
-##内建格式器
+## 内建格式器
 
 Foundation 框架中的 `NSFormatter` 是一个抽象类，它有两个已经实现的子类：`NSNumberFormatter` 与 `NSDateFormatter`。现在我们先跳过这些，来实现我们自己的子类。
 
 如果你想了解更多的相关知识，我推荐阅读 [NSHipster](http://nshipster.com/nsformatter/)。
 
-##介绍
+## 介绍
 
 `NSFormatter` 除了抛出错误，其它什么事也不做。我还不知道有人想要用这个，当然如果它对你有用，就去用它吧。
 
@@ -17,7 +17,7 @@ Foundation 框架中的 `NSFormatter` 是一个抽象类，它有两个已经实
 
 `NSFormatter` 的子类化有两个方法需要实现：`stringForObjectValue:` 与 `getObjectValue:ForString:errorDescription:`。我们先开始介绍第一个方法，因为这个方法更常用。第二个方法，就我所知，经常用于 OS X 上，并且通常不是很有用，我们将稍后介绍。
 
-##初始化
+## 初始化
 
 首先，我们需要做些初始化的工作。由于没有事先定义好的字典可以把颜色映射至名字，这些工作将由我们来完成。为了简化，这些工作将在初始化方法中完成：
 
@@ -32,7 +32,7 @@ Foundation 框架中的 `NSFormatter` 是一个抽象类，它有两个已经实
 
 这里的 colors 是一个以 `UIColor` 实例为键，英语名为值的字典。大家可以自行地去实现 `initWithColors:` 方法。当然你也可以自行实现，或者直接前往 [Github repo](https://github.com/klaaspieter/KPAColorFormatter) 获得答案。
 
-##格式化对象值
+## 格式化对象值
 
 由于我们这里只可以格式化 `UIColor` 实例对象，于是在方法 `stringForObjectValue:` 中的第一件事就是判断传入的参数类型是否是 `UIColor` 类。
 
@@ -56,7 +56,7 @@ Foundation 框架中的 `NSFormatter` 是一个抽象类，它有两个已经实
 
 以上代码是一个尽可能简单的实现。一个更高级（有用）的格式器应该是在我们的颜色字典中没有找到匹配的颜色时，返回一个最接近的颜色。大家可以自行实现，或是你不想花费太多功夫，可以前往 [Github repo](https://github.com/klaaspieter/KPAColorFormatter)。
 
-##反向格式化
+## 反向格式化
 
 我们的格式器也应该支持反向格式化，即把字符串转成实例对象。这是通过 `getObjectValue:forString:errorDescription:` 方法实现。在 OS X 上，在使用 `NSCell` 时会经常用到这个方法。
 
@@ -95,7 +95,7 @@ Foundation 框架中的 `NSFormatter` 是一个抽象类，它有两个已经实
 
 这里，我们如果不能找到一个匹配的颜色，我们会检测调用者是否需要错误信息，如果需要，则把错误通过引用返回。这里检查错误很重要。如果你不这样做，程序就会 crash。同时，我们也会返回 NO，告知调用者这次转换失败。
 
-##本地化
+## 本地化
 
 到现在，我们已经建立了一个完全功能的 `NSFormatter` 的子类，当然这只是对于生活在美国的英语使用者而言有用。
 
@@ -103,11 +103,11 @@ Foundation 框架中的 `NSFormatter` 是一个抽象类，它有两个已经实
 
 `NSNumberFormatter` 与 `NSDateFormatter` 都有一个 locale 属性，它是 `NSLocale` 实例对象。我们现在来扩展格式器以支持本地化，让它可以根据 local 属性来返回对应翻译的名字。
 
-###翻译
+### 翻译
 
 首先，我们需要翻译颜色名字字符串。有关 genstring 与 *.lprojs 超出了本文的范围。有[很多文章](http://www.getlocalization.com/library/get-localization-mac/)讨论这点。好了，不需要其它工作了，快要结束了。
 
-###本地化的格式化
+### 本地化的格式化
 
 接下来是本地化功能的实现。在获取翻译的字符串后，我们需要更新 `stringForObejectValue:` 方法。以前已经使用过 `NSLocalizedString` 的人可能已经早早的把每一个字符串都用 `NSLocalizedString` 替换了。但是我们不会这么做。
 
@@ -130,11 +130,11 @@ Foundation 框架中的 `NSFormatter` 是一个抽象类，它有两个已经实
 
 首先，我们通过 locale 属性查找相应的语言，之后通过 NSBundle 找到对应的语言代码。最后，我们会让 bundle 对英语名称进行翻译。如果找不到对应的翻译，则会返回 name: 方法的参数（即英语名称）。如上即是 `NSLocalizedString` 的具体实现。
 
-###本地化的反向格式化
+### 本地化的反向格式化
 
 同样，我们也可以把颜色名称转成 `UIColor` 实例对象，当然，我认为这样做是不值得的。我们当前的实现适用于99%的情况。另外1%的情况是在 Mac 的 `NSCell` 上使用，而且你允许用户输入一个你试图解析的颜色的名字，这所需要做的要比简单的 子类化 NSFormatter 复杂很多。或许，你不应该允许你的用户通过文本输入颜色值。[NSColorPanel](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/ApplicationKit/Classes/NSColorPanel_Class/) 在这里是一个更好的解决方案。
 
-##属性化字符串
+## 属性化字符串
 
 到目前为止，我们的格式器都按我们预期的工作。接下来让我们做一个完全没用的功能，只是示范一下我们可以这么做，你懂的。
 
@@ -159,7 +159,7 @@ Foundation 框架中的 `NSFormatter` 是一个抽象类，它有两个已经实
 
 首先，我们如之前一样处理字符串，然后检查格式化是否成功。然后我们把默认的属性值与前面设置的颜色属性结合后，最终返回属性化字符串。很容易，是吗？
 
-##便捷
+## 便捷
 
 因为初始化内建的格式器[太慢了](https://twitter.com/ID_AA_Carmack/status/28939697453)，所以通常需要对外给你的格式器提供一个便利的类方法。这个格式器应该用默认值与当前的本地化环境。以下是格式器的实现：
 
@@ -175,7 +175,7 @@ Foundation 框架中的 `NSFormatter` 是一个抽象类，它有两个已经实
 
 除非你的格式器像 `NSNumberFormatter` 与 `NSDateFormatter` 一样做一些疯狂的事情 ，你可能不需要因为性能问题这么做。但是这样做也可以让使用格式器简单许多。
 
-##总结
+## 总结
 
 我们的颜色格式器现在可以把一个 `UIColor` 实例格式成一个可读的名字或是反过来也行。当然还有放多有关 `NSFormatter` 的事情没有涉及。特别是在 Mac 上，因为它跟 `NSCell` 相关，你可以用更多高级的特性。例如当用户在编辑的时，你可以对字符串做一些检测。
 

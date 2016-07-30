@@ -1,6 +1,6 @@
 可能你很难相信 [UIScrollView][1] 和一个标准的 [UIView][2] 差异并不大，scroll view 确实会多出一些方法，但这些方法只是和 UIView 的属性很好的结合到一起了。因此，在要想弄懂 UIScrollView 是怎么工作之前，你需要先了解一下 UIView，特别是视图渲染的两步过程。
 
-##光栅化和组合
+## 光栅化和组合
 
 渲染过程的第一部分是众所周知的光栅化(`rasterization`)，光栅化简单的说就是产生一组绘图指令并且生成一张图片。比如绘制一个圆角矩形、带图片、标题居中的 UIButtons。这些图片并没有被绘制到屏幕上去；取而代之的是，他们被自己的视图保持着留到下一个步骤使用。
 
@@ -40,7 +40,7 @@
 
 这样做是有道理的，我们改变 button 的 `frame.origin `后，它会改变自己相对紫色父视图的位置。注意，如果我们移动 button 直到它的一部分已经在紫色父视图 bounds 的外面，当光栅化图片被截去时这部分也将会通过同样的绘制方式被截去。然而，技术上讲，因为 iOS 处理组合方法的原因，你可以将一个子视图渲染在其父视图的 bounds 之外，但是光栅化期间的绘制不可能超出一个视图的 bounds。
 
-##Scroll View的Content Offset
+## Scroll View 的 Content Offset
 
 现在我们所讲的跟 UIScrollView 有什么关系呢？一切都和它有关！考虑一种我们可以实现的滚动：我们有一个拖动时 frame 不断改变的视图。这达到了相同的效果，对吗？如果我拖动我的手指到右边，那么拖动的同时我增大视图的 `origin.x` ，瞧，这货就是 scroll view。
 
@@ -65,7 +65,7 @@
 
 注意前一个图例，只要足够的改变 bounds 的 origin，button 将会超出紫色视图和 button 组合成的图片的范围。这也是当你足够的移动 scroll view 时，一个视图会消失！
 
-##世界之窗：Content Size
+## 世界之窗：Content Size
 
 现在，最难的部分已经过去了，我们再看看 UIScrollView 另一个属性：[contentSize][12]。
 scroll view 的 content size 并不会改变其 bounds 的任何东西，所以这并不会影响 scroll view 如何组合自己的子视图。反而，content size 定义了可滚动区域。scroll view 的默认 content size 为 {w:0, h:0}。既然没有可滚动区域，用户是不可以滚动的，但是 scroll view 仍然会显示其 bounds 范围内所有的子视图。
@@ -81,7 +81,7 @@ content offset 的最大值是 content size 和 scroll view size 的差(不同�
 
     contentOffset.y = contentSize.height - bounds.size.height;
 
-##用Content Insets对窗口稍作调整
+## 用 Content Insets 对窗口稍作调整
 
 [contentInset][14] 属性可以改变 content offset 的最大和最小值，这样便可以滚动出可滚动区域。它的类型为 [UIEdgeInsets][15]，包含四个值：{top，left，bottom，right}。当你引进一个 inset 时，你改变了 content offset 的范围。比如，设置 content inset 顶部值为 10，则允许 content offset 的 y 值达到 -10。这介绍了可滚动区域周围的填充。
 

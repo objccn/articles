@@ -1,6 +1,6 @@
 UICollectionView 在 iOS6 中第一次被引入，也是 UIKit [视图类中的一颗新星][1]。它和 UITableView 共享一套 API 设计，但也在 UITableView 上做了一些扩展。UICollectionView 最强大、同时显著超出 UITableView 的特色就是其完全灵活的布局结构。在这篇文章中，我们将会实现一个相当复杂的自定义 collection view 布局，并且顺便讨论一下这个类设计的重要部分。项目的示例代码在 [GitHub][2] 上。
 
-##布局对象 (Layout Objects)
+## 布局对象 (Layout Objects)
 
 UITableView 和 UICollectionView 都是 [data-source 和 delegate 驱动][3]的。它们在显示其子视图集的过程中仅扮演容器角色(`dumb containers`)，且对子视图集真正的内容毫不知情。
 
@@ -150,9 +150,9 @@ Supplementary views 和 decoration views 必须是 [UICollectionReusableView][8]
             return NO;
     }
 
-##动画
+## 动画
 
-###插入和删除
+### 插入和删除
 
 UITableView 中的 cell 自带了一套非常漂亮的插入和删除动画。但是当为 UICollectionView 增加和删除 cell 定义动画功能时，UIKit 工程师遇到这样一个问题：如果 collection view 的布局是完全可变的，那么预先定义好的动画就没办法和开发者自定义的布局很好的融合。他们提出了一个优雅的方法：当一个 cell （或者supplementary或者decoration view）被插入到 collection view 中时，collection view 不仅向其布局请求 cell 正常状态下的布局属性，同时还请求其初始的布局属性，比如，需要在开始有插入动画的 cell。collection view 会简单的创建一个 animation block，并在这个 block 中，将所有 cell 的属性从初始（initial）状态改变到常态（normal）。
 

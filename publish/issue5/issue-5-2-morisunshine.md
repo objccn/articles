@@ -156,7 +156,7 @@ Collection view layout 将会为 collection view 中的每个 `UICollectionViewL
         return [self.dynamicAnimator layoutAttributesForCellAtIndexPath:indexPath];
     }
 
-#响应滚动事件
+# 响应滚动事件
 
 我们目前实现的代码给我们展示的只是一个在正常滑动下只有静态感觉的 `UICollectionView`，运行起来没什么特别的。看上去很好，但不是真的*动态*，不是么？
 

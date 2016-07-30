@@ -1,4 +1,4 @@
-##一点背景知识
+## 一点背景知识
 
 OpenCV 是一个开源的计算机视觉和机器学习库。它包含成千上万优化过的算法，为各种计算机视觉应用提供了一个通用工具包。根据这个项目的[关于页面](http://opencv.org/about.html)，OpenCV 已被广泛运用在各种项目上，从谷歌街景的图片拼接，到交互艺术展览的技术实现中，都有 OpenCV 的身影。
 
@@ -8,9 +8,9 @@ OpenCV 起始于 1999 年 Intel 的一个内部研究项目。从那时起，它
 
 在本文中，我会从一个 iOS 开发者的视角概述一下 OpenCV，并介绍一点基础的类和概念。随后，会讲到如何集成 OpenCV 到你的 iOS 项目中以及一些 Objective-C++ 基础知识。最后，我们会看一个 demo 项目，看看如何在 iOS 设备上使用 OpenCV 实现人脸检测与人脸识别。
 
-##OpenCV 概述
+## OpenCV 概述
 
-###概念
+### 概念
 
 OpenCV 的 API 是 C++ 的。它由不同的模块组成，这些模块中包含范围极为广泛的各种方法，从底层的图像颜色空间转换到高层的机器学习工具。
 
@@ -18,7 +18,7 @@ OpenCV 的 API 是 C++ 的。它由不同的模块组成，这些模块中包含
 
 OpenCV 声明了命名空间 `cv`，因此 OpenCV 的类的前面会有个 `cv::` 前缀，就像 `cv::Mat`、 `cv::Algorithm` 等等。你也可以在 `.mm` 文件中使用 `using namespace cv` 来避免在一堆类名前使用 `cv::` 前缀。但是，在某些类名前你必须使用命名空间前缀，比如 `cv::Rect` 和 `cv::Point`，因为它们会跟定义在 `MacTypes.h` 中的 `Rect` 和 `Point` 相冲突。尽管这只是个人偏好问题，我还是偏向在任何地方都使用 `cv::` 以保持一致性。
 
-###模块
+### 模块
 
 下面是在[官方文档](http://docs.opencv.org/modules/core/doc/intro.html)中列出的最重要的模块。
 
@@ -38,7 +38,7 @@ OpenCV 声明了命名空间 `cv`，因此 OpenCV 的类的前面会有个 `cv::
 
 OpenCV 包含几百个类。为简便起见，我们只看几个基础的类和操作，进一步阅读请参考[全部文档](http://docs.opencv.org/modules/core/doc/core.html)。过一遍这几个核心类应该足以对这个库的机理产生一些感觉认识。
 
-####`cv::Mat`
+#### `cv::Mat`
 
 `cv::Mat` 是 OpenCV 的核心数据结构，用来表示任意 N 维矩阵。因为图像只是 2 维矩阵的一个特殊场景，所以也是使用 `cv::Mat` 来表示的。也就是说，`cv::Mat` 将是你在 OpenCV 中用到最多的类。
 
@@ -50,14 +50,14 @@ uchar *pixelPtr = cvMat.data + rowIndex * cvMat.step[0] + colIndex * cvMat.step[
 
 每个像素的数据格式可以通过 `type()` 方法获得。除了常用的每通道 8 位无符号整数的灰度图 (1 通道，`CV_8UC1`) 和彩色图 (3 通道，`CV_8UC3`)，OpenCV 还支持很多不常用的格式，例如 `CV_16SC3` (每像素 3 通道，每通道使用 16 位有符号整数)，甚至 `CV_64FC4` (每像素 4 通道，每通道使用 64 位浮点数)。
 
-####`cv::Algorithm`
+#### `cv::Algorithm`
 
 `Algorithm` 是 OpenCV 中实现的很多算法的抽象基类，包括将在我们的 demo 工程中用到的 `FaceRecognizer`。它提供的 API 与苹果的 Core Image 框架中的 `CIFilter` 有些相似之处。创建一个 `Algorithm` 的时候使用算法的名字来调用 `Algorithm::create()`，并且可以通过 `get()` 和 `set()`方法来获取和设置各个参数，这有点像是键值编码。另外，`Algorithm` 从底层就支持从/向 XML 或 YAML 文件加载/保存参数的功能。
 
 
 ## 在 iOS 上使用 OpenCV
 
-###添加 OpenCV 到你的工程中
+### 添加 OpenCV 到你的工程中
 
 集成 OpenCV 到你的工程中有三种方法：
 
@@ -65,7 +65,7 @@ uchar *pixelPtr = cvMat.data + rowIndex * cvMat.step[0] + colIndex * cvMat.step[
 - 下载官方[ iOS 框架发行包](http://opencv.org/downloads.html)，并把它添加到工程里。
 - 从 [GitHub](https://github.com/Itseez/opencv) 拉下代码，并根据[教程](http://docs.opencv.org/doc/tutorials/introduction/ios_install/ios_install.html#ios-installation)自己编译 OpenCV 库。
 
-###Objective-C++
+### Objective-C++
 
 如前面所说，OpenCV 是一个 C++ 的 API，因此不能直接在 Swift 和 Objective-C 代码中使用，但能在 Objective-C++ 文件中使用。
 
@@ -83,7 +83,7 @@ Objective-C++ 是 Objective-C 和 C++ 的混合物，让你可以在 Objective-C
 
 本 demo 应用的源码可从 [GitHub](https://github.com/objcio/issue-21-OpenCV-FaceRec) 获得。
 
-###视频拍摄
+### 视频拍摄
 
 OpenCV 的 highgui 模块中有个类，`CvVideoCamera`，它把 iPhone 的摄像机抽象出来，让我们的 app 通过一个代理函数 `- (void)processImage:(cv::Mat&)image` 来获得视频流。`CvVideoCamera` 实例可像下面这样进行设置：
 
@@ -99,7 +99,7 @@ videoCamera.delegate = self;
 
 摄像头的帧率被设置为 30 帧每秒， 我们实现的 `processImage` 函数将每秒被调用 30 次。因为我们的 app 要持续不断地检测人脸，所以我们应该在这个函数里实现人脸的检测。要注意的是，如果对某一帧进行人脸检测的时间超过 1/30 秒，就会产生掉帧现象。
 
-###人脸检测
+### 人脸检测
 
 其实你并不需要使用 OpenCV 来做人脸检测，因为 Core Image 已经提供了 `CIDetector` 类。用它来做人脸检测已经相当好了，并且它已经被优化过，使用起来也很容易：
 
@@ -146,7 +146,7 @@ faceDetector.detectMultiScale(img, faceRects,
 
 不管是使用 `CIDetector` 还是 OpenCV 的 `CascadeClassifier`，只要我们获得了至少一个人脸区域，我们就可以对图像中的人进行识别了。
 
-###人脸识别
+### 人脸识别
 
 OpenCV 自带了三个人脸识别算法：Eigenfaces，Fisherfaces 和局部二值模式直方图 (LBPH)。如果你想知道它们的工作原理及相互之间的区别，请阅读 OpenCV 的详细[文档](http://docs.opencv.org/modules/contrib/doc/facerec/facerec_tutorial.html#local-binary-patterns-histograms)。
 
@@ -208,7 +208,7 @@ OpenCV 自带了三个人脸识别算法：Eigenfaces，Fisherfaces 和局部二
 
 如此“预测，获得反馈，更新循环”，就是文献上所说的[监督式学习](http://zh.wikipedia.org/wiki/監督式學習)。
 
-##结论
+## 结论
 
 OpenCV 是一个强大而用途广泛的库，覆盖了很多现如今仍在活跃的研究领域。想在一篇文章中给出详细的使用说明只会是让人徒劳的事情。因此，本文仅意在从较高层次对 OpenCV 库做一个概述。同时，还试图就如何集成 OpenCV 库到你的 iOS 工程中给出一些实用建议，并通过一个人脸识别的例子来向你展示如何在一个真正的项目中使用 OpenCV。如果你觉得 OpenCV 对你的项目有用， OpenCV 的官方文档写得非常好非常详细，请继续前行，创造出下一个伟大的 app！
 

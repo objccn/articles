@@ -4,17 +4,17 @@
 
 滑动是最完美地展示了通过触摸屏直接操作的例子。滚动视图遵从于你的手指，当你的手指离开屏幕的时，视图会自然地继续滑动直到该停止的时候停止。它用自然的方式减速，甚至在快到界限的时候也能表现出细腻的弹力效果。滑动在任何时候都保持相应，并且看上去非常真实。
 
-##动画的状态
+## 动画的状态
 
 在 iOS 中的大部分动画仍然没有按照最初 iPhone 指定的滑动标准实现。这里有很多动画一旦它们运行就不能交互（比如说解锁动画，主界面中打开文件夹和关闭文件夹的动画，和导航栏切换的动画，还有很多）。
 
 然而现在有一些应用给我一种始终在控制动画的体验，我们可以直接操作那些我在用的动画。当我们将这些应用和其他的应用相比较之后，我们就能感觉到明显的区别。这些应用中最优秀的有最初的 Twitter iPad app， 和现在的 Facebook Paper。但目前，使用直接操作为主并且可以中断动画的应用仍然很少。这就给我们做出更好的应用提供了机会，让我们的应用有更不同的，更高质量的体验。
 
-##真实交互式动画的挑战
+## 真实交互式动画的挑战
 
 当我们用 UIView 或者 CAAnimation 来实现交互式动画时会有两个大问题: 这些动画会将你在屏幕上的内容和 layer 上的实际的空间属性分离开来，并且他们直接操作这些空间属性。
 
-###模型 (Model) 和显示 (Presentation) 的分离
+### 模型 (Model) 和显示 (Presentation) 的分离
 
 Core Animation 是通过分离 layer 的模型属性和你在屏幕上看到的界面 (显示层) 的方式来设计的，这就导致我们很难去创建一个可以在任何时候能交互的动画，因为在动画时，模型和界面已经不能匹配了。这时，我们不得不通过手动的方式来同步这两个的状态，来达到改变动画的效果：
 
@@ -24,7 +24,7 @@ Core Animation 是通过分离 layer 的模型属性和你在屏幕上看到的�
     // 添加新动画
 
 
-###直接控制 vs 间接控制
+### 直接控制 vs 间接控制
 
 `CAAnimation` 动画的更大的问题是它们是直接在 layer 上对属性进行操作的。这意味着什么呢？比如我们想指定一个 layer 从坐标为 (100, 100) 的位置运动到 (300, 300) 的位置，但是在它运动到中间的时候，我们想它停下来并且让它回到它原来的位置，事情就变得非常复杂了。如果你只是简单地删除当前的动画然后再添加一个新的，那么这个 layer 的速率就会不连续。
 
@@ -38,7 +38,7 @@ Core Animation 是通过分离 layer 的模型属性和你在屏幕上看到的�
 
 看一下 UIView 中关于弹簧动画的 API (`animateWithDuration:delay:usingSpringWithDamping:initialSpringVelocity:options:animations:completion:`)，你会注意到速率是个 `CGFloat`。所以当我们给一个移动 view 的动画在其运动的方向上加一个初始的速率时，你没法告知动画这个 view 现在的运动状态，比如我们不知道要添加的动画的方向是不是和原来的 view 的速度方向垂直。为了使其成为可能，这个速度需要用向量来表示。
 
-##解决方案
+## 解决方案
 
 让我们看一下我们怎样来正确实现一个可交互并且可以中断的动画。我们来做一个类似于控制中心板的东西来实现这个效果：
 
@@ -48,13 +48,13 @@ Core Animation 是通过分离 layer 的模型属性和你在屏幕上看到的�
 
 这个控制板有两个状态：打开和关闭。你可以通过点击来切换这两个状态，或者通过上下拖动来调调整它向上或向下。我要将这个控制面板的所有状态都做到可以交互，甚至是在动画的过程中也可以，这是一个很大的挑战。比如，当你在这个控制板还没有切换到打开状态的动画过程中，你点击了它，那么它应该从现在这个点的位置马上回到关闭状态的位置。在现在很多的应用中，大部分都是用默认的动画 API，你必须要等一个动画结束之后你才能做自己想做的事情。或者，如果你不等待的话，就会看到一个不连续的速度曲线。我们要解决这个问题。
 
-###UIKit 力学
+### UIKit 力学
 
 随着 iOS7 的发布，苹果向我们展示了一个叫 UIKit 力学的动画框架 (可以参见 WWDC 2013 sessions [206](https://developer.apple.com/videos/wwdc/2013/index.php?id=206) 和 [221](https://developer.apple.com/videos/wwdc/2013/index.php?id=221))。UIKit 力学是一个基于模拟物理引擎的框架，只要你添加指定的行为到动画对象上来实现 [UIDynamicItem](https://developer.apple.com/library/ios/documentation/uikit/reference/UIDynamicItem_Protocol/Reference/Reference.html) 协议就能实现很多动画。这个框架非常强大，并且它能够在多个物体间启用像是附着和碰撞这样的复杂行为。请看一下 [UIKit Dynamics Catalog](https://developer.apple.com/library/ios/samplecode/DynamicsCatalog/Introduction/Intro.html)，确认一下什么是可用的。
 
 因为 UIKit 力学中的的动画是被间接驱动的，就像我在上面提到的，这使我们实现真实的交互式动画成为可能，它能在任何时候被中断并且拥有连续的加速度。同时，UIKit 力学在物理层的抽象上能完全胜任我们一般情况下在用户界面中的所需要的所有动画。其实在大部分情况下，我们只会用到其中的一小部分功能。
 
-####定义行为
+#### 定义行为
 
 为了实现我们的控制板的行为，我们将使用 UIkit 力学中的两个不同行为：[UIAttachmentBehavior](https://developer.apple.com/library/ios/documentation/uikit/reference/UIAttachmentBehavior_Class/Reference/Reference.html) 和 [UIDynamicItemBehavior](https://developer.apple.com/library/ios/documentation/uikit/reference/UIDynamicItemBehavior_Class/Reference/Reference.html)。附着行为用来扮演弹簧的角色，它将界面向目标点拉动。另一方面，我们用动态 item behvaior 定义了比如摩擦系数这样的界面的内置属性。
 
@@ -106,7 +106,7 @@ Core Animation 是通过分离 layer 的模型属性和你在屏幕上看到的�
         [self.itemBehavior addLinearVelocity:velocityDelta forItem:self.item];
     }
 
-###将Behavior投入使用
+### 将Behavior投入使用
 
 我们的控制板有三个不同状态：在开始或结束位置的静止状态，正在被用户拖动的状态，以及在没有用户控制时运动到结束位置的动画状态。
 
@@ -153,11 +153,11 @@ Core Animation 是通过分离 layer 的模型属性和你在屏幕上看到的�
 
 现在我们已经通过 UIKit 力学实现了整个交互，让我们回顾一下这个场景。这个例子的动画中我们只用了 UIKit 力学中一小部分功能，并且它的实现方式也非常简单。对于我们来说这是一个去理解它其中的过程的很好的例子，但是如果我们使用的环境中没有 UIKit  力学 (比如说在 Mac 上)，或者你的使用场景中不能很好的适用 UIKit 力学呢。
 
-##自己操作动画
+## 自己操作动画
 
 至于在你的应用中大部分时间会用的动画，比如简单的弹力动画，我们控制它真的不难。我们可以做一个练习，来看看如何抛弃 UIKit 力学这个巨大的黑盒子，看要如何“手动”来实现一个简单的交互。想法非常简单：我们只要每秒修改这个 view 的 frame 60 次。每一帧我们都基于当前速度和作用在 view 上的力来调整 view 的 frame 就可以了。
 
-###物理原理
+### 物理原理
 
 首先让我们看一下我们需要知道的基础物理知识，这样我们才能实现出刚才使用 UIKit 力学实现的那种弹簧动画效果。为了简化问题，虽然引入第二个维度也是很直接的，但我们在这里只关注一维的情况 (在我们的例子中就是这样的情况)。
 
@@ -203,7 +203,7 @@ Core Animation 是通过分离 layer 的模型属性和你在屏幕上看到的�
 
     Δy = (v0 + (k ⋅ abs(y_target - y0) + μ ⋅ v) ⋅ Δt) ⋅ Δt
 
-###实现动画
+### 实现动画
 
 为了实现这个动画，我们首先需要创建我们自己的 `Animator` 类，它将扮演驱动动画的角色。这个类使用了 `CADisplayLink`，`CADisplayLink` 是专门用来将绘图与屏幕刷新频率相同步的定时器。换句话说，如果你的动画是流畅的，这个定时器就会每秒调用你的方法60次。接下来，我们需要实现 `Animation` 协议来和我们的 `Animator` 一起工作。这个协议只有一个方法，`animationTick:finished:`。屏幕每次被刷新时都会调用这个方法，并且在方法中会得到两个参数：第一个参数是前一个 frame 的持续时间，第二个参数是一个指向 `BOOL` 的指针。当我们设置这个指针的值为 `YES` 时，我们就可以与 `Animator` 取得通讯并汇报动画完成；
 
@@ -241,7 +241,7 @@ Core Animation 是通过分离 layer 的模型属性和你在屏幕上看到的�
 
 这就是这个方法里的全部内容。我们把这个方法封装到一个 `SpringAnimation` 对象中。除了这个方法之外，这个对象中还有一个初始化方法，它指定了 view 中心的目标位置 (在我们的例子中，就是打开状态时界面的中心位置，或者关闭状态时界面的中心位置) 和初始的速度。
 
-###将动画添加到 view 上
+### 将动画添加到 view 上
 
 我们的 view 类刚好和使用 UIDynamic 的例子一样：它有一个拖动手势，并且根据拖动手势来更新中心位置。它也有两个同样的 delegate 方法，这两个方法会实现动画的初始化。首先，一旦用户开始拖动控制板时，我们就取消所有动画：
 
@@ -275,7 +275,7 @@ Core Animation 是通过分离 layer 的模型属性和你在屏幕上看到的�
         [self startAnimatingView:self.pane initialVelocity:self.springAnimation.velocity];
     }
 
-###动画驱动
+### 动画驱动
 
 最后，我们需要一个 `Animator`，也就是动画的驱动者。Animator 封装了 display link。因为每个 display link 都链接一个指定的 `UIScreen`，所以我们根据这个指定的 UIScreen 来初始化我们的 animator。我们初始化一个 display link，并且将它加入到 run loop 中。因为现在还没有动画，所以我们是从暂停状态开始的：
 
@@ -320,11 +320,11 @@ Core Animation 是通过分离 layer 的模型属性和你在屏幕上看到的�
 
 完整的项目在 [GitHub](https://github.com/objcio/issue-12-interactive-animations) 上。
 
-###权衡
+### 权衡
 
 我们必须记住，通过 display link 来驱动动画 (就像我们刚才演示的例子，或者我们使用UIkit力学来做的例子，又或者是使用 Facebook 的 Pop 框架) 是有代价需要进行权衡的。就像 [Andy Matuschar 指出的](https://twitter.com/andy_matuschak/status/464790108072206337)那样，UIView 和 CAAnimation 动画比其他任务更少受系统的影响，因为比起你的应用来说，渲染处于更高的优先级。
 
-##回到 Mac
+## 回到 Mac
 
 现在 Mac 中还没有 UIKit 力学。如果你想在 Mac 中创建一个真实的交互式动画，你必须自己去实现这些动画。我们已经向你展示了如何在 iOS 中实现这些动画，所以在 OS X 中实现相似的功能也是非常简单的。你可以查看在 GitHub 中的[完整项目](https://github.com/objcio/issue-12-interactive-animations-osx)，如果你想要应用到 OS X 中，这里还有一些地方需要修改：
 
@@ -334,7 +334,7 @@ Core Animation 是通过分离 layer 的模型属性和你在屏幕上看到的�
 
 上面就是我们需要在 Mac 中使用我们的动画效果在代码所需要做的修改。对于像这样的简单 view，它能很好的胜任。但对于更复杂的动画，你可能就不会想通过为 frame 做动画来实现了，我们可以用 `transform` 来代替，浏览 Jonathan Willing 写的关于 [OS X 动画](http://jwilling.com/osx-animations)的博客，你会获益良多。
 
-###Facebook 的 POP 框架
+### Facebook 的 POP 框架
 
 上个星期围绕着 Facebook 的 [POP 框架](https://github.com/facebook/pop)的讨论络绎不绝。POP 框架是 Paper 应用背后支持的动画引擎。它的操作非常像我们上面讲的驱动动画的例子，但是它以非常灵活的方式巧妙地封装到了一个程序包中。
 
@@ -359,7 +359,7 @@ Core Animation 是通过分离 layer 的模型属性和你在屏幕上看到的�
 
 如果你不满足于用 `POPSpringAnimation` 和 `POPDecayAnimation` 的开箱即用的处理方式的话，POP 还提供了 `POPCustomAnimation` 类，它基本上是一个 display link 的方便的转换，来在动画的每一个 tick 的回调 block 中驱动你自己的动画。
 
-##展望未来
+## 展望未来
 
 随着 iOS7 中从对拟物化的视觉效果的远离，以及对 UI 行为的关注，真实的交互式动画通向未来的大道变得越来越明显。它们也是将初代 iPhone 中滑动行为的魔力延续到交互的各个方面的一条康庄大道。为了让这些魔力成为现实，我们就不能在开发过程中才想到这些动画，而是应该在设计时就要考虑这些交互，这一点非常重要。
 

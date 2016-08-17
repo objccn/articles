@@ -191,8 +191,6 @@ Download task 也需要一个 request，不同之处在于 `completionHandler` �
 
 `URLCache` 是 session 使用的缓存。默认情况下会使用 `NSURLCache` 的 `+sharedURLCache` 这个单例对象，这与 `NSURLConnection` 是相同的。
 
-`requestCachePolicy` specifies when a cached response should be returned for a request. This is equivalent to `NSURLRequest -cachePolicy`.
-
 `requestCachePolicy` 指定了一个请求的缓存响应应该在什么时候返回。这相当于 `NSURLRequest` 的 `-cachePolicy` 方法。
 
 #### 自定义协议

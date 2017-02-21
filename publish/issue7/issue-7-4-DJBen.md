@@ -91,7 +91,7 @@ Block 是最近才加入 Objective-C 的，首次出现在 OS X 10.6 和 iOS 4 �
 
 Target-Action 是回应 UI 事件时典型的消息传递方式。iOS 上的 `UIControl` 和 Mac 上的 `NSControl`/`NSCell` 都支持这个机制。Target-Action 在消息的发送者和接收者之间建立了一个松散的关系。消息的接收者不知道发送者，甚至消息的发送者也不知道消息的接收者会是什么。如果 target 是 `nil`，action 会在[响应链 (responder chain)](https://developer.apple.com/library/ios/documentation/general/conceptual/Devpedia-CocoaApp/Responder.html) 中被传递下去，直到找到一个响应它的对象。在 iOS 中，每个控件甚至可以和多个 target-action 关联。
 
-基于 target-action 传递机制的一个局限是，发送的消息不能携带自定义的信息。在 Mac 平台上 action 方法的第一个参数永远接收者。iOS 中，可以选择性的把发送者和触发 action 的事件作为参数。除此之外就没有别的控制 action 消息内容的方法了。
+基于 target-action 传递机制的一个局限是，发送的消息不能携带自定义的信息。在 Mac 平台上 action 方法的第一个参数永远是发送者。iOS 中，可以选择性的把发送者和触发 action 的事件作为参数。除此之外就没有别的控制 action 消息内容的方法了。
 
 ## 做出正确的选择
 

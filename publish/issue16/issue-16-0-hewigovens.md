@@ -14,7 +14,7 @@ Chris 从向我们展示 [Swift 的强大之处][1]开始，列出了一些这�
 
 Chris，Daniel，与 Florian。
 
-> 既然说到 Swift 的书，想借此机会做个广告。本站点的维护者 [onevcat](http://onevcat.com) 也写了一本关于 Swift 的图书：[Swifter - 100 个 Swift 必备 tips](http://swifter.tips/buy)，如果您对深入学习 Swift 感兴趣的话，可以看一看这本书的[介绍](http://swifter.tips/introduction/)。
+> 既然说到 Swift 的书，想借此机会做个广告。本站点的维护者 [onevcat](http://onevcat.com) 也写了一本关于 Swift 的图书：[Swifter - Swift 开发者必备 tips](http://swifter.tips/buy)，如果您对深入学习 Swift 感兴趣的话，可以看一看这本书的[介绍](http://swifter.tips/introduction/)。
 
 ---
 

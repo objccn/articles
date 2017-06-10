@@ -107,7 +107,7 @@ self.label.text = [NSString localizedStringWithFormat:localizedString, completed
 在翻译的时候经常需要对其中的格式化占位符进行顺序调整以符合语法，幸运的是我们可以在字符串文件中轻松地搞定：
 
 ```
-"activity-profile.label.run %lu out of %lu completed" = "Von %2$lu Läufen hast du %$1lu absolviert";
+"activity-profile.label.run %lu out of %lu completed" = "Von %2$lu Läufen hast du %1$lu absolviert";
 ```
 
 上面的德文翻译得不是非常好，只是单纯用来说明调换占位符顺序的功能而已。

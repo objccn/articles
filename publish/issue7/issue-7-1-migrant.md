@@ -314,7 +314,7 @@
 
 从 iOS 6 和 OS X 10.8 开始，新建的字典可以使用一个预先生成好的键集，使用 `sharedKeySetForKeys:` 从一个数组中创建键集，然后用 `dictionaryWithSharedKeySet:` 创建字典。共享键集会复用对象，以节省内存。根据 [Foundation Release Notes](https://developer.apple.com/library/mac/releasenotes/Foundation/RN-FoundationOlderNotes/)，`sharedKeySetForKeys:` 中会计算一个最小完美哈希，这个哈希值可以取代字典查找过程中探索循环的需要，因此使键的访问更快。
 
-虽然在我们有限的测试中没有法线苹果在 `NSJSONSerialization` 中使用这个特性，但毫无疑问，在处理 JSON 的解析工作时这个特性可以发挥得淋漓尽致。(使用共享键集创建的字典是 `NSSharedKeyDictionary` 的子类；通常的字典是 `__NSDictionaryI` / `__NSDictionaryM`，I / M 表明可变性；可变和不可变的的字典在 toll-free 桥接后对应的都是 `_NSCFDictionary` 类。)
+虽然在我们有限的测试中没有发现苹果在 `NSJSONSerialization` 中使用这个特性，但毫无疑问，在处理 JSON 的解析工作时这个特性可以发挥得淋漓尽致。(使用共享键集创建的字典是 `NSSharedKeyDictionary` 的子类；通常的字典是 `__NSDictionaryI` / `__NSDictionaryM`，I / M 表明可变性；可变和不可变的的字典在 toll-free 桥接后对应的都是 `_NSCFDictionary` 类。)
 
 **有趣的细节：**共享键字典**始终是可变的**，即使对它们执行了”copy”命令后也是。这个行为文档中并没有说明，但很容易被测试:
 

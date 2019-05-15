@@ -1,4 +1,4 @@
-[AR Drone](http://ardrone2.parrot.com/) [无人机](https://en.wikipedia.org/wiki/Quadcopter)是一台小型的 Linux，当我们加入它提供的 WiFi 热点的时候，我们就可以通过 192.168.1.1 来访问无人机。
+[AR Drone](https://upgradedreviews.com/parrot-ar-drone-review/) [无人机](https://en.wikipedia.org/wiki/Quadcopter)是一台小型的 Linux，当我们加入它提供的 WiFi 热点的时候，我们就可以通过 192.168.1.1 来访问无人机。
 
 ## 用户数据报协议（UDP）
 

@@ -117,7 +117,7 @@ Foundation 框架提供的表示属性依赖的机制如下：
     - (void)removeObserver:(NSObject *)anObserver
                 forKeyPath:(NSString *)keyPath
 
-来移除观察者，否则我们我们的 app 会因为某些奇怪的原因崩溃。
+来移除观察者，否则我们的 app 会因为某些奇怪的原因崩溃。
 
 对于大多数的应用来说，*KVO* 可以通过辅助类用一种更简单优雅的方式实现。我们在视图控制器添加以下的*观察记号（Observation token）*属性：
 
@@ -161,7 +161,7 @@ Foundation 框架提供的表示属性依赖的机制如下：
         self.labColor.bComponent = sender.value;
     }
 
-所有的代码都在我们的 GitHub [示例代码](https://github.com/objcio/issue-7-lab-color-space-explorer) 中找到。
+所有的代码都可以在我们的 GitHub [示例代码](https://github.com/objcio/issue-7-lab-color-space-explorer) 中找到。
 
 ## 手动通知 vs 自动通知
 
@@ -560,7 +560,7 @@ KVC 的苹果官方文档有一个章节 [Collection Operators](https://develope
         return [self mutableArrayValueForKey:@"wrappedContacts"];
     }
 
-然后在实现键 `wrappedContacts` 的一些方法。
+然后再实现键 `wrappedContacts` 的一些方法。
 
 我们需要实现上面的不变集合的两个方法，还有以下的几个：
 
@@ -623,7 +623,7 @@ KVC 的苹果官方文档有一个章节 [Collection Operators](https://develope
 
 如果我们写能够验证值的 model 类的话，我们就应该实现 KVV 的 API 来保证一致性。用 KVV 验证 model 类的值是 Cocoa 的惯例。
 
-让我们在一次强调一下：KVC 不会做任何的验证，也不会调用任何 KVV 的方法。那是你的控制器需要做的事情。通过 KVV 实现你自己的验证方法会保证它们的一致性。
+让我们再一次强调一下：KVC 不会做任何的验证，也不会调用任何 KVV 的方法。那是你的控制器需要做的事情。通过 KVV 实现你自己的验证方法会保证它们的一致性。
 
 以下是一个简单的例子：
 
